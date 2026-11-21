@@ -1,0 +1,74 @@
+{
+  "name": "/document-management/directory-acl-entries",
+  "schema": {
+    "type": "crud",
+    "syncLocation": false,
+    "headerToolbar": [
+      {
+        "type": "button",
+        "label": "添加权限",
+        "level": "primary",
+        "icon": "fa fa-plus",
+        "actionType": "dialog",
+        "dialog": {
+          "title": "添加目录权限",
+          "size": "md",
+          "url": "/document-management/acl-entry-form"
+        }
+      },
+      "reload"
+    ],
+    "api": {
+      "method": "get",
+      "url": "/api/document-libraries/${libraryId}/directories/${directoryId}/acl-entries"
+    },
+    "columns": [
+      {
+        "name": "principalTypeDisplayName",
+        "label": "主体类型"
+      },
+      {
+        "name": "principalDisplayName",
+        "label": "主体"
+      },
+      {
+        "name": "permissions",
+        "label": "权限",
+        "type": "tpl",
+        "tpl": "${permissionDisplayNames | join:, }"
+      },
+      {
+        "type": "operation",
+        "label": "操作",
+        "buttons": [
+          {
+            "type": "button",
+            "label": "修改",
+            "level": "link",
+            "actionType": "dialog",
+            "dialog": {
+              "title": "修改目录权限",
+              "size": "md",
+              "url": "/document-management/acl-entry-edit-form"
+            }
+          },
+          {
+            "type": "button",
+            "label": "撤销",
+            "level": "link",
+            "className": "text-danger",
+            "confirmText": "确定要撤销该权限吗？",
+            "actionType": "ajax",
+            "api": {
+              "method": "delete",
+              "url": "/api/document-libraries/${libraryId}/directories/${directoryId}/acl-entries?principal=${principal}&principalType=${principalType}",
+              "messages": {
+                "success": "权限撤销成功"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,853 @@
+{
+  "name": "develop",
+  "displayName": "%extension.displayName%",
+  "version": "0.3.1",
+  "private": true,
+  "type": "commonjs",
+  "icon": "images/icon.png",
+  "publisher": "TideStackForge",
+  "author": "TideStack",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCustomEditor:tidestack.metadataEditor.authority",
+    "onCustomEditor:tidestack.metadataEditor.menu",
+    "onCustomEditor:tidestack.metadataEditor.devMenu",
+    "onCustomEditor:tidestack.metadataEditor.uiModel",
+    "onCustomEditor:tidestack.metadataEditor.uiSchema",
+    "onCustomEditor:tidestack.metadataEditor.business",
+    "onCustomEditor:tidestack.metadataEditor.logicflow",
+    "onCustomEditor:tidestack.metadataEditor.approvalWorkflow",
+    "onCustomEditor:tidestack.metadataEditor.fieldType",
+    "onCustomEditor:tidestack.metadataEditor.flowNode",
+    "onCustomEditor:tidestack.metadataEditor.widget",
+    "onCustomEditor:tidestack.metadataEditor.microWeb",
+    "onCustomEditor:tidestack.metadataEditor.rpc",
+    "onCustomEditor:tidestack.metadataEditor.rpcAuth",
+    "onCustomEditor:tidestack.metadataEditor.webapi",
+    "onCustomEditor:tidestack.metadataEditor.notification",
+    "onCustomEditor:tidestack.metadataEditor.businessLog",
+    "onCustomEditor:tidestack.metadataEditor.dataInit",
+    "onCustomEditor:tidestack.metadataEditor.mq",
+    "onCustomEditor:tidestack.metadataEditor.schedule",
+    "onCustomEditor:tidestack.metadataEditor.i18n",
+    "onCustomEditor:tidestack.metadataEditor.dataDict",
+    "onCustomEditor:tidestack.metadataEditor.position",
+    "onCustomEditor:tidestack.metadataEditor.errorCode",
+    "onCustomEditor:tidestack.metadataEditor.appMetadata",
+    "onCustomEditor:tidestack.metadataEditor.modulesDiff",
+    "onCustomEditor:tidestack.metadataEditor.appModule",
+    "onCustomEditor:tidestack.metadataEditor.configuration",
+    "onCustomEditor:tidestack.metadataEditor.configurationGroup",
+    "onCustomEditor:tidestack.metadataEditor.configurationItem",
+    "onCustomEditor:tidestack.metadataEditor.configurationGroupItem",
+    "onCommand:tidestack.metadata.newAuthorityFile",
+    "onCommand:tidestack.metadata.newMenuFile",
+    "onCommand:tidestack.metadata.newDevMenuFile",
+    "onCommand:tidestack.metadata.newUiModelFile",
+    "onCommand:tidestack.metadata.newUiSchemaFile",
+    "onCommand:tidestack.metadata.newBusinessFile",
+    "onCommand:tidestack.metadata.newLogicflowFile",
+    "onCommand:tidestack.metadata.newApprovalWorkflowFile",
+    "onCommand:tidestack.metadata.newApprovalFormFile",
+    "onCommand:tidestack.metadata.newFieldTypeFile",
+    "onCommand:tidestack.metadata.newFlowNodeFile",
+    "onCommand:tidestack.metadata.newWidgetFile",
+    "onCommand:tidestack.metadata.newMicroWebFile",
+    "onCommand:tidestack.metadata.newRpcFile",
+    "onCommand:tidestack.metadata.newRpcAuthFile",
+    "onCommand:tidestack.metadata.newWebapiFile",
+    "onCommand:tidestack.metadata.newNotificationFile",
+    "onCommand:tidestack.metadata.newBusinessLogFile",
+    "onCommand:tidestack.metadata.newDataInitFile",
+    "onCommand:tidestack.metadata.newMqFile",
+    "onCommand:tidestack.metadata.newScheduleFile",
+    "onCommand:tidestack.metadata.newI18nFile",
+    "onCommand:tidestack.metadata.newDataDictFile",
+    "onCommand:tidestack.metadata.newPositionFile",
+    "onCommand:tidestack.metadata.newErrorCodeFile",
+    "onCommand:tidestack.metadata.newAppMetadataFile",
+    "onCommand:tidestack.metadata.newModulesDiffFile",
+    "onCommand:tidestack.metadata.newAppModuleFile",
+    "onCommand:tidestack.metadata.newConfigurationFile",
+    "onCommand:tidestack.metadata.newConfigurationGroupFile",
+    "onCommand:tidestack.metadata.newConfigurationItemFile",
+    "onCommand:tidestack.metadata.newConfigurationGroupItemFile",
+    "onCommand:tidestack.develop.configure",
+    "onCommand:tidestack.develop.openConfig",
+    "onCommand:tidestack.develop.importConfig",
+    "onCommand:tidestack.metadata.newFile",
+    "onCommand:tidestack.metadata.openSource",
+    "onCommand:tidestack.metadata.openVisual"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "tidestack.develop.configure",
+        "title": "%settings.configureProjectAction%",
+        "category": "%settings.displayName%"
+      },
+      {
+        "command": "tidestack.develop.openConfig",
+        "title": "%settings.openConfigFilesAction%",
+        "category": "%settings.displayName%"
+      },
+      {
+        "command": "tidestack.develop.importConfig",
+        "title": "%settings.importFromFile%",
+        "category": "%settings.displayName%"
+      },
+      {
+        "command": "tidestack.metadata.newFile",
+        "title": "%command.newMetadataFile%"
+      },
+      {
+        "command": "tidestack.metadata.newAuthorityFile",
+        "title": "%metadata.type.authority.command%"
+      },
+      {
+        "command": "tidestack.metadata.newMenuFile",
+        "title": "%metadata.type.menu.command%"
+      },
+      {
+        "command": "tidestack.metadata.newDevMenuFile",
+        "title": "%metadata.type.dev-menu.command%"
+      },
+      {
+        "command": "tidestack.metadata.newUiModelFile",
+        "title": "%metadata.type.ui-model.command%"
+      },
+      {
+        "command": "tidestack.metadata.newUiSchemaFile",
+        "title": "%metadata.type.ui-schema.command%"
+      },
+      {
+        "command": "tidestack.metadata.newBusinessFile",
+        "title": "%metadata.type.business.command%"
+      },
+      {
+        "command": "tidestack.metadata.newLogicflowFile",
+        "title": "%metadata.type.logicflow.command%"
+      },
+      {
+        "command": "tidestack.metadata.newApprovalWorkflowFile",
+        "title": "%metadata.type.approval-workflow.command%"
+      },
+      {
+        "command": "tidestack.metadata.newApprovalFormFile",
+        "title": "%metadata.type.approval-form.command%"
+      },
+      {
+        "command": "tidestack.metadata.newFieldTypeFile",
+        "title": "%metadata.type.field-type.command%"
+      },
+      {
+        "command": "tidestack.metadata.newFlowNodeFile",
+        "title": "%metadata.type.flow-node.command%"
+      },
+      {
+        "command": "tidestack.metadata.newWidgetFile",
+        "title": "%metadata.type.widget.command%"
+      },
+      {
+        "command": "tidestack.metadata.newMicroWebFile",
+        "title": "%metadata.type.micro-web.command%"
+      },
+      {
+        "command": "tidestack.metadata.newRpcFile",
+        "title": "%metadata.type.rpc.command%"
+      },
+      {
+        "command": "tidestack.metadata.newRpcAuthFile",
+        "title": "%metadata.type.rpc-auth.command%"
+      },
+      {
+        "command": "tidestack.metadata.newWebapiFile",
+        "title": "%metadata.type.webapi.command%"
+      },
+      {
+        "command": "tidestack.metadata.newNotificationFile",
+        "title": "%metadata.type.notification.command%"
+      },
+      {
+        "command": "tidestack.metadata.newBusinessLogFile",
+        "title": "%metadata.type.business-log.command%"
+      },
+      {
+        "command": "tidestack.metadata.newDataInitFile",
+        "title": "%metadata.type.data-init.command%"
+      },
+      {
+        "command": "tidestack.metadata.newMqFile",
+        "title": "%metadata.type.mq.command%"
+      },
+      {
+        "command": "tidestack.metadata.newScheduleFile",
+        "title": "%metadata.type.schedule.command%"
+      },
+      {
+        "command": "tidestack.metadata.newI18nFile",
+        "title": "%metadata.type.i18n.command%"
+      },
+      {
+        "command": "tidestack.metadata.newDataDictFile",
+        "title": "%metadata.type.data-dict.command%"
+      },
+      {
+        "command": "tidestack.metadata.newPositionFile",
+        "title": "%metadata.type.position.command%"
+      },
+      {
+        "command": "tidestack.metadata.newErrorCodeFile",
+        "title": "%metadata.type.error-code.command%"
+      },
+      {
+        "command": "tidestack.metadata.newAppMetadataFile",
+        "title": "%metadata.type.app-metadata.command%"
+      },
+      {
+        "command": "tidestack.metadata.newModulesDiffFile",
+        "title": "%metadata.type.modules-diff.command%"
+      },
+      {
+        "command": "tidestack.metadata.newAppModuleFile",
+        "title": "%metadata.type.app-module.command%"
+      },
+      {
+        "command": "tidestack.metadata.newConfigurationFile",
+        "title": "%metadata.type.configuration.command%"
+      },
+      {
+        "command": "tidestack.metadata.newConfigurationGroupFile",
+        "title": "%metadata.type.configuration-group.command%"
+      },
+      {
+        "command": "tidestack.metadata.newConfigurationItemFile",
+        "title": "%metadata.type.configuration-item.command%"
+      },
+      {
+        "command": "tidestack.metadata.newConfigurationGroupItemFile",
+        "title": "%metadata.type.configuration-group-item.command%"
+      },
+      {
+        "command": "tidestack.metadata.openSource",
+        "title": "%command.openSourceEditor%"
+      },
+      {
+        "command": "tidestack.metadata.openVisual",
+        "title": "%command.openVisualEditor%"
+      }
+    ],
+    "submenus": [
+      {
+        "id": "tidestack.develop.projectSubmenu",
+        "label": "%extension.displayName%"
+      },
+      {
+        "id": "tidestack.metadata.newFileSubmenu",
+        "label": "%metadata.new.submenu%"
+      }
+    ],
+    "menus": {
+      "file/newFile": [
+        {
+          "submenu": "tidestack.metadata.newFileSubmenu",
+          "group": "tidestack@1"
+        }
+      ],
+      "tidestack.develop.projectSubmenu": [
+        {
+          "command": "tidestack.develop.configure",
+          "group": "config@1"
+        },
+        {
+          "command": "tidestack.develop.openConfig",
+          "group": "config@2"
+        },
+        {
+          "command": "tidestack.develop.importConfig",
+          "group": "config@3"
+        }
+      ],
+      "tidestack.metadata.newFileSubmenu": [
+        {
+          "command": "tidestack.metadata.newAuthorityFile",
+          "group": "types@1"
+        },
+        {
+          "command": "tidestack.metadata.newMenuFile",
+          "group": "types@2"
+        },
+        {
+          "command": "tidestack.metadata.newDevMenuFile",
+          "group": "types@3"
+        },
+        {
+          "command": "tidestack.metadata.newUiModelFile",
+          "group": "types@4"
+        },
+        {
+          "command": "tidestack.metadata.newUiSchemaFile",
+          "group": "types@5"
+        },
+        {
+          "command": "tidestack.metadata.newBusinessFile",
+          "group": "types@6"
+        },
+        {
+          "command": "tidestack.metadata.newLogicflowFile",
+          "group": "types@7"
+        },
+        {
+          "command": "tidestack.metadata.newApprovalWorkflowFile",
+          "group": "types@8"
+        },
+        {
+          "command": "tidestack.metadata.newApprovalFormFile",
+          "group": "types@9"
+        },
+        {
+          "command": "tidestack.metadata.newFieldTypeFile",
+          "group": "types@10"
+        },
+        {
+          "command": "tidestack.metadata.newFlowNodeFile",
+          "group": "types@11"
+        },
+        {
+          "command": "tidestack.metadata.newWidgetFile",
+          "group": "types@12"
+        },
+        {
+          "command": "tidestack.metadata.newMicroWebFile",
+          "group": "types@13"
+        },
+        {
+          "command": "tidestack.metadata.newRpcFile",
+          "group": "types@14"
+        },
+        {
+          "command": "tidestack.metadata.newRpcAuthFile",
+          "group": "types@15"
+        },
+        {
+          "command": "tidestack.metadata.newWebapiFile",
+          "group": "types@16"
+        },
+        {
+          "command": "tidestack.metadata.newNotificationFile",
+          "group": "types@17"
+        },
+        {
+          "command": "tidestack.metadata.newBusinessLogFile",
+          "group": "types@18"
+        },
+        {
+          "command": "tidestack.metadata.newDataInitFile",
+          "group": "types@19"
+        },
+        {
+          "command": "tidestack.metadata.newMqFile",
+          "group": "types@20"
+        },
+        {
+          "command": "tidestack.metadata.newScheduleFile",
+          "group": "types@21"
+        },
+        {
+          "command": "tidestack.metadata.newI18nFile",
+          "group": "types@22"
+        },
+        {
+          "command": "tidestack.metadata.newDataDictFile",
+          "group": "types@23"
+        },
+        {
+          "command": "tidestack.metadata.newPositionFile",
+          "group": "types@24"
+        },
+        {
+          "command": "tidestack.metadata.newErrorCodeFile",
+          "group": "types@25"
+        },
+        {
+          "command": "tidestack.metadata.newAppMetadataFile",
+          "group": "types@26"
+        },
+        {
+          "command": "tidestack.metadata.newModulesDiffFile",
+          "group": "types@27"
+        },
+        {
+          "command": "tidestack.metadata.newAppModuleFile",
+          "group": "types@28"
+        },
+        {
+          "command": "tidestack.metadata.newConfigurationFile",
+          "group": "types@29"
+        },
+        {
+          "command": "tidestack.metadata.newConfigurationGroupFile",
+          "group": "types@30"
+        },
+        {
+          "command": "tidestack.metadata.newConfigurationItemFile",
+          "group": "types@31"
+        },
+        {
+          "command": "tidestack.metadata.newConfigurationGroupItemFile",
+          "group": "types@32"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "tidestack.metadata.openSource",
+          "when": "activeCustomEditorId == tidestack.metadataEditor.authority || activeCustomEditorId == tidestack.metadataEditor.menu || activeCustomEditorId == tidestack.metadataEditor.devMenu || activeCustomEditorId == tidestack.metadataEditor.uiModel || activeCustomEditorId == tidestack.metadataEditor.uiSchema || activeCustomEditorId == tidestack.metadataEditor.business || activeCustomEditorId == tidestack.metadataEditor.logicflow || activeCustomEditorId == tidestack.metadataEditor.approvalWorkflow || activeCustomEditorId == tidestack.metadataEditor.fieldType || activeCustomEditorId == tidestack.metadataEditor.flowNode || activeCustomEditorId == tidestack.metadataEditor.widget || activeCustomEditorId == tidestack.metadataEditor.microWeb || activeCustomEditorId == tidestack.metadataEditor.rpc || activeCustomEditorId == tidestack.metadataEditor.rpcAuth || activeCustomEditorId == tidestack.metadataEditor.webapi || activeCustomEditorId == tidestack.metadataEditor.notification || activeCustomEditorId == tidestack.metadataEditor.businessLog || activeCustomEditorId == tidestack.metadataEditor.dataInit || activeCustomEditorId == tidestack.metadataEditor.mq || activeCustomEditorId == tidestack.metadataEditor.schedule || activeCustomEditorId == tidestack.metadataEditor.i18n || activeCustomEditorId == tidestack.metadataEditor.dataDict || activeCustomEditorId == tidestack.metadataEditor.position || activeCustomEditorId == tidestack.metadataEditor.errorCode || activeCustomEditorId == tidestack.metadataEditor.appMetadata || activeCustomEditorId == tidestack.metadataEditor.modulesDiff || activeCustomEditorId == tidestack.metadataEditor.appModule || activeCustomEditorId == tidestack.metadataEditor.configuration || activeCustomEditorId == tidestack.metadataEditor.configurationGroup || activeCustomEditorId == tidestack.metadataEditor.configurationItem || activeCustomEditorId == tidestack.metadataEditor.configurationGroupItem",
+          "group": "navigation@10"
+        },
+        {
+          "command": "tidestack.metadata.openVisual",
+          "when": "editorLangId == json",
+          "group": "navigation@11"
+        }
+      ],
+      "explorer/context": [
+        {
+          "submenu": "tidestack.develop.projectSubmenu",
+          "when": "explorerResourceIsFolder",
+          "group": "navigation@18"
+        },
+        {
+          "submenu": "tidestack.metadata.newFileSubmenu",
+          "when": "explorerResourceIsFolder",
+          "group": "navigation@19"
+        },
+        {
+          "command": "tidestack.metadata.openVisual",
+          "when": "resourceExtname == .json",
+          "group": "navigation@20"
+        }
+      ]
+    },
+    "customEditors": [
+      {
+        "viewType": "tidestack.metadataEditor.authority",
+        "displayName": "%customEditor.authority%",
+        "selector": [
+          {
+            "filenamePattern": "*.authority.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/authority/**/*.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.menu",
+        "displayName": "%customEditor.menu%",
+        "selector": [
+          {
+            "filenamePattern": "*.menu.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/menu-model/**/*.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.devMenu",
+        "displayName": "%customEditor.devMenu%",
+        "selector": [
+          {
+            "filenamePattern": "*.dev-menu.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/dev-menu-model/**/*.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.uiModel",
+        "displayName": "%customEditor.uiModel%",
+        "selector": [
+          {
+            "filenamePattern": "*.ui-model.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/ui-model/**/*.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.uiSchema",
+        "displayName": "%customEditor.uiSchema%",
+        "selector": [
+          {
+            "filenamePattern": "*.ui-schema.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/ui-schema/**/*.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.business",
+        "displayName": "%customEditor.business%",
+        "selector": [
+          {
+            "filenamePattern": "*.business.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.logicflow",
+        "displayName": "%customEditor.logicflow%",
+        "selector": [
+          {
+            "filenamePattern": "*.logicflow.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.approvalWorkflow",
+        "displayName": "%customEditor.approvalWorkflow%",
+        "selector": [
+          {
+            "filenamePattern": "*.workflow.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.fieldType",
+        "displayName": "%customEditor.fieldType%",
+        "selector": [
+          {
+            "filenamePattern": "*.field-type.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.flowNode",
+        "displayName": "%customEditor.flowNode%",
+        "selector": [
+          {
+            "filenamePattern": "*.flow-node.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.widget",
+        "displayName": "%customEditor.widget%",
+        "selector": [
+          {
+            "filenamePattern": "*.widget.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.microWeb",
+        "displayName": "%customEditor.microWeb%",
+        "selector": [
+          {
+            "filenamePattern": "*.micro-web.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.rpc",
+        "displayName": "%customEditor.rpc%",
+        "selector": [
+          {
+            "filenamePattern": "*.rpc.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/rpc-model/**/*.rpc.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.rpcAuth",
+        "displayName": "%customEditor.rpcAuth%",
+        "selector": [
+          {
+            "filenamePattern": "*.rpc.auth.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/rpc-model/**/*.rpc.auth.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.webapi",
+        "displayName": "%customEditor.webapi%",
+        "selector": [
+          {
+            "filenamePattern": "*.webapi.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.notification",
+        "displayName": "%customEditor.notification%",
+        "selector": [
+          {
+            "filenamePattern": "*.notification.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.businessLog",
+        "displayName": "%customEditor.businessLog%",
+        "selector": [
+          {
+            "filenamePattern": "*.business-log.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.dataInit",
+        "displayName": "%customEditor.dataInit%",
+        "selector": [
+          {
+            "filenamePattern": "*.data-init.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.mq",
+        "displayName": "%customEditor.mq%",
+        "selector": [
+          {
+            "filenamePattern": "*.mq.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.schedule",
+        "displayName": "%customEditor.schedule%",
+        "selector": [
+          {
+            "filenamePattern": "*.schedule.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.i18n",
+        "displayName": "%customEditor.i18n%",
+        "selector": [
+          {
+            "filenamePattern": "*.i18n.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.dataDict",
+        "displayName": "%customEditor.dataDict%",
+        "selector": [
+          {
+            "filenamePattern": "*.dict.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.position",
+        "displayName": "%customEditor.position%",
+        "selector": [
+          {
+            "filenamePattern": "*.position.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.errorCode",
+        "displayName": "%customEditor.errorCode%",
+        "selector": [
+          {
+            "filenamePattern": "error-codes.error.json"
+          },
+          {
+            "filenamePattern": "**/src/main/metadata/error-codes.error.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/metadata/error-codes.error.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.appMetadata",
+        "displayName": "%customEditor.appMetadata%",
+        "selector": [
+          {
+            "filenamePattern": "app.metadata.json"
+          },
+          {
+            "filenamePattern": "**/src/main/metadata/app.metadata.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/metadata/app.metadata.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/app.metadata.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.modulesDiff",
+        "displayName": "%customEditor.modulesDiff%",
+        "selector": [
+          {
+            "filenamePattern": "modules.diff.json"
+          },
+          {
+            "filenamePattern": "**/src/main/metadata/modules.diff.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/metadata/modules.diff.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/modules.diff.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.appModule",
+        "displayName": "%customEditor.appModule%",
+        "selector": [
+          {
+            "filenamePattern": "app-modules.json"
+          },
+          {
+            "filenamePattern": "**/src/main/metadata/app-modules.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/metadata/app-modules.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/app-modules.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.configuration",
+        "displayName": "%customEditor.configuration%",
+        "selector": [
+          {
+            "filenamePattern": "configurations.json"
+          },
+          {
+            "filenamePattern": "**/src/main/metadata/configurations.json"
+          },
+          {
+            "filenamePattern": "**/src/main/metadata/configuration.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/metadata/configurations.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/metadata/configuration.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/configurations.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/configuration.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.configurationGroup",
+        "displayName": "%customEditor.configurationGroup%",
+        "selector": [
+          {
+            "filenamePattern": "configuration-groups.json"
+          },
+          {
+            "filenamePattern": "**/src/main/metadata/configuration-groups.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/metadata/configuration-groups.json"
+          },
+          {
+            "filenamePattern": "**/resources/META-INF/ouroboros/configuration-groups.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.configurationItem",
+        "displayName": "%customEditor.configurationItem%",
+        "selector": [
+          {
+            "filenamePattern": "*.config.json"
+          }
+        ],
+        "priority": "default"
+      },
+      {
+        "viewType": "tidestack.metadataEditor.configurationGroupItem",
+        "displayName": "%customEditor.configurationGroupItem%",
+        "selector": [
+          {
+            "filenamePattern": "*.config-group.json"
+          }
+        ],
+        "priority": "default"
+      }
+    ]
+  },
+  "scripts": {
+    "build:shared": "cd ../common/metadata-editor-runtime && npm run build",
+    "sync:i18n": "node scripts/sync-i18n-assets.mjs",
+    "sync:editor-registrations": "node scripts/sync-editor-registrations.mjs",
+    "vendor:shared": "node scripts/vendor-shared-package.mjs",
+    "copy:webview-assets": "node scripts/copy-webview-assets.mjs",
+    "verify:webview-assets": "node scripts/verify-webview-assets.mjs",
+    "verify:vsix-assets": "node scripts/verify-vsix-assets.mjs",
+    "test": "node --test tests/package.test.mjs",
+    "compile": "npm run build:shared && npm run sync:i18n && npm run sync:editor-registrations && tsc -p . && npm run vendor:shared && npm run copy:webview-assets && npm run verify:webview-assets",
+    "package:vsix": "npm run compile && npm exec --yes @vscode/vsce -- package --no-dependencies --allow-missing-repository --skip-license && npm run verify:vsix-assets",
+    "test:native": "node tests/native/run.mjs"
+  },
+  "dependencies": {
+    "ouroboros-metadata-editor": "file:../common/metadata-editor-runtime"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "@types/vscode": "^1.90.0",
+    "@vscode/test-electron": "3.1.0",
+    "typescript": "^5.8.3"
+  }
+}

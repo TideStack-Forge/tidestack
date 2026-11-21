@@ -1,0 +1,47 @@
+{
+  "fullName": "systemSetting.organizationManagement",
+  "title": "组织架构",
+  "apis": [
+    "GET /api/organization/tree",
+    "GET /api/organization/companies",
+    "POST /api/organization/companies",
+    "GET /api/organization/companies/{id}",
+    "PUT /api/organization/companies/{id}",
+    "DELETE /api/organization/companies/{id}",
+    "GET /api/organization/departments",
+    "POST /api/organization/departments",
+    "GET /api/organization/departments/{id}",
+    "PUT /api/organization/departments/{id}",
+    "DELETE /api/organization/departments/{id}",
+    "GET /api/organization/positions",
+    "POST /api/organization/positions",
+    "GET /api/organization/positions/{id}",
+    "PUT /api/organization/positions/{id}",
+    "DELETE /api/organization/positions/{id}",
+    "GET /api/organization/employees",
+    "POST /api/organization/employees",
+    "GET /api/organization/employees/{id}",
+    "PUT /api/organization/employees/{id}",
+    "DELETE /api/organization/employees/{id}",
+    "PUT /api/organization/employees/{id}/user",
+    "DELETE /api/organization/employees/{id}/user",
+    "PUT /api/organization/employees/{id}/position",
+    "POST /api/organization/employees/{employeeId}/assign-position",
+    "GET /api/organization/appointments",
+    "POST /api/organization/appointments",
+    "PUT /api/organization/appointments/{id}/end",
+    "DELETE /api/organization/appointments/{id}",
+    "GET /api/organization/nodes/{id}",
+    "GET /api/organization/nodes/{id}/children",
+    "GET /api/organization/nodes/{id}/path",
+    "GET /api/organization/employees/{id}/org-chain",
+    "GET /api/organization/employees/{id}/appointments"
+  ],
+  "uiViews": [
+    "/system-setting/organization-management"
+  ],
+  "menuItems": [
+    "systemSetting.organizationAndAccess",
+    "systemSetting.organizationManagement"
+  ]
+}

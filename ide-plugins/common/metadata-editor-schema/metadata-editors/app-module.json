@@ -1,0 +1,16 @@
+{
+  "editorId": "app-module",
+  "editorName": "TideStack App Module Metadata Editor",
+  "editorNameKey": "customEditor.appModule",
+  "metadataType": "app-module",
+  "schemaName": "app-module",
+  "viewType": "tidestack.metadataEditor.appModule",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.appModule",
+  "fileMatchPatterns": [
+    "app-modules.json",
+    "**/src/main/metadata/app-modules.json",
+    "**/resources/META-INF/ouroboros/metadata/app-modules.json",
+    "**/resources/META-INF/ouroboros/app-modules.json"
+  ],
+  "priority": "default"
+}

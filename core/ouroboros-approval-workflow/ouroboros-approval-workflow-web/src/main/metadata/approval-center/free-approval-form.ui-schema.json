@@ -1,0 +1,81 @@
+{
+  "name": "/approval-center/free-approval-form",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "title": false,
+    "id": "free-approval-form",
+    "mode": "normal",
+    "initApi": {
+      "method": "GET",
+      "url": "/api/approval-workflow/task/${id}/free-approval-targets"
+    },
+    "body": [
+      {
+        "name": "freeApproval.consultUserIds",
+        "type": "select",
+        "label": "协商用户",
+        "required": true,
+        "multiple": true,
+        "clearable": true,
+        "source": "${items|pick:data:label~value}"
+      },
+      {
+        "name": "comment",
+        "type": "textarea",
+        "clearable": true,
+        "showCounter": true,
+        "required": true,
+        "label": "填写自由审批说明",
+        "placeholder": "自由审批请求时，请填写说明"
+      }
+    ],
+    "actions": [
+      {
+        "type": "action",
+        "actionType": "cancel",
+        "label": "取消"
+      },
+      {
+        "type": "action",
+        "actionType": "confirm",
+        "level": "primary",
+        "label": "确认",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "validate",
+                "componentId": "free-approval-form"
+              },
+              {
+                "actionType": "ajax",
+                "api": {
+                  "method": "POST",
+                  "url": "/api/approval-workflow/task/${id}",
+                  "data": {
+                    "&": "$$",
+                    "action": "freeApprove",
+                    "formData": "$formData"
+                  }
+                },
+                "expression": "!validateResult.error",
+                "outputVar": "submitResponse"
+              },
+              {
+                "actionType": "reload",
+                "componentId": "approval-center",
+                "expression": "!submitResponse.error"
+              },
+              {
+                "actionType": "closeDrawer",
+                "componentId": "drawer-detail",
+                "expression": "!submitResponse.error"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

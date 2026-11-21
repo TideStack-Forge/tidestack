@@ -1,0 +1,2 @@
+com.ouroboros.app.scriptcontext.SpringBeanFactoryScriptContextContributor$SingletonHolder
+com.ouroboros.app.scriptcontext.ExceptionsScriptContextContributor

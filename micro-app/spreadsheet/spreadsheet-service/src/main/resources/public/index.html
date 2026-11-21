@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/luckysheet@2.1.13/dist/plugins/css/pluginsCss.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/luckysheet@2.1.13/dist/plugins/plugins.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/luckysheet@2.1.13/dist/css/luckysheet.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/luckysheet@2.1.13/dist/assets/iconfont/iconfont.css"
+    />
+    <script src="https://unpkg.com/luckysheet@2.1.13/dist/plugins/js/plugin.js"></script>
+    <script src="https://unpkg.com/luckysheet@2.1.13/dist/luckysheet.umd.js"></script>
+
+    <title>电子表格</title>
+    <style>
+      #luckysheet-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #info-bar {
+        display: none;
+      }
+      #luckysheet {
+        width: 100%;
+        height: 100%;
+      }
+      .show-info #luckysheet {
+        height: calc(100% - 50px);
+      }
+      .show-info #info-bar {
+        display: block;
+        height: 50px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .show-info #info-bar #spreadsheet-name {
+        font-size: 16px;
+        font-weight: bold;
+      }
+      .show-info #info-bar #spreadsheet-meta {
+        font-size: 12px;
+        color: #999;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        padding-right: 5px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="luckysheet-container">
+      <div id="info-bar">
+        <div></div>
+        <div id="spreadsheet-name"></div>
+        <div id="spreadsheet-meta">
+          <div class="updated-by"></div>
+          <div class="updated-at"></div>
+        </div>
+      </div>
+      <div id="luckysheet"></div>
+    </div>
+    <script>
+      $(function () {
+        var url = new URL(window.location.href)
+        var lang = url.searchParams.get('lang') || 'zh'
+        var token = url.searchParams.get('token')
+        var showInfo = url.searchParams.get('infobar') == '1'
+        var pathPrefix = url.pathname.split('/')[1]
+        var urlPrefix = url.host + (pathPrefix ? '/' + pathPrefix : '')
+
+        function initSpreadsheet(token, name, readonly) {
+          var options = (options = {
+            container: 'luckysheet',
+            lang: lang,
+            allowUpdate: !readonly,
+            showinfobar: false,
+            title: name,
+            updateUrl: 'ws://' + urlPrefix + '/websocket?token=' + token,
+            loadUrl: '//' + urlPrefix + '/api/spreadsheet/load?token=' + token,
+            loadSheetUrl:
+              '//' + urlPrefix + '/api/spreadsheet/loadsheets?token=' + token,
+          })
+          luckysheet.create(options)
+        }
+        function loadSpreadsheet(token) {
+          $.ajax({
+            url: '//' + urlPrefix + '/api/spreadsheet/info?token=' + token,
+            type: 'GET',
+            dataType: 'json',
+          })
+            .then(function (data) {
+              if (data.status != 0) return
+              var fileName = (data.data && data.data.name) || '未命名'
+              var updatedAt = (data.data && data.data.updatedAt) || ''
+              var updatedBy = (data.data && data.data.updatedBy) || '无'
+              var readonly = (data.data && data.data.readonly) || false
+              initSpreadsheet(token, fileName, readonly)
+              document.title = fileName + ' - 电子表格'
+
+              $('#spreadsheet-name').html(fileName)
+              $('#spreadsheet-meta').children().get(0).innerHTML =
+                '最近修改：' + updatedBy
+              $('#spreadsheet-meta').children().get(1).innerHTML =
+                updatedAt.replace('T', ' ')
+            })
+            .fail(function (data, status) {
+              alert('该地址已失效，打开表格失败')
+              window.close()
+            })
+        }
+        loadSpreadsheet(token)
+        if (showInfo) {
+          $('#luckysheet-container').addClass('show-info')
+        }
+      })
+    </script>
+  </body>
+</html>

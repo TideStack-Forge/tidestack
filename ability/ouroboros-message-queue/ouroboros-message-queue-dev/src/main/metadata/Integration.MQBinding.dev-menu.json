@@ -1,0 +1,10 @@
+{
+  "fullName": "Integration.MQBinding",
+  "url": "/dev/{appName}/mq-binding",
+  "icon": "fas fa-stream",
+  "title": "消息队列",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 20
+}

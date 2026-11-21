@@ -1,0 +1,93 @@
+[
+  {
+    "path": "app",
+    "title": "应用设置",
+    "icon": "desktop",
+    "order": 30,
+    "description": "应用运行时展示与主题配置"
+  },
+  {
+    "path": "ui",
+    "title": "界面设置",
+    "icon": "desktop",
+    "order": 30,
+    "description": "界面与标签页展示配置"
+  },
+  {
+    "path": "ui.tabs",
+    "title": "标签页设置",
+    "icon": "window-maximize",
+    "order": 30,
+    "description": "标签页展示与图标配置"
+  },
+  {
+    "path": "ui.dialog",
+    "title": "弹窗设置",
+    "icon": "window-restore",
+    "order": 35,
+    "description": "对话框展示与交互配置"
+  },
+  {
+    "path": "ui.dialog.resize",
+    "title": "弹窗尺寸调整",
+    "icon": "arrows-alt",
+    "order": 10,
+    "description": "对话框预设尺寸切换与拖拽调尺寸配置"
+  },
+  {
+    "path": "ui.crud",
+    "title": "CRUD 设置",
+    "icon": "table",
+    "order": 40,
+    "description": "CRUD 列表与筛选区展示配置"
+  },
+  {
+    "path": "ui.crud.filter",
+    "title": "筛选区设置",
+    "icon": "filter",
+    "order": 10,
+    "description": "CRUD 筛选区布局与交互配置"
+  },
+  {
+    "path": "ui.crud.filter.smartLayout",
+    "title": "筛选区智能布局",
+    "icon": "th-large",
+    "order": 10,
+    "description": "CRUD 筛选项自动排版、标签与每行字段数配置"
+  },
+  {
+    "path": "ui.form",
+    "title": "表单设置",
+    "icon": "wpforms",
+    "order": 50,
+    "description": "普通表单布局与交互配置"
+  },
+  {
+    "path": "ui.form.smartLayout",
+    "title": "表单智能布局",
+    "icon": "th-large",
+    "order": 10,
+    "description": "普通表单自动排版、标签与列数配置"
+  },
+  {
+    "path": "ui.sidebar",
+    "title": "侧边栏设置",
+    "icon": "columns",
+    "order": 20,
+    "description": "主壳侧边栏默认宽度与拖拽配置"
+  },
+  {
+    "path": "app.branding",
+    "title": "品牌信息",
+    "icon": "id-card",
+    "order": 10,
+    "description": "应用名称与品牌标识"
+  },
+  {
+    "path": "app.theme",
+    "title": "主题设置",
+    "icon": "paint-brush",
+    "order": 20,
+    "description": "应用默认主题与锁定策略"
+  }
+]

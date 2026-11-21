@@ -1,0 +1,76 @@
+{
+  "name": "/approval-center/start/init-form",
+  "schema": {
+    "type": "page",
+    "body": [
+      {
+        "type": "service",
+        "api": {
+          "method": "get",
+          "url": "/api/approval-workflow/instance/${id}/init-form",
+          "adaptor": "return {...payload, data: {startFormSchema: payload.data, startFormAvailable: payload.data?.formAvailable === true}};"
+        },
+        "body": [
+          {
+            "type": "amis-schema",
+            "visibleOn": "${startFormAvailable === false}",
+            "source": "${startFormSchema}"
+          },
+          {
+            "title": "",
+            "type": "form",
+            "id": "start-form",
+            "mode": "normal",
+            "api": {
+              "method": "POST",
+              "url": "/api/approval-workflow/instance/${id}/start"
+            },
+            "messages": {
+              "success": "提交表单成功，即将开始审批流程",
+              "failed": "提交表单失败，请重试"
+            },
+            "autoFocus": false,
+            "body": [
+              {
+                "type": "amis-schema",
+                "source": "${startFormSchema}"
+              }
+            ],
+            "actions": [
+              {
+                "type": "reset",
+                "label": "重置"
+              },
+              {
+                "type": "button",
+                "label": "提交审批",
+                "level": "primary",
+                "onEvent": {
+                  "click": {
+                    "actions": [
+                      {
+                        "actionType": "validate",
+                        "componentName": "start-form"
+                      },
+                      {
+                        "actionType": "submit",
+                        "componentName": "start-form",
+                        "expression": "!validateResult.error",
+                        "outputVar": "submitResponse"
+                      },
+                      {
+                        "actionType": "closeTab",
+                        "expression": "!submitResponse.error"
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "visibleOn": "${startFormAvailable === true}"
+          }
+        ]
+      }
+    ]
+  }
+}

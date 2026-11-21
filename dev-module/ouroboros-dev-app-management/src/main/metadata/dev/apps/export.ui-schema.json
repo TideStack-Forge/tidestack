@@ -1,0 +1,50 @@
+{
+  "name": "/dev/apps/export",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "body": [
+      {
+        "type": "static",
+        "name": "appName",
+        "label": "应用名称",
+        "value": "${appName}"
+      },
+      {
+        "type": "switch",
+        "name": "includeUncommitted",
+        "label": "包含未提交的更改",
+        "value": true,
+        "description": "是否包含尚未提交的文件更改"
+      },
+      {
+        "type": "switch",
+        "name": "includeGitRepo",
+        "label": "包含Git仓库",
+        "value": false,
+        "description": "是否包含版本控制信息"
+      }
+    ],
+    "actions": [
+      {
+        "type": "button",
+        "label": "关闭",
+        "actionType": "cancel"
+      },
+      {
+        "type": "button",
+        "label": "下载",
+        "level": "primary",
+        "actionType": "download",
+        "api": {
+          "method": "get",
+          "url": "/api/app/${appName}/export",
+          "data": {
+            "includeUncommitted": "${includeUncommitted}",
+            "includeGitRepo": "${includeGitRepo}"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "fullName": "OperationsMonitoring.ErrorCode",
+  "url": "/dev/{appName}/error-code",
+  "icon": "fa fa-bug",
+  "title": "错误码",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 20
+}

@@ -1,0 +1,31 @@
+spring:
+  redis:
+    host: 58.57.117.172
+    port: 8011
+    password: WHxinpai@0631
+  mvc:
+    static-path-pattern: /**
+
+db:
+  mysql:
+    druid:
+      url: jdbc:mysql://58.57.117.182:3308/luckysheetdb?useSSL=false
+      driverClassName: com.mysql.cj.jdbc.Driver
+      username: luckysheet
+      password: luckysheet@123
+
+#spring:
+#  redis:
+#    host: 127.0.0.1
+#    port: 9998
+#    password: 123456
+#  mvc:
+#    static-path-pattern: /**
+#
+#db:
+#  mysql:
+#    druid:
+#      url: jdbc:mysql://127.0.0.1:3306/luckysheetdb?useSSL=false
+#      driverClassName: com.mysql.cj.jdbc.Driver
+#      username: root
+#      password: 888888

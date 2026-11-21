@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/ui-model/add",
+  "type": "amis",
+  "title": "新建UI模型"
+}

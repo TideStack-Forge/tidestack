@@ -1,0 +1,22 @@
+{
+  "name": "/dev/{appName}/dashboard",
+  "schema": {
+    "type": "page",
+    "title": "",
+    "className": "dashboard-page h-full",
+    "body": {
+      "type": "service",
+      "api": {
+        "method": "get",
+        "url": "/api/app/${appName}/edit-access-entry"
+      },
+      "body": {
+        "type": "dev-app-dashboard"
+      }
+    },
+    "asideResizor": false,
+    "pullRefresh": {
+      "disabled": true
+    }
+  }
+}

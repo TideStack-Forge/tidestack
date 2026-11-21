@@ -1,0 +1,272 @@
+{
+  "version": 1,
+  "description": "TideStack Develop plugin export manifest. The monorepo is the source of truth; standalone repositories are release mirrors.",
+  "repositories": [
+    {
+      "name": "common",
+      "displayName": "TideStack Develop plugin common",
+      "target": "../tidestack-develop-plugin-common",
+      "commitMessage": "Sync shared TideStack Develop plugin common modules",
+      "sourceRoot": "ide-plugins/common",
+      "managedPaths": [
+        { "source": "ide-plugins/export-overlays/common/.gitignore", "target": ".gitignore", "fromRepoRoot": true },
+        { "source": "ide-plugins/export-overlays/common/README.md", "target": "README.md", "fromRepoRoot": true },
+        { "source": "metadata-editor-runtime", "target": "metadata-editor-runtime" },
+        { "source": "metadata-editor-schema", "target": "metadata-editor-schema" },
+        { "source": "contracts", "target": "contracts" },
+        { "source": "ability/ouroboros-configuration/ouroboros-configuration-logicflow-node/src/main/metadata", "target": "metadata-editor-schema/vendor/ability/ouroboros-configuration/ouroboros-configuration-logicflow-node/src/main/metadata", "fromRepoRoot": true },
+        { "source": "ability/ouroboros-data-dict/ouroboros-data-dict-dev/src/main/metadata", "target": "metadata-editor-schema/vendor/ability/ouroboros-data-dict/ouroboros-data-dict-dev/src/main/metadata", "fromRepoRoot": true },
+        { "source": "ability/ouroboros-data-dict/ouroboros-data-dict-runtime/src/main/metadata", "target": "metadata-editor-schema/vendor/ability/ouroboros-data-dict/ouroboros-data-dict-runtime/src/main/metadata", "fromRepoRoot": true },
+        { "source": "ability/ouroboros-file-upload/ouroboros-file-upload-fields/src/main/metadata", "target": "metadata-editor-schema/vendor/ability/ouroboros-file-upload/ouroboros-file-upload-fields/src/main/metadata", "fromRepoRoot": true },
+        { "source": "ability/ouroboros-message-queue/ouroboros-message-queue-runtime/src/main/metadata", "target": "metadata-editor-schema/vendor/ability/ouroboros-message-queue/ouroboros-message-queue-runtime/src/main/metadata", "fromRepoRoot": true },
+        { "source": "ability/ouroboros-notification/ouroboros-notification-logicflow-node/src/main/metadata", "target": "metadata-editor-schema/vendor/ability/ouroboros-notification/ouroboros-notification-logicflow-node/src/main/metadata", "fromRepoRoot": true },
+        { "source": "ability/ouroboros-organization-structure/ouroboros-organization-structure-runtime/src/main/metadata", "target": "metadata-editor-schema/vendor/ability/ouroboros-organization-structure/ouroboros-organization-structure-runtime/src/main/metadata", "fromRepoRoot": true },
+        { "source": "ability/ouroboros-rpc-model/ouroboros-rpc-model-logicflow-node/src/main/metadata", "target": "metadata-editor-schema/vendor/ability/ouroboros-rpc-model/ouroboros-rpc-model-logicflow-node/src/main/metadata", "fromRepoRoot": true },
+        { "source": "core/ouroboros-approval-workflow/ouroboros-approval-workflow-runtime/src/main/metadata", "target": "metadata-editor-schema/vendor/core/ouroboros-approval-workflow/ouroboros-approval-workflow-runtime/src/main/metadata", "fromRepoRoot": true },
+        { "source": "core/ouroboros-business-model/ouroboros-business-model-default/src/main/metadata", "target": "metadata-editor-schema/vendor/core/ouroboros-business-model/ouroboros-business-model-default/src/main/metadata", "fromRepoRoot": true },
+        { "source": "core/ouroboros-business-model/ouroboros-business-model-runtime/src/main/metadata", "target": "metadata-editor-schema/vendor/core/ouroboros-business-model/ouroboros-business-model-runtime/src/main/metadata", "fromRepoRoot": true },
+        { "source": "core/ouroboros-data/ouroboros-data-pkgen-coding/src/main/metadata", "target": "metadata-editor-schema/vendor/core/ouroboros-data/ouroboros-data-pkgen-coding/src/main/metadata", "fromRepoRoot": true },
+        { "source": "core/ouroboros-field-type/ouroboros-field-type-default-types/src/main/metadata", "target": "metadata-editor-schema/vendor/core/ouroboros-field-type/ouroboros-field-type-default-types/src/main/metadata", "fromRepoRoot": true },
+        { "source": "core/ouroboros-logicflow/ouroboros-logicflow-authoring/src/main/metadata", "target": "metadata-editor-schema/vendor/core/ouroboros-logicflow/ouroboros-logicflow-authoring/src/main/metadata", "fromRepoRoot": true },
+        { "source": "core/ouroboros-logicflow/ouroboros-logicflow-data-model/src/main/metadata", "target": "metadata-editor-schema/vendor/core/ouroboros-logicflow/ouroboros-logicflow-data-model/src/main/metadata", "fromRepoRoot": true },
+        { "source": "core/ouroboros-logicflow/ouroboros-logicflow-extra-nodes/src/main/metadata", "target": "metadata-editor-schema/vendor/core/ouroboros-logicflow/ouroboros-logicflow-extra-nodes/src/main/metadata", "fromRepoRoot": true },
+        { "source": "security/ouroboros-web-security/ouroboros-web-security-logicflow-node/src/main/metadata", "target": "metadata-editor-schema/vendor/security/ouroboros-web-security/ouroboros-web-security-logicflow-node/src/main/metadata", "fromRepoRoot": true },
+        { "source": "frontends/web/node_modules/xlsx/dist", "target": "xlsx-runtime", "fromRepoRoot": true },
+        { "source": "frontends/web/ouroboros-amis-runtime", "target": "metadata-editor-runtime/vendor/frontends/web/ouroboros-amis-runtime", "fromRepoRoot": true },
+        { "source": "frontends/web/ouroboros-logicflow-editor", "target": "metadata-editor-runtime/vendor/frontends/web/ouroboros-logicflow-editor", "fromRepoRoot": true },
+        { "source": "frontends/web/ouroboros-approval-workflow-designer", "target": "metadata-editor-runtime/vendor/frontends/web/ouroboros-approval-workflow-designer", "fromRepoRoot": true },
+        { "source": "frontends/web/ouroboros-sdk", "target": "metadata-editor-runtime/vendor/frontends/web/ouroboros-sdk", "fromRepoRoot": true },
+        { "source": "frontends/web/node_modules/amis/sdk", "target": "amis-sdk", "fromRepoRoot": true }
+      ],
+      "transforms": [
+        {
+          "type": "textReplace",
+          "path": "metadata-editor-schema/scripts/build.mjs",
+          "replacements": [
+            { "from": "const repoRoot = join(packageRoot, '..', '..', '..')", "to": "const repoRoot = join(packageRoot, 'vendor')" }
+          ]
+        },
+        {
+          "type": "textReplace",
+          "path": "metadata-editor-runtime/package.json",
+          "replacements": [
+            { "from": "../../../frontends/web/ouroboros-amis-runtime", "to": "vendor/frontends/web/ouroboros-amis-runtime" }
+          ]
+        },
+        {
+          "type": "textReplace",
+          "path": "metadata-editor-runtime/package-lock.json",
+          "replacements": [
+            { "from": "../../../frontends/web/ouroboros-amis-runtime", "to": "vendor/frontends/web/ouroboros-amis-runtime" }
+          ]
+        },
+        {
+          "type": "textReplace",
+          "path": "metadata-editor-runtime/vite.amis-editor.config.ts",
+          "replacements": [
+            { "from": "const repoRoot = resolve(configDir, '../../..')", "to": "const repoRoot = resolve(configDir, 'vendor')" },
+            { "from": "../../../frontends/web/ouroboros-amis-runtime/host-bindings.cjs", "to": "./vendor/frontends/web/ouroboros-amis-runtime/host-bindings.cjs" }
+          ]
+        },
+        {
+          "type": "textReplace",
+          "path": "metadata-editor-runtime/vitest.config.ts",
+          "replacements": [
+            { "from": "const repoRoot = resolve(__dirname, '../../..')", "to": "const repoRoot = resolve(__dirname, 'vendor')" }
+          ]
+        },
+        {
+          "type": "textReplace",
+          "path": "metadata-editor-runtime/scripts/build-editor-bundles.mjs",
+          "replacements": [
+            { "from": "const repoRoot = join(packageRoot, '..', '..', '..')", "to": "const repoRoot = join(packageRoot, 'vendor')" }
+          ]
+        }
+      ],
+      "ignoredInManagedPaths": [
+        "node_modules/**",
+        "**/node_modules/**",
+        "**/dist/**",
+        "metadata-editor-runtime/src/schema-resources/**",
+        "metadata-editor-schema/dist/**",
+        "metadata-editor-runtime/dist/**"
+      ],
+      "retiredPaths": [
+        "amis-schema",
+        "metadata-editor-runtime/vendor/frontends/web/main-app"
+      ],
+      "verify": [
+        "npm ci --prefix metadata-editor-schema",
+        "npm run build --prefix metadata-editor-schema",
+        "npm ci --prefix metadata-editor-runtime",
+        "npm test --prefix metadata-editor-runtime",
+        "npm ci --prefix metadata-editor-runtime/vendor/frontends/web/ouroboros-sdk",
+        "npm ci --legacy-peer-deps --prefix metadata-editor-runtime/vendor/frontends/web/ouroboros-logicflow-editor",
+        "npm ci --legacy-peer-deps --prefix metadata-editor-runtime/vendor/frontends/web/ouroboros-approval-workflow-designer",
+        "npm run build --prefix metadata-editor-runtime"
+      ]
+    },
+    {
+      "name": "vscode",
+      "displayName": "TideStack Develop VS Code plugin",
+      "target": "../tidestack-develop-vsc",
+      "commitMessage": "Sync TideStack Develop VS Code plugin from monorepo",
+      "sourceRoot": "ide-plugins/vscode-plugin",
+      "managedPaths": [
+        { "source": "images", "target": "images" },
+        { "source": "package.json", "target": "package.json" },
+        { "source": "scripts", "target": "scripts" },
+        { "source": "ide-plugins/export-overlays/vscode/scripts/verify-shared-assets.mjs", "target": "scripts/verify-shared-assets.mjs", "fromRepoRoot": true },
+        { "source": "src", "target": "src" },
+        { "source": "tsconfig.json", "target": "tsconfig.json" }
+      ],
+      "transforms": [
+        {
+          "type": "textReplace",
+          "path": "package.json",
+          "replacements": [
+            { "from": "\"build:shared\": \"cd ../common/metadata-editor-runtime && npm run build\"", "to": "\"build:shared\": \"node scripts/verify-shared-assets.mjs\"" },
+            { "from": "\"ouroboros-metadata-editor\": \"file:../common/metadata-editor-runtime\"", "to": "\"ouroboros-metadata-editor\": \"file:./common/metadata-editor-runtime\"" }
+          ]
+        },
+        {
+          "type": "textReplace",
+          "path": "scripts/copy-webview-assets.mjs",
+          "replacements": [
+            { "from": "const idePluginsRoot = dirname(pluginRoot)\nconst repoRoot = dirname(idePluginsRoot)\n", "to": "const repoRoot = join(pluginRoot, 'common', 'metadata-editor-runtime', 'vendor')\n" },
+            { "from": "const amisSdkSource = join(repoRoot, 'frontends', 'web', 'node_modules', 'amis', 'sdk')", "to": "const amisSdkSource = join(pluginRoot, 'common', 'amis-sdk')" },
+            { "from": "const xlsxRuntimeSource = join(repoRoot, 'frontends', 'web', 'node_modules', 'xlsx', 'dist')", "to": "const xlsxRuntimeSource = join(pluginRoot, 'common', 'xlsx-runtime')" },
+            { "from": "const runtimeRoot = join(idePluginsRoot, 'common', 'metadata-editor-runtime')", "to": "const runtimeRoot = join(pluginRoot, 'common', 'metadata-editor-runtime')" },
+            { "from": "const schemaDistRoot = join(idePluginsRoot, 'common', 'metadata-editor-schema', 'dist')", "to": "const schemaDistRoot = join(pluginRoot, 'common', 'metadata-editor-schema', 'dist')" },
+            { "from": "const contractRoot = join(idePluginsRoot, 'common', 'contracts')", "to": "const contractRoot = join(pluginRoot, 'common', 'contracts')" }
+          ]
+        },
+        {
+          "type": "textReplace",
+          "path": "scripts/sync-i18n-assets.mjs",
+          "replacements": [
+            { "from": "const idePluginsRoot = dirname(pluginRoot)\n", "to": "" },
+            { "from": "const sharedI18nRoot = join(idePluginsRoot, 'common', 'metadata-editor-schema', 'dist', 'i18n')", "to": "const sharedI18nRoot = join(pluginRoot, 'common', 'metadata-editor-schema', 'dist', 'i18n')" }
+          ]
+        },
+        {
+          "type": "textReplace",
+          "path": "scripts/vendor-shared-package.mjs",
+          "replacements": [
+            { "from": "const idePluginsRoot = dirname(pluginRoot)\n", "to": "" },
+            { "from": "const sharedDist = join(idePluginsRoot, 'common', 'metadata-editor-runtime', 'dist')", "to": "const sharedDist = join(pluginRoot, 'common', 'metadata-editor-runtime', 'dist')" }
+          ]
+        },
+        {
+          "type": "textReplace",
+          "path": "scripts/sync-editor-registrations.mjs",
+          "replacements": [
+            { "from": "const idePluginsRoot = dirname(pluginRoot)\n", "to": "" },
+            { "from": "const sharedDist = join(idePluginsRoot, 'common', 'metadata-editor-runtime', 'dist')", "to": "const sharedDist = join(pluginRoot, 'common', 'metadata-editor-runtime', 'dist')" }
+          ]
+        }
+      ],
+      "submodules": [
+        { "path": "common", "repository": "common" }
+      ],
+      "ignoredInManagedPaths": [
+        "node_modules/**",
+        "**/node_modules/**"
+      ],
+      "verify": [
+        "npm install --package-lock=false",
+        "npm run compile"
+      ]
+    },
+    {
+      "name": "intellij",
+      "displayName": "TideStack Develop IntelliJ plugin",
+      "target": "../tidestack-develop-intellij",
+      "commitMessage": "Sync TideStack Develop IntelliJ plugin from monorepo",
+      "sourceRoot": "ide-plugins/intellij-plugin",
+      "managedPaths": [
+        { "source": "build.gradle.kts", "target": "build.gradle.kts" },
+        { "source": "gradle", "target": "gradle" },
+        { "source": "gradle.properties", "target": "gradle.properties" },
+        { "source": "gradlew", "target": "gradlew" },
+        { "source": "settings.gradle.kts", "target": "settings.gradle.kts" },
+        { "source": "testing/common/fixtures/data/ide-metadata-workspace", "target": "testing/common/fixtures/data/ide-metadata-workspace", "fromRepoRoot": true },
+        { "source": "src", "target": "src" }
+      ],
+      "transforms": [
+        {
+          "type": "textReplace",
+          "path": "build.gradle.kts",
+          "replacements": [
+            { "from": "file(\"../common/metadata-editor-runtime/runtime\")", "to": "file(\"common/metadata-editor-runtime/runtime\")" },
+            { "from": "file(\"../common/metadata-editor-runtime\")", "to": "file(\"common/metadata-editor-runtime\")" },
+            { "from": "file(\"../common/metadata-editor-schema\")", "to": "file(\"common/metadata-editor-schema\")" },
+            { "from": "file(\"../common/metadata-editor-runtime/dist/browser/metadata-editor-host.js\")", "to": "file(\"common/metadata-editor-runtime/dist/browser/metadata-editor-host.js\")" },
+            { "from": "file(\"../common/metadata-editor-schema/dist/$it\")", "to": "file(\"common/metadata-editor-schema/dist/$it\")" },
+            { "from": "file(\"../common/contracts/$it\")", "to": "file(\"common/contracts/$it\")" },
+            { "from": "file(\"../common/metadata-editor-schema/dist/i18n\")", "to": "file(\"common/metadata-editor-schema/dist/i18n\")" },
+            { "from": "file(\"../../frontends/web/node_modules/amis/sdk\")", "to": "file(\"common/amis-sdk\")" },
+            { "from": "file(\"../../frontends/web/node_modules/xlsx/dist\")", "to": "file(\"common/xlsx-runtime\")" },
+            { "from": "file(\"../..\").resolve(bundle[\"sourceRoot\"].toString())", "to": "file(\"common/metadata-editor-runtime/vendor\").resolve(bundle[\"sourceRoot\"].toString())" },
+            { "from": "../../testing/common/fixtures/data/ide-metadata-workspace/documents.json", "to": "testing/common/fixtures/data/ide-metadata-workspace/documents.json" },
+            { "from": "../../tmp/ide-metadata-fixture/intellij", "to": "build/ide-metadata-fixture/intellij" },
+            { "from": "        dependsOn(buildMetadataEditorCommon)\n", "to": "" }
+          ]
+        },
+        {
+          "type": "textReplace",
+          "path": "src/main/kotlin/com/ouroboros/idea/metadata/MetadataEditorAssets.kt",
+          "replacements": [
+            { "from": "repoRoot.resolve(\"ide-plugins/common/metadata-editor-runtime/runtime/metadata-editor-webview.html\")", "to": "repoRoot.resolve(\"common/metadata-editor-runtime/runtime/metadata-editor-webview.html\")" },
+            { "from": "repoRoot.resolve(\"ide-plugins/common/metadata-editor-runtime/runtime/metadata-editor-runtime.js\")", "to": "repoRoot.resolve(\"common/metadata-editor-runtime/runtime/metadata-editor-runtime.js\")" },
+            { "from": "repoRoot.resolve(\"ide-plugins/common/metadata-editor-runtime/dist/browser/metadata-editor-host.js\")", "to": "repoRoot.resolve(\"common/metadata-editor-runtime/dist/browser/metadata-editor-host.js\")" },
+            { "from": "repoRoot.resolve(\"ide-plugins/common/metadata-editor-runtime/runtime/metadata-editor-amis-editor.js\")", "to": "repoRoot.resolve(\"common/metadata-editor-runtime/runtime/metadata-editor-amis-editor.js\")" },
+            { "from": "repoRoot.resolve(\"ide-plugins/common/metadata-editor-runtime/runtime/metadata-editor-amis-editor.css\")", "to": "repoRoot.resolve(\"common/metadata-editor-runtime/runtime/metadata-editor-amis-editor.css\")" },
+            { "from": "repoRoot.resolve(\"frontends/web/node_modules/amis/sdk/sdk.js\")", "to": "repoRoot.resolve(\"common/amis-sdk/sdk.js\")" },
+            { "from": "repoRoot.resolve(\"frontends/web/node_modules/xlsx/dist/xlsx.full.min.js\")", "to": "repoRoot.resolve(\"common/xlsx-runtime/xlsx.full.min.js\")" },
+            { "from": "repoRoot.resolve(\"frontends/web/ouroboros-", "to": "repoRoot.resolve(\"common/metadata-editor-runtime/vendor/frontends/web/ouroboros-" },
+            { "from": "repoRoot.resolve(\"frontends/web/node_modules/amis/sdk/sdk.css\")", "to": "repoRoot.resolve(\"common/amis-sdk/sdk.css\")" },
+            { "from": "repoRoot.resolve(\"frontends/web/node_modules/amis/sdk/cxd.css\")", "to": "repoRoot.resolve(\"common/amis-sdk/cxd.css\")" },
+            { "from": "repoRoot.resolve(\"frontends/web/node_modules/amis/sdk/dark.css\")", "to": "repoRoot.resolve(\"common/amis-sdk/dark.css\")" },
+            { "from": "Files.exists(current.resolve(\"ide-plugins/common/metadata-editor-runtime/runtime/metadata-editor-runtime.js\"))", "to": "Files.exists(current.resolve(\"common/metadata-editor-runtime/runtime/metadata-editor-runtime.js\"))" },
+            { "from": "ide-plugins/common/metadata-editor-schema/", "to": "common/metadata-editor-schema/" }
+          ]
+        },
+        {
+          "type": "textReplace",
+          "path": "src/test/kotlin/com/ouroboros/idea/metadata/MetadataEditorAssetsTest.kt",
+          "replacements": [
+            { "from": "assertTrue(uris.runtimeScriptUri.endsWith(\"/ide-plugins/common/metadata-editor-runtime/runtime/metadata-editor-runtime.js\"))", "to": "assertTrue(uris.runtimeScriptUri.endsWith(\"/common/metadata-editor-runtime/runtime/metadata-editor-runtime.js\"))" },
+            { "from": "assertTrue(uris.amisSdkScriptUri.endsWith(\"/frontends/web/node_modules/amis/sdk/sdk.js\"))", "to": "assertTrue(uris.amisSdkScriptUri.endsWith(\"/common/amis-sdk/sdk.js\"))" },
+            { "from": "assertTrue(uris.amisDarkThemeCssUri.endsWith(\"/frontends/web/node_modules/amis/sdk/dark.css\"))", "to": "assertTrue(uris.amisDarkThemeCssUri.endsWith(\"/common/amis-sdk/dark.css\"))" },
+            { "from": "write(root.resolve(\"ide-plugins/common/metadata-editor-runtime/runtime/metadata-editor-runtime.js\"))", "to": "write(root.resolve(\"common/metadata-editor-runtime/runtime/metadata-editor-runtime.js\"))" },
+            { "from": "write(root.resolve(\"ide-plugins/common/metadata-editor-runtime/runtime/metadata-editor-webview.html\"))", "to": "write(root.resolve(\"common/metadata-editor-runtime/runtime/metadata-editor-webview.html\"))" },
+            { "from": "write(root.resolve(\"ide-plugins/common/metadata-editor-runtime/runtime/metadata-editor-amis-editor.js\"))", "to": "write(root.resolve(\"common/metadata-editor-runtime/runtime/metadata-editor-amis-editor.js\"))" },
+            { "from": "write(root.resolve(\"ide-plugins/common/metadata-editor-runtime/runtime/metadata-editor-amis-editor.css\"))", "to": "write(root.resolve(\"common/metadata-editor-runtime/runtime/metadata-editor-amis-editor.css\"))" },
+            { "from": "write(root.resolve(\"ide-plugins/common/metadata-editor-runtime/dist/browser/metadata-editor-host.js\"))", "to": "write(root.resolve(\"common/metadata-editor-runtime/dist/browser/metadata-editor-host.js\"))" },
+            { "from": "write(root.resolve(\"frontends/web/node_modules/amis/sdk/sdk.js\"))", "to": "write(root.resolve(\"common/amis-sdk/sdk.js\"))" },
+            { "from": "write(root.resolve(\"frontends/web/node_modules/amis/sdk/sdk.css\"))", "to": "write(root.resolve(\"common/amis-sdk/sdk.css\"))" },
+            { "from": "write(root.resolve(\"frontends/web/node_modules/amis/sdk/cxd.css\"))", "to": "write(root.resolve(\"common/amis-sdk/cxd.css\"))" },
+            { "from": "write(root.resolve(\"frontends/web/node_modules/amis/sdk/dark.css\"))", "to": "write(root.resolve(\"common/amis-sdk/dark.css\"))" },
+            { "from": "ide-plugins/common/metadata-editor-schema/", "to": "common/metadata-editor-schema/" },
+            { "from": "write(root.resolve(\"frontends/web/ouroboros-", "to": "write(root.resolve(\"common/metadata-editor-runtime/vendor/frontends/web/ouroboros-" },
+            { "from": "frontends/web/node_modules/xlsx/dist/", "to": "common/xlsx-runtime/" }
+          ]
+        },
+        {"type": "textReplace", "path": "src/test/kotlin/com/ouroboros/idea/metadata/MetadataNativeDocumentTest.kt", "replacements": [{"from": "../../testing/common/fixtures/data/ide-metadata-workspace/documents.json", "to": "testing/common/fixtures/data/ide-metadata-workspace/documents.json"}]},
+        {"type": "textReplace", "path": "src/test/kotlin/com/ouroboros/idea/metadata/MetadataJcefSmokeTest.kt", "replacements": [{"from": "../../testing/common/fixtures/data/ide-metadata-workspace/documents.json", "to": "testing/common/fixtures/data/ide-metadata-workspace/documents.json"}, {"from": "false, \"../..\")", "to": "false, \".\")"}]},
+        {"type": "textReplace", "path": "src/test/kotlin/com/ouroboros/idea/metadata/MetadataBrowserFixtureTest.kt", "replacements": [{"from": "Path.of(\"../..\")", "to": "Path.of(\".\")"}, {"from": "tmp/ide-metadata-fixture/intellij", "to": "build/ide-metadata-fixture/intellij"}]}
+      ],
+      "submodules": [
+        { "path": "common", "repository": "common" }
+      ],
+      "ignoredInManagedPaths": [
+        ".gradle/**",
+        "build/**"
+      ],
+      "verify": [
+        "./gradlew test"
+      ]
+    }
+  ]
+}

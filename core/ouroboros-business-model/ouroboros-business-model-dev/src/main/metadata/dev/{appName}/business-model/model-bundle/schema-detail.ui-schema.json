@@ -1,0 +1,69 @@
+{
+  "name": "/dev/{appName}/business-model/model-bundle/schema-detail",
+  "schema": {
+    "type": "service",
+    "body": [
+      {
+        "name": "modelDetailPreview",
+        "type": "amis-schema-preview",
+        "source": "${ model }",
+        "frontendResourceRenderContext": {
+          "mode": "dev-app-workspace",
+          "appName": "${appName}"
+        }
+      },
+      {
+        "name": "modelDetailEditor",
+        "type": "editor",
+        "language": "json",
+        "disabled": true,
+        "value": "${ model }",
+        "size": "xxl",
+        "className": "h-full relative overflow-y-hidden",
+        "inputClassName": "h-full max-h-full",
+        "visibleOn": "${ schemaShowMode === 'json' }"
+      },
+      {
+        "type": "button-toolbar",
+        "className": "mt-3 text-right",
+        "buttons": [
+          {
+            "type": "button",
+            "label": "${isCloned ? '打开编辑器' : '克隆并编辑'}",
+            "icon": "fa fa-edit",
+            "level": "primary",
+            "disabledOn": "${!editUrl}",
+            "onEvent": {
+              "click": {
+                "actions": [
+                  {
+                    "actionType": "ajax",
+                    "expression": "${!isCloned}",
+                    "api": {
+                      "method": "post",
+                      "url": "/api/dev/${appName}/business-model/${fullName}/clone-ui-schema?name=${name}"
+                    }
+                  },
+                  {
+                    "actionType": "openTab",
+                    "args": {
+                      "title": "编辑「${editName}」",
+                      "url": "${editUrl}"
+                    }
+                  },
+                  {
+                    "actionType": "closeDialog"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "api": {
+      "method": "get",
+      "url": "/api/dev/${appName}/business-model/${fullName}/projection-target?kind=ui-schema&name=${name}"
+    }
+  }
+}

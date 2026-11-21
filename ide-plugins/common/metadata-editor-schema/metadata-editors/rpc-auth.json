@@ -1,0 +1,14 @@
+{
+  "editorId": "rpc-auth",
+  "editorName": "TideStack RPC Auth Metadata Editor",
+  "editorNameKey": "customEditor.rpcAuth",
+  "metadataType": "rpc-auth",
+  "schemaName": "rpc-auth",
+  "viewType": "tidestack.metadataEditor.rpcAuth",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.rpcAuth",
+  "fileMatchPatterns": [
+    "*.rpc.auth.json",
+    "**/resources/META-INF/ouroboros/rpc-model/**/*.rpc.auth.json"
+  ],
+  "priority": "default"
+}

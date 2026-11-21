@@ -1,0 +1,38 @@
+{
+  "name": "/dev/{appName}/ui-schema/code",
+  "schema": {
+    "wrapperComponent": "div",
+    "className": "h-full relative overflow-y-hidden",
+    "mode": "normal",
+    "type": "form",
+    "initApi": "get:/api/dev/${appName}/ui-schema/${name}",
+    "api": {
+      "method": "put",
+      "data": {
+        "&": "$$",
+        "schema": "${schema|toJson}"
+      },
+      "messages": {
+        "success": "保存成功"
+      },
+      "url": "/api/dev/${appName}/ui-schema/${name}"
+    },
+    "title": false,
+    "body": {
+      "name": "schema",
+      "className": "h-full",
+      "inputClassName": "h-full max-h-full",
+      "language": "json",
+      "label": "",
+      "options": {
+        "minimap": {
+          "enabled": true
+        }
+      },
+      "type": "editor",
+      "required": true
+    },
+    "actions": [],
+    "wrapWithPanel": false
+  }
+}

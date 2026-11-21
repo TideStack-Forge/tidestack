@@ -1,0 +1,20 @@
+{
+  "fullName": "systemSetting.integrationManagement.connections.enterprise.view",
+  "title": "查看企业连接",
+  "delegable": false,
+  "apis": [
+    "GET /api/sys/integration-management/sections/{section}",
+    "GET /api/sys/enterprise-connections",
+    "GET /api/sys/enterprise-connections/providers",
+    "GET /api/sys/enterprise-connections/providers/connection-editor-schema",
+    "GET /api/sys/enterprise-connections/providers/{provider}/configuration",
+    "GET /api/sys/enterprise-connections/providers/{provider}/management-schema",
+    "GET /api/sys/enterprise-connections/providers/{provider}/budget"
+  ],
+  "uiViews": [
+    "/system-setting/integration-management"
+  ],
+  "menuItems": [
+    "systemSetting.integrationManagement"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "apiKey",
+  "title": "钉钉接口",
+  "type": "API-Key",
+  "description": "获取企业内部应用的accessToken",
+  "isEnabled": true,
+  "attachments": {
+    "name": "Authorization",
+    "in": "header",
+    "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMF9iYXNlLXVzZXIiLCJleHAiOjE3NTg4NjYzMTd9.wMUFCcXpT260irHm9u2WAubMdfN6XAOiP9VYjAcoVzE"
+  }
+}

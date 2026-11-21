@@ -1,0 +1,86 @@
+{
+  "type": "ui-model",
+  "fileSuffix": ".ui-model.json",
+  "displayName": "UI 模型",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.ui-model.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/ui-model",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.ui-model.json",
+    "fields": [
+      {
+        "name": "path",
+        "label": "UI 路径",
+        "documentPath": [
+          "path"
+        ],
+        "required": true,
+        "defaultFromPath": "slash-path"
+      },
+      {
+        "name": "title",
+        "label": "标题",
+        "documentPath": [
+          "title"
+        ],
+        "required": true,
+        "defaultFromPath": "title"
+      },
+      {
+        "name": "description",
+        "label": "描述",
+        "documentPath": [
+          "description"
+        ]
+      }
+    ],
+    "document": {
+      "path": "/example",
+      "type": "amis",
+      "title": "示例页面",
+      "icon": "fa fa-file",
+      "description": "示例 UI 模型"
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "UI 模型",
+    "actions": [],
+    "body": [
+      {
+        "type": "input-text",
+        "name": "path",
+        "label": "UI 路径",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "type",
+        "label": "渲染类型",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "title",
+        "label": "中文标题",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "icon",
+        "label": "图标"
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "描述",
+        "minRows": 3
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/ui-model.schema.json"
+}

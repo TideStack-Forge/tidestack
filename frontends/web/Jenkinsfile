@@ -1,0 +1,545 @@
+pipeline {
+  agent any
+
+  options {
+    skipDefaultCheckout false
+  }
+
+  tools {
+    nodejs 'NodeJS 22.23.1'
+  }
+
+  environment {
+    GIT_BRANCH = "${env.GIT_BRANCH ?: params.GIT_BRANCH}"
+    FRONTEND_DIR = 'frontends/web'
+    NPM_TOKEN = credentials('npm-publish-token')
+    // 会自动生成 DOCKER_PUSH_USER_USR 和 DOCKER_PUSH_USER_PSW
+    DOCKER_PUSH_USER = credentials('docker-push-user')
+    SUPPORT_MULTI_ARCH = 'false'
+    BASE_IMAGE = 'swr.cn-north-4.myhuaweicloud.com/ddn-k8s/docker.io/library/nginx:1.28-alpine'
+  }
+
+  parameters {
+    string(name: 'VERSION', defaultValue: '', description: '版本号')
+    string(name: 'GIT_BRANCH', defaultValue: "${env.GIT_BRANCH ?: ''}", description: '版本库引用')
+    booleanParam(name: 'PUBLISH_SDK', defaultValue: false, description: '是否发布SDK(gitlabBranch 为 refs/tags/* 时生效 )')
+    string(name: 'NPM_INSTALL_REGISTRY', defaultValue: 'https://registry.npmmirror.com', description: 'NPM镜像源')
+  }
+
+  stages {
+    // 本阶段任务：
+    // 1. 判断是否需要发布：
+    //    1.1 PUSH_TAG 且 tag 名符合 frontend-web-v1.x.x 格式，发布 WEB（可选发布SDK）
+    //    1.2 PUSH_TAG 且 tag 名符合 frontend-web-sdk-v1.x.x 格式，只发布 SDK
+    //    1.3 PUSH 且分支名 frontend-web/release/* 或 frontend-web/snapshot/*，发布内部版本
+    //    1.4 其他情况跳过
+    // 2. 从tag名或分支名中提取版本号
+    // 3. 若为发布版本，从message中获取指令，判断是否需要发布SDK，默认不发布SDK
+    stage('prepare') {
+      steps {
+        script {
+          def publishWeb = false
+          def publishSDK = false
+          def prerelease = false
+          def snapshot = false
+          def supportMultiArch = false
+          def version = ''
+
+          def gitRef = env.GIT_BRANCH
+          echo "准备发布版本参数, GitRef: ${gitRef}"
+          // 如果有版本号参数，则表示手动触发
+          if (params.VERSION) {
+            publishWeb = true
+            version = params.VERSION.startsWith('v') ? params.VERSION.substring(1) : params.VERSION
+            publishSDK = gitRef.startsWith('refs/tags/') && params.PUBLISH_SDK
+            echo "手动触发，版本号为 ${version}, 同时发布SDK: ${publishSDK}"
+            if (!publishSDK && params.PUBLISH_SDK) {
+              echo '因为版本库引用不符合要求，不发布SDK'
+            }
+          }
+
+          // 是 push tag 且 tag 名符合 frontend-web-v1.x.x 或 frontend-web-v1.x.x-alpha.1 格式的需要发布
+          else if (gitRef.startsWith('refs/tags/')) {
+            def tagName = gitRef.substring('refs/tags/'.length())
+            if (tagName.matches('^frontend-web-v?\\d+\\.\\d+\\.\\d+(-[\\w.-]+)?$')) {
+              def message = gitTagMessage(gitRef)?.toLowerCase()
+              echo "tag message: ${message}"
+              publishWeb = true
+              version = tagName.replaceFirst('^frontend-web-v?', '')
+              publishSDK = message?.contains('[publish-sdk]') || message?.contains('[publish sdk]')
+              echo "发布版本，版本号为 ${version}, 同时发布SDK: ${publishSDK}"
+            }
+            // 如果 tag 是 frontend-web-sdk-v1.0.0 或 frontend-web-sdk/v1.0.0 格式的，只发布 sdk
+            else if (tagName.matches(/frontend-web-sdk[\/\\-]?v?(\d+\.\d+\.\d+(-[\w.-]+)?)/)) {
+              publishWeb = false
+              // 用正则表达式提取版本号
+              def matcher = tagName =~ /frontend-web-sdk[\/\\-]?v?(\d+\.\d+\.\d+(-[\w.-]+)?)/
+              matcher.matches()
+              version = matcher[0][1]
+              publishSDK = true
+              echo "发布SDK: ${publishSDK}, 版本号为 ${version}"
+            }
+          }
+
+          // 是 push branch 且 分支名 frontend-web/release/* 的，则需要内部发布
+          else if (gitRef ==~ /(origin\/)?frontend-web\/release\/.+/) {
+            publishWeb = true
+            prerelease = true
+            version = gitRef.replaceFirst(/^(origin\/)?frontend-web\/release\//, '')
+            version = version.startsWith('v') ? version.substring(1) : version
+
+            echo "内部发布，版本号为 ${version}"
+          }
+          // 是 push branch 且 分支名 frontend-web/snapshot/* 的，则需要快照发布
+          else if (gitRef ==~ /(origin\/)?frontend-web\/snapshot\/.+/) {
+            publishWeb = true
+            snapshot = true
+            version = gitRef.replaceFirst(/^(origin\/)?frontend-web\/snapshot\//, '')
+            version = version.startsWith('v') ? version.substring(1) : version
+
+            echo "快照发布，版本号为 ${version}"
+          }
+
+          // 输出环境变量
+          env.PUBLISH_WEB = publishWeb
+          env.VERSION = version
+          env.PRERELEASE = prerelease
+          env.SNAPSHOT = snapshot
+          env.PUBLISH_SDK = publishSDK
+          env.SUPPORT_MULTI_ARCH = supportMultiArch.toString()
+          env.BASE_IMAGE = env.BASE_IMAGE
+
+          // 为两个脚本设置可执行权限
+          runTrackedSh '''
+            cd "${FRONTEND_DIR}"
+            chmod +x publish-ouroboros-*.sh
+          '''
+
+          // 任务状态
+          if (!publishWeb) echo "${gitRef} 跳过发布"
+        }
+      }
+      options {
+        gitlabBuilds(builds: ['prepare'])
+        gitlabCommitStatus('prepare')
+      }
+    }
+    stage('verify-node-npm-baseline') {
+      when {
+        expression { env.PUBLISH_WEB?.toBoolean() || env.PUBLISH_SDK?.toBoolean() }
+      }
+      steps {
+        script {
+          runTrackedSh 'bash scripts/ci/verify-node-npm-baseline.sh'
+        }
+      }
+      options {
+        gitlabBuilds(builds: ['verify-node-npm-baseline'])
+        gitlabCommitStatus('verify-node-npm-baseline')
+      }
+    }
+    // 发布 WEB 版本
+    stage('publish-web') {
+      when {
+        // 只有需要发布版本，且版本号不为空
+        expression { env.PUBLISH_WEB?.toBoolean() && env.VERSION }
+      }
+      steps {
+        script {
+          echo '发布 WEB 版本'
+          def version = effectiveInternalVersion(
+            env.VERSION,
+            env.PRERELEASE.toBoolean(),
+            env.SNAPSHOT.toBoolean()
+          )
+          def tags = generateImageTags(version)
+          withEnv([
+            "PUBLISH_VERSION=${version}",
+            "PUBLISH_TAGS=${tags}",
+            "PUBLISH_NPM_REGISTRY=${params.NPM_INSTALL_REGISTRY}",
+            "PUBLISH_MULTI_ARCH=${env.SUPPORT_MULTI_ARCH}",
+            "PUBLISH_BASE_IMAGE=${env.BASE_IMAGE}"
+          ]) {
+            runTrackedSh '''
+              set -e
+              cd "${FRONTEND_DIR}"
+              multi_arch_flag=""
+              if [ "${PUBLISH_MULTI_ARCH}" = "true" ]; then
+                multi_arch_flag="-a"
+              fi
+              ./publish-ouroboros-web.sh \
+                -v "${PUBLISH_VERSION}" \
+                -t "${PUBLISH_TAGS}" \
+                -u "${DOCKER_PUSH_USER_USR}" \
+                -p "${DOCKER_PUSH_USER_PSW}" \
+                -b "${PUBLISH_BASE_IMAGE}" \
+                ${multi_arch_flag} \
+                -m "${PUBLISH_NPM_REGISTRY}"
+            '''
+          }
+        }
+      }
+      options {
+        gitlabBuilds(builds: ['publish-web'])
+        gitlabCommitStatus('publish-web')
+      }
+    }
+    stage('publish-sdk') {
+      when {
+        expression { env.PUBLISH_SDK?.toBoolean() && env.VERSION }
+      }
+      steps {
+        script {
+          echo '发布 SDK 版本'
+          updateGitlabCommitStatus name: 'publish-sdk', state: 'running'
+          // 运行 publish-ouroboros-sdk.sh 脚本
+          // 需要确保配置了 NPM_TOKEN 凭证
+          runTrackedSh """
+            cd "${env.FRONTEND_DIR}"
+            ./publish-ouroboros-sdk.sh -v ${shellQuote(env.VERSION)} -m ${shellQuote(params.NPM_INSTALL_REGISTRY)}
+          """
+          updateGitlabCommitStatus name: 'publish-sdk', state:'success'
+        }
+      }
+      options {
+        gitlabBuilds(builds: ['publish-sdk'])
+        gitlabCommitStatus('publish-sdk')
+      }
+    }
+  }
+
+  post {
+    success {
+      updateGitlabCommitStatus name: 'Gitlab触发', state:'success'
+      script {
+        // 夜间构建不要打扰休息
+        if (env.VERSION?.trim() == 'nightly') return
+        // 目前只在发布SDK的时候发通知
+        if (!(env.PUBLISH_SDK ?: 'false').toBoolean()) return
+        def textContent = [
+          '# ✅ 微前端SDK发布成功',
+          '---',
+          '## 发布信息',
+          "- **版本号**: ${env.VERSION}",
+          '---',
+          '',
+          '## 命令参考',
+          "> npm i ouroboros-sdk:${env.VERSION}",
+          '',
+          '---',
+          '',
+          '## 更新摘要',
+          '',
+          buildUpdateSummary(env.GIT_BRANCH ?: params.GIT_BRANCH)
+        ]
+        try {
+          dingtalk(
+            robot: 'ouroboros-lowcode',
+            type: 'MARKDOWN',
+            title: '✅ 微前端SDK发布通知',
+            text: textContent
+          )
+        }
+        catch (Exception e) {
+          echo "⚠️ [WARNING] dingtalk 方法不可用，跳过通知: ${e.message}"
+        }
+      }
+    }
+    failure {
+      updateGitlabCommitStatus name: 'Gitlab触发', state: 'failed'
+      script {
+        // 夜间构建不要打扰休息
+        if (env.VERSION?.trim() == 'nightly') return
+
+        def buildUser = env.BUILD_USER ?: '未知用户'
+        def buildNumberText = env.BUILD_URL ? "[#${env.BUILD_NUMBER}](${env.BUILD_URL})" : "#${env.BUILD_NUMBER}"
+        def publishWeb = (env.PUBLISH_WEB ?: 'false').toBoolean()
+        def publishSDK = (env.PUBLISH_SDK ?: 'false').toBoolean()
+        def prerelease = (env.PRERELEASE ?: 'false').toBoolean()
+        def snapshot = (env.SNAPSHOT ?: 'false').toBoolean()
+        def failedStage = env.LAST_STARTED_STAGE ?: env.STAGE_NAME ?: '未知阶段'
+        def failureLog = readFailureLogSnippet()
+        def effectiveVersion = effectiveInternalVersion(env.VERSION ?: '', prerelease, snapshot) ?: '未设置'
+
+        def textContent = [
+          '# ❌ 前端构建失败',
+          '---',
+          '## 构建参数',
+          "- **版本号**: ${effectiveVersion}",
+          "- **发布前端基座**: ${publishWeb ? '<font color=green>是</font>' : '<font color=red>否</font>'}",
+          "- **发布SDK**: ${publishSDK ? '<font color=green>是</font>' : '<font color=red>否</font>'}",
+          "- **基础镜像**: ${env.BASE_IMAGE ?: '未设置'}",
+          "- **NPM 镜像**: ${params.NPM_INSTALL_REGISTRY ?: '未设置'}",
+          '---',
+          '',
+          '## 任务信息',
+          "- **触发者**: ${buildUser}",
+          "- **构建编号**: ${buildNumberText}",
+          '---',
+          '',
+          '## 失败诊断',
+          '',
+          "- **错误阶段**: ${failedStage}",
+          '',
+          '### 可捕获日志',
+          '```text',
+          failureLog,
+          '```',
+          '',
+          '> 以上为最近可捕获的阶段输出，完整信息仍以 Jenkins 控制台为准。'
+        ]
+        try {
+          dingtalk(
+            robot: 'ouroboros-lowcode',
+            type: 'MARKDOWN',
+            title: '❌ 前端构建失败通知',
+            text: textContent
+          )
+        }
+        catch (Exception e) {
+          echo "⚠️ [WARNING] dingtalk 方法不可用，跳过通知: ${e.message}"
+        }
+      }
+    }
+    aborted {
+      updateGitlabCommitStatus name: 'Gitlab触发', state: 'canceled'
+    }
+  }
+}
+
+String gitTagMessage(tagName) {
+  def name = tagName.substring('refs/tags/'.size())
+  def msg = sh(script: "git tag -n10000 -l ${shellQuote(name)}", returnStdout: true)?.trim()
+  if (msg && msg.size() > name.size()) {
+    return msg.substring(name.size()).trim()
+  }
+  return ''
+}
+
+String generateImageTags(String version) {
+  if (version.contains('-')) {
+    return version
+  }
+  if (version.contains('nightly')) {
+    return version
+  }
+  // 取 major 版本号
+  def majorVersion = version.split('\\.')[0]
+  // 取 minor 版本号
+  def minorVersion = version.split('\\.')[1]
+  return "${version},${majorVersion}-latest,${majorVersion}.${minorVersion}-latest,latest"
+}
+
+String effectiveInternalVersion(String version, Boolean prerelease, Boolean snapshot) {
+  def result = version ?: ''
+  if (prerelease) {
+    result = appendDefaultQualifier(result, '-prerelease')
+  }
+  if (snapshot) {
+    result = appendDefaultQualifier(result, '-snapshot')
+  }
+  return result
+}
+
+String appendDefaultQualifier(String version, String qualifier) {
+  if (!version || version.contains('-') || version.endsWith(qualifier)) {
+    return version
+  }
+  return "${version}${qualifier}"
+}
+
+void markStage(String stageName) {
+  env.LAST_STARTED_STAGE = stageName ?: (env.STAGE_NAME ?: '未知阶段')
+}
+
+void runTrackedSh(String command) {
+  markStage(env.STAGE_NAME ?: env.LAST_STARTED_STAGE ?: '未知阶段')
+  def logFile = failureLogFile()
+  sh """#!/usr/bin/env bash
+set -eo pipefail
+rm -f ${shellQuote(logFile)}
+{
+${command}
+} 2>&1 | tee ${shellQuote(logFile)}
+"""
+}
+
+String failureLogFile() {
+  return '.jenkins-last-stage.log'
+}
+
+String readFailureLogSnippet() {
+  def logFile = failureLogFile()
+  if (!fileExists(logFile)) {
+    return '未捕获到阶段命令日志。'
+  }
+  def rawLog = readFile(file: logFile)
+  return compactFailureLog(maskSecrets(rawLog))
+}
+
+String maskSecrets(String text) {
+  def masked = text ?: ''
+  [env.DOCKER_PUSH_USER_USR, env.DOCKER_PUSH_USER_PSW, env.NPM_TOKEN]
+    .findAll { it }
+    .each { masked = masked.replace(it.toString(), '****') }
+  return masked
+}
+
+String buildUpdateSummary(String refName) {
+  try {
+    def changeSetSummary = formatChangeSetSummary(currentBuild.changeSets)
+    if (changeSetSummary) return changeSetSummary
+  }
+  catch (Exception e) {
+    echo "⚠️ [WARNING] 读取 Jenkins change set 失败，回退到 git 摘要: ${e.message}"
+  }
+
+  def targetRef = refName ?: 'HEAD'
+  def currentCommit = safeShStdout("git rev-parse ${shellQuote(targetRef)}")
+  def previousCommit = env.GIT_PREVIOUS_SUCCESSFUL_COMMIT ?: env.GIT_PREVIOUS_COMMIT
+  if (isCommitId(previousCommit) && isCommitId(currentCommit) && previousCommit != currentCommit) {
+    def range = "${previousCommit}..${currentCommit}"
+    def count = safeShStdout("git rev-list --count ${range}")
+    def log = safeShStdout("git log --no-merges --pretty=format:%s%x09%h%x09%an -n 10 ${range}")
+    def rangeSummary = formatGitRangeSummary(log, previousCommit, currentCommit, count)
+    if (rangeSummary) return rangeSummary
+  }
+
+  def message = safeBuildMessage(targetRef)
+  def messageSummary = formatMessageSummary(message, currentCommit)
+  return messageSummary ?: '- 未获取到 SCM 更新摘要。'
+}
+
+String safeBuildMessage(String refName) {
+  try {
+    return getMessage(refName) ?: ''
+  }
+  catch (Exception e) {
+    echo "⚠️ [WARNING] 读取构建提交说明失败: ${e.message}"
+    return ''
+  }
+}
+
+String safeShStdout(String command) {
+  try {
+    return sh(script: command, returnStdout: true)?.trim() ?: ''
+  }
+  catch (Exception e) {
+    echo "⚠️ [WARNING] 执行摘要命令失败: ${command}: ${e.message}"
+    return ''
+  }
+}
+
+String getMessage(String refName) {
+  if (refName.startsWith('refs/tags/')) {
+    return gitTagMessage(refName)
+  }
+  return gitCommitMessage(refName)
+}
+
+String gitCommitId(String refName) {
+  def commitId = sh(script: "git rev-parse ${shellQuote(refName)}", returnStdout: true)?.trim()
+  return commitId
+}
+
+String gitCommitMessage(String refName) {
+  def commitId = gitCommitId(refName)
+  def message = sh(script: "git log -n1 --pretty=%B ${shellQuote(commitId)}", returnStdout: true)?.trim()
+  return message
+}
+
+@NonCPS
+String compactFailureLog(String text) {
+  def lines = (text ?: '').readLines().findAll { it?.trim() }
+  if (!lines) return '阶段命令没有输出可用日志。'
+
+  def start = Math.max(0, lines.size() - 60)
+  def snippet = lines.subList(start, lines.size()).join('\n')
+    .replace('```', "'''")
+    .trim()
+  if (snippet.size() <= 3500) return snippet
+  return snippet.substring(snippet.size() - 3500)
+}
+
+@NonCPS
+String formatChangeSetSummary(def changeSets) {
+  def entries = []
+  changeSets?.each { changeSet ->
+    changeSet.items?.each { item ->
+      def msg = firstNonBlankLine(item.msg)
+      if (msg) {
+        def commitId = item.commitId ? item.commitId.take(8) : ''
+        def author = item.author?.fullName ?: item.author?.toString() ?: ''
+        entries << [msg: msg, commitId: commitId, author: author]
+      }
+    }
+  }
+  if (!entries) return ''
+
+  def newestEntries = entries.reverse()
+  def visibleEntries = newestEntries.take(10)
+  def lines = ["- 变更提交: ${entries.size()} 条"]
+  visibleEntries.each { entry ->
+    def suffix = entry.commitId ? " (${entry.commitId}${entry.author ? ', ' + entry.author : ''})" : ''
+    lines << "- ${entry.msg}${suffix}"
+  }
+  if (entries.size() > visibleEntries.size()) {
+    lines << "- 另有 ${entries.size() - visibleEntries.size()} 条较早提交未展示"
+  }
+  return lines.join('\n')
+}
+
+@NonCPS
+String formatGitRangeSummary(String rawLog, String previousCommit, String currentCommit, String count) {
+  if (!rawLog?.trim()) return ''
+
+  def lines = [
+    "- 变更范围: ${previousCommit.take(8)}..${currentCommit.take(8)}${count ? "（${count} commits）" : ''}"
+  ]
+  rawLog.readLines().findAll { it?.trim() }.each { line ->
+    def parts = line.split('\t')
+    def msg = parts[0]?.trim()
+    if (msg) {
+      def commitId = parts.size() > 1 ? parts[1]?.trim() : ''
+      def author = parts.size() > 2 ? parts[2]?.trim() : ''
+      def suffix = commitId ? " (${commitId}${author ? ', ' + author : ''})" : ''
+      lines << "- ${msg}${suffix}"
+    }
+  }
+  return lines.join('\n')
+}
+
+@NonCPS
+String formatMessageSummary(String message, String currentCommit) {
+  def summaryLines = []
+  if (currentCommit) {
+    summaryLines << "- 当前提交: ${currentCommit.take(8)}"
+  }
+  (message ?: '')
+    .readLines()
+    .collect { it?.trim() }
+    .findAll { it && !isBuildDirectiveLine(it) }
+    .take(8)
+    .each { summaryLines << "- ${it}" }
+  return summaryLines.join('\n')
+}
+
+@NonCPS
+String firstNonBlankLine(String text) {
+  return (text ?: '').readLines().collect { it?.trim() }.find { it }
+}
+
+@NonCPS
+Boolean isBuildDirectiveLine(String line) {
+  return line ==~ /^\[\s*(publish-sdk|publish sdk)(\s*:|\s*\]).*$/
+}
+
+@NonCPS
+Boolean isCommitId(String value) {
+  return value ==~ /^[0-9a-fA-F]{7,40}$/
+}
+
+@NonCPS
+String shellQuote(String value) {
+  return "'${(value ?: '').replace("'", "'\"'\"'")}'"
+}

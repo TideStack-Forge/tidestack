@@ -1,0 +1,54 @@
+{
+  "scenario": "auth/ldap-login",
+  "testType": "e2e",
+  "suite": "smoke",
+  "mode": "e2e",
+  "runner": "testing/common/runners/playwright/browser_asset_bridge.py",
+  "browserAssets": {
+    "projectRoot": "frontends/web/main-app",
+    "contracts": [
+      "testing/integration/smoke/auth/ldap-login/contract.md"
+    ],
+    "sources": [
+      "frontends/web/main-app/src/common/auth/__tests__/flow.spec.ts",
+      "frontends/web/main-app/src/pages/login/index.vue",
+      "frontends/web/main-app/src/pages/login/callback.vue",
+      "frontends/web/main-app/src/router/internalRoutes.js"
+    ],
+    "scripts": [
+      {
+        "id": "auth-flow",
+        "script": "test:auth-flow",
+        "requiresNodeModules": true,
+        "description": "Compile and execute the main-app auth flow checks that cover LDAP/direct login mode selection, login-code exchange, and binding-path semantics.",
+        "caseIds": [
+          "LDAP-SUCCESS-001",
+          "LDAP-BIND-001",
+          "LDAP-PERM-001"
+        ]
+      }
+    ]
+  },
+  "steps": [
+    {
+      "name": "plan-browser-assets",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/smoke/auth/ldap-login/e2e.yaml --mode plan"
+    },
+    {
+      "name": "run-auth-flow-script",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/smoke/auth/ldap-login/e2e.yaml --mode run --script-id auth-flow"
+    },
+    {
+      "name": "browser-login-happy-path",
+      "run": ""
+    }
+  ],
+  "reports": {
+    "summary": "tmp/testing-evidence/auth-ldap-login",
+    "evidenceDir": "tmp/testing-evidence/auth-ldap-login"
+  },
+  "notes": [
+    "Use fixture harness first when LDAP service/runtime/frontend topology still needs bootstrapping or diagnosis.",
+    "The current browser bridge binds the scenario to the existing main-app auth-flow test asset and will surface dependency blockers such as missing node_modules."
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/error-code/{fullName}",
+  "type": "amis",
+  "title": "编辑错误码"
+}

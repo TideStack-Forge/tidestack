@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/chart",
+  "type": "amis",
+  "title": "图表"
+}

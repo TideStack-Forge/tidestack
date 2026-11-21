@@ -1,0 +1,41 @@
+{
+  "id": "lowcode/logicflow-online-debugging",
+  "title": "Logicflow Online Debugging",
+  "domain": "lowcode",
+  "testType": "integration",
+  "suite": "feature",
+  "risk": "p1",
+  "modes": [
+    "harness"
+  ],
+  "fixtures": {
+    "services": [
+      "redis",
+      "rabbitmq"
+    ],
+    "runtimes": [
+      "develop",
+      "test-app"
+    ],
+    "frontends": [
+      "logicflow-editor-static"
+    ],
+    "data": [
+      "logicflow-online-debugging"
+    ],
+    "identities": [
+      "owner",
+      "other-owner"
+    ]
+  },
+  "caseTable": "cases.md",
+  "artifacts": {
+    "contract": "contract.md",
+    "harness": "harness.playbook.md"
+  },
+  "reporting": {
+    "summaryFormat": "markdown",
+    "evidenceRoot": "tmp/testing-evidence/logicflow-online-debugging"
+  },
+  "exclusions": []
+}

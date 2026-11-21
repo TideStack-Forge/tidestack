@@ -1,0 +1,382 @@
+{
+  "name": "/system-setting/business-log",
+  "schema": {
+    "type": "page",
+    "title": "业务操作日志",
+    "body": [
+      {
+        "type": "crud",
+        "syncLocation": false,
+        "api": {
+          "method": "get",
+          "url": "/api/sys/business-log"
+        },
+        "bulkActions": [],
+        "itemActions": [],
+        "id": "u:93cf16bbdaba",
+        "perPageAvailable": [
+          5,
+          10,
+          20,
+          50,
+          100
+        ],
+        "messages": {},
+        "columns": [
+          {
+            "name": "operationTime",
+            "label": "操作日期",
+            "type": "datetime",
+            "id": "u:70dfddbdb573",
+            "placeholder": "-",
+            "format": "YYYY-MM-DD HH:mm:ss"
+          },
+          {
+            "type": "mapping",
+            "label": "级别",
+            "name": "level",
+            "id": "u:cb667263c965",
+            "map": {
+              "INFO": "一般",
+              "WARN": "警告",
+              "DANGER": "危险"
+            },
+            "placeholder": "-"
+          },
+          {
+            "type": "text",
+            "label": "模块名",
+            "name": "moduleName",
+            "id": "u:2c4ff3164f23",
+            "inline": true,
+            "placeholder": "-"
+          },
+          {
+            "type": "text",
+            "label": "操作名",
+            "name": "operation",
+            "id": "u:12730f3ac255",
+            "inline": true,
+            "placeholder": "-"
+          },
+          {
+            "type": "text",
+            "label": "日志信息",
+            "name": "summary",
+            "id": "u:a172478fb272",
+            "inline": true,
+            "placeholder": "-"
+          },
+          {
+            "type": "text",
+            "label": "业务键",
+            "name": "businessKey",
+            "id": "u:80220887c9b0",
+            "inline": true,
+            "placeholder": "-"
+          },
+          {
+            "type": "mapping",
+            "label": "操作结果",
+            "name": "operationResult",
+            "id": "u:98f3b2b0edb2",
+            "map": {
+              "0": "未知",
+              "1": "成功",
+              "2": "失败"
+            },
+            "placeholder": "-"
+          },
+          {
+            "type": "tpl",
+            "label": "操作人",
+            "id": "u:a7a383f184f1",
+            "quickEdit": false,
+            "popOver": false,
+            "copyable": false,
+            "name": "operator",
+            "tpl": "${operator} ${employee ? '<span class=\\'text-secondary\\'>(' + employee.name + ')</span>' : ''}",
+            "placeholder": "-"
+          },
+          {
+            "type": "text",
+            "label": "IP地址",
+            "name": "ipAddress",
+            "id": "u:b885d62fb3b4",
+            "placeholder": "-",
+            "inline": true
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "buttons": [
+              {
+                "label": "详情",
+                "type": "button",
+                "actionType": "dialog",
+                "level": "link",
+                "editorSetting": {
+                  "behavior": "view"
+                },
+                "dialog": {
+                  "type": "dialog",
+                  "title": "查看详情",
+                  "body": [
+                    {
+                      "type": "form",
+                      "initApi": "/api/sys/business-log/${id}",
+                      "body": [
+                        {
+                          "type": "group",
+                          "body": [
+                            {
+                              "name": "operationTime",
+                              "label": "操作日期",
+                              "type": "static-datetime",
+                              "id": "u:ff8963f0bebf",
+                              "quickEdit": false,
+                              "popOver": false,
+                              "copyable": false,
+                              "placeholder": "-",
+                              "format": "YYYY-MM-DD HH:mm:ss"
+                            },
+                            {
+                              "label": "级别",
+                              "name": "level",
+                              "type": "static-map",
+                              "id": "u:6e7515ea9502",
+                              "quickEdit": false,
+                              "popOver": false,
+                              "copyable": false,
+                              "inline": true,
+                              "map": {
+                                "INFO": "一般",
+                                "WARN": "警告",
+                                "DANGER": "危险"
+                              }
+                            }
+                          ],
+                          "id": "u:f521117bbd16"
+                        },
+                        {
+                          "type": "group",
+                          "body": [
+                            {
+                              "type": "static-text",
+                              "label": "操作人",
+                              "name": "operator",
+                              "id": "u:c482de0da65d",
+                              "quickEdit": false,
+                              "popOver": false,
+                              "copyable": false
+                            },
+                            {
+                              "type": "static-text",
+                              "label": "关联员工",
+                              "name": "employee.name",
+                              "id": "u:823c3f0b7565",
+                              "quickEdit": false,
+                              "popOver": false,
+                              "copyable": false
+                            }
+                          ],
+                          "id": "u:7267285094da"
+                        },
+                        {
+                          "type": "group",
+                          "body": [
+                            {
+                              "label": "模块名",
+                              "name": "moduleName",
+                              "type": "static",
+                              "id": "u:5081aad76604",
+                              "quickEdit": false,
+                              "popOver": false,
+                              "copyable": false,
+                              "inline": true
+                            },
+                            {
+                              "label": "操作名",
+                              "name": "operation",
+                              "type": "static",
+                              "id": "u:db4d11f418da",
+                              "quickEdit": false,
+                              "popOver": false,
+                              "copyable": false,
+                              "inline": true
+                            }
+                          ],
+                          "id": "u:0b6b63584434"
+                        },
+                        {
+                          "type": "group",
+                          "body": [
+                            {
+                              "label": "业务键",
+                              "name": "businessKey",
+                              "type": "static",
+                              "id": "u:d72ec928a737",
+                              "quickEdit": false,
+                              "popOver": false,
+                              "copyable": false,
+                              "inline": true
+                            },
+                            {
+                              "type": "static-mapping",
+                              "label": "操作结果",
+                              "name": "operationResult",
+                              "id": "u:f95ebc50d6b8",
+                              "map": {
+                                "0": "未知",
+                                "1": "成功",
+                                "2": "失败"
+                              },
+                              "quickEdit": false,
+                              "popOver": false,
+                              "copyable": false,
+                              "inline": true,
+                              "placeholder": "-"
+                            }
+                          ],
+                          "id": "u:71559ea98dc7"
+                        },
+                        {
+                          "label": "日志信息",
+                          "name": "summary",
+                          "type": "static",
+                          "id": "u:da1cf01fcbd6",
+                          "quickEdit": false,
+                          "popOver": false,
+                          "copyable": false,
+                          "inline": true
+                        },
+                        {
+                          "type": "static-json",
+                          "id": "u:4e0df928585d",
+                          "label": "数据载荷",
+                          "quickEdit": false,
+                          "popOver": false,
+                          "copyable": false,
+                          "name": "payload"
+                        },
+                        {
+                          "type": "static-json",
+                          "label": "响应内容",
+                          "id": "u:a435e6be7837",
+                          "quickEdit": false,
+                          "popOver": false,
+                          "copyable": false,
+                          "name": "responseBody"
+                        },
+                        {
+                          "label": "IP地址",
+                          "name": "ipAddress",
+                          "type": "static",
+                          "id": "u:b43bb8f1536c",
+                          "quickEdit": false,
+                          "popOver": false,
+                          "copyable": false,
+                          "inline": true
+                        },
+                        {
+                          "type": "static",
+                          "name": "userAgent",
+                          "label": "浏览器信息",
+                          "id": "u:2d3f3bf20361",
+                          "quickEdit": false,
+                          "popOver": false,
+                          "copyable": false
+                        }
+                      ],
+                      "id": "u:0bd5dfbadc96",
+                      "actions": [
+                        {
+                          "type": "submit",
+                          "label": "提交",
+                          "primary": true
+                        }
+                      ],
+                      "feat": "View",
+                      "dsType": "api",
+                      "labelAlign": "left"
+                    }
+                  ],
+                  "id": "u:f0887f3575eb",
+                  "actions": [
+                    {
+                      "type": "button",
+                      "actionType": "cancel",
+                      "label": "取消",
+                      "id": "u:0cf0ad607499"
+                    },
+                    {
+                      "type": "button",
+                      "actionType": "confirm",
+                      "label": "确定",
+                      "primary": true,
+                      "id": "u:b3937d49025d"
+                    }
+                  ],
+                  "showCloseButton": true,
+                  "closeOnOutside": false,
+                  "closeOnEsc": false,
+                  "showErrorMsg": true,
+                  "showLoading": true,
+                  "draggable": false,
+                  "size": "xl"
+                },
+                "id": "u:bf1a9b246035"
+              }
+            ],
+            "id": "u:665a174f9f8e",
+            "placeholder": "-"
+          }
+        ],
+        "filter": {
+          "id": "u:8463b11b0e7f",
+          "actions": [
+            {
+              "type": "submit",
+              "label": "搜索",
+              "primary": true,
+              "id": "u:37811cdb4226"
+            }
+          ],
+          "body": [
+            {
+              "type": "input-text",
+              "label": "模块名",
+              "name": "moduleName",
+              "id": "u:cf11bccb34df"
+            },
+            {
+              "type": "input-text",
+              "label": "操作名",
+              "name": "operation",
+              "id": "u:cd05ece2de7b"
+            },
+            {
+              "type": "input-text",
+              "label": "操作用户",
+              "name": "operator",
+              "id": "u:ff770166ce0c"
+            },
+            {
+              "type": "input-text",
+              "label": "业务键",
+              "name": "businessKey",
+              "id": "u:8316792d055a"
+            }
+          ],
+          "feat": "Insert",
+          "labelAlign": "left"
+        }
+      }
+    ],
+    "id": "u:ae9ebde9ad77",
+    "asideResizor": false,
+    "pullRefresh": {
+      "disabled": true
+    }
+  }
+}

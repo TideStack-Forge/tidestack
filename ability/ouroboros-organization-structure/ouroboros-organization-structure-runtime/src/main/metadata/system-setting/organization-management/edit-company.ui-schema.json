@@ -1,0 +1,54 @@
+{
+  "name": "/system-setting/organization-management/edit-company",
+  "schema": {
+    "type": "form",
+    "title": "",
+    "mode": "horizontal",
+    "initApi": {
+      "url": "/api/organization/companies/${id}",
+      "method": "get"
+    },
+    "api": {
+      "url": "/api/organization/companies/${id}",
+      "method": "put"
+    },
+    "body": [
+      {
+        "name": "name",
+        "type": "input-text",
+        "label": "组织名称",
+        "required": true,
+        "placeholder": "请输入组织名称",
+        "clearable": true,
+        "validations": {
+          "maxLength": 100,
+          "minLength": 1
+        }
+      },
+      {
+        "name": "adminLevel",
+        "type": "select",
+        "label": "行政级别",
+        "required": true,
+        "clearable": true,
+        "labelField": "name",
+        "valueField": "code",
+        "source": {
+          "method": "get",
+          "url": "/api/admin-level?scope=ORG&enabled=true"
+        }
+      },
+      {
+        "name": "description",
+        "type": "textarea",
+        "label": "组织描述",
+        "placeholder": "请输入组织描述",
+        "clearable": true,
+        "validations": {
+          "maxLength": 500
+        }
+      }
+    ],
+    "wrapWithPanel": false
+  }
+}

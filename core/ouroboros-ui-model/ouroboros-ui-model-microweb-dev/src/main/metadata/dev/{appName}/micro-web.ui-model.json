@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/micro-web",
+  "type": "amis",
+  "title": "微前端模型管理"
+}

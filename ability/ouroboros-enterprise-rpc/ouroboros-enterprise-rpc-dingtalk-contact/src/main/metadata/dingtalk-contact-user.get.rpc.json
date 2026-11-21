@@ -1,0 +1,36 @@
+{
+  "name": "dingtalk.contact.user.get",
+  "title": "钉钉读取成员详情",
+  "type": "OpenAPI",
+  "isEnabled": true,
+  "authCredential": "dingtalk.application-token",
+  "description": "userid 与自建应用登录/通知使用同一企业成员 ID；应用通讯录成员读取权限及可见范围",
+  "timeout": 10000,
+  "retry": 0,
+  "retrySafe": true,
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "userid": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "userid"
+    ]
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://oapi.dingtalk.com/topapi/v2/user/get",
+    "parameters": [
+      {
+        "in": "BODY",
+        "name": "userid",
+        "value": "${userid}",
+        "required": true
+      }
+    ]
+  },
+  "group": "钉钉/通讯录"
+}

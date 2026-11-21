@@ -1,0 +1,271 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "AWF_BM_SEED_V1",
+  "generatedAt": "2026-01-01T00:00:00Z",
+  "businessModel": {
+    "id": "AWF_BM_EXPENSE_REQUEST",
+    "name": "awf-expense-request",
+    "title": "AWF Expense Request",
+    "description": "Approval workflow regression form for expense request scenarios",
+    "isEnabled": true,
+    "apis": {
+      "search": {
+        "isEnabled": true
+      },
+      "getOne": {
+        "isEnabled": true
+      },
+      "add": {
+        "isEnabled": true
+      },
+      "update": {
+        "isEnabled": true
+      },
+      "delete": {
+        "isEnabled": true
+      }
+    },
+    "views": {
+      "index": {
+        "isEnabled": true,
+        "isAuto": true
+      },
+      "add": {
+        "isEnabled": true,
+        "mode": "dialog",
+        "isAuto": true,
+        "layoutType": "horizontal",
+        "labelWidth": 120
+      },
+      "edit": {
+        "isEnabled": true,
+        "mode": "dialog",
+        "isAuto": true,
+        "layoutType": "horizontal",
+        "labelWidth": 120
+      },
+      "detail": {
+        "isEnabled": true,
+        "mode": "dialog",
+        "isAuto": true,
+        "layoutType": "horizontal",
+        "labelWidth": 120
+      }
+    },
+    "accessControl": {
+      "search": {
+        "isEnabled": false,
+        "fieldControl": false,
+        "filters": {
+          "$byEmployee": false,
+          "$byDepartment": false,
+          "$byCompany": false
+        }
+      },
+      "add": {
+        "isEnabled": false,
+        "fieldControl": false
+      },
+      "update": {
+        "isEnabled": false,
+        "fieldControl": false,
+        "filters": {
+          "$byEmployee": false,
+          "$byDepartment": false,
+          "$byCompany": false
+        }
+      },
+      "delete": {
+        "isEnabled": false,
+        "filters": {
+          "$byEmployee": false,
+          "$byDepartment": false,
+          "$byCompany": false
+        }
+      }
+    },
+    "fields": [
+      {
+        "id": "AWF_FIELD_ID",
+        "name": "id",
+        "title": "ID",
+        "fieldType": "SnowflakePrimaryKey",
+        "type": "雪花主键",
+        "required": true,
+        "isRequired": true,
+        "isPrimaryKey": true
+      },
+      {
+        "id": "AWF_FIELD_REQUEST_NO",
+        "name": "requestNo",
+        "title": "Request Number",
+        "fieldType": "Text",
+        "type": "单行文本",
+        "required": true,
+        "isRequired": true,
+        "validations": {
+          "pattern": "^AWF-REQ-[0-9]{4}$",
+          "maxLength": 20
+        }
+      },
+      {
+        "id": "AWF_FIELD_WORKFLOW_STATUS",
+        "name": "workflowStatus",
+        "title": "Workflow Status",
+        "fieldType": "Text",
+        "type": "单行文本",
+        "required": false,
+        "isRequired": false,
+        "validations": {
+          "maxLength": 32
+        }
+      },
+      {
+        "id": "AWF_FIELD_APPLICANT_NAME",
+        "name": "applicantName",
+        "title": "Applicant Name",
+        "fieldType": "Text",
+        "type": "单行文本",
+        "required": true,
+        "isRequired": true,
+        "validations": {
+          "minLength": 2,
+          "maxLength": 64
+        }
+      },
+      {
+        "id": "AWF_FIELD_DEPARTMENT_CODE",
+        "name": "departmentCode",
+        "title": "Department Code",
+        "fieldType": "Text",
+        "type": "单行文本",
+        "required": true,
+        "isRequired": true,
+        "validations": {
+          "enum": [
+            "AWF-DEPT-ENGINEERING",
+            "AWF-DEPT-FINANCE",
+            "AWF-DEPT-LEGAL"
+          ]
+        }
+      },
+      {
+        "id": "AWF_FIELD_AMOUNT",
+        "name": "amount",
+        "title": "Amount",
+        "fieldType": "Number",
+        "type": "浮点数字",
+        "required": true,
+        "isRequired": true,
+        "validations": {
+          "minimum": 1,
+          "maximum": 1000000,
+          "precision": 2
+        }
+      },
+      {
+        "id": "AWF_FIELD_CURRENCY",
+        "name": "currency",
+        "title": "Currency",
+        "fieldType": "Text",
+        "type": "单行文本",
+        "required": true,
+        "isRequired": true,
+        "defaultValue": "CNY",
+        "validations": {
+          "enum": [
+            "CNY",
+            "USD",
+            "EUR"
+          ]
+        }
+      },
+      {
+        "id": "AWF_FIELD_URGENT",
+        "name": "urgent",
+        "title": "Urgent",
+        "fieldType": "Boolean",
+        "type": "单选",
+        "required": true,
+        "isRequired": true,
+        "defaultValue": false
+      },
+      {
+        "id": "AWF_FIELD_REASON",
+        "name": "reason",
+        "title": "Reason",
+        "fieldType": "LongText",
+        "type": "多行文本",
+        "required": true,
+        "isRequired": true,
+        "validations": {
+          "minLength": 8,
+          "maxLength": 500
+        }
+      },
+      {
+        "id": "AWF_FIELD_REQUEST_DATE",
+        "name": "requestDate",
+        "title": "Request Date",
+        "fieldType": "Date",
+        "type": "日期",
+        "required": true,
+        "isRequired": true
+      }
+    ],
+    "workflow": {
+      "isEnabled": true,
+      "startMode": "auto",
+      "bindings": [
+        {
+          "key": "default",
+          "processId": "AWF_FLOW_SINGLE_L1",
+          "statusField": "workflowStatus",
+          "statusMap": {
+            "draft": {
+              "code": "DRAFT",
+              "label": "草稿"
+            },
+            "submitted": {
+              "code": "SUBMITTED",
+              "label": "已提交"
+            },
+            "pending": {
+              "code": "PENDING",
+              "label": "待开始"
+            },
+            "processing": {
+              "code": "PROCESSING",
+              "label": "审批中"
+            },
+            "suspended": {
+              "code": "SUSPENDED",
+              "label": "已暂停"
+            },
+            "withdrawn": {
+              "code": "WITHDRAWN",
+              "label": "已撤回"
+            },
+            "approved": {
+              "code": "APPROVED",
+              "label": "通过"
+            },
+            "veto": {
+              "code": "VETO",
+              "label": "否决"
+            },
+            "canceled": {
+              "code": "CANCELED",
+              "label": "撤销"
+            },
+            "terminated": {
+              "code": "TERMINATED",
+              "label": "终止"
+            }
+          },
+          "trigger": "manual"
+        }
+      ]
+    }
+  }
+}

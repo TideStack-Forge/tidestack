@@ -1,0 +1,29 @@
+{
+  "id": "notification/runtime-management",
+  "title": "通知运行时配置管理回归",
+  "domain": "notification",
+  "testType": "integration",
+  "suite": "regression",
+  "risk": "p0",
+  "modes": ["harness"],
+  "fixtures": {
+    "services": ["isolated-mysql", "isolated-redis"],
+    "runtimes": ["notification-management-controller-fixture", "two-mothership-jvms"],
+    "frontends": ["main-app-production-amis-schema", "built-main-app-shell"],
+    "data": ["deployed-alpha-template", "random-test-tables", "legacy-schema-sample", "runtime-acceptance-v1-v2-v3"],
+    "identities": ["fixture-admin", "real-password-admin", "template-only-role", "unauthenticated", "ungranted-platform-user"]
+  },
+  "caseTable": "cases.md",
+  "reporting": {
+    "summaryFormat": "markdown",
+    "evidenceRoot": "tmp/testing-evidence/notification-runtime-management"
+  },
+  "exclusions": ["external-identity-provider", "external-channel-delivery", "production-data-migration", "production-deployment"],
+  "notes": [
+    "Browser fixture uses real controllers, use cases, TypedDataModel and database transactions; its fixed identity is not production authentication.",
+    "Authorization is checked separately through packaged metadata, the original AuthorityCenter and authorization filter/evaluator.",
+    "Full application acceptance uses the built shell, actual password authentication and two independent Mothership JVMs sharing isolated MySQL and Redis.",
+    "Legacy migration uses a backed-up schema sample, not the previous binary or production data. Local-only caches do not have cluster visibility.",
+    "The user excludes actual external delivery; no notification send API or vendor connection is exercised."
+  ]
+}

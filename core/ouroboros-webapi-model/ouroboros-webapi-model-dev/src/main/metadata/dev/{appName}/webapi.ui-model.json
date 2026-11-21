@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/webapi",
+  "type": "amis",
+  "title": "后端接口"
+}

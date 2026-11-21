@@ -1,0 +1,73 @@
+{
+  "name": "UserProfileWidget",
+  "title": "用户信息",
+  "description": "显示用户信息",
+  "sizeConstraints": {
+    "min": {
+      "cols": 4,
+      "rows": 10
+    },
+    "max": {
+      "cols": 24,
+      "rows": 30
+    }
+  },
+  "defaultSize": {
+    "cols": 6,
+    "rows": 12
+  },
+  "defaultConfig": {
+    "showHeader": true,
+    "title": "用户信息"
+  },
+  "defaultStyleConfig": {
+    "showBorder": true,
+    "showShadow": true
+  },
+  "thumbSchema": {
+    "type": "container",
+    "body": [
+      {
+        "type": "static-text",
+        "mode": "horizontal",
+        "label": "姓名",
+        "value": "张三"
+      },
+      {
+        "type": "static-text",
+        "mode": "horizontal",
+        "label": "公司",
+        "value": "-"
+      },
+      {
+        "type": "static-text",
+        "mode": "horizontal",
+        "label": "部门",
+        "value": "-"
+      }
+    ]
+  },
+  "schemaTpl": {
+    "type": "container",
+    "body": [
+      {
+        "type": "static-text",
+        "mode": "horizontal",
+        "label": "姓名",
+        "value": "${SystemContext.employee.name}"
+      },
+      {
+        "type": "static-text",
+        "mode": "horizontal",
+        "label": "公司",
+        "value": "${SystemContext.company.name}"
+      },
+      {
+        "type": "static-text",
+        "mode": "horizontal",
+        "label": "部门",
+        "value": "${SystemContext.department.name}"
+      }
+    ]
+  }
+}

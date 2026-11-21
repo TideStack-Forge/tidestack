@@ -1,0 +1,15 @@
+{
+  "editorId": "error-code",
+  "editorName": "TideStack Error Code Metadata Editor",
+  "editorNameKey": "customEditor.errorCode",
+  "metadataType": "error-code",
+  "schemaName": "error-code",
+  "viewType": "tidestack.metadataEditor.errorCode",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.errorCode",
+  "fileMatchPatterns": [
+    "error-codes.error.json",
+    "**/src/main/metadata/error-codes.error.json",
+    "**/resources/META-INF/ouroboros/metadata/error-codes.error.json"
+  ],
+  "priority": "default"
+}

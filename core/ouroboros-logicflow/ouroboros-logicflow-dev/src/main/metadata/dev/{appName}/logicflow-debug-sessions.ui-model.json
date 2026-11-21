@@ -1,0 +1,6 @@
+{
+  "path": "/dev/{appName}/logicflow/debug/sessions",
+  "type": "amis",
+  "schemaId": "/dev/{appName}/logicflow-debug-sessions",
+  "title": "逻辑流调试会话"
+}

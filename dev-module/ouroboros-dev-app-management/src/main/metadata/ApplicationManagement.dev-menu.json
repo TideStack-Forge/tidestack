@@ -1,0 +1,8 @@
+{
+  "fullName": "ApplicationManagement",
+  "icon": "fas fa-cog",
+  "title": "应用管理",
+  "placement": "main",
+  "stage": "dev",
+  "order": 90
+}

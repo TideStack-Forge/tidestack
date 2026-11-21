@@ -1,0 +1,7 @@
+{
+  "name": "package-json",
+  "type": "app",
+  "entry": "/package-json-entry",
+  "publicPath": "/package-json-public",
+  "packageName": "package-json.zip"
+}

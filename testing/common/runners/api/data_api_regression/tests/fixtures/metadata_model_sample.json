@@ -1,0 +1,73 @@
+{
+  "namespace": "buy",
+  "name": "waybillOrder",
+  "title": "采购运单",
+  "isEnabled": true,
+  "fields": [
+    {
+      "name": "id",
+      "title": "ID",
+      "type": "String",
+      "isPrimaryKey": true
+    },
+    {
+      "name": "lineDate",
+      "title": "业务日期",
+      "type": "Date"
+    },
+    {
+      "name": "customerId",
+      "title": "客户",
+      "type": "String"
+    }
+  ],
+  "views": {
+    "index": {
+      "defaultFilters": [
+        {
+          "type": "field",
+          "fieldName": "companyId",
+          "filterOperator": "EQ",
+          "filterType": "custom"
+        },
+        {
+          "type": "field",
+          "fieldName": "lineDate",
+          "filterOperator": "BETWEEN",
+          "filterType": "input-date-range"
+        },
+        {
+          "type": "relation",
+          "fieldName": "customerId",
+          "filterOperator": "IN",
+          "filterType": "select"
+        }
+      ]
+    }
+  },
+  "apis": {
+    "search": {
+      "isEnabled": true,
+      "beforeScript": "if ($1.params.companyId == null) { throw 'missing'; }",
+      "populate": [
+        "detailInfo",
+        "loadArea"
+      ],
+      "detail": {
+        "children": [
+          "detailInfo"
+        ]
+      }
+    },
+    "getOne": {
+      "isEnabled": true,
+      "populate": [
+        "detailInfo"
+      ]
+    },
+    "add": {
+      "isEnabled": true,
+      "beforeScript": "return $0"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "fullName": "systemSetting.dynamicForm.form",
+  "title": "动态表单-表单填写",
+  "apis": [
+    "GET /api/dynamic-form/{name}/data/{id}",
+    "POST /api/dynamic-form/{name}/data",
+    "PUT /api/dynamic-form/{name}/data/{id}"
+  ],
+  "uiViews": [
+    "/dynamic-form/form-page/{name}",
+    "/dynamic-form/form/{name}"
+  ],
+  "menuItems": []
+}

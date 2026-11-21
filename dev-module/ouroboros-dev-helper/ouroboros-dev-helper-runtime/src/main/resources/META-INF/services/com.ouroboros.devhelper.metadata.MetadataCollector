@@ -1,0 +1,16 @@
+com.ouroboros.devhelper.metadata.collector.AuthorityMetadataCollector
+com.ouroboros.devhelper.metadata.collector.BusinessModelMetadataCollector
+com.ouroboros.devhelper.metadata.collector.ConfigurationMetadataCollector
+com.ouroboros.devhelper.metadata.collector.DataModelMetadataCollector
+com.ouroboros.devhelper.metadata.collector.DictMetadataCollector$Proxy
+com.ouroboros.devhelper.metadata.collector.FieldTypeDefinitionMetadataCollector
+com.ouroboros.devhelper.metadata.collector.LogicflowMetadataCollector
+com.ouroboros.devhelper.metadata.collector.MenuMetadataCollector
+com.ouroboros.devhelper.metadata.collector.NotificationTemplateMetadataCollector
+com.ouroboros.devhelper.metadata.collector.RPCAuthMetadataCollector
+com.ouroboros.devhelper.metadata.collector.PRCMetadataCollector
+com.ouroboros.devhelper.metadata.collector.ScriptIntelligenceMetadataCollector
+com.ouroboros.devhelper.metadata.collector.UIModelMetadataCollector
+com.ouroboros.devhelper.metadata.collector.UISchemaMetadataCollector
+com.ouroboros.devhelper.metadata.collector.WebAPIModelMetadataCollector
+com.ouroboros.devhelper.metadata.collector.AppModuleMetadataCollector

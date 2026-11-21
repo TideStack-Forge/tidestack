@@ -1,0 +1,46 @@
+{
+  "name": "call-flow-basic",
+  "description": "Caller flow that invokes the test child flow",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "string",
+  "entryNode": "source",
+  "exitNode": "callChild",
+  "nodes": [
+    {
+      "name": "source",
+      "type": "const",
+      "description": "",
+      "dataType": "string",
+      "value": "ignored-input"
+    },
+    {
+      "name": "callChild",
+      "type": "callFlow",
+      "description": "",
+      "flowName": "child-return-const",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "source",
+      "sourceOutputPort": 0,
+      "targetNode": "callChild",
+      "targetInputPort": 0
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "name": "/system-setting/user-management/edit",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "mode": "horizontal",
+    "body": [
+      {
+        "label": "角色",
+        "name": "roles",
+        "type": "select",
+        "multiple": true,
+        "labelField": "name",
+        "searchable": true,
+        "size": "full",
+        "valueField": "id",
+        "checkAll": false,
+        "joinValues": false,
+        "extractValue": true,
+        "source": {
+          "url": "/api/sys/role",
+          "method": "get"
+        }
+      }
+    ],
+    "initApi": {
+      "url": "/api/sys/user/${userIdentity}/role",
+      "method": "get",
+      "responseData": {
+        "roles": "${items|pick:id}"
+      },
+      "autoRefresh": false
+    },
+    "api": {
+      "url": "/api/sys/user/${userIdentity}/role",
+      "method": "put",
+      "data": "${roles}"
+    },
+    "wrapWithPanel": false
+  }
+}

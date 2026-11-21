@@ -1,0 +1,14 @@
+{
+  "name": "jar-create-order",
+  "httpMethod": "POST",
+  "url": "/jar/orders",
+  "moduleName": "Jar Orders",
+  "operation": "Create Jar Order",
+  "level": "INFO",
+  "businessKeyName": "id",
+  "summaryTemplate": "Create jar order ${request.id}",
+  "sensitiveFields": [
+    "password"
+  ],
+  "shouldSaveResponseBody": true
+}

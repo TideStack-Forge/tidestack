@@ -1,0 +1,78 @@
+{
+  "type": "ouroborosExceptions",
+  "label": "抛出异常",
+  "icon": "exception",
+  "shape": "rect",
+  "iconBg": "orange",
+  "description": "抛出异常",
+  "group": "其他",
+  "order": 10001,
+  "isTerminal": true,
+  "terminalKind": "exception",
+  "svgs": {
+    "exception": "<svg t=\"1716282370105\" class=\"icon\" viewBox=\"0 0 1217 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"2649\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"356.54296875\" height=\"300\"><path d=\"M181.815745 428.81072c23.155779-23.155779 11.149079-79.758794-34.304857-125.21273S45.453936 250.425461 23.155779 272.723618s-11.149079 79.758794 34.304858 125.21273 102.056951 56.603015 124.355108 30.874372zM318.177554 625.20603v284.730318h-257.286432a56.603015 56.603015 0 0 0 0 114.063652h1087.463987a56.603015 56.603015 0 1 0 0-114.063652h-257.286432V625.20603a284.730318 284.730318 0 1 0-568.603015 0zM600.335008 0c-34.304858 0-56.603015 45.453936-56.603015 114.063652s24.871022 113.20603 56.603015 113.20603 56.603015-45.453936 56.603015-114.063652S637.21273 0 600.335008 0zM1171.510888 397.936348c45.453936-45.453936 56.603015-102.056951 34.304857-125.21273s-79.758794-11.149079-125.21273 34.304858-57.460637 102.056951-34.304858 121.782244 79.758794 14.579564 125.212731-30.874372z\" p-id=\"2650\"></path></svg>"
+  },
+  "scaffold": {
+    "type": "ouroborosExceptions",
+    "name": "抛出异常",
+    "exceptionType": "BusinessException",
+    "exceptionCode": -1,
+    "exceptionMessage": "",
+    "inputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "any"
+      }
+    ],
+    "outputPorts": []
+  },
+  "portRules": {
+    "input": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": null
+    },
+    "output": {
+      "ruleType": "limit",
+      "min": 0,
+      "max": 0
+    }
+  },
+  "properties": [
+    {
+      "type": "select",
+      "name": "exceptionType",
+      "label": "异常类型",
+      "options": [
+        {
+          "label": "业务异常",
+          "value": "BusinessException"
+        },
+        {
+          "label": "平台异常",
+          "value": "PlatformException"
+        },
+        {
+          "label": "内部错误（致命错误）",
+          "value": "InternalException"
+        }
+      ],
+      "value": "BusinessException",
+      "required": true
+    },
+    {
+      "type": "input-number",
+      "name": "exceptionCode",
+      "label": "异常代码",
+      "value": -1,
+      "validate": "return value == 0 ? '异常代码不能为0' : null"
+    },
+    {
+      "type": "input-text",
+      "name": "exceptionMessage",
+      "label": "异常信息",
+      "required": true
+    }
+  ]
+}

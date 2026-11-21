@@ -1,0 +1,21 @@
+[
+  {
+    "fullName": "UserDashboard",
+    "title": "个人门户",
+    "menu": "UserDashboard",
+    "authorities": [
+      "UserDashboard"
+    ],
+    "order": -100
+  },
+  {
+    "fullName": "systemSetting.UserDashboardTemplateManage",
+    "title": "门户模板",
+    "menu": "systemSetting.UserDashboardTemplateManage",
+    "authorities": [
+      "systemSetting.UserDashboardTemplateManage"
+    ],
+    "order": 20,
+    "parent": "systemSetting.portalAndInterface"
+  }
+]

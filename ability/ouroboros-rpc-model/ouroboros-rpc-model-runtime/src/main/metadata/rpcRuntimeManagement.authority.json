@@ -1,0 +1,20 @@
+{
+  "fullName": "systemSetting.rpcRuntimeManagement",
+  "title": "RPC 运行时管理",
+  "apis": [
+    "GET /api/sys/rpc-runtime",
+    "GET /api/sys/rpc-runtime/{modelName}",
+    "PUT /api/sys/rpc-runtime/{modelName}/policy",
+    "POST /api/sys/rpc-runtime/{modelName}/actions/health-check",
+    "POST /api/sys/rpc-runtime/{modelName}/actions/reset-status",
+    "POST /api/sys/rpc-runtime/{modelName}/actions/repair-policy",
+    "POST /api/sys/rpc-runtime/{modelName}/actions/test-invoke"
+  ],
+  "uiViews": [
+    "/system-setting/rpc-runtime-management",
+    "/system-setting/rpc-runtime-detail"
+  ],
+  "menuItems": [
+    "systemSetting.rpcRuntimeManagement"
+  ]
+}

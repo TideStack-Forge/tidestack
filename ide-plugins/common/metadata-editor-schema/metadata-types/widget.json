@@ -1,0 +1,106 @@
+{
+  "type": "widget",
+  "fileSuffix": ".widget.json",
+  "displayName": "组件定义",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.widget.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/metadata",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.widget.json",
+    "fields": [
+      {
+        "name": "name",
+        "label": "名称",
+        "documentPath": [
+          "name"
+        ],
+        "required": true,
+        "defaultFromPath": "dot-name"
+      },
+      {
+        "name": "title",
+        "label": "标题",
+        "documentPath": [
+          "title"
+        ],
+        "required": true,
+        "defaultFromPath": "title"
+      },
+      {
+        "name": "description",
+        "label": "描述",
+        "documentPath": [
+          "description"
+        ]
+      },
+      {
+        "name": "category",
+        "label": "分类",
+        "documentPath": [
+          "category"
+        ]
+      }
+    ],
+    "document": {
+      "name": "ExampleWidget",
+      "title": "示例组件",
+      "description": "示例组件定义",
+      "category": "自定义",
+      "allowHeader": true,
+      "allowFooter": false,
+      "defaultSize": {
+        "cols": 6,
+        "rows": 6
+      },
+      "defaultConfig": {},
+      "defaultStyleConfig": {},
+      "configFormItems": [],
+      "schemaTpl": {}
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "组件定义",
+    "actions": [],
+    "body": [
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "名称",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "title",
+        "label": "标题",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "category",
+        "label": "分类"
+      },
+      {
+        "type": "switch",
+        "name": "allowHeader",
+        "label": "允许头部"
+      },
+      {
+        "type": "switch",
+        "name": "allowFooter",
+        "label": "允许底部"
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "描述",
+        "minRows": 3
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/widget.schema.json"
+}

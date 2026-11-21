@@ -1,0 +1,186 @@
+{
+  "name": "/dev/{appName}/field-types/add",
+  "schema": {
+    "api": {
+      "method": "post",
+      "data": {
+        "&": "${schema|toJson}"
+      },
+      "messages": {
+        "success": "保存成功"
+      },
+      "url": "/api/dev/${appName}/field"
+    },
+    "mode": "horizontal",
+    "type": "form",
+    "className": "h-full flex flex-col",
+    "title": false,
+    "data": {
+      "schema": {
+        "dataType": {},
+        "ui": {},
+        "validations": {},
+        "validationErrors": {},
+        "paramsUiSchema": []
+      }
+    },
+    "body": [
+      {
+        "type": "tabs",
+        "tabsMode": "simple",
+        "tabs": [
+          {
+            "title": "基本信息",
+            "tab": [
+              {
+                "type": "group",
+                "body": [
+                  {
+                    "type": "input-text",
+                    "name": "schema.name",
+                    "label": "字段类型名",
+                    "required": true
+                  },
+                  {
+                    "type": "input-text",
+                    "name": "schema.label",
+                    "label": "显示名称",
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "group",
+                "body": [
+                  {
+                    "type": "input-number",
+                    "name": "schema.order",
+                    "label": "排序",
+                    "placeholder": "数字越小越靠前"
+                  },
+                  {
+                    "type": "switch",
+                    "name": "schema.isPrimaryKeyType",
+                    "label": "主键字段类型"
+                  }
+                ]
+              },
+              {
+                "type": "textarea",
+                "name": "schema.description",
+                "label": "说明",
+                "minRows": 3,
+                "maxRows": 6
+              },
+              {
+                "type": "script-editor",
+                "name": "schema.primaryKeyGenerator",
+                "label": "主键生成器",
+                "visibleOn": "${schema.isPrimaryKeyType}",
+                "description": "仅主键字段类型需要配置",
+                "codeSite": "field-type.template",
+                "codePointer": "/schema/primaryKeyGenerator",
+                "codeResourceType": "field-type",
+                "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+                "language": "template"
+              }
+            ]
+          },
+          {
+            "title": "数据与校验",
+            "tab": [
+              {
+                "type": "json-data-editor",
+                "name": "schema.dataType",
+                "label": "数据类型",
+                "allowValueTypes": "object",
+                "codeContext": {
+                  "codeSite": "field-type.template",
+                  "codePointer": "/schema/dataType",
+                  "codeResourceType": "field-type",
+                  "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+                  "language": "template"
+                }
+              },
+              {
+                "type": "json-data-editor",
+                "name": "schema.validations",
+                "label": "校验规则",
+                "allowValueTypes": "object"
+              },
+              {
+                "type": "json-data-editor",
+                "name": "schema.validationErrors",
+                "label": "校验提示",
+                "allowValueTypes": "object"
+              }
+            ]
+          },
+          {
+            "title": "参数定义",
+            "tab": [
+              {
+                "type": "ui-schema-editor",
+                "name": "schema.paramsUiSchema",
+                "label": "参数 UI Schema",
+                "multiple": true,
+                "switchLayout": false,
+                "previewText": "参数项预览",
+                "placeholder": "点击右下角按钮配置字段参数项",
+                "description": "用于字段配置面板，并会从每个参数项的 value 提取默认值"
+              }
+            ]
+          },
+          {
+            "title": "界面渲染",
+            "tab": [
+              {
+                "type": "ui-schema-editor",
+                "name": "schema.ui.input",
+                "label": "录入组件",
+                "switchLayout": false,
+                "placeholder": "点击右下角按钮配置录入组件",
+                "description": "编辑态组件定义",
+                "codeContext": {
+                  "codeSite": "field-type.template",
+                  "codePointer": "/schema/ui/input",
+                  "codeResourceType": "field-type",
+                  "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+                  "language": "template"
+                }
+              },
+              {
+                "type": "ui-schema-editor",
+                "name": "schema.ui.display",
+                "label": "展示组件",
+                "switchLayout": false,
+                "placeholder": "点击右下角按钮配置展示组件",
+                "description": "只读态组件定义",
+                "codeContext": {
+                  "codeSite": "field-type.template",
+                  "codePointer": "/schema/ui/display",
+                  "codeResourceType": "field-type",
+                  "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+                  "language": "template"
+                }
+              }
+            ]
+          },
+          {
+            "title": "完整定义",
+            "tab": [
+              {
+                "type": "json-data-editor",
+                "name": "schema",
+                "label": "完整定义",
+                "allowValueTypes": "object",
+                "description": "直接编辑完整 JSON 定义，未在结构化表单中展示的字段也会被保留"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "wrapWithPanel": false
+  }
+}

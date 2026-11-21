@@ -1,0 +1,16 @@
+{
+  "fullName": "systemSetting.integrationManagement.connections.login.settings",
+  "title": "配置外部登录公共设置",
+  "delegable": false,
+  "apis": [
+    "GET /api/sys/integration-management/sections/{section}",
+    "GET /api/sys/external-auth/settings",
+    "PUT /api/sys/external-auth/settings"
+  ],
+  "uiViews": [
+    "/system-setting/integration-management"
+  ],
+  "menuItems": [
+    "systemSetting.integrationManagement"
+  ]
+}

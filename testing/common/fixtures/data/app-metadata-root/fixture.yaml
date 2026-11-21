@@ -1,0 +1,68 @@
+{
+  "id": "data/app-metadata-root",
+  "title": "App Metadata Root",
+  "class": "data",
+  "capabilities": [
+    "metadata-repository",
+    "ui-schema-source",
+    "business-model-source"
+  ],
+  "lifecycle": {
+    "up": "",
+    "check": "verify appRoot resolves from declared input sources and contains business-model directory",
+    "reset": "",
+    "down": ""
+  },
+  "inputs": [
+    {
+      "name": "appRoot",
+      "required": true,
+      "description": "Application metadata root used by low-code/runtime regression. This should be the root directory that contains business-model, ui-schema, menu-model and related app metadata.",
+      "sources": [
+        {
+          "kind": "cli",
+          "field": "app_root",
+          "label": "--app-root"
+        },
+        {
+          "kind": "env",
+          "name": "OB_TEST_APP_ROOT"
+        },
+        {
+          "kind": "repo",
+          "name": "app-metadata",
+          "label": "--repo app-metadata=/abs/path/to/repo"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "appRoot",
+      "fromInput": "appRoot"
+    },
+    {
+      "name": "businessModelDir",
+      "fromOutput": "appRoot",
+      "join": "business-model"
+    },
+    {
+      "name": "uiSchemaDir",
+      "fromOutput": "appRoot",
+      "join": "ui-schema"
+    }
+  ],
+  "healthChecks": [
+    {
+      "name": "app-root-exists",
+      "expect": "resolved appRoot exists and contains the expected metadata subdirectories"
+    }
+  ],
+  "prerequisites": [],
+  "notes": [
+    "This is a generic fixture for any application metadata root. It must not hardcode a project-specific repository path.",
+    "Preferred injection mode is an explicit repository binding such as --repo app-metadata=/abs/path/to/repo.",
+    "Typical sources include a checked-out app metadata repository, an exported app package materialized on disk, or a prepared local copy for one-off debugging.",
+    "Generated UI schema may still be runtime-only; business-model and persisted UI schema are only part of the observable asset truth."
+  ]
+}

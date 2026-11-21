@@ -1,0 +1,102 @@
+{
+  "name": "/system-setting/resource-management/upload",
+  "schema": {
+    "type": "page",
+    "title": "上传资源覆盖",
+    "body": {
+      "type": "form",
+      "name": "runtimeResourceUploadForm",
+      "reload": "resourceList",
+      "api": {
+        "method": "post",
+        "url": "/api/sys/resource/runtime/content"
+      },
+      "onEvent": {
+        "submitSucc": {
+          "actions": [
+            {
+              "actionType": "closeDrawer"
+            },
+            {
+              "actionType": "reload",
+              "componentName": "resourceList",
+              "args": {
+                "resetPage": true
+              },
+              "dataMergeMode": "merge",
+              "data": {
+                "scope": "${scope || formData.scope}"
+              }
+            }
+          ]
+        }
+      },
+      "body": [
+        {
+          "type": "static",
+          "name": "scope",
+          "label": "范围",
+          "visibleOn": "${scope}"
+        },
+        {
+          "type": "static",
+          "name": "key",
+          "label": "资源 Key",
+          "visibleOn": "${key}"
+        },
+        {
+          "type": "select",
+          "name": "scope",
+          "label": "范围",
+          "required": true,
+          "value": "frontend",
+          "visibleOn": "${!scope}",
+          "options": [
+            {
+              "label": "前端",
+              "value": "frontend"
+            },
+            {
+              "label": "后端",
+              "value": "backend"
+            }
+          ]
+        },
+        {
+          "type": "input-text",
+          "name": "key",
+          "label": "资源 Key",
+          "required": true,
+          "visibleOn": "${!key}",
+          "placeholder": "例如：templates/mail/welcome.html"
+        },
+        {
+          "type": "hidden",
+          "name": "scope",
+          "value": "${scope}",
+          "visibleOn": "${scope}"
+        },
+        {
+          "type": "hidden",
+          "name": "key",
+          "value": "${key}",
+          "visibleOn": "${key}"
+        },
+        {
+          "type": "input-file",
+          "name": "file",
+          "label": "覆盖文件",
+          "required": true,
+          "accept": "*"
+        }
+      ],
+      "actions": [
+        {
+          "type": "submit",
+          "label": "上传覆盖",
+          "level": "primary"
+        }
+      ]
+    }
+  }
+}

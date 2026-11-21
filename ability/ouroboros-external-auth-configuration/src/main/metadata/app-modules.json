@@ -1,0 +1,12 @@
+[
+  {
+    "fullName": "systemSetting.integrationManagement.connections.login",
+    "title": "外部登录",
+    "parent": "systemSetting.integrationManagement.connections",
+    "authorities": [
+      "systemSetting.integrationManagement.connections.login.configure",
+      "systemSetting.integrationManagement.connections.login.settings"
+    ],
+    "order": 10
+  }
+]

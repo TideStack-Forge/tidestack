@@ -1,0 +1,7 @@
+{
+  "url": "/approval-workflow/external-result-tracking",
+  "fullName": "systemSetting.externalResultTracking",
+  "title": "外部结果跟踪",
+  "icon": "icon-approval-workflow",
+  "order": 103
+}

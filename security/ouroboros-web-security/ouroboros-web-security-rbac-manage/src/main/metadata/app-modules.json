@@ -1,0 +1,12 @@
+[
+  {
+    "fullName": "systemSetting.roleManagement",
+    "title": "角色管理",
+    "menu": "systemSetting.roleManagement",
+    "authorities": [
+      "systemSetting.roleManagement"
+    ],
+    "order": 30,
+    "parent": "systemSetting.organizationAndAccess"
+  }
+]

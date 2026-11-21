@@ -1,0 +1,67 @@
+{
+  "id": "data-api/metadata-high-code-regression",
+  "title": "Metadata And High-Code Data API Regression",
+  "domain": "data-api",
+  "testType": "integration",
+  "suite": "regression",
+  "risk": "p0",
+  "modes": [
+    "harness",
+    "e2e"
+  ],
+  "fixtures": {
+    "services": [],
+    "runtimes": [
+      "develop",
+      "mothership"
+    ],
+    "frontends": [],
+    "data": [
+      "app-metadata-root"
+    ],
+    "identities": [
+      "admin",
+      "permission-boundary-user"
+    ]
+  },
+  "entrypoints": {
+    "baseUrlEnv": "OB_TEST_BASE_URL",
+    "appBaseUrlEnv": "OB_TEST_APP_BASE_URL"
+  },
+  "caseTable": "cases.md",
+  "artifacts": {
+    "contract": "contract.md",
+    "harness": "harness.playbook.md",
+    "e2e": "testing/e2e/regression/data-api/metadata-high-code-regression/e2e.yaml"
+  },
+  "legacyBridge": {
+    "module": "testing.common.runners.api.data_api_regression.run_regression",
+    "docsReportDir": "tmp/testing-evidence/metadata-high-code-data-api-regression/default-docs",
+    "evidenceDir": "tmp/testing-evidence/metadata-high-code-data-api-regression",
+    "defaultExecutionRing": "metadata-list",
+    "supportedExecutionRings": [
+      "metadata-list",
+      "metadata-detail",
+      "metadata-query-conditions",
+      "metadata-create",
+      "metadata-update",
+      "metadata-delete",
+      "high-code-read",
+      "high-code-special-read",
+      "high-code-write",
+      "high-code-special-write"
+    ]
+  },
+  "exclusions": [
+    {
+      "pattern": "baseInfo.deviceManage",
+      "reason": "project-owned script dependency issue; exclude from merge-blocking regression scope"
+    }
+  ],
+  "notes": [
+    "This bridge phase keeps the existing Python regression engine as the execution backend.",
+    "Live execution is automated for metadata read/detail/write rings and high-code read/write rings that are already execution-ready.",
+    "Scenario coverage must distinguish between asset presence and execution readiness; pending seeds still remain visible in merge gate reporting.",
+    "High-code write coverage is currently limited to seeds with standardized sample payload and cleanup semantics; unsupported seeds stay in the pending set rather than being silently counted as covered."
+  ]
+}

@@ -1,0 +1,6 @@
+com.ouroboros.i18n.runtime.extractor.MenuTextExtractor
+com.ouroboros.i18n.runtime.extractor.AuthorityTextExtractor
+com.ouroboros.i18n.runtime.extractor.UISchemaTextExtractor
+com.ouroboros.i18n.runtime.extractor.UIModelTextExtractor
+com.ouroboros.i18n.runtime.extractor.StaticMessagesTextExtractor
+com.ouroboros.i18n.runtime.extractor.ErrorCodeTextExtractor

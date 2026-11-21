@@ -1,0 +1,206 @@
+package com.ouroboros.idea.metadata
+
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.DialogWrapper
+import com.intellij.openapi.ui.ValidationInfo
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.ui.DocumentAdapter
+import com.intellij.ui.components.JBLabel
+import com.intellij.ui.components.JBScrollPane
+import com.intellij.ui.components.JBTextArea
+import com.intellij.ui.components.JBTextField
+import com.intellij.util.ui.JBUI
+import com.intellij.util.ui.UIUtil
+import com.ouroboros.idea.TideStackMessages
+import java.awt.BorderLayout
+import java.awt.Dimension
+import java.awt.GridBagConstraints
+import java.awt.GridBagLayout
+import javax.swing.JComponent
+import javax.swing.JPanel
+import javax.swing.event.DocumentEvent
+import javax.swing.text.JTextComponent
+
+data class NewMetadataFileDialogResult(
+    val relativePath: String,
+    val templateValues: Map<String, String>
+)
+
+class NewMetadataFileDialog(
+    project: Project,
+    private val contribution: MetadataContributionDefinition,
+    private val creationRoot: VirtualFile,
+    private val creationModel: MetadataFileCreationFlowModel
+) : DialogWrapper(project) {
+    private val pathField = JBTextField(creationModel.defaultPathInput)
+    private val templateFields = MetadataFileTemplateService.fieldModels(contribution, creationModel.defaultPath)
+    private val fieldInputs = linkedMapOf<String, JTextComponent>()
+    private val editedFields = mutableSetOf<String>()
+    private var applyingPathDefaults = false
+
+    init {
+        title = TideStackMessages.message("metadata.new.dialogTitle", mapOf("displayName" to contribution.displayName))
+        pathField.isEditable = !creationModel.pathInputLocked
+        createTemplateFieldInputs(creationModel.defaultPath)
+        pathField.document.addDocumentListener(object : DocumentAdapter() {
+            override fun textChanged(e: DocumentEvent) {
+                applyPathDefaultsToUntouchedFields()
+            }
+        })
+        init()
+    }
+
+    fun result(): NewMetadataFileDialogResult? {
+        val relativePath = normalizedPath().path ?: return null
+        return NewMetadataFileDialogResult(
+            relativePath = relativePath,
+            templateValues = fieldInputs.mapValues { (_, input) -> input.text.trim() }
+        )
+    }
+
+    override fun createCenterPanel(): JComponent {
+        val form = JPanel(GridBagLayout())
+        form.border = JBUI.Borders.empty(8)
+        var row = 0
+        addFormRow(form, row++, TideStackMessages.message("metadata.new.filePathLabel"), pathField)
+        templateFields.forEach { field ->
+            addFormRow(form, row++, field.label, fieldComponent(field), field.labelRemark)
+        }
+
+        return JPanel(BorderLayout()).apply {
+            add(form, BorderLayout.NORTH)
+            preferredSize = Dimension(560, (96 + templateFields.size * 72).coerceAtMost(420))
+        }
+    }
+
+    override fun getPreferredFocusedComponent(): JComponent = if (creationModel.pathInputLocked) {
+        fieldInputs.values.firstOrNull() ?: pathField
+    } else {
+        pathField
+    }
+
+    override fun doValidate(): ValidationInfo? {
+        val normalized = normalizedPath()
+        if (normalized.error != null) {
+            return ValidationInfo(normalized.error, pathField)
+        }
+        val relativePath = normalized.path
+            ?: return ValidationInfo(TideStackMessages.message("metadata.error.enterPath"), pathField)
+        if (creationRoot.findFileByRelativePath(relativePath) != null) {
+            return ValidationInfo(
+                TideStackMessages.message("metadata.error.fileExists", mapOf("targetPath" to relativePath)),
+                pathField
+            )
+        }
+        templateFields.forEach { field ->
+            val input = fieldInputs[field.name]
+            val error = MetadataFileTemplateService.validateField(field, input?.text.orEmpty())
+            if (error != null) {
+                return ValidationInfo(
+                    error,
+                    input
+                )
+            }
+        }
+        return null
+    }
+
+    private fun createTemplateFieldInputs(defaultPath: String) {
+        val normalizedDefaultPath = MetadataFileTemplateService.normalizeInputPath(
+            defaultPath,
+            contribution,
+            creationModel
+        ).path ?: defaultPath
+        val defaults = MetadataFileTemplateService.fieldModels(contribution, normalizedDefaultPath)
+            .associate { field -> field.name to field.defaultValue }
+        templateFields.forEach { field ->
+            val input = createTemplateFieldInput(field, defaults[field.name].orEmpty())
+            input.document.addDocumentListener(object : DocumentAdapter() {
+                override fun textChanged(e: DocumentEvent) {
+                    if (!applyingPathDefaults) {
+                        editedFields.add(field.name)
+                    }
+                }
+            })
+            fieldInputs[field.name] = input
+        }
+    }
+
+    private fun createTemplateFieldInput(
+        field: MetadataFileCreationFieldModel,
+        defaultValue: String
+    ): JTextComponent {
+        if (field.name == "description") {
+            return JBTextArea(defaultValue, 3, 32).apply {
+                lineWrap = true
+                wrapStyleWord = true
+            }
+        }
+        return JBTextField(defaultValue)
+    }
+
+    private fun fieldComponent(field: MetadataFileCreationFieldModel): JComponent {
+        val input = fieldInputs.getValue(field.name)
+        if (input is JBTextArea) {
+            return JBScrollPane(input).apply {
+                preferredSize = Dimension(360, 76)
+            }
+        }
+        return input
+    }
+
+    private fun addFormRow(
+        form: JPanel,
+        row: Int,
+        labelText: String,
+        component: JComponent,
+        remark: String? = null
+    ) {
+        val label = JBLabel(labelText).apply {
+            labelFor = component
+        }
+        form.add(label, GridBagConstraints().apply {
+            gridx = 0
+            gridy = row
+            anchor = GridBagConstraints.NORTHWEST
+            insets = JBUI.insets(0, 0, 12, 12)
+        })
+
+        form.add(JPanel(BorderLayout()).apply {
+            add(component, BorderLayout.NORTH)
+            if (!remark.isNullOrBlank()) {
+                add(JBLabel(remark).apply {
+                    foreground = UIUtil.getContextHelpForeground()
+                    border = JBUI.Borders.emptyTop(4)
+                }, BorderLayout.CENTER)
+            }
+        }, GridBagConstraints().apply {
+            gridx = 1
+            gridy = row
+            weightx = 1.0
+            fill = GridBagConstraints.HORIZONTAL
+            anchor = GridBagConstraints.NORTHWEST
+            insets = JBUI.insets(0, 0, 12, 0)
+        })
+    }
+
+    private fun applyPathDefaultsToUntouchedFields() {
+        val relativePath = normalizedPath().path ?: return
+        val defaults = MetadataFileTemplateService.fieldModels(contribution, relativePath)
+            .associate { field -> field.name to field.defaultValue }
+        applyingPathDefaults = true
+        try {
+            templateFields.forEach { field ->
+                if (!editedFields.contains(field.name)) {
+                    fieldInputs[field.name]?.text = defaults[field.name].orEmpty()
+                }
+            }
+        } finally {
+            applyingPathDefaults = false
+        }
+    }
+
+    private fun normalizedPath(): MetadataFileTemplatePath {
+        return MetadataFileTemplateService.normalizeInputPath(pathField.text, contribution, creationModel)
+    }
+}

@@ -1,0 +1,9 @@
+{
+  "url": "/dev/{appName}/dashboard",
+  "fullName": "AppDevDashboard",
+  "icon": "fas fa-grip",
+  "title": "应用开发看板",
+  "placement": "main",
+  "stage": "dev",
+  "order": 0
+}

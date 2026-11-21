@@ -1,0 +1,39 @@
+# 配置server参数
+server:
+  port: 9010
+  servlet:
+    context-path: /spreadsheet
+    encoding:
+      charset: UTF-8
+      enabled: true
+spring:
+  profiles:
+    active: @profiles.active@
+  application:
+    name: web
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+spreadsheet-service:
+  # 用于调度的 redis 通道名称
+  redis-dispatch-channel: xinpai.spreadsheet.dispatch.channel
+
+  # 表格中块的大小
+  row_size: 500
+  col_size: 500
+
+  # 雪花算法分布式ID生成器参数
+  snowflake:
+    datacenterId: 1
+    workerId: 1
+
+  # 管理功能开关与密码
+  management:
+    isEnabled: true
+    password: "123456"
+  
+  # AccessToken有效期，单位分钟
+  accessTokenExpire:
+    editToken: 3      # 不能低于一分钟，因为心跳间隔为1分钟，后台会在心跳时续期
+    readToken: 15

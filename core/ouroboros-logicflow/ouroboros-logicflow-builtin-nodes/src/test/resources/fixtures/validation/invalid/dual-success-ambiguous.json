@@ -1,0 +1,62 @@
+{
+  "name": "dual-success-ambiguous",
+  "description": "Invalid flow with two co-reachable successful terminals and no exclusivity proof",
+  "isEnabled": true,
+  "inputDataType": "string",
+  "outputDataType": "any",
+  "entryNode": "entryMutex",
+  "exitNode": "normalExit",
+  "nodes": [
+    {
+      "name": "entryMutex",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    },
+    {
+      "name": "normalExit",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    },
+    {
+      "name": "earlyReturn",
+      "type": "return",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "string"
+        }
+      ],
+      "outputPorts": []
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "entryMutex",
+      "sourceOutputPort": 0,
+      "targetNode": "normalExit",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "entryMutex",
+      "sourceOutputPort": 0,
+      "targetNode": "earlyReturn",
+      "targetInputPort": 0
+    }
+  ]
+}

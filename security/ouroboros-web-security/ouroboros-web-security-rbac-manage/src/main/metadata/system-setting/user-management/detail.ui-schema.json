@@ -1,0 +1,101 @@
+{
+  "name": "/system-setting/user-management/detail",
+  "schema": {
+    "type": "container",
+    "body": [
+      {
+        "type": "form",
+        "title": false,
+        "body": [
+          {
+            "label": "账号",
+            "type": "input-text",
+            "name": "userIdentity"
+          },
+          {
+            "label": "角色",
+            "name": "roles",
+            "type": "select",
+            "multiple": true,
+            "labelField": "name",
+            "searchable": true,
+            "size": "full",
+            "valueField": "id",
+            "checkAll": false,
+            "source": {
+              "url": "/api/sys/role",
+              "method": "get"
+            }
+          }
+        ],
+        "initApi": {
+          "url": "/api/sys/user/${userIdentity}"
+        },
+        "mode": "horizontal",
+        "static": true,
+        "wrapWithPanel": false
+      },
+      {
+        "type": "panel",
+        "title": "第三方登录",
+        "body": [
+          {
+            "type": "tpl",
+            "tpl": "管理员可查看和解绑该用户的第三方登录账号。解绑后，用户需重新验证平台账号密码才能绑定。",
+            "className": "text-muted m-b-md"
+          },
+          {
+            "type": "crud",
+            "name": "userAuthBindings",
+            "api": {
+              "method": "get",
+              "url": "/api/admin/users/${userIdentity | url_encode}/bindings"
+            },
+            "syncLocation": false,
+            "loadDataOnce": true,
+            "perPage": 100,
+            "headerToolbar": [],
+            "footerToolbar": [],
+            "placeholder": "该用户尚未绑定第三方登录账号",
+            "columns": [
+              {
+                "name": "providerKey",
+                "label": "登录渠道 / 连接"
+              },
+              {
+                "name": "externalId",
+                "label": "外部账号 ID"
+              },
+              {
+                "name": "displayName",
+                "label": "展示名"
+              },
+              {
+                "name": "createdAt",
+                "label": "绑定时间"
+              },
+              {
+                "type": "operation",
+                "label": "操作",
+                "buttons": [
+                  {
+                    "type": "button",
+                    "label": "解绑",
+                    "level": "danger",
+                    "actionType": "ajax",
+                    "confirmText": "确认解绑此第三方登录账号？解绑后将无法使用此绑定登录，用户需重新验证平台账号密码进行绑定。",
+                    "api": {
+                      "method": "delete",
+                      "url": "/api/admin/users/${userIdentity | url_encode}/bindings/${id | url_encode}"
+                    },
+                    "reload": "userAuthBindings"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

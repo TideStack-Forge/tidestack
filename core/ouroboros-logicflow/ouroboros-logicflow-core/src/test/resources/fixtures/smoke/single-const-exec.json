@@ -1,0 +1,19 @@
+{
+  "name": "single-const-exec",
+  "description": "Single const node execution smoke fixture",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "string",
+  "entryNode": "constNode",
+  "exitNode": "constNode",
+  "nodes": [
+    {
+      "name": "constNode",
+      "type": "const",
+      "description": "",
+      "dataType": "string",
+      "value": "hello"
+    }
+  ],
+  "connections": []
+}

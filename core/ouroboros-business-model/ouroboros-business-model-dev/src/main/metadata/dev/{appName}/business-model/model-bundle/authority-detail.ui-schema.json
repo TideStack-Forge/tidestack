@@ -1,0 +1,23 @@
+{
+  "name": "/dev/{appName}/business-model/model-bundle/authority-detail",
+  "schema": {
+    "type": "page",
+    "body": [
+      {
+        "name": "modelDetailJson",
+        "type": "json",
+        "source": "${ model }"
+      },
+      {
+        "name": "modelDetailEditor",
+        "type": "editor",
+        "language": "json",
+        "disabled": "true",
+        "value": "${ model }",
+        "className": "h-full",
+        "size": "xxl",
+        "visible": false
+      }
+    ]
+  }
+}

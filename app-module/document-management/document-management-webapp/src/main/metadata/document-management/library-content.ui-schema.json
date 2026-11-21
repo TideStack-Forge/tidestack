@@ -1,0 +1,215 @@
+{
+  "name": "/document-management/library-content",
+  "schema": {
+    "type": "switch-container",
+    "className": "document-content-switch",
+    "items": [
+      {
+        "title": "文档库概览",
+        "visibleOn": "${type === 'LIBRARY'}",
+        "body": {
+          "type": "service",
+          "api": {
+            "method": "get",
+            "url": "/api/document-libraries/${libraryId}/overview",
+            "sendOn": "${libraryId}",
+            "responseData": {
+              "&": "$$",
+              "directoryId": "${rootDirectoryId}"
+            }
+          },
+          "body": [
+            {
+              "type": "tabs",
+              "tabs": [
+                {
+                  "title": "文件",
+                  "body": [
+                    {
+                      "type": "ui-schema",
+                      "id": "root-directory-content-of-library",
+                      "schemaId": "/document-management/directory-content"
+                    }
+                  ]
+                },
+                {
+                  "title": "文档库信息",
+                  "body": [
+                    [
+                      {
+                        "type": "container",
+                        "body": [
+                          {
+                            "type": "cards",
+                            "columnsCount": 3,
+                            "card": {
+                              "type": "card",
+                              "body": [
+                                {
+                                  "type": "tpl",
+                                  "tpl": "<div style='text-align: center;'><div style='font-size: 32px; font-weight: bold; color: #1890ff; margin-bottom: 10px;'>${value}</div><div style='color: #666;'>${label}</div></div>"
+                                }
+                              ]
+                            },
+                            "source": "${statistics}"
+                          },
+                          {
+                            "type": "divider"
+                          },
+                          {
+                            "type": "property",
+                            "title": "基本信息",
+                            "column": 2,
+                            "items": [
+                              {
+                                "label": "文档库名称",
+                                "content": "${name}"
+                              },
+                              {
+                                "label": "显示名称",
+                                "content": "${displayName}"
+                              },
+                              {
+                                "label": "描述",
+                                "content": "${description}",
+                                "span": 2
+                              },
+                              {
+                                "label": "所有者",
+                                "content": "${ownerDisplayName}"
+                              },
+                              {
+                                "label": "状态",
+                                "content": "${deleted ? '已删除' : (disabled ? '已禁用' : (locked ? '已锁定' : '正常'))}"
+                              },
+                              {
+                                "label": "创建时间",
+                                "content": "${createdAt}"
+                              },
+                              {
+                                "label": "最后修改时间",
+                                "content": "${updatedAt}"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "divider"
+                          },
+                          {
+                            "type": "flex",
+                            "justify": "flex-end",
+                            "items": [
+                              {
+                                "type": "button",
+                                "label": "管理",
+                                "level": "link",
+                                "icon": "fa fa-cog",
+                                "actionType": "link",
+                                "link": "/document-management/admin-console",
+                                "visibleOn": "${permissions.isOwner}"
+                              },
+                              {
+                                "type": "button",
+                                "label": "文档库设置",
+                                "level": "primary",
+                                "icon": "fa fa-wrench",
+                                "actionType": "dialog",
+                                "visibleOn": "${permissions.isOwner}",
+                                "dialog": {
+                                  "title": "文档库设置",
+                                  "size": "md",
+                                  "url": "/document-management/library-settings?id=${nodeId}"
+                                }
+                              },
+                              {
+                                "type": "button",
+                                "label": "转让所有权",
+                                "level": "warning",
+                                "icon": "fa fa-exchange",
+                                "actionType": "dialog",
+                                "visibleOn": "${isOwner}",
+                                "dialog": {
+                                  "title": "转让文档库所有权",
+                                  "size": "md",
+                                  "url": "/document-management/transfer-ownership?id=${nodeId}"
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "onEvent": {
+            "fetchInited": {
+              "actions": [
+                {
+                  "actionType": "reload",
+                  "componentId": "root-directory-content-of-library",
+                  "data": {
+                    "libraryId": "${id}",
+                    "directoryId": "${rootDirectoryId}"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "title": "目录内容",
+        "visibleOn": "${type === 'DIRECTORY'}",
+        "body": [
+          {
+            "type": "ui-schema",
+            "schemaId": "/document-management/directory-content"
+          }
+        ]
+      },
+      {
+        "title": "欢迎页",
+        "value": "${!type}",
+        "body": {
+          "type": "wrapper",
+          "className": "document-welcome",
+          "style": {
+            "textAlign": "center",
+            "padding": "100px 20px"
+          },
+          "body": [
+            {
+              "type": "tpl",
+              "tpl": "<div style='font-size: 48px; color: #ccc; margin-bottom: 20px;'><i class='fa fa-folder-open'></i></div>"
+            },
+            {
+              "type": "tpl",
+              "tpl": "<h2 style='color: #666;'>欢迎使用文档管理系统</h2>"
+            },
+            {
+              "type": "tpl",
+              "tpl": "<p style='color: #999; margin-top: 10px;'>请从左侧选择一个文档库或目录开始浏览</p>"
+            },
+            {
+              "type": "button",
+              "label": "创建新文档库",
+              "level": "primary",
+              "size": "lg",
+              "icon": "fa fa-plus",
+              "actionType": "dialog",
+              "className": "mt-2",
+              "dialog": {
+                "title": "创建文档库",
+                "size": "md",
+                "url": "/document-management/create-library"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

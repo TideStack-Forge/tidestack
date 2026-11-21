@@ -1,0 +1,20 @@
+{
+  "name": "wecom.application-token",
+  "title": "wecom 企业应用令牌",
+  "type": "EnterpriseAccessToken",
+  "isEnabled": true,
+  "enterprise": {
+    "provider": "wecom",
+    "tokenKind": "access_token"
+  },
+  "accessToken": {
+    "tokenPlacement": "custom",
+    "customPlacement": [
+      {
+        "in": "QUERY",
+        "name": "access_token",
+        "value": "${accessToken}"
+      }
+    ]
+  }
+}

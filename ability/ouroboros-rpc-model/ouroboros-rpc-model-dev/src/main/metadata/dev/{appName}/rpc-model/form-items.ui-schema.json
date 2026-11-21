@@ -1,0 +1,200 @@
+{
+  "name": "/dev/{appName}/rpc-model/form-items",
+  "schema": {
+    "type": "wrapper",
+    "className": "p-0",
+    "body": [
+      {
+        "label": "名称",
+        "type": "input-text",
+        "name": "name",
+        "required": true,
+        "staticOn": "${!add}",
+        "placeholder": "请输入名称（须符合变量命名规范且唯一）"
+      },
+      {
+        "label": "标题",
+        "type": "input-text",
+        "name": "title",
+        "required": true,
+        "placeholder": "请输入标题"
+      },
+      {
+        "label": "类型",
+        "type": "input-text",
+        "name": "type",
+        "hidden": true,
+        "value": "OpenApi"
+      },
+      {
+        "name": "isEnabled",
+        "type": "switch",
+        "label": "是否启用",
+        "value": true
+      },
+      {
+        "label": "分组",
+        "type": "input-text",
+        "name": "group",
+        "placeholder": "选择或输入分组，例如：钉钉/通讯录",
+        "clearable": true,
+        "source": "/api/dev/${appName}/metadata/rpc-model?mode=groups",
+        "description": "用 / 分隔层级；不填写时归入“未分组”。"
+      },
+      {
+        "name": "description",
+        "type": "textarea",
+        "label": "描述"
+      },
+      {
+        "type": "script-editor",
+        "label": "身份认证",
+        "name": "authCredential",
+        "clearable": true,
+        "language": "rpc-template",
+        "codeResourceType": "rpc-model",
+        "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+        "codeSite": "rpc-model.authCredential",
+        "codePointer": "/authCredential",
+        "description": "支持 #{配置键} 引用配置值。"
+      },
+      {
+        "type": "combo",
+        "name": "request",
+        "label": "请求配置",
+        "required": true,
+        "multiLine": true,
+        "noBorder": true,
+        "items": [
+          {
+            "type": "input-group",
+            "name": "request-api",
+            "body": [
+              {
+                "name": "method",
+                "type": "script-editor",
+                "required": true,
+                "language": "rpc-template",
+                "codeResourceType": "rpc-model",
+                "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+                "codeSite": "rpc-model.request.method",
+                "codePointer": "/request/method",
+                "description": "支持 #{配置键} 引用配置值。"
+              },
+              {
+                "name": "url",
+                "type": "script-editor",
+                "required": true,
+                "placeholder": "请求地址",
+                "language": "rpc-template",
+                "codeResourceType": "rpc-model",
+                "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+                "codeSite": "rpc-model.request.url",
+                "codePointer": "/request/url",
+                "description": "支持 #{配置键} 引用配置值。"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "combo",
+        "name": "request.parameters",
+        "label": "请求参数",
+        "multiple": true,
+        "multiLine": true,
+        "items": [
+          {
+            "type": "input-group",
+            "name": "request-parameters",
+            "body": [
+              {
+                "name": "in",
+                "type": "script-editor",
+                "required": true,
+                "value": "query",
+                "placeholder": "请选择参数位置",
+                "language": "rpc-template",
+                "codeResourceType": "rpc-model",
+                "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+                "codeSite": "rpc-model.request.parameters.*.in",
+                "codePointer": "/request/parameters/*/in",
+                "description": "支持 #{配置键} 引用配置值。"
+              },
+              {
+                "name": "name",
+                "placeholder": "参数名",
+                "type": "script-editor",
+                "required": true,
+                "language": "rpc-template",
+                "codeResourceType": "rpc-model",
+                "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+                "codeSite": "rpc-model.request.parameters.*.name",
+                "codePointer": "/request/parameters/*/name",
+                "description": "支持 #{配置键} 引用配置值。"
+              },
+              {
+                "name": "value",
+                "placeholder": "参数值，通过\\${变量名} 或 \\$变量名 的方式可引用传入参数中的变量，也可以通过#{配置项}的方式引用配置项中的值",
+                "type": "script-editor",
+                "required": true,
+                "language": "rpc-template",
+                "codeResourceType": "rpc-model",
+                "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+                "codeSite": "rpc-model.request.parameters.*.value",
+                "codePointer": "/request/parameters/*/value",
+                "description": "支持 #{配置键} 引用配置值。"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "hidden",
+        "name": "retry",
+        "value": 3
+      },
+      {
+        "type": "hidden",
+        "name": "timeout",
+        "value": 10000
+      },
+      {
+        "type": "fieldSet",
+        "title": "高级设置",
+        "collapsable": true,
+        "collapsed": true,
+        "body": {
+          "type": "amis-schema",
+          "schemaId": "/dev/{appName}/rpc-model/advanced-setting/edit"
+        }
+      },
+      {
+        "type": "collapse-group",
+        "body": [
+          {
+            "type": "collapse",
+            "title": "输入输出结构（可选）",
+            "collapsed": true,
+            "body": [
+              {
+                "type": "json-data-editor",
+                "name": "inputSchema",
+                "label": "输入结构（JSON Schema）",
+                "allowValueTypes": "object",
+                "description": "用于代码提示；不会执行调用来采集数据。"
+              },
+              {
+                "type": "json-data-editor",
+                "name": "outputSchema",
+                "label": "输出结构（JSON Schema）",
+                "allowValueTypes": "object",
+                "description": "用于代码提示；不会执行调用来采集数据。"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

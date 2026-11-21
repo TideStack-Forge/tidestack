@@ -1,0 +1,10 @@
+{
+  "fullName": "BasicConfiguration.Resource",
+  "url": "/dev/{appName}/resource",
+  "icon": "fas fa-folder-open",
+  "title": "资源管理",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 30
+}

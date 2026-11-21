@@ -1,0 +1,49 @@
+{
+  "name": "/dev/{appName}/custom-style",
+  "schema": {
+    "type": "page",
+    "title": "主题样式",
+    "body": [
+      {
+        "type": "form",
+        "title": "",
+        "id": "customStyleForm",
+        "initApi": "/api/dev/${appName}/custom-style/init-form",
+        "api": "put:/api/dev/${appName}/custom-style",
+        "mode": "normal",
+        "className": "h-full relative overflow-y-hidden",
+        "wrapWithPanel": false,
+        "body": [
+          {
+            "type": "css-editor",
+            "name": "style",
+            "placeholder": "请输入自定义样式",
+            "className": "h-full",
+            "inputClassName": "h-full max-h-full",
+            "options": {
+              "insertSpace": true,
+              "tabSize": 2
+            }
+          }
+        ],
+        "actions": [],
+        "disabled": true
+      }
+    ],
+    "toolbar": [
+      {
+        "type": "amis-schema",
+        "source": {
+          "method": "get",
+          "url": "/api/dev-fragment-schema/vcs-buttons",
+          "data": {
+            "apiPath": "custom-style",
+            "statusId": "customStyleStatus",
+            "formId": "customStyleForm",
+            "actionType": "disabled"
+          }
+        }
+      }
+    ]
+  }
+}

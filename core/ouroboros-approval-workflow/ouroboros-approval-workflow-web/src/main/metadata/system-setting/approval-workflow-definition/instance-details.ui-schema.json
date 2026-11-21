@@ -1,0 +1,167 @@
+{
+  "name": "/system-setting/approval-workflow-definition/instance-details",
+  "schema": {
+    "type": "page",
+    "body": [
+      {
+        "type": "crud",
+        "name": "instance-details-crud",
+        "syncLocation": false,
+        "api": {
+          "url": "/api/approval-workflow/instance/${flowKey}/list?page=${page}&perPage=${perPage}&status=${status}",
+          "method": "get"
+        },
+        "perPageAvailable": [
+          10
+        ],
+        "filterTogglable": true,
+        "headerToolbar": [
+          "load-more",
+          "filter-toggler",
+          {
+            "type": "reload",
+            "align": "right",
+            "icon": "fa fa-repeat",
+            "label": "刷新",
+            "tooltip": "",
+            "level": "primary"
+          },
+          {
+            "type": "export-excel",
+            "label": "导出当前页",
+            "filename": "流程执行明细-P${page}"
+          },
+          {
+            "type": "export-excel",
+            "label": "导出全部",
+            "filename": "流程执行明细-全部",
+            "api": {
+              "url": "/api/approval-workflow/instance/${flowKey}/list",
+              "data": {
+                "&": "$$",
+                "perPage": "${total}",
+                "page": 1
+              }
+            }
+          }
+        ],
+        "alwaysShowPagination": true,
+        "hideQuickSaveBtn": true,
+        "filter": {
+          "title": "流程筛选",
+          "body": [
+            {
+              "type": "group",
+              "body": [
+                {
+                  "type": "list-select",
+                  "name": "status",
+                  "label": "状态",
+                  "clearable": true,
+                  "options": [
+                    {
+                      "label": "全部",
+                      "value": "all"
+                    },
+                    {
+                      "label": "已结束",
+                      "value": "finished"
+                    },
+                    {
+                      "label": "进行中",
+                      "value": "running"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "type": "reset",
+              "label": "重置"
+            },
+            {
+              "type": "submit",
+              "level": "primary",
+              "label": "查询"
+            }
+          ]
+        },
+        "columns": [
+          {
+            "name": "taskName",
+            "label": "当前（最后）任务名称"
+          },
+          {
+            "name": "starterName",
+            "label": "审批发起人"
+          },
+          {
+            "type": "date",
+            "format": "YYYY-MM-DD HH:mm:ss",
+            "name": "startTime",
+            "label": "开始时间"
+          },
+          {
+            "type": "tpl",
+            "name": "endTime",
+            "tpl": "${endTime ? ${endTime | date:YYYY-MM-DD HH\\:mm\\:ss :YYYY-MM-DDTHH\\:mm\\:ssZ} : '正在进行'}",
+            "label": "结束时间"
+          },
+          {
+            "name": "status",
+            "label": "实例状态",
+            "type": "mapping",
+            "value": [
+              "running",
+              "finished"
+            ],
+            "map": {
+              "running": "<span class='label label-success'>进行中</span>",
+              "finished": "<span class='label label-danger'>已结束</span>"
+            }
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "buttons": [
+              {
+                "type": "button",
+                "label": "查看",
+                "level": "light",
+                "actionType": "drawer",
+                "tooltip": "查看该审批流程实例的具体信息",
+                "drawer": {
+                  "position": "right",
+                  "width": 600,
+                  "title": "流程实例信息",
+                  "closeOnOutside": true,
+                  "url": "/system-setting/approval-workflow-definition/instance-details/detail",
+                  "actions": [
+                    {
+                      "type": "action",
+                      "actionType": "cancel",
+                      "label": "关闭"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "button",
+                "label": "强制结束",
+                "level": "danger",
+                "actionType": "ajax",
+                "confirmText": "确认要强行结束该流程实例吗？",
+                "api": "post:/api/approval-workflow/instance/${instanceId}/cancel",
+                "visibleOn": "${cancellable === true}",
+                "tooltip": "点击后将强制当前审批流程实例结束",
+                "disabledTip": "该审批流程已结束"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "legacy-only",
+  "type": "library",
+  "entry": "/legacy-only-entry",
+  "publicPath": "/legacy-only-public",
+  "packageName": "legacy-only.zip"
+}

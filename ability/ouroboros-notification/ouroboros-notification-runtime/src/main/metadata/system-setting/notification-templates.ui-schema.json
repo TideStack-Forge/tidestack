@@ -1,0 +1,250 @@
+{
+  "name": "/system-setting/notification-templates",
+  "schema": {
+    "type": "page",
+    "title": "通知模板",
+    "subTitle": "管理应用已部署的通知模板，修改保存为运行时覆盖。",
+    "body": [
+      {
+        "type": "alert",
+        "level": "danger",
+        "body": "无权访问通知配置，请联系管理员分配权限。",
+        "visibleOn": "${!hasAuth(\"systemSetting.notificationTemplate\")}"
+      },
+      {
+        "type": "container",
+        "visibleOn": "${hasAuth(\"systemSetting.notificationTemplate\")}",
+        "body": {
+          "type": "crud",
+          "name": "notificationTemplates",
+          "syncLocation": true,
+          "api": {
+            "method": "get",
+            "url": "/api/sys/notification-template",
+            "requestAdaptor": "return {...api, data: Object.fromEntries(Object.entries(api.data || {}).filter(([, value]) => value !== '' && value !== null && value !== undefined))};"
+          },
+          "perPage": 20,
+          "primaryField": "name",
+          "placeholder": "没有符合条件的模板；模板由应用部署提供。",
+          "filter": {
+            "title": false,
+            "body": [
+              {
+                "type": "input-text",
+                "name": "keyword",
+                "label": "搜索",
+                "placeholder": "模板标题或标识",
+                "clearable": true
+              },
+              {
+                "type": "select",
+                "name": "enable",
+                "label": "启用状态",
+                "clearable": true,
+                "options": [
+                  {
+                    "label": "已启用",
+                    "value": true
+                  },
+                  {
+                    "label": "已停用",
+                    "value": false
+                  }
+                ]
+              },
+              {
+                "type": "select",
+                "name": "source",
+                "label": "配置来源",
+                "clearable": true,
+                "options": [
+                  {
+                    "label": "默认配置",
+                    "value": "DEFAULT"
+                  },
+                  {
+                    "label": "运行时覆盖",
+                    "value": "OVERRIDE"
+                  },
+                  {
+                    "label": "数据库独有",
+                    "value": "DATABASE_ONLY"
+                  }
+                ]
+              },
+              {
+                "type": "checkbox",
+                "name": "baseChanged",
+                "label": "仅看默认已变化",
+                "trueValue": true,
+                "falseValue": null
+              }
+            ],
+            "actions": [
+              {
+                "type": "reset",
+                "label": "重置"
+              },
+              {
+                "type": "submit",
+                "label": "查询",
+                "level": "primary"
+              }
+            ]
+          },
+          "headerToolbar": [
+            {
+              "type": "button",
+              "label": "刷新",
+              "actionType": "reload"
+            },
+            {
+              "type": "button",
+              "label": "通知渠道",
+              "onEvent": {
+                "click": {
+                  "actions": [
+                    {
+                      "actionType": "openOrSwitchTab",
+                      "args": {
+                        "url": "/system-setting/notification-channels",
+                        "title": "通知渠道"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "footerToolbar": [
+            "statistics",
+            "switch-per-page",
+            "pagination"
+          ],
+          "columns": [
+            {
+              "name": "title",
+              "label": "通知模板",
+              "type": "container",
+              "body": [
+                {
+                  "type": "button",
+                  "label": "${title || name}",
+                  "level": "link",
+                  "onEvent": {
+                    "click": {
+                      "actions": [
+                        {
+                          "actionType": "openOrSwitchTab",
+                          "args": {
+                            "url": "/system-setting/notification-templates/detail?name=${name | url_encode}",
+                            "title": "通知模板配置"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "plain",
+                  "name": "name",
+                  "className": "text-muted font-mono"
+                }
+              ]
+            },
+            {
+              "name": "isEnabled",
+              "label": "启用状态",
+              "type": "mapping",
+              "map": {
+                "true": "已启用",
+                "false": "已停用"
+              }
+            },
+            {
+              "name": "channelLabels",
+              "label": "发送渠道",
+              "type": "each",
+              "items": {
+                "type": "tag",
+                "label": "${item}"
+              }
+            },
+            {
+              "name": "effectiveSource",
+              "label": "配置来源",
+              "type": "mapping",
+              "map": {
+                "DEFAULT": "默认配置",
+                "OVERRIDE": "运行时覆盖",
+                "DATABASE_ONLY": "数据库独有"
+              }
+            },
+            {
+              "label": "默认配置",
+              "type": "plain",
+              "text": "${!defaultExists ? \"无默认定义\" : !hasOverride ? \"—\" : baseChanged === null ? \"基线未知\" : baseChanged ? \"默认已变化\" : \"未变化\"}"
+            },
+            {
+              "label": "最后修改",
+              "type": "container",
+              "body": [
+                {
+                  "type": "plain",
+                  "text": "${modifiedBy || \"—\"}"
+                },
+                {
+                  "type": "plain",
+                  "text": "${modifiedAt || \"\"}"
+                }
+              ]
+            },
+            {
+              "type": "operation",
+              "label": "操作",
+              "buttons": [
+                {
+                  "type": "button",
+                  "label": "查看",
+                  "level": "link",
+                  "onEvent": {
+                    "click": {
+                      "actions": [
+                        {
+                          "actionType": "openOrSwitchTab",
+                          "args": {
+                            "url": "/system-setting/notification-templates/detail?name=${name | url_encode}",
+                            "title": "通知模板配置"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "button",
+                  "label": "编辑",
+                  "level": "link",
+                  "visibleOn": "${availableActions.edit}",
+                  "onEvent": {
+                    "click": {
+                      "actions": [
+                        {
+                          "actionType": "openOrSwitchTab",
+                          "args": {
+                            "url": "/system-setting/notification-templates/edit?name=${name | url_encode}",
+                            "title": "编辑通知模板"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

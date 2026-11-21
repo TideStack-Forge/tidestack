@@ -1,0 +1,13 @@
+{
+  "editorId": "schedule",
+  "editorName": "TideStack Schedule Metadata Editor",
+  "editorNameKey": "customEditor.schedule",
+  "metadataType": "schedule",
+  "schemaName": "schedule",
+  "viewType": "tidestack.metadataEditor.schedule",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.schedule",
+  "fileMatchPatterns": [
+    "*.schedule.json"
+  ],
+  "priority": "default"
+}

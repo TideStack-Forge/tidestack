@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/mq-binding/add",
+  "type": "amis",
+  "title": "新建MQ绑定"
+}

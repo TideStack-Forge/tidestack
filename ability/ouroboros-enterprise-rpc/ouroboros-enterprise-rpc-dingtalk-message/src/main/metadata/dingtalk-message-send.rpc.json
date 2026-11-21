@@ -1,0 +1,61 @@
+{
+  "name": "dingtalk.message.send",
+  "title": "钉钉发送工作通知",
+  "type": "OpenAPI",
+  "isEnabled": true,
+  "authCredential": "dingtalk.application-token",
+  "description": "自建应用发送工作通知；返回 task_id 表示受理，非员工送达；需工作通知发送权限及可见范围",
+  "timeout": 10000,
+  "retry": 0,
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "agent_id": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "userid_list": {
+        "type": "string",
+        "minLength": 1
+      },
+      "msg": {
+        "type": "object"
+      }
+    },
+    "required": [
+      "agent_id",
+      "userid_list",
+      "msg"
+    ]
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2",
+    "parameters": [
+      {
+        "in": "BODY",
+        "name": "agent_id",
+        "value": "${agent_id}",
+        "required": true
+      },
+      {
+        "in": "BODY",
+        "name": "userid_list",
+        "value": "${userid_list}",
+        "required": true
+      },
+      {
+        "in": "BODY",
+        "name": "msg",
+        "value": "${msg}",
+        "required": true
+      },
+      {
+        "in": "BODY",
+        "name": "to_all_user",
+        "value": "${false}"
+      }
+    ]
+  },
+  "group": "钉钉/消息"
+}

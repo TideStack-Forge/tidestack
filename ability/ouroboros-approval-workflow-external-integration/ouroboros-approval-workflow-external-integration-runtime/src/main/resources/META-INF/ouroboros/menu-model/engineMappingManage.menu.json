@@ -1,0 +1,7 @@
+{
+  "url": "/approval-workflow/engine-mapping-manage",
+  "fullName": "systemSetting.engineMappingManage",
+  "title": "流程映射管理",
+  "icon": "icon-approval-workflow",
+  "order": 102
+}

@@ -1,0 +1,10 @@
+{
+  "fullName": "BusinessLogic.ApprovalWorkflowDefinition",
+  "url": "/dev/{appName}/approval-workflow-definition",
+  "icon": "icon-approval-workflow",
+  "title": "审批流",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 30
+}

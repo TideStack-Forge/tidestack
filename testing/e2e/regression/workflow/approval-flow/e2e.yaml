@@ -1,0 +1,280 @@
+{
+  "scenario": "workflow/approval-flow",
+  "testType": "e2e",
+  "suite": "regression",
+  "mode": "e2e",
+  "runner": "testing/common/runners/playwright/browser_asset_bridge.py",
+  "defaultMode": "plan",
+  "integrationScenario": {
+    "scenario": "testing/integration/regression/workflow/approval-flow/scenario.yaml",
+    "contract": "testing/integration/regression/workflow/approval-flow/contract.md",
+    "cases": "testing/integration/regression/workflow/approval-flow/cases.md"
+  },
+  "fixtures": [
+    "runtimes/develop",
+    "runtimes/mothership",
+    "frontends/develop-shell",
+    "frontends/runtime-shell",
+    "data/app-metadata-root",
+    "data/approval-workflow-org-seed",
+    "data/approval-workflow-roles-seed",
+    "data/approval-workflow-users-seed",
+    "data/approval-workflow-business-model-seed",
+    "data/approval-workflow-flows-seed",
+    "identities/admin"
+  ],
+  "fixtureMappings": {
+    "topology": [
+      "runtimes/develop",
+      "runtimes/mothership",
+      "frontends/develop-shell",
+      "frontends/runtime-shell"
+    ],
+    "dataSeed": [
+      "data/app-metadata-root",
+      "data/approval-workflow-org-seed",
+      "data/approval-workflow-roles-seed",
+      "data/approval-workflow-users-seed",
+      "data/approval-workflow-business-model-seed",
+      "data/approval-workflow-flows-seed"
+    ],
+    "actors": [
+      "identities/admin"
+    ]
+  },
+  "environment": {
+    "requiredEnv": [
+      "OB_TEST_BASE_URL",
+      "OB_TEST_APP_BASE_URL",
+      "OB_TEST_FRONTEND_BASE_URL",
+      "OB_TEST_RUNTIME_FRONTEND_BASE_URL"
+    ]
+  },
+  "browserAssets": {
+    "projectRoot": ".",
+    "contracts": [
+      "platform/ouroboros-develop/e2e/contracts/runtime-management.local-bootstrap.contract.md",
+      "testing/integration/regression/workflow/approval-flow/contract.md",
+      "testing/integration/regression/workflow/approval-flow/cases.md"
+    ],
+    "sources": [
+      "testing/integration/regression/workflow/approval-flow/scenario.yaml",
+      "package.json",
+      "package-lock.json",
+      "scripts/dev-runtime/bootstrap-develop-browser-e2e-local.sh",
+      "testing/common/fixtures/data/approval-workflow-users-seed/prepare.sh",
+      "testing/common/fixtures/data/approval-workflow-flows-seed/prepare-design-time-metadata.cjs",
+      "testing/e2e/regression/workflow/approval-flow/scripts/support.ts",
+      "testing/e2e/regression/workflow/approval-flow/scripts/form-and-flow.spec.ts",
+      "testing/e2e/regression/workflow/approval-flow/scripts/runtime-actions.spec.ts",
+      "testing/e2e/regression/workflow/approval-flow/scripts/topology-and-reset.spec.ts",
+      "testing/e2e/regression/workflow/approval-flow/scripts/countersign-history.spec.ts",
+      "testing/e2e/regression/workflow/approval-flow/scripts/dynamic-form-workflow.spec.ts"
+    ],
+    "scripts": [
+      {
+        "id": "approval-flow-install-root-playwright",
+        "kind": "shell",
+        "command": "npm ci --no-audit --no-fund && npx playwright install chromium",
+        "workdir": ".",
+        "requiredPaths": [
+          "package.json",
+          "package-lock.json",
+          "playwright.config.ts"
+        ],
+        "description": "Install the root Playwright dependency boundary used by repository-level testing/e2e specs and ensure the Chromium browser is available before run mode.",
+        "caseIds": []
+      },
+      {
+        "id": "approval-flow-seed-users",
+        "kind": "shell",
+        "command": "python3 testing/common/runners/harness/fixture_harness.py --scenario testing/integration/regression/workflow/approval-flow/scenario.yaml --action reset --mode run --skip-preflight",
+        "workdir": ".",
+        "requiredPaths": [
+          "testing/integration/regression/workflow/approval-flow/scenario.yaml",
+          "testing/common/fixtures/data/approval-workflow-users-seed/prepare.sh",
+          "testing/common/fixtures/data/approval-workflow-users-seed/users-and-mappings.json"
+        ],
+        "description": "Recreate deterministic approval-flow users, roles, employee bindings, and known test passwords through platform APIs before runtime browser tests.",
+        "caseIds": [
+          "APF-TOPO-001"
+        ]
+      },
+      {
+        "id": "approval-flow-form-and-design",
+        "kind": "npm",
+        "script": "test:e2e:approval-flow:form",
+        "requiredPaths": [
+          "playwright.config.ts",
+          "testing/e2e/regression/workflow/approval-flow/scripts/support.ts",
+          "testing/e2e/regression/workflow/approval-flow/scripts/form-and-flow.spec.ts"
+        ],
+        "requiresNodeModules": true,
+        "description": "Run the approval-flow browser script that covers business-model authoring, approval workflow definition authoring, dual binding setup, and the business-model core lane evidence.",
+        "caseIds": [
+          "APF-FORM-001",
+          "APF-FLOW-001",
+          "APF-FLOW-002",
+          "APF-BIND-001",
+          "APF-BUSINESS-CORE-001"
+        ]
+      },
+      {
+        "id": "approval-flow-runtime-actions",
+        "kind": "npm",
+        "script": "test:e2e:approval-flow:runtime",
+        "requiredPaths": [
+          "playwright.config.ts",
+          "testing/e2e/regression/workflow/approval-flow/scripts/support.ts",
+          "testing/e2e/regression/workflow/approval-flow/scripts/runtime-actions.spec.ts"
+        ],
+        "requiresNodeModules": true,
+        "description": "Run the approval-flow browser script that covers runtime start, todo visibility, and the base plus advanced approval actions after deploy and approver-login preflight are satisfied.",
+        "caseIds": [
+          "APF-SUBMIT-001",
+          "APF-TASK-001",
+          "APF-APPROVE-001",
+          "APF-REJECT-001",
+          "APF-ROLLBACK-001",
+          "APF-ADVANCED-DIALOGS-001",
+          "APF-TRANSFER-001",
+          "APF-ADDSIGN-001",
+          "APF-ADDSIGN-002",
+          "APF-FREEREJECT-001",
+          "APF-FREEAPPROVE-001"
+        ]
+      },
+      {
+        "id": "approval-flow-prepare-design-time-metadata",
+        "kind": "npm",
+        "script": "test:e2e:approval-flow:prepare-design-time",
+        "requiredPaths": [
+          "package.json",
+          "testing/common/fixtures/data/approval-workflow-flows-seed/flow-definitions.json",
+          "testing/common/fixtures/data/approval-workflow-flows-seed/prepare-design-time-metadata.cjs"
+        ],
+        "requiresNodeModules": true,
+        "description": "Create or update and commit workflow/{name}.workflow.json through the develop-platform approval-workflow-definition API. This step does not access or refresh runtime.",
+        "caseIds": [
+          "APF-ASSET-001",
+          "APF-ASSET-COMMIT-001"
+        ]
+      },
+      {
+        "id": "approval-flow-topology-and-reset",
+        "kind": "npm",
+        "script": "test:e2e:approval-flow:topology",
+        "requiredPaths": [
+          "playwright.config.ts",
+          "testing/common/fixtures/data/approval-workflow-flows-seed/flow-definitions.json",
+          "testing/e2e/regression/workflow/approval-flow/scripts/support.ts",
+          "testing/e2e/regression/workflow/approval-flow/scripts/topology-and-reset.spec.ts"
+        ],
+        "requiresNodeModules": true,
+        "description": "Use the develop-platform hot reload button to refresh the test container, then cover stable V2 split/join semantics, condition routing, HandleNode/CcNode/SubflowNode execution, and reset semantics for adopted metadata-layer definitions.",
+        "caseIds": [
+          "APF-RUNTIME-REFRESH-001",
+          "APF-CONDITION-XOR-001",
+          "APF-OR-JOIN-001",
+          "APF-NODE-TYPES-001",
+          "APF-SUBFLOW-001",
+          "APF-RESET-DESIGN-001"
+        ]
+      },
+      {
+        "id": "approval-flow-countersign-and-history",
+        "kind": "npm",
+        "script": "test:e2e:approval-flow:countersign",
+        "requiredPaths": [
+          "playwright.config.ts",
+          "testing/e2e/regression/workflow/approval-flow/scripts/support.ts",
+          "testing/e2e/regression/workflow/approval-flow/scripts/countersign-history.spec.ts"
+        ],
+        "requiresNodeModules": true,
+        "description": "Run the approval-flow browser script that covers countersign modes, history, completion, action visibility/validation, form-data verification, and multi-user collaboration after seeded approver accounts are confirmed login-capable.",
+        "caseIds": [
+          "APF-COUNTERSIGN-001",
+          "APF-COUNTERSIGN-002",
+          "APF-COUNTERSIGN-003",
+          "APF-HISTORY-001",
+          "APF-COMPLETE-001",
+          "APF-MULTIUSER-001",
+          "APF-ACTION-VISIBILITY-001",
+          "APF-ACTION-VALIDATION-001",
+          "APF-COMMENT-001",
+          "APF-FORMDATA-001"
+        ]
+      },
+      {
+        "id": "approval-flow-dynamic-form-workflow",
+        "kind": "npm",
+        "script": "test:e2e:approval-flow:dynamic-form",
+        "requiredPaths": [
+          "playwright.config.ts",
+          "testing/e2e/regression/workflow/approval-flow/scripts/support.ts",
+          "testing/e2e/regression/workflow/approval-flow/scripts/dynamic-form-workflow.spec.ts"
+        ],
+        "requiresNodeModules": true,
+        "description": "Run the approval-flow browser script that covers default dynamic-form field-source context, runtime approval workflow creation/start, central form-data binding, and queryable form-data change history.",
+        "caseIds": [
+          "APF-DYNAMIC-FORM-001"
+        ]
+      }
+    ]
+  },
+  "steps": [
+    {
+      "name": "plan-browser-assets",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/workflow/approval-flow/e2e.yaml --mode plan"
+    },
+    {
+      "name": "install-root-playwright",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/workflow/approval-flow/e2e.yaml --mode run --script-id approval-flow-install-root-playwright"
+    },
+    {
+      "name": "seed-deterministic-users",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/workflow/approval-flow/e2e.yaml --mode run --script-id approval-flow-seed-users"
+    },
+    {
+      "name": "run-form-and-design",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/workflow/approval-flow/e2e.yaml --mode run --script-id approval-flow-form-and-design"
+    },
+    {
+      "name": "run-runtime-actions",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/workflow/approval-flow/e2e.yaml --mode run --script-id approval-flow-runtime-actions"
+    },
+    {
+      "name": "prepare-design-time-metadata",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/workflow/approval-flow/e2e.yaml --mode run --script-id approval-flow-prepare-design-time-metadata"
+    },
+    {
+      "name": "run-topology-and-reset",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/workflow/approval-flow/e2e.yaml --mode run --script-id approval-flow-topology-and-reset"
+    },
+    {
+      "name": "run-countersign-and-history",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/workflow/approval-flow/e2e.yaml --mode run --script-id approval-flow-countersign-and-history"
+    },
+    {
+      "name": "run-dynamic-form-workflow",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/workflow/approval-flow/e2e.yaml --mode run --script-id approval-flow-dynamic-form-workflow"
+    }
+  ],
+  "reports": {
+    "summary": "tmp/testing-evidence/workflow-approval-flow",
+    "evidenceDir": "tmp/testing-evidence/workflow-approval-flow"
+  },
+  "notes": [
+    "APF-RESULT-UI-001/002 are component integration cases implemented by frontends/web/main-app/tests/integration/approval-workflow/result-only-presentation.spec.js with the actual Amis renderer and controlled API responses. They are not mapped to the dual-runtime E2E scripts below; invocation and generated-schema prerequisites are recorded in the integration contract.",
+    "This manifest wires the regression integration contract to browser execution planning and script-level run gates.",
+    "APF-DEPLOY-001 remains a harness-mode contract step and is intentionally not mapped to a browser script caseIds list; ordinary browser scenarios create and commit isolated definitions through the develop platform, refresh the test container through the app-container UI, and deploy the resulting metadata-layer definitions explicitly. Runtime creation is reserved for APF-DYNAMIC-FORM-001.",
+    "Bootstrap and health assumptions follow the local develop browser bootstrap contract and scripts/dev-runtime/bootstrap-develop-browser-e2e-local.sh; /actuator/health readiness must be satisfied before browser execution.",
+    "Approval-workflow data seeds are explicit E2E data dependencies so runtime start/task/action scenarios stay deterministic; approval-flow-seed-users recreates AWF users and writes generated employee IDs to tmp/testing-evidence/workflow-approval-flow/approval-workflow-identities.json.",
+    "Topology coverage follows the stable V2 resource graph: no GatewayNode fixtures; XOR is inferred from multiple outgoing edges without a common OR JoinNode, and OR is inferred only when branches converge on JoinNode(joinType=OR).",
+    "APF-RESET-DESIGN-001 requires APF-RUNTIME-REFRESH-001 to click the develop-platform hot reload button first, producing a metadata-layer WorkflowModel from the committed workflow/{name}.workflow.json asset. The design-time asset preparation step itself must not access runtime, and the test must not manufacture runtime state through physical delete or direct database writes.",
+    "The repository root now owns the Playwright test-runner dependency boundary because root playwright.config.ts and testing/e2e specs import @playwright/test from the repository root.",
+    "The repository currently exposes identities/admin as a long-lived identity fixture; awf.approver1/2/3 are deterministic AWF users created by the approval-workflow-users-seed lifecycle script with default password AwfRegression@2026! unless OB_TEST_AWF_PASSWORD overrides it.",
+    "Browser script files are declared as paths for implementation and verification; placeholder selectors/routes must be eliminated before run mode is considered trustworthy.",
+    "APF-DYNAMIC-FORM-001 covers the default dynamic-form bridge separately from the business-model workflow wrapper so binding/history evidence is not inferred from business-model-only paths."
+  ]
+}

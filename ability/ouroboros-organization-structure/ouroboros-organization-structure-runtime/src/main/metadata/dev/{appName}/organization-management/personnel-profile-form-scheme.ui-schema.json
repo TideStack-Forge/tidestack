@@ -1,0 +1,318 @@
+{
+  "name": "/dev/{appName}/organization-management/personnel-profile-form-scheme",
+  "schema": {
+    "type": "page",
+    "body": [
+      {
+        "type": "alert",
+        "level": "info",
+        "showIcon": true,
+        "body": "当前应用仅支持维护一套默认启用的人员档案表单方案。该方案决定新增、编辑、详情页面使用的表单结构。"
+      },
+      {
+        "type": "crud",
+        "id": "personnel-profile-form-scheme-list",
+        "name": "personnel-profile-form-scheme-list",
+        "syncLocation": false,
+        "api": {
+          "method": "get",
+          "url": "/api/dev/${appName}/organization-management/personnel-profile-form-scheme"
+        },
+        "headerToolbar": [
+          {
+            "label": "刷新",
+            "icon": "fa fa-refresh",
+            "type": "reload"
+          },
+          {
+            "type": "button",
+            "label": "新增方案",
+            "icon": "fa fa-plus pull-left",
+            "align": "right",
+            "level": "primary",
+            "actionType": "dialog",
+            "dialog": {
+              "type": "dialog",
+              "title": "新增人员档案表单方案",
+              "size": "lg",
+              "body": {
+                "type": "form",
+                "api": {
+                  "method": "post",
+                  "url": "/api/dev/${appName}/organization-management/personnel-profile-form-scheme"
+                },
+                "body": [
+                  {
+                    "name": "name",
+                    "type": "input-text",
+                    "label": "方案名称",
+                    "required": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "textarea",
+                    "label": "方案说明",
+                    "maxRows": 4
+                  },
+                  {
+                    "name": "enabled",
+                    "type": "switch",
+                    "label": "启用",
+                    "value": true
+                  },
+                  {
+                    "name": "isDefault",
+                    "type": "switch",
+                    "label": "设为默认方案",
+                    "value": true
+                  },
+                  {
+                    "name": "priority",
+                    "type": "input-number",
+                    "label": "优先级",
+                    "value": 0
+                  },
+                  {
+                    "name": "createSchema",
+                    "type": "json-editor",
+                    "label": "新增表单 Schema",
+                    "required": true
+                  },
+                  {
+                    "name": "editSchema",
+                    "type": "json-editor",
+                    "label": "编辑表单 Schema",
+                    "required": true
+                  },
+                  {
+                    "name": "detailSchema",
+                    "type": "json-editor",
+                    "label": "详情表单 Schema",
+                    "required": true
+                  }
+                ]
+              },
+              "showCloseButton": true,
+              "showErrorMsg": true,
+              "showLoading": true,
+              "closeOnEsc": false,
+              "dataMapSwitch": false,
+              "resizable": true
+            }
+          }
+        ],
+        "columns": [
+          {
+            "name": "name",
+            "label": "方案名称",
+            "type": "text"
+          },
+          {
+            "name": "description",
+            "label": "方案说明",
+            "type": "text",
+            "placeholder": "-"
+          },
+          {
+            "name": "isDefault",
+            "label": "默认方案",
+            "type": "mapping",
+            "map": {
+              "true": "<span class='label label-success'>默认</span>",
+              "false": "-"
+            }
+          },
+          {
+            "name": "enabled",
+            "label": "启用状态",
+            "type": "mapping",
+            "map": {
+              "true": "<span class='label label-success'>启用</span>",
+              "false": "<span class='label label-default'>停用</span>"
+            }
+          },
+          {
+            "name": "priority",
+            "label": "优先级",
+            "type": "text"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "width": 220,
+            "buttons": [
+              {
+                "type": "button",
+                "label": "查看",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "查看人员档案表单方案",
+                  "size": "lg",
+                  "body": {
+                    "type": "tabs",
+                    "tabs": [
+                      {
+                        "title": "基本信息",
+                        "body": [
+                          {
+                            "type": "property",
+                            "items": [
+                              {
+                                "label": "方案名称",
+                                "content": "${name}"
+                              },
+                              {
+                                "label": "方案说明",
+                                "content": "${description|default:-}"
+                              },
+                              {
+                                "label": "默认方案",
+                                "content": "${isDefault ? '是' : '否'}"
+                              },
+                              {
+                                "label": "启用状态",
+                                "content": "${enabled ? '启用' : '停用'}"
+                              },
+                              {
+                                "label": "优先级",
+                                "content": "${priority}"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "title": "新增 Schema",
+                        "body": [
+                          {
+                            "type": "json",
+                            "source": "${createSchema}"
+                          }
+                        ]
+                      },
+                      {
+                        "title": "编辑 Schema",
+                        "body": [
+                          {
+                            "type": "json",
+                            "source": "${editSchema}"
+                          }
+                        ]
+                      },
+                      {
+                        "title": "详情 Schema",
+                        "body": [
+                          {
+                            "type": "json",
+                            "source": "${detailSchema}"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "showCloseButton": true,
+                  "showErrorMsg": true,
+                  "showLoading": true,
+                  "closeOnEsc": false,
+                  "dataMapSwitch": false,
+                  "resizable": true
+                }
+              },
+              {
+                "type": "button",
+                "label": "编辑",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "编辑人员档案表单方案",
+                  "size": "lg",
+                  "body": {
+                    "type": "form",
+                    "api": {
+                      "method": "put",
+                      "url": "/api/dev/${appName}/organization-management/personnel-profile-form-scheme/${id}"
+                    },
+                    "body": [
+                      {
+                        "name": "id",
+                        "type": "hidden"
+                      },
+                      {
+                        "name": "name",
+                        "type": "input-text",
+                        "label": "方案名称",
+                        "required": true
+                      },
+                      {
+                        "name": "description",
+                        "type": "textarea",
+                        "label": "方案说明",
+                        "maxRows": 4
+                      },
+                      {
+                        "name": "enabled",
+                        "type": "switch",
+                        "label": "启用",
+                        "required": true
+                      },
+                      {
+                        "name": "isDefault",
+                        "type": "switch",
+                        "label": "设为默认方案",
+                        "required": true
+                      },
+                      {
+                        "name": "priority",
+                        "type": "input-number",
+                        "label": "优先级"
+                      },
+                      {
+                        "name": "createSchema",
+                        "type": "json-editor",
+                        "label": "新增表单 Schema",
+                        "required": true
+                      },
+                      {
+                        "name": "editSchema",
+                        "type": "json-editor",
+                        "label": "编辑表单 Schema",
+                        "required": true
+                      },
+                      {
+                        "name": "detailSchema",
+                        "type": "json-editor",
+                        "label": "详情表单 Schema",
+                        "required": true
+                      }
+                    ]
+                  },
+                  "showCloseButton": true,
+                  "showErrorMsg": true,
+                  "showLoading": true,
+                  "closeOnEsc": false,
+                  "dataMapSwitch": false,
+                  "resizable": true
+                }
+              },
+              {
+                "type": "button",
+                "label": "删除",
+                "className": "text-danger",
+                "actionType": "ajax",
+                "confirmText": "确认删除该人员档案表单方案？",
+                "api": "delete:/api/dev/${appName}/organization-management/personnel-profile-form-scheme/${id}"
+              }
+            ]
+          }
+        ],
+        "perPageAvailable": [
+          10,
+          20,
+          50,
+          100
+        ]
+      }
+    ]
+  }
+}

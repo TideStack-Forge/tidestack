@@ -1,0 +1,225 @@
+{
+  "name": "/dev/{appName}/rpc-auth/type/AccessToken",
+  "schema": {
+    "type": "fieldSet",
+    "title": "AccessToken 配置",
+    "visibleOn": "${type === 'AccessToken'}",
+    "collapsable": true,
+    "body": [
+      {
+        "name": "accessToken.mode",
+        "type": "script-editor",
+        "label": "获取令牌方式",
+        "value": "dynamic",
+        "language": "rpc-template",
+        "codeResourceType": "rpc-auth",
+        "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+        "codeSite": "rpc-auth.accessToken.mode",
+        "codePointer": "/accessToken/mode",
+        "description": "支持 #{配置键} 引用配置值。"
+      },
+      {
+        "type": "fieldSet",
+        "title": "动态请求令牌",
+        "visibleOn": "${accessToken.mode !== 'static'}",
+        "body": [
+          {
+            "name": "accessToken.request.modelName",
+            "type": "script-editor",
+            "label": "令牌请求 RPC 模型",
+            "required": true,
+            "description": "运行时调用此 RPC 获取令牌。请在该模型中配置 URL、参数和认证；不能引用当前凭据造成递归。",
+            "language": "rpc-template",
+            "codeResourceType": "rpc-auth",
+            "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+            "codeSite": "rpc-auth.accessToken.request.modelName",
+            "codePointer": "/accessToken/request/modelName"
+          },
+          {
+            "name": "accessToken.accessTokenPath",
+            "type": "script-editor",
+            "label": "令牌路径",
+            "required": true,
+            "placeholder": "从响应中获取访问令牌的 JSONPath",
+            "description": "JSONPath表达式参考：<a href='https://www.rfc-editor.org/rfc/rfc9535.html' target='_blank'>RFC 9535</a>，<a href='https://jsonpath.com/' target='_blank'>在线测试工具</a>",
+            "language": "jsonpath",
+            "codeResourceType": "rpc-auth",
+            "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+            "codeSite": "rpc-auth.accessToken.accessTokenPath",
+            "codePointer": "/accessToken/accessTokenPath"
+          },
+          {
+            "type": "script-editor",
+            "name": "accessToken.expiresConfig.expiresValueSource",
+            "label": "过期时间",
+            "value": "response",
+            "language": "rpc-template",
+            "codeResourceType": "rpc-auth",
+            "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+            "codeSite": "rpc-auth.accessToken.expiresConfig.expiresValueSource",
+            "codePointer": "/accessToken/expiresConfig/expiresValueSource",
+            "description": "支持 #{配置键} 引用配置值。"
+          },
+          {
+            "name": "accessToken.expiresConfig.expiresPath",
+            "type": "script-editor",
+            "label": "过期时间路径",
+            "visibleOn": "${accessToken.expiresConfig.expiresValueSource === 'response'}",
+            "placeholder": "从响应中获取过期时间的 JSONPath",
+            "language": "jsonpath",
+            "codeResourceType": "rpc-auth",
+            "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+            "codeSite": "rpc-auth.accessToken.expiresConfig.expiresPath",
+            "codePointer": "/accessToken/expiresConfig/expiresPath",
+            "description": "支持 #{配置键} 引用配置值。"
+          },
+          {
+            "name": "accessToken.expiresConfig.inputExpiresGroup",
+            "type": "input-group",
+            "label": "过期时间",
+            "visibleOn": "${accessToken.expiresConfig.expiresValueSource === 'input'}",
+            "body": [
+              {
+                "name": "accessToken.expiresConfig.expiresIn",
+                "type": "script-editor",
+                "placeholder": "输入过期时间",
+                "language": "rpc-template",
+                "codeResourceType": "rpc-auth",
+                "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+                "codeSite": "rpc-auth.accessToken.expiresConfig.expiresIn",
+                "codePointer": "/accessToken/expiresConfig/expiresIn",
+                "description": "支持 #{配置键} 引用配置值。"
+              },
+              {
+                "name": "accessToken.expiresConfig.unit",
+                "type": "script-editor",
+                "required": true,
+                "placeholder": "时间单位",
+                "value": "second",
+                "language": "rpc-template",
+                "codeResourceType": "rpc-auth",
+                "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+                "codeSite": "rpc-auth.accessToken.expiresConfig.unit",
+                "codePointer": "/accessToken/expiresConfig/unit",
+                "description": "支持 #{配置键} 引用配置值。"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "fieldSet",
+        "title": "静态令牌",
+        "visibleOn": "${accessToken.mode !== 'dynamic'}",
+        "body": [
+          {
+            "name": "accessToken.staticAccessToken",
+            "type": "script-editor",
+            "label": "访问令牌",
+            "required": true,
+            "placeholder": "请输入访问令牌，支持通过 #{配置项} 的方式引用配置项中的值",
+            "language": "rpc-template",
+            "codeResourceType": "rpc-auth",
+            "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+            "codeSite": "rpc-auth.accessToken.staticAccessToken",
+            "codePointer": "/accessToken/staticAccessToken",
+            "description": "支持 #{配置键} 引用配置值。"
+          }
+        ]
+      },
+      {
+        "type": "fieldSet",
+        "title": "令牌位置",
+        "className": "mt-4",
+        "body": [
+          {
+            "name": "accessToken.tokenPlacement",
+            "type": "script-editor",
+            "label": "令牌位置",
+            "value": "Authorization",
+            "language": "rpc-template",
+            "codeResourceType": "rpc-auth",
+            "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+            "codeSite": "rpc-auth.accessToken.tokenPlacement",
+            "codePointer": "/accessToken/tokenPlacement",
+            "description": "支持 #{配置键} 引用配置值。"
+          },
+          {
+            "type": "alert",
+            "visibleOn": "${accessToken.tokenPlacement === 'Authorization'}",
+            "level": "info",
+            "title": "Authorization 标头",
+            "body": "遵循 OAuth 2.0 认证头规范，访问令牌将会被添加到请求头的 Authorization 字段中，格式为 `Bearer &lt;accessToken&gt;`。<br>规范参考: <a href='https://datatracker.ietf.org/doc/html/rfc6750' target='_blank'>RFC 6750</a>"
+          },
+          {
+            "type": "combo",
+            "name": "accessToken.customPlacement",
+            "clearValueOnHidden": true,
+            "multiLine": true,
+            "required": true,
+            "multiple": true,
+            "label": "附加令牌",
+            "visibleOn": "${accessToken.tokenPlacement !== 'Authorization'}",
+            "noBorder": true,
+            "labelRemark": {
+              "type": "remark",
+              "content": "向请求对象中注入令牌",
+              "shape": "circle"
+            },
+            "value": [
+              {
+                "in": "header",
+                "name": "Authorization",
+                "value": "Bearer ${accessToken}"
+              }
+            ],
+            "items": [
+              {
+                "type": "input-group",
+                "name": "customTokenLocation",
+                "body": [
+                  {
+                    "name": "in",
+                    "placeholder": "请选择参数位置",
+                    "type": "script-editor",
+                    "required": true,
+                    "language": "rpc-template",
+                    "codeResourceType": "rpc-auth",
+                    "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+                    "codeSite": "rpc-auth.accessToken.customPlacement.*.in",
+                    "codePointer": "/accessToken/customPlacement/*/in",
+                    "description": "支持 #{配置键} 引用配置值。"
+                  },
+                  {
+                    "name": "name",
+                    "required": true,
+                    "placeholder": "名称",
+                    "type": "script-editor",
+                    "language": "rpc-template",
+                    "codeResourceType": "rpc-auth",
+                    "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+                    "codeSite": "rpc-auth.accessToken.customPlacement.*.name",
+                    "codePointer": "/accessToken/customPlacement/*/name",
+                    "description": "支持 #{配置键} 引用配置值。"
+                  },
+                  {
+                    "name": "value",
+                    "required": true,
+                    "placeholder": "参数值，如：Bearer \\${accessToken}，也可以通过 #{配置项} 的方式引用配置项中的值",
+                    "type": "script-editor",
+                    "language": "rpc-template",
+                    "codeResourceType": "rpc-auth",
+                    "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+                    "codeSite": "rpc-auth.accessToken.customPlacement.*.value",
+                    "codePointer": "/accessToken/customPlacement/*/value",
+                    "description": "支持 #{配置键} 引用配置值。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

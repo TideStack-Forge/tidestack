@@ -1,0 +1,13 @@
+[
+  {
+    "fullName": "systemSetting.integrationManagement.connections.directory",
+    "title": "组织关联与同步",
+    "parent": "systemSetting.integrationManagement.connections",
+    "order": 40,
+    "authorities": [
+      "systemSetting.integrationManagement.connections.directory.view",
+      "systemSetting.integrationManagement.connections.directory.bind",
+      "systemSetting.integrationManagement.connections.directory.synchronize"
+    ]
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "fullName": "systemSetting.integrationManagement.connections.notification",
+    "title": "企业通知",
+    "parent": "systemSetting.integrationManagement.connections",
+    "order": 50,
+    "authorities": [
+      "systemSetting.integrationManagement.connections.notification.view",
+      "systemSetting.integrationManagement.connections.notification.test"
+    ]
+  }
+]

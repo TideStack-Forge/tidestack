@@ -1,0 +1,53 @@
+{
+  "name": "/dev/{appName}/i18n/detail",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "title": false,
+    "mode": "horizontal",
+    "static": true,
+    "initApi": {
+      "method": "get",
+      "url": "/api/dev/${appName}/i18n/${locale}"
+    },
+    "body": [
+      {
+        "type": "static",
+        "name": "locale",
+        "label": "语言代码"
+      },
+      {
+        "type": "static",
+        "name": "name",
+        "label": "语言名称"
+      },
+      {
+        "type": "static",
+        "name": "version",
+        "label": "版本"
+      },
+      {
+        "type": "static",
+        "name": "direction",
+        "label": "文本方向"
+      },
+      {
+        "type": "static",
+        "name": "enabled",
+        "label": "启用",
+        "tpl": "${enabled === false ? '否' : '是'}"
+      },
+      {
+        "type": "static",
+        "name": "isDefault",
+        "label": "默认语言",
+        "tpl": "${isDefault ? '是' : '否'}"
+      },
+      {
+        "type": "static-json",
+        "name": "messages",
+        "label": "文案内容"
+      }
+    ]
+  }
+}

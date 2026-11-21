@@ -1,0 +1,3 @@
+com.ouroboros.businessmodel.json.DefaultBusinessModelMetaTypeProvider
+com.ouroboros.businessmodel.json.CompositeViewBusinessModelMetaTypeProvider
+com.ouroboros.businessmodel.json.DashboardBusinessModelMetaTypeProvider

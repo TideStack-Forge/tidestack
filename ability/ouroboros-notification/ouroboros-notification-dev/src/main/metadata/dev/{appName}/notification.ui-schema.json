@@ -1,0 +1,100 @@
+{
+  "name": "/dev/{appName}/notification",
+  "schema": {
+    "type": "crud",
+    "api": {
+      "method": "get",
+      "url": "/api/dev/${appName}/notification-template"
+    },
+    "columns": [
+      {
+        "type": "text",
+        "label": "模版名",
+        "name": "name"
+      },
+      {
+        "type": "text",
+        "label": "模版标题",
+        "name": "title"
+      },
+      {
+        "type": "tpl",
+        "label": "状态",
+        "name": "isEnabled",
+        "tpl": "${isEnabled==true?'启用':'禁用'}"
+      },
+      {
+        "type": "operation",
+        "label": "操作",
+        "buttons": [
+          {
+            "type": "button",
+            "actionType": "dialog",
+            "dialog": {
+              "type": "dialog",
+              "size": "lg",
+              "title": "${title} - 模板配置详情",
+              "url": "/dev/${appName}/notification/detail",
+              "actions": []
+            },
+            "icon": "fa fa-eye"
+          },
+          {
+            "type": "button",
+            "icon": "fa fa-pencil",
+            "actionType": "dialog",
+            "dialog": {
+              "type": "dialog",
+              "size": "lg",
+              "title": "编辑${name} - 模板配置",
+              "url": "/dev/${appName}/notification/edit"
+            }
+          },
+          {
+            "type": "button",
+            "actionType": "ajax",
+            "icon": "fa fa-times text-danger",
+            "confirmText": "确认要删除${title}模版吗？",
+            "api": {
+              "method": "delete",
+              "url": "/api/dev/${appName}/notification-template/${name}"
+            }
+          }
+        ]
+      }
+    ],
+    "bulkActions": [],
+    "perPageAvailable": [
+      10
+    ],
+    "headerToolbar": [
+      "bulkActions",
+      {
+        "label": "刷新",
+        "icon": "fa fa-repeat",
+        "type": "button",
+        "actionType": "reload"
+      },
+      {
+        "type": "button",
+        "label": "新增",
+        "actionType": "dialog",
+        "level": "primary",
+        "align": "right",
+        "dialog": {
+          "size": "lg",
+          "url": "/dev/${appName}/notification/add",
+          "type": "dialog",
+          "showCloseButton": true,
+          "closeOnEsc": false,
+          "showErrorMsg": true,
+          "showLoading": true,
+          "title": "新增通知模板"
+        }
+      }
+    ],
+    "alwaysShowPagination": true,
+    "mode": "table",
+    "loadDataOnce": true
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "name": "/system-setting/approval-workflow-definition/version-history",
+  "schema": {
+    "type": "page",
+    "title": "版本历史",
+    "body": [
+      {
+        "type": "crud",
+        "name": "version-history-crud",
+        "syncLocation": false,
+        "api": {
+          "url": "/api/approval-workflow/definition/${flowKey}/versions",
+          "method": "get"
+        },
+        "perPageAvailable": [
+          10
+        ],
+        "headerToolbar": [
+          {
+            "type": "reload",
+            "align": "right",
+            "icon": "fa fa-repeat",
+            "label": "刷新",
+            "level": "primary"
+          }
+        ],
+        "alwaysShowPagination": false,
+        "hideQuickSaveBtn": true,
+        "columns": [
+          {
+            "name": "version",
+            "label": "版本号",
+            "type": "text"
+          },
+          {
+            "name": "deploymentTime",
+            "label": "部署时间",
+            "type": "date",
+            "format": "YYYY-MM-DD HH:mm:ss"
+          },
+          {
+            "name": "status",
+            "label": "状态",
+            "type": "mapping",
+            "map": {
+              "active": {
+                "type": "tag",
+                "displayMode": "status",
+                "label": "当前版本",
+                "color": "success"
+              },
+              "inactive": {
+                "type": "tag",
+                "displayMode": "status",
+                "label": "历史版本",
+                "color": "inactive"
+              }
+            }
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "buttons": [
+              {
+                "type": "button",
+                "label": "查看详情",
+                "level": "link",
+                "actionType": "drawer",
+                "tooltip": "查看该版本的详细信息和流程图",
+                "drawer": {
+                  "position": "right",
+                  "width": "80%",
+                  "title": "版本详情 - v${version}",
+                  "closeOnOutside": true,
+                  "url": "/system-setting/approval-workflow-definition/version-detail?flowKey=${flowKey}&version=${version}",
+                  "actions": [
+                    {
+                      "type": "action",
+                      "actionType": "cancel",
+                      "label": "关闭"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

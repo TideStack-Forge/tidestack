@@ -1,0 +1,57 @@
+{
+  "name": "/dev/{appName}/logicflow-model/add",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "mode": "horizontal",
+    "api": {
+      "method": "POST",
+      "url": "/api/dev/${appName}/logic-flow?includeValidationSnapshot=true"
+    },
+    "body": [
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "模型名",
+        "required": true,
+        "placeholder": "请输入模型名"
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "模型描述",
+        "placeholder": "请输入模型描述"
+      }
+    ],
+    "reload": "modelList",
+    "onEvent": {
+      "submitSucc": {
+        "actions": [
+          {
+            "actionType": "toast",
+            "expression": "${(result.data.validationSnapshot.validationDiagnostics && result.data.validationSnapshot.validationDiagnostics.length) || (result.data.validationSnapshot.validationErrors && result.data.validationSnapshot.validationErrors.length) || result.data.validationSnapshot.validationSummary}",
+            "args": {
+              "msgType": "warning",
+              "msg": "模型已添加，但存在后端校验错误，请查看列表或编辑页中的校验错误"
+            }
+          },
+          {
+            "actionType": "toast",
+            "expression": "${!((result.data.validationSnapshot.validationDiagnostics && result.data.validationSnapshot.validationDiagnostics.length) || (result.data.validationSnapshot.validationErrors && result.data.validationSnapshot.validationErrors.length) || result.data.validationSnapshot.validationSummary)}",
+            "args": {
+              "msgType": "success",
+              "msg": "模型已添加"
+            }
+          },
+          {
+            "actionType": "reload",
+            "componentName": "modelList"
+          },
+          {
+            "actionType": "closeDialog"
+          }
+        ]
+      }
+    }
+  }
+}

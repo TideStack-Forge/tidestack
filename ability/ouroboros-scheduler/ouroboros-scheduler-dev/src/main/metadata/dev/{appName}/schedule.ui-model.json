@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/schedule",
+  "type": "amis",
+  "title": "计划任务"
+}

@@ -1,0 +1,41 @@
+CREATE TABLE IF NOT EXISTS t_department (
+  id BIGINT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  code VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS t_user (
+  id BIGINT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  age INT,
+  email VARCHAR(200),
+  status VARCHAR(20),
+  department_id BIGINT NOT NULL,
+  created_at TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS t_order (
+  id BIGINT PRIMARY KEY,
+  user_id BIGINT NOT NULL,
+  amount DOUBLE NOT NULL,
+  status VARCHAR(20) NOT NULL,
+  created_at TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS t_order_item (
+  id BIGINT PRIMARY KEY,
+  order_id BIGINT NOT NULL,
+  product_name VARCHAR(100) NOT NULL,
+  qty INT NOT NULL,
+  price DOUBLE NOT NULL,
+  amount DOUBLE NOT NULL,
+  status VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS t_review (
+  id BIGINT PRIMARY KEY,
+  order_id BIGINT NOT NULL,
+  rating INT NOT NULL,
+  score DOUBLE NOT NULL,
+  comment VARCHAR(500)
+);

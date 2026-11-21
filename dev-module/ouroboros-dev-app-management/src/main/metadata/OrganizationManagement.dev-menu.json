@@ -1,0 +1,8 @@
+{
+  "fullName": "OrganizationManagement",
+  "icon": "fas fa-sitemap",
+  "title": "组织架构",
+  "placement": "main",
+  "stage": "dev",
+  "order": 60
+}

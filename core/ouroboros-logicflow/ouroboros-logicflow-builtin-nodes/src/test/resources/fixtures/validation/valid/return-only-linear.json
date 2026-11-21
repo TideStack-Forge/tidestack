@@ -1,0 +1,38 @@
+{
+  "name": "return-only-linear",
+  "description": "Valid flow using ReturnNode without an explicit exitNode",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "constSource",
+  "nodes": [
+    {
+      "name": "constSource",
+      "type": "const",
+      "description": "",
+      "dataType": "string",
+      "value": "returned"
+    },
+    {
+      "name": "earlyReturn",
+      "type": "return",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "string"
+        }
+      ],
+      "outputPorts": []
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "constSource",
+      "sourceOutputPort": 0,
+      "targetNode": "earlyReturn",
+      "targetInputPort": 0
+    }
+  ]
+}

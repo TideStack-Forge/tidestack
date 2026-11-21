@@ -1,0 +1,134 @@
+{
+  "name": "/dev/{appName}/ui-schema/{fullName}",
+  "schema": {
+    "type": "page",
+    "title": {
+      "type": "flex",
+      "justify": "flex-start",
+      "items": [
+        "编辑 UI Schema「${fullName}」",
+        {
+          "name": "title",
+          "id": "schemaTitle",
+          "mode": "inline",
+          "label": "备注名",
+          "placeholder": "请输入文字以备注页面用途",
+          "type": "input-text",
+          "className": "mx-2 mb-0",
+          "style": {
+            "marginTop": "-5px"
+          },
+          "onEvent": {
+            "blur": {
+              "actions": [
+                {
+                  "actionType": "setValue",
+                  "componentId": "edit-ui-schema-form",
+                  "args": {
+                    "value": {
+                      "title": "${title}"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "toolbar": [
+      {
+        "type": "amis-schema",
+        "source": {
+          "method": "get",
+          "url": "/api/dev-fragment-schema/vcs-buttons",
+          "data": {
+            "apiPath": "ui-schema/${fullName}",
+            "statusId": "uiSchemaStatus",
+            "formId": "edit-ui-schema-form",
+            "actionType": "static"
+          }
+        },
+        "mergeProps": {
+          "onEvent": {
+            "fetchInited": {
+              "actions": [
+                {},
+                {},
+                {
+                  "actionType": "nonstatic",
+                  "componentId": "schemaTitle",
+                  "expression": "${event.data.responseData.lockState == 'OWNED'}"
+                },
+                {
+                  "actionType": "static",
+                  "componentId": "schemaTitle",
+                  "expression": "${event.data.responseData.lockState != 'OWNED'}"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "css": {
+      ".full-height": {
+        "height": "calc(100% - 56px)"
+      }
+    },
+    "body": [
+      {
+        "type": "form",
+        "id": "edit-ui-schema-form",
+        "wrapperComponent": "div",
+        "className": "h-full",
+        "wrapWithPanel": false,
+        "actions": [],
+        "title": "",
+        "initApi": "get:/api/dev/${appName}/ui-schema/${fullName}",
+        "api": {
+          "method": "put",
+          "data": {
+            "schema": "${schema|toJson}",
+            "title": "${title}",
+            "name": "${fullName}"
+          },
+          "messages": {
+            "success": "保存成功"
+          },
+          "url": "/api/dev/${appName}/ui-schema/${fullName}"
+        },
+        "body": [
+          {
+            "name": "schema",
+            "className": "full-height",
+            "label": false,
+            "inputClassName": "h-full",
+            "type": "amis-editor",
+            "resourceBrowserContext": {
+              "mode": "dev-app-frontend-resource",
+              "appName": "${appName}"
+            }
+          },
+          {
+            "name": "title",
+            "type": "hidden"
+          }
+        ],
+        "onEvent": {
+          "inited": {
+            "actions": [
+              {
+                "actionType": "setValue",
+                "componentId": "schemaTitle",
+                "args": {
+                  "value": "${title}"
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

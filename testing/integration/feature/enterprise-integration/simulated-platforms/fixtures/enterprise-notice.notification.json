@@ -1,0 +1,10 @@
+{
+  "name": "enterprise-simulation-notice",
+  "title": "Enterprise simulation public notice",
+  "isEnabled": true,
+  "channel": {
+    "ding-talk": {"schema": {"titleTemplate": "Integration acceptance", "contentTemplate": "Public notice ${marker}"}},
+    "wecom": {"schema": {"titleTemplate": "Integration acceptance", "contentTemplate": "Public notice ${marker}"}},
+    "feishu": {"schema": {"titleTemplate": "Integration acceptance", "contentTemplate": "Public notice ${marker}"}}
+  }
+}

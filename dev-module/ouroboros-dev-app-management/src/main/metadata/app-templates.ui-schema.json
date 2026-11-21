@@ -1,0 +1,202 @@
+{
+  "name": "/app-templates",
+  "schema": {
+    "type": "page",
+    "title": "模板管理",
+    "definitions": {
+      "importTemplateModal": {
+        "type": "dialog",
+        "title": "导入模板",
+        "url": "/app-templates/import",
+        "showCloseButton": true,
+        "showErrorMsg": true,
+        "showLoading": true,
+        "closeOnEsc": false
+      },
+      "createAppFromTemplateModal": {
+        "type": "dialog",
+        "title": "从模板创建应用",
+        "url": "/app-templates/create-app",
+        "showCloseButton": true,
+        "showErrorMsg": true,
+        "showLoading": true,
+        "closeOnEsc": false,
+        "data": {
+          "templateName": "${name}"
+        }
+      }
+    },
+    "body": [
+      {
+        "type": "crud",
+        "id": "templateList",
+        "name": "templateList",
+        "mode": "cards",
+        "syncLocation": false,
+        "api": {
+          "method": "get",
+          "url": "/api/app-template",
+          "responseData": {
+            "items": "${items}"
+          }
+        },
+        "filter": {
+          "wrapWithPanel": false,
+          "body": [
+            {
+              "type": "input-text",
+              "name": "keywords",
+              "placeholder": "请输入关键词",
+              "size": "lg",
+              "addOn": {
+                "type": "button",
+                "icon": "fa fa-search",
+                "label": "过滤",
+                "actionType": "submit"
+              }
+            }
+          ],
+          "className": "mb-3"
+        },
+        "source": "${ items | filter:name,title,description:match:keywords }",
+        "card": {
+          "className": "hover:shadow-md",
+          "header": {
+            "title": "${title || name}",
+            "subTitle": "${name}",
+            "className": "pb-1"
+          },
+          "toolbar": [
+            {
+              "type": "dropdown-button",
+              "label": "",
+              "icon": "fa fa-ellipsis-v text-secondary hover:text-primary",
+              "align": "right",
+              "hideCaret": true,
+              "closeOnClick": true,
+              "menuClassName": "shadow-md",
+              "buttons": [
+                {
+                  "label": "从模板创建应用",
+                  "type": "button",
+                  "icon": "fa-solid fa-plus text-center w-4 mr-2",
+                  "actionType": "dialog",
+                  "dialog": {
+                    "$ref": "createAppFromTemplateModal"
+                  }
+                },
+                {
+                  "label": "导出模板",
+                  "type": "button",
+                  "icon": "fa-solid fa-download text-center w-4 mr-2",
+                  "actionType": "download",
+                  "api": {
+                    "method": "get",
+                    "url": "/api/app-template/${name}/export"
+                  }
+                },
+                {
+                  "type": "button",
+                  "label": "删除模板",
+                  "icon": "fa fa-trash text-danger text-center w-4 mr-2",
+                  "className": "hover:text-danger",
+                  "actionType": "ajax",
+                  "api": {
+                    "method": "delete",
+                    "url": "/api/app-template/${name}"
+                  },
+                  "confirmText": "确定要删除模板 ${title || name}(${name}) 吗？"
+                }
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "label": "创建应用",
+              "type": "button",
+              "icon": "fa fa-plus",
+              "level": "primary",
+              "actionType": "dialog",
+              "dialog": {
+                "$ref": "createAppFromTemplateModal"
+              }
+            }
+          ],
+          "body": [
+            {
+              "type": "container",
+              "className": "flex justify-center pb-4",
+              "body": [
+                {
+                  "type": "icon",
+                  "icon": "${icon ? icon : 'fa fa-file-code-o'}",
+                  "vendor": "",
+                  "style": {
+                    "fontSize": "48px",
+                    "width": "96px",
+                    "height": "96px",
+                    "textAlign": "center",
+                    "lineHeight": "96px",
+                    "borderRadius": "50%",
+                    "backgroundColor": "ForestGreen",
+                    "color": "#fff"
+                  }
+                }
+              ]
+            },
+            {
+              "label": "版本",
+              "name": "version",
+              "visibleOn": "${version}"
+            },
+            {
+              "label": "作者",
+              "name": "author",
+              "visibleOn": "${author}"
+            },
+            {
+              "label": "描述",
+              "name": "description",
+              "visibleOn": "${description}"
+            }
+          ]
+        },
+        "perPageAvailable": [
+          20
+        ],
+        "primaryField": "name",
+        "footable": true,
+        "placeholder": "暂无模板",
+        "loadDataOnce": true
+      }
+    ],
+    "toolbar": [
+      {
+        "type": "button",
+        "icon": "fa fa-refresh",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "componentName": "templateList",
+                "actionType": "reload"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "button",
+        "label": "导入模板",
+        "level": "primary",
+        "block": false,
+        "actionType": "dialog",
+        "dialog": {
+          "$ref": "importTemplateModal"
+        },
+        "reload": "templateList",
+        "icon": "fa fa-upload"
+      }
+    ]
+  }
+}

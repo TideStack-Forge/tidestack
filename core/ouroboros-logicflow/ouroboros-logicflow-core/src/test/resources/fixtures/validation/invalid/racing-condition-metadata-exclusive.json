@@ -1,0 +1,91 @@
+{
+  "name": "racing-condition-metadata-exclusive",
+  "description": "Selective metadata branches target different input ports on the same merge node",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "source",
+  "exitNode": "targetMerge",
+  "nodes": [
+    {
+      "name": "source",
+      "type": "const",
+      "description": "",
+      "dataType": "map",
+      "value": {
+        "route": "left"
+      }
+    },
+    {
+      "name": "branchNode",
+      "type": "metadataSelectiveTestNode",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "map"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "left",
+          "description": "",
+          "dataType": "map",
+          "exclusiveGroupId": "g1"
+        },
+        {
+          "name": "right",
+          "description": "",
+          "dataType": "map",
+          "exclusiveGroupId": "g1",
+          "defaultBranch": true
+        }
+      ]
+    },
+    {
+      "name": "targetMerge",
+      "type": "merge",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "left",
+          "description": "",
+          "dataType": "map"
+        },
+        {
+          "name": "right",
+          "description": "",
+          "dataType": "map"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "merged",
+          "description": "",
+          "dataType": "map"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "source",
+      "sourceOutputPort": 0,
+      "targetNode": "branchNode",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "branchNode",
+      "sourceOutputPort": 0,
+      "targetNode": "targetMerge",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "branchNode",
+      "sourceOutputPort": 1,
+      "targetNode": "targetMerge",
+      "targetInputPort": 1
+    }
+  ]
+}

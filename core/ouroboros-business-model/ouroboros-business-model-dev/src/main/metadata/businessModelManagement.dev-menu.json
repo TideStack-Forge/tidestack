@@ -1,0 +1,10 @@
+{
+  "fullName": "businessModelManagement",
+  "url": "/dev/{appName}/business-model",
+  "icon": "icon-business-model",
+  "title": "业务模型",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 20
+}

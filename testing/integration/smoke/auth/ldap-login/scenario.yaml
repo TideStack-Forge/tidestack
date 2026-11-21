@@ -1,0 +1,53 @@
+{
+  "id": "auth/ldap-login",
+  "title": "LDAP Login Integration",
+  "domain": "auth",
+  "testType": "integration",
+  "suite": "smoke",
+  "risk": "p0",
+  "modes": [
+    "harness",
+    "e2e"
+  ],
+  "fixtures": {
+    "services": [
+      "openldap"
+    ],
+    "runtimes": [
+      "develop",
+      "mothership"
+    ],
+    "frontends": [
+      "develop-shell",
+      "runtime-shell"
+    ],
+    "data": [],
+    "identities": [
+      "admin",
+      "ldap-user",
+      "first-login-binding-user",
+      "permission-boundary-user"
+    ]
+  },
+  "entrypoints": {
+    "backendBaseUrlEnv": "OB_TEST_BASE_URL",
+    "appBackendBaseUrlEnv": "OB_TEST_APP_BASE_URL",
+    "frontendBaseUrlEnv": "OB_TEST_FRONTEND_BASE_URL",
+    "runtimeFrontendBaseUrlEnv": "OB_TEST_RUNTIME_FRONTEND_BASE_URL"
+  },
+  "caseTable": "cases.md",
+  "artifacts": {
+    "contract": "contract.md",
+    "harness": "harness.playbook.md",
+    "e2e": "testing/e2e/smoke/auth/ldap-login/e2e.yaml"
+  },
+  "reporting": {
+    "summaryFormat": "markdown",
+    "evidenceRoot": "tmp/testing-evidence/auth-ldap-login"
+  },
+  "exclusions": [],
+  "notes": [
+    "Harness mode covers provider diagnosis, first-login binding, and permission-boundary branches.",
+    "E2E mode is initially aimed at the deterministic mapped-user happy path; browser runner binding is still a follow-up step."
+  ]
+}

@@ -1,0 +1,2 @@
+com.ouroboros.mq.runtime.JarMQBindingProvider
+com.ouroboros.mq.runtime.LowCodeMQBindingProvider$Proxy

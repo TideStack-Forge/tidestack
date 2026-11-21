@@ -1,0 +1,94 @@
+{
+  "name": "/dev/{appName}/data-model/detail",
+  "schema": {
+    "type": "form",
+    "title": "",
+    "wrapWithPanel": false,
+    "initApi": {
+      "method": "get",
+      "url": "/api/dev/${appName}/metadata/data-model/${fullName}?mode=raw"
+    },
+    "body": [
+      {
+        "type": "tabs",
+        "tabs": [
+          {
+            "title": "字段",
+            "tab": {
+              "type": "table",
+              "source": "$fields",
+              "columns": [
+                {
+                  "name": "name",
+                  "label": "字段名",
+                  "type": "flex",
+                  "justify": "start",
+                  "items": [
+                    {
+                      "type": "tpl",
+                      "tpl": "${name}"
+                    },
+                    {
+                      "type": "tpl",
+                      "className": "ml-1 italic text-secondary",
+                      "tpl": "${rawName ? (' (' + rawName + ')') : ''}"
+                    }
+                  ]
+                },
+                {
+                  "type": "icon",
+                  "vendor": "",
+                  "label": "主键",
+                  "icon": "${ARRAYSOME(primaryKeys, item => item === name) ? 'fa fa-key text-yellow-500' : ''}"
+                },
+                {
+                  "type": "tpl",
+                  "label": "主键生成器",
+                  "tpl": "${(ARRAYSOME(primaryKeys, item => item === name) && !!primaryKeyGenerator) ? primaryKeyGenerator : '-'}"
+                },
+                {
+                  "name": "label",
+                  "label": "显示名"
+                },
+                {
+                  "name": "type",
+                  "label": "数据类型"
+                },
+                {
+                  "name": "isNullable",
+                  "label": "可为空",
+                  "type": "checkbox",
+                  "static": true
+                },
+                {
+                  "name": "isUnique",
+                  "label": "值唯一",
+                  "type": "checkbox",
+                  "static": true
+                }
+              ]
+            }
+          },
+          {
+            "title": "插件",
+            "tab": {
+              "type": "table",
+              "source": "$pluginDescriptors",
+              "columns": [
+                {
+                  "name": "name",
+                  "label": "插件名"
+                },
+                {
+                  "name": "config",
+                  "label": "插件配置",
+                  "type": "json"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

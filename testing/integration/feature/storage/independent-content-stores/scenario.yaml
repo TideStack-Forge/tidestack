@@ -1,0 +1,25 @@
+id: storage/independent-content-stores
+title: 独立内容存储与业务协调边界
+domain: storage
+risk: p1
+modes:
+  - harness
+fixtures:
+  services:
+    - MinIO S3 compatible endpoint
+  runtimes:
+    - Java 21
+    - Maven 3.8.6+
+  data:
+    - per-test isolated S3 buckets
+    - per-test H2 database and filesystem root
+caseTable: cases.md
+artifacts:
+  contract: contract.md
+  harness: harness.playbook.md
+reporting:
+  summaryFormat: markdown
+  evidenceRoot: tmp/testing-evidence/oss-file-storage
+exclusions:
+  - production data migration
+  - OSS/COS/OBS/AWS cloud certification

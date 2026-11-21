@@ -1,0 +1,29 @@
+[
+  {
+    "type": "amis-schema-editor",
+    "name": "config.schemaTpl",
+    "label": "显示模版",
+    "description": "模版中可以用 #{配置名} 来嵌入下面定义的配置项的设定值"
+  },
+  {
+    "type": "amis-schema-editor",
+    "name": "config.configFormItems",
+    "label": "配置项列表",
+    "multiple": true
+  },
+  {
+    "type": "amis-schema-editor",
+    "name": "config.thumbSchema",
+    "label": "缩略图"
+  },
+  {
+    "type": "json-data-editor",
+    "name": "config.exampleData",
+    "label": "示例数据"
+  },
+  {
+    "type": "json-data-editor",
+    "name": "config.defaultConfig",
+    "label": "默认配置"
+  }
+]

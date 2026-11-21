@@ -1,0 +1,23 @@
+{
+  "id": "lowcode/business-model-actions-events",
+  "title": "Dynamic Business Action and Event Journey",
+  "domain": "lowcode",
+  "testType": "integration",
+  "suite": "feature",
+  "risk": "p1",
+  "modes": [
+    "e2e"
+  ],
+  "caseTable": "cases.md",
+  "artifacts": {
+    "contract": "contract.md"
+  },
+  "reporting": {
+    "summaryFormat": "markdown",
+    "evidenceRoot": "tmp/testing-evidence/business-model-actions-events"
+  },
+  "notes": [
+    "Self-contained Maven H2 and in-process Spring MVC fixture; Java 21 and installed SDK dependencies are required. No running deployment or shared database is modified.",
+    "Optional --deployment mode starts the real mothership with explicit isolated configuration; exact-origin CORS and read-only synthetic evidence observer only. Live browser/MySQL results are recorded separately from the default in-process suite."
+  ]
+}

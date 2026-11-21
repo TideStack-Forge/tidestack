@@ -1,0 +1,42 @@
+[
+  {
+    "fullName": "Apps",
+    "title": "打开应用",
+    "icon": "far fa-folder-open",
+    "menu": "Apps",
+    "authorities": [
+      "Apps"
+    ],
+    "order": -2
+  },
+  {
+    "fullName": "ContainerManagement",
+    "title": "运行实例",
+    "icon": "fa-brands fa-docker",
+    "menu": "ContainerManagement",
+    "authorities": [
+      "ContainerManagement"
+    ],
+    "order": -1
+  },
+  {
+    "fullName": "AppTemplates",
+    "icon": "fa-solid fa-file-code",
+    "title": "应用模版",
+    "menu": "AppTemplates",
+    "authorities": [
+      "AppTemplates"
+    ],
+    "order": 0
+  },
+  {
+    "fullName": "DevDocs",
+    "icon": "fa-solid fa-book-open",
+    "title": "开发文档",
+    "menu": "DevDocs",
+    "authorities": [
+      "DevDocs"
+    ],
+    "order": 1
+  }
+]

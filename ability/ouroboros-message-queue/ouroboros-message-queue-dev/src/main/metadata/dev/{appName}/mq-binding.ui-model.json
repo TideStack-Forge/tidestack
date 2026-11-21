@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/mq-binding",
+  "type": "amis",
+  "title": "消息队列"
+}

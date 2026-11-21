@@ -1,0 +1,13 @@
+[
+  {
+    "fullName": "systemSetting.platformCache",
+    "title": "平台缓存",
+    "icon": "fa fa-database",
+    "menu": "systemSetting.platformCache",
+    "authorities": [
+      "systemSetting.platformCache"
+    ],
+    "order": 30,
+    "parent": "systemSetting.operationsManagement"
+  }
+]

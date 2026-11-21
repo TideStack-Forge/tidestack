@@ -1,0 +1,69 @@
+{
+  "name": "wecom.message.send",
+  "title": "企业微信发送应用消息",
+  "type": "OpenAPI",
+  "isEnabled": true,
+  "authCredential": "wecom.application-token",
+  "description": "自建应用文本消息；需应用发送权限及成员可见范围；必须核对 invaliduser，不把 HTTP 200 视为成功",
+  "timeout": 10000,
+  "retry": 0,
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "agentid": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "touser": {
+        "type": "string",
+        "minLength": 1
+      },
+      "msgtype": {
+        "type": "string",
+        "enum": [
+          "text"
+        ]
+      },
+      "text": {
+        "type": "object"
+      }
+    },
+    "required": [
+      "agentid",
+      "touser",
+      "msgtype",
+      "text"
+    ]
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://qyapi.weixin.qq.com/cgi-bin/message/send",
+    "parameters": [
+      {
+        "in": "BODY",
+        "name": "agentid",
+        "value": "${agentid}",
+        "required": true
+      },
+      {
+        "in": "BODY",
+        "name": "touser",
+        "value": "${touser}",
+        "required": true
+      },
+      {
+        "in": "BODY",
+        "name": "msgtype",
+        "value": "${msgtype}",
+        "required": true
+      },
+      {
+        "in": "BODY",
+        "name": "text",
+        "value": "${text}",
+        "required": true
+      }
+    ]
+  },
+  "group": "企业微信/消息"
+}

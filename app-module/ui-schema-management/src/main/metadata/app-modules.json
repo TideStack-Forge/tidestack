@@ -1,0 +1,12 @@
+[
+  {
+    "fullName": "systemSetting.customUiSchema",
+    "title": "自定义界面",
+    "menu": "systemSetting.customUiSchema",
+    "authorities": [
+      "systemSetting.customUiSchema"
+    ],
+    "order": 40,
+    "parent": "systemSetting.portalAndInterface"
+  }
+]

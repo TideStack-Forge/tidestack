@@ -1,0 +1,13 @@
+{
+  "editorId": "webapi",
+  "editorName": "TideStack WebAPI Metadata Editor",
+  "editorNameKey": "customEditor.webapi",
+  "metadataType": "webapi",
+  "schemaName": "webapi",
+  "viewType": "tidestack.metadataEditor.webapi",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.webapi",
+  "fileMatchPatterns": [
+    "*.webapi.json"
+  ],
+  "priority": "default"
+}

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "project": {
+    "path": ".tidestack/develop.json",
+    "fields": ["schemaVersion", "developmentServerUrl", "appName"],
+    "optionalFields": ["editorServiceUrl"],
+    "legacyAliases": {
+      "developmentServerUrl": ["platformUrl"]
+    },
+    "removedFields": []
+  },
+  "local": {
+    "path": ".tidestack/develop.local.json",
+    "fields": ["schemaVersion", "devKey"],
+    "optionalFields": ["editorServiceUrl", "editorAccessToken"],
+    "legacyAliases": {
+      "devKey": ["debugKey"]
+    },
+    "removedFields": ["profileId", "containerId"]
+  }
+}

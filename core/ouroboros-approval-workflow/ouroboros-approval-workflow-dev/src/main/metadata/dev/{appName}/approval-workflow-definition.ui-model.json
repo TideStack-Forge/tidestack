@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/approval-workflow-definition",
+  "type": "amis",
+  "title": "审批流"
+}

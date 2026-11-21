@@ -1,0 +1,10 @@
+{
+  "fullName": "BasicConfiguration.ConfigurationDefineManagement",
+  "url": "/dev/{appName}/configuration",
+  "icon": "icon-configuration",
+  "title": "配置项",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 20
+}

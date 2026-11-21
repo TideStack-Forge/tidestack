@@ -1,0 +1,56 @@
+{
+  "name": "/dev/category/add",
+  "schema": {
+    "type": "form",
+    "mode": "horizontal",
+    "title": false,
+    "api": {
+      "method": "post",
+      "url": "/api/app/category"
+    },
+    "body": [
+      {
+        "type": "nested-select",
+        "label": "上级分类",
+        "name": "parentPath",
+        "searchable": false,
+        "onlyLeaf": false,
+        "multiple": false,
+        "source": {
+          "url": "/api/app/category",
+          "method": "get"
+        },
+        "labelField": "name",
+        "valueField": "fullPath",
+        "clearable": true
+      },
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "分类名",
+        "required": true,
+        "validations": {
+          "matchRegexp": "^[\\u4e00-\\u9fa5\\w\\-]+[\\u4e00-\\u9fa5\\w\\-\\d]+$"
+        },
+        "validationErrors": {
+          "matchRegexp": "分类名只能包含中文、字母、数字、下划线、中划线"
+        }
+      },
+      {
+        "type": "ouroboros-icon-picker",
+        "name": "icon",
+        "label": "图标"
+      },
+      {
+        "type": "input-number",
+        "label": "排序",
+        "name": "order",
+        "keyboard": true,
+        "step": 1,
+        "required": true,
+        "precision": 0
+      }
+    ],
+    "wrapWithPanel": false
+  }
+}

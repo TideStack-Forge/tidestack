@@ -1,0 +1,31 @@
+{
+  "name": "/dev/{appName}/business-model/move",
+  "schema": {
+    "type": "form",
+    "title": "",
+    "api": {
+      "method": "POST",
+      "url": "/api/dev/${appName}/business-model/${fullName}/move"
+    },
+    "body": [
+      {
+        "type": "tree-select",
+        "name": "namespace",
+        "label": false,
+        "source": {
+          "method": "get",
+          "url": "/api/dev/${appName}/business-model/module-tree"
+        },
+        "valueField": "fullName",
+        "labelField": "title",
+        "placeholder": "<根>",
+        "showIcon": true,
+        "searchable": true,
+        "clearable": true,
+        "enableNodePath": false,
+        "hideRoot": true,
+        "multiple": false
+      }
+    ]
+  }
+}

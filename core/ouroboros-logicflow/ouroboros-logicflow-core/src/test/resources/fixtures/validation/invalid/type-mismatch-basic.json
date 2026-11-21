@@ -1,0 +1,38 @@
+{
+  "name": "type-mismatch-basic",
+  "description": "String output connected to a map input port should be invalid",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "stringSource",
+  "exitNode": "mapTarget",
+  "nodes": [
+    {
+      "name": "stringSource",
+      "type": "const",
+      "description": "",
+      "dataType": "string",
+      "value": "hello"
+    },
+    {
+      "name": "mapTarget",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "map"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "stringSource",
+      "sourceOutputPort": 0,
+      "targetNode": "mapTarget",
+      "targetInputPort": 0
+    }
+  ]
+}

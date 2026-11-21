@@ -1,0 +1,16 @@
+[
+  {
+    "path": "notification",
+    "title": "通知设置",
+    "icon": "bell",
+    "order": 20,
+    "description": "多渠道通知与提醒配置"
+  },
+  {
+    "path": "notification.internalMessage",
+    "title": "站内消息",
+    "icon": "inbox",
+    "order": 70,
+    "description": "站内消息与未读提醒配置"
+  }
+]

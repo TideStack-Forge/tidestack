@@ -1,0 +1,49 @@
+[
+  {
+    "fullName": "systemSetting",
+    "title": "系统设置",
+    "icon": "fa fa-cog",
+    "menu": "systemSetting",
+    "order": 9999
+  },
+  {
+    "fullName": "systemSetting.organizationAndAccess",
+    "title": "组织与权限",
+    "menu": "systemSetting.organizationAndAccess",
+    "authorities": [
+      "systemSetting.organizationManagement",
+      "systemSetting.roleManagement"
+    ],
+    "order": 10
+  },
+  {
+    "fullName": "systemSetting.basicConfiguration",
+    "title": "基础配置",
+    "menu": "systemSetting.basicConfiguration",
+    "order": 20
+  },
+  {
+    "fullName": "systemSetting.portalAndInterface",
+    "title": "门户与界面",
+    "menu": "systemSetting.portalAndInterface",
+    "order": 30
+  },
+  {
+    "fullName": "systemSetting.workflowManagement",
+    "title": "流程管理",
+    "menu": "systemSetting.workflowManagement",
+    "order": 40
+  },
+  {
+    "fullName": "systemSetting.auditManagement",
+    "title": "审计管理",
+    "menu": "systemSetting.auditManagement",
+    "order": 50
+  },
+  {
+    "fullName": "systemSetting.operationsManagement",
+    "title": "运行维护",
+    "menu": "systemSetting.operationsManagement",
+    "order": 60
+  }
+]

@@ -1,0 +1,322 @@
+{
+  "name": "/container-management",
+  "schema": {
+    "type": "page",
+    "body": [
+      {
+        "type": "crud",
+        "name": "containerList",
+        "api": {
+          "method": "get",
+          "url": "/api/app/container"
+        },
+        "rowClassNameExpr": "${status ? 'bg-light': 'bg-white'}",
+        "headerToolbar": [
+          "bulkActions",
+          {
+            "type": "button",
+            "label": "开发密钥",
+            "icon": "fa fa-key",
+            "level": "primary",
+            "actionType": "dialog",
+            "dialog": {
+              "title": "开发密钥管理",
+              "size": "md",
+              "url": "/dev/container/debug-key-dialog"
+            }
+          },
+          {
+            "type": "button",
+            "label": "镜像管理",
+            "icon": "fa fa-cubes",
+            "level": "primary",
+            "actionType": "dialog",
+            "dialog": {
+              "title": "基座镜像管理",
+              "size": "lg",
+              "url": "/dev/container/image-management"
+            }
+          },
+          {
+            "type": "button",
+            "icon": "fa fa-refresh",
+            "actionType": "reload"
+          }
+        ],
+        "filter": {
+          "title": "条件搜索",
+          "body": [
+            {
+              "type": "group",
+              "body": [
+                {
+                  "type": "input-text",
+                  "name": "keyword",
+                  "label": "关键词",
+                  "clearable": true,
+                  "placeholder": "请输入关键词",
+                  "size": "sm"
+                }
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "type": "reset",
+              "label": "重置"
+            },
+            {
+              "type": "submit",
+              "level": "primary",
+              "label": "查询"
+            }
+          ]
+        },
+        "loadDataOnce": true,
+        "columns": [
+          {
+            "label": "名称",
+            "type": "container",
+            "body": [
+              {
+                "type": "tpl",
+                "tpl": "${appTitle}(<span class='text-gray-400'>${ appName }</span>)",
+                "visibleOn": "${appTitle}"
+              },
+              {
+                "type": "tpl",
+                "tpl": "$name",
+                "visibleOn": "${!appTitle}"
+              }
+            ]
+          },
+          {
+            "label": "属性",
+            "type": "container",
+            "body": [
+              {
+                "type": "tpl",
+                "tpl": "<ul><li>运行后端：${backendType == 'KUBERNETES' ? 'Kubernetes' : backendType == 'DOCKER' ? 'Docker' : '-'}</li><li>暴露策略：${exposureStrategy == 'STABLE_DOMAIN' ? '稳定域名' : exposureStrategy == 'TEMP_PORT' ? '临时端口' : exposureStrategy == 'INTERNAL_ONLY' ? '仅内部访问' : '-'}</li><li>后端摘要：${backendSummary || '-'}</li><li>Web访问：${runtimeAccess && runtimeAccess.webAccess && runtimeAccess.webAccess.endpoint ? runtimeAccess.webAccess.endpoint : webEndpoint || '-'}</li><li>API访问：${runtimeAccess && runtimeAccess.apiAccess && runtimeAccess.apiAccess.endpoint ? runtimeAccess.apiAccess.endpoint : apiEndpoint || '-'}</li><li>调试方式：${debugCapability && debugCapability.enabled ? '会话式调试' : '-'}</li><li>调试会话：${activeDebugSessionId ? activeDebugSessionId + (debugCapability && debugCapability.sessionStatus ? '（' + debugCapability.sessionStatus + '）' : '') : (debugCapability && debugCapability.sessionOpenable ? '可开启' : '未开启')}</li><li>调试隧道：${debugCapability && debugCapability.endpoint ? debugCapability.endpoint : '-'}</li></ul>",
+                "visibleOn": "${backendType || exposureStrategy || backendSummary || runtimeAccess || webEndpoint || apiEndpoint || activeDebugSessionId || (debugCapability && debugCapability.enabled)}"
+              },
+              {
+                "type": "tpl",
+                "tpl": "-",
+                "visibleOn": "${!(backendType || exposureStrategy || backendSummary || runtimeAccess || webEndpoint || apiEndpoint || activeDebugSessionId || (debugCapability && debugCapability.enabled))}"
+              }
+            ]
+          },
+          {
+            "type": "mapping",
+            "name": "status",
+            "label": "状态",
+            "map": {
+              "launching": "<span class='label label-info'>正在启动</span>",
+              "running": "<span class='label label-success'>运行中</span>",
+              "stopped": "<span class='label label-danger'>已停止</span>",
+              "paused": "<span class='label label-warning'>已暂停</span>",
+              "unknown": "<span class='label label-default'>未知</span>",
+              "notFound": "<span class='label label-danger'>不存在</span>"
+            }
+          },
+          {
+            "type": "tpl",
+            "name": "imageState.reference",
+            "label": "基座版本",
+            "tpl": "${imageState.tag || '-'}${imageState && imageState.updateRecommended && id ? ' <span class=\\'label label-danger\\'>已过期</span>' : ''}"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "buttons": [
+              {
+                "type": "container",
+                "visibleOn": "${!status}",
+                "body": [
+                  {
+                    "type": "flex",
+                    "items": [
+                      {
+                        "label": "创建运行实例",
+                        "type": "button",
+                        "icon": "fa fa-plus",
+                        "visibleOn": "${!status}",
+                        "actionType": "dialog",
+                        "dialog": {
+                          "title": "${appTitle}创建运行实例",
+                          "size": "lg",
+                          "url": "/dev/container/create"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "container",
+                "visibleOn": "${status}",
+                "body": [
+                  {
+                    "type": "flex",
+                    "items": [
+                      {
+                        "type": "button-group",
+                        "buttons": [
+                          {
+                            "tooltip": "打开",
+                            "label": " ",
+                            "type": "button",
+                            "level": "link",
+                            "icon": "fa-solid fa-up-right-from-square",
+                            "disabledOn": "${!webEndpoint}",
+                            "actionType": "url",
+                            "url": "${webEndpoint}",
+                            "blank": true
+                          },
+                          {
+                            "label": " ",
+                            "tooltip": "调试会话",
+                            "type": "button",
+                            "level": "link",
+                            "icon": "fa fa-bug",
+                            "className": "text-info",
+                            "visibleOn": "${status != 'notFound' && debugCapability && debugCapability.enabled}",
+                            "actionType": "dialog",
+                            "dialog": {
+                              "title": "${name} 调试会话",
+                              "size": "md",
+                              "url": "/dev/container/debug-session-dialog",
+                              "data": {
+                                "containerId": "${id || name}"
+                              }
+                            }
+                          },
+                          {
+                            "label": " ",
+                            "tooltip": "查看详情",
+                            "type": "button",
+                            "level": "link",
+                            "icon": "fa fa-eye",
+                            "actionType": "dialog",
+                            "dialog": {
+                              "title": "${SPLIT(name, '-')[SPLIT(name, '-').length -2]}运行实例详情",
+                              "url": "/dev/container/detail"
+                            }
+                          },
+                          {
+                            "label": " ",
+                            "tooltip": "删除",
+                            "type": "button",
+                            "level": "link",
+                            "icon": "fa fa-trash",
+                            "actionType": "ajax",
+                            "className": "text-danger",
+                            "confirmText": "确定要删除${name}吗？",
+                            "api": {
+                              "method": "delete",
+                              "url": "/api/app/container/${id}"
+                            },
+                            "disabledOn": "${ status == 'running' }"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "flex",
+                    "items": [
+                      {
+                        "type": "button-group",
+                        "buttons": [
+                          {
+                            "label": " ",
+                            "tooltip": "启动",
+                            "type": "button",
+                            "level": "link",
+                            "className": "text-success",
+                            "icon": "fa fa-play",
+                            "actionType": "ajax",
+                            "confirmText": "确定要启动${name}吗？",
+                            "api": {
+                              "method": "post",
+                              "url": "/api/app/container/${id}/start",
+                              "data": {}
+                            },
+                            "visibleOn": "${ status == 'stopped' }"
+                          },
+                          {
+                            "label": " ",
+                            "tooltip": "暂停",
+                            "type": "button",
+                            "level": "link",
+                            "className": "text-warning",
+                            "icon": "fa fa-pause",
+                            "actionType": "ajax",
+                            "confirmText": "确定要暂停${name}吗？",
+                            "api": {
+                              "method": "post",
+                              "url": "/api/app/container/${id}/pause",
+                              "data": {}
+                            },
+                            "visibleOn": "${ status == 'running' && capabilities && capabilities.supportsPause }"
+                          },
+                          {
+                            "label": " ",
+                            "tooltip": "恢复",
+                            "type": "button",
+                            "level": "link",
+                            "className": "text-success",
+                            "icon": "fa fa-play",
+                            "actionType": "ajax",
+                            "confirmText": "确定要恢复${name}吗？",
+                            "api": {
+                              "method": "post",
+                              "url": "/api/app/container/${id}/unpause",
+                              "data": {}
+                            },
+                            "visibleOn": "${ status == 'paused' && capabilities && capabilities.supportsPause }"
+                          },
+                          {
+                            "label": " ",
+                            "tooltip": "停止",
+                            "type": "button",
+                            "level": "link",
+                            "className": "text-danger",
+                            "icon": "fa-solid fa-power-off",
+                            "actionType": "ajax",
+                            "confirmText": "确定要停止${name}吗？",
+                            "api": {
+                              "method": "post",
+                              "url": "/api/app/container/${id}/kill"
+                            },
+                            "disabledOn": "${ status == 'stopped' }"
+                          },
+                          {
+                            "label": " ",
+                            "tooltip": "重启",
+                            "type": "button",
+                            "level": "link",
+                            "className": "text-success",
+                            "icon": "fa fa-repeat",
+                            "actionType": "ajax",
+                            "confirmText": "确定要重启${name}吗？",
+                            "api": {
+                              "method": "post",
+                              "url": "/api/app/container/${id}/restart",
+                              "data": {}
+                            },
+                            "disabledOn": "${ status == 'stopped' }"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

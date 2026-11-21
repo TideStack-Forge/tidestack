@@ -1,0 +1,10 @@
+{
+  "fullName": "AdvancedFeatures.FieldType",
+  "url": "/dev/{appName}/field-types",
+  "icon": "fas fa-coins",
+  "title": "字段类型",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 30
+}

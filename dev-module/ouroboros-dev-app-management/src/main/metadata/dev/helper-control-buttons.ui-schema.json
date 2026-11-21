@@ -1,0 +1,336 @@
+{
+  "name": "/dev/helper-control-buttons",
+  "schema": {
+    "type": "service",
+    "name": "helperControlButtons",
+    "stomp": "/topic/dev-helper/${appName}",
+    "keepSingleListener": false,
+    "api": {
+      "method": "get",
+      "url": "/api/dev/${appName}/helper/status?autoCreate=true"
+    },
+    "showErrorMsg": false,
+    "body": [
+      {
+        "type": "wrapper",
+        "className": "mr-2 p-0",
+        "body": [
+          {
+            "type": "flex",
+            "alignItems": "center",
+            "items": [
+              {
+                "type": "tooltip-wrapper",
+                "placement": "bottom",
+                "content": "<div>${status === 'notFound' ? '未启用助手' : status === 'running' ? '助手已启动' : status === 'stopped' ? '助手已停止' : '助手热加载中'}</div><div>刷新时间: ${ lastLoadTime != undefined ? ${lastLoadTime|date:YYYY-MM-DD HH\\:mm\\:ss:YYYY-MM-DDTHH\\:mm\\:ssZ} : '-'}</div>",
+                "body": [
+                  {
+                    "type": "button",
+                    "label": "",
+                    "icon": "helper-default",
+                    "level": "link",
+                    "visibleOn": "${status == 'notFound'}",
+                    "className": "helper-btn helper-uncreated",
+                    "actionType": "dialog",
+                    "dialog": {
+                      "title": "创建开发助手",
+                      "body": [
+                        {
+                          "type": "form",
+                          "initApi": {
+                            "method": "GET",
+                            "url": "/api/dev/${appName}/helper/create-init"
+                          },
+                          "api": {
+                            "method": "POST",
+                            "url": "/api/dev/${appName}/helper",
+                            "data": {
+                              "image": "${image}",
+                              "backendType": "${backendType}"
+                            }
+                          },
+                          "body": [
+                            {
+                              "type": "hidden",
+                              "name": "imageInputMode"
+                            },
+                            {
+                              "type": "hidden",
+                              "name": "backendType",
+                              "value": "${defaultBackendType}"
+                            },
+                            {
+                              "type": "select",
+                              "name": "image",
+                              "source": "/api/app/container/images?backendType=${backendType}",
+                              "requiredOn": "${backendType == 'DOCKER'}",
+                              "label": "基座镜像版",
+                              "placeholder": "请选择基座镜像版本",
+                              "visibleOn": "${backendType == 'DOCKER'}"
+                            },
+                            {
+                              "type": "input-text",
+                              "name": "image",
+                              "requiredOn": "${backendType == 'KUBERNETES'}",
+                              "label": "镜像引用",
+                              "placeholder": "请输入镜像引用",
+                              "visibleOn": "${backendType == 'KUBERNETES'}"
+                            }
+                          ],
+                          "onEvent": {
+                            "submitSucc": {
+                              "actions": [
+                                {
+                                  "actionType": "reload",
+                                  "componentName": "helperControlButtons",
+                                  "target": "helperControlButtons"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "label": "",
+                    "level": "link",
+                    "icon": "helper-default",
+                    "visibleOn": "${status == 'running'}",
+                    "className": "helper-btn helper-running",
+                    "actionType": "ajax",
+                    "api": "post:/api/dev/${appName}/helper/reload"
+                  },
+                  {
+                    "type": "button",
+                    "label": "",
+                    "icon": "helper-exited",
+                    "level": "link",
+                    "visibleOn": "${status == 'stopped'}",
+                    "className": "helper-btn helper-exited",
+                    "actionType": "ajax",
+                    "api": "post:/api/dev/${appName}/helper/start"
+                  },
+                  {
+                    "type": "button",
+                    "label": "启动中",
+                    "icon": "helper-refresh",
+                    "style": {
+                      "fill": "#2468f2"
+                    },
+                    "level": "link",
+                    "visibleOn": "${status == 'launching'}",
+                    "className": "helper-btn helper-launching",
+                    "tooltip": "开发助手正在启动，点击重启",
+                    "actionType": "ajax",
+                    "api": "post:/api/dev/${appName}/helper/restart"
+                  }
+                ]
+              },
+              {
+                "type": "tpl",
+                "tpl": "助手状态异常",
+                "visibleOn": "${status == 'unknown'}"
+              },
+              {
+                "type": "dropdown-button",
+                "level": "link",
+                "icon": "fa fa-ellipsis-v",
+                "hideCaret": true,
+                "btnClassName": "text-gray-900 pr-0 pl-2 ",
+                "menuClassName": "helper-dropDown",
+                "align": "right",
+                "trigger": "click",
+                "closeOnClick": true,
+                "hiddenOn": "${status === 'notFound'}",
+                "buttons": [
+                  {
+                    "type": "button",
+                    "label": "重启",
+                    "icon": "fa fa-repeat text-success w-4",
+                    "actionType": "ajax",
+                    "api": "post:/api/dev/${appName}/helper/restart"
+                  },
+                  {
+                    "type": "button",
+                    "label": "停止",
+                    "icon": "fa-solid fa-power-off text-danger w-4",
+                    "actionType": "ajax",
+                    "api": "post:/api/dev/${appName}/helper/stop",
+                    "visibleOn": "${status == 'running' || status == 'launching'}"
+                  },
+                  {
+                    "type": "button",
+                    "label": "更新镜像",
+                    "icon": "fa-solid fa-anchor-circle-exclamation",
+                    "actionType": "ajax",
+                    "api": "post:/api/dev/${appName}/helper/update-image",
+                    "visibleOn": "${imageState && imageState.updateRecommended}"
+                  },
+                  {
+                    "type": "button",
+                    "label": "停止并删除",
+                    "icon": "fa fa-trash text-danger w-4",
+                    "actionType": "ajax",
+                    "confirmText": "确定要停止并删除助手吗？删除助手后，应用的元数据将无法同步，您可以稍后再次创建。",
+                    "api": "delete:/api/dev/${appName}/helper"
+                  },
+                  {
+                    "type": "button",
+                    "label": "助手详情",
+                    "icon": "fa fa-info-circle w-4",
+                    "actionType": "dialog",
+                    "dialog": {
+                      "type": "dialog",
+                      "title": "助手详情",
+                      "size": "lg",
+                      "showCloseButton": true,
+                      "body": [
+                        {
+                          "type": "service",
+                          "name": "helperDetailsService",
+                          "stomp": "/topic/dev-helper/${appName}",
+                          "keepSingleListener": false,
+                          "api": {
+                            "method": "get",
+                            "url": "/api/dev/${appName}/helper/status"
+                          },
+                          "body": [
+                            {
+                              "type": "tpl",
+                              "tpl": "<div class='mb-3 text-lg font-medium'>基本信息</div>"
+                            },
+                            {
+                              "type": "property",
+                              "mode": "simple",
+                              "column": 1,
+                              "items": [
+                                {
+                                  "label": "镜像名",
+                                  "content": "${imageReference || '-'}"
+                                },
+                                {
+                                  "label": "状态",
+                                  "content": "${status === 'notFound' ? '未启用助手' : status === 'running' ? '运行中' : status === 'stopped' ? '已停止' : status === 'launching' ? '启动中' : '-'}"
+                                },
+                                {
+                                  "label": "最后刷新时间",
+                                  "content": "${lastLoadTime ? (lastLoadTime | date:YYYY-MM-DD HH\\:mm\\:ss:YYYY-MM-DDTHH\\:mm\\:ssZ) : '-'}"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "wrapper",
+                              "className": "my-4 text-center",
+                              "body": [
+                                {
+                                  "type": "button-group",
+                                  "className": "justify-center",
+                                  "buttons": [
+                                    {
+                                      "type": "button",
+                                      "label": "重新获取元数据",
+                                      "icon": "fa fa-refresh text-primary w-4",
+                                      "actionType": "ajax",
+                                      "api": "post:/api/dev/${appName}/helper/reload"
+                                    },
+                                    {
+                                      "type": "button",
+                                      "label": "重启",
+                                      "icon": "fa fa-repeat text-success w-4",
+                                      "actionType": "ajax",
+                                      "api": "post:/api/dev/${appName}/helper/restart"
+                                    },
+                                    {
+                                      "type": "button",
+                                      "label": "停止",
+                                      "icon": "fa-solid fa-power-off text-danger w-4",
+                                      "actionType": "ajax",
+                                      "api": "post:/api/dev/${appName}/helper/stop",
+                                      "visibleOn": "${status == 'running' || status == 'launching'}"
+                                    },
+                                    {
+                                      "type": "button",
+                                      "label": "更新镜像",
+                                      "icon": "fa-solid fa-anchor-circle-exclamation",
+                                      "actionType": "ajax",
+                                      "api": "post:/api/dev/${appName}/helper/update-image",
+                                      "visibleOn": "${imageState && imageState.updateRecommended}"
+                                    },
+                                    {
+                                      "type": "button",
+                                      "label": "停止并删除",
+                                      "icon": "fa fa-trash text-danger w-4",
+                                      "actionType": "ajax",
+                                      "confirmText": "确定要停止并删除助手吗？删除助手后，应用的元数据将无法同步，您可以稍后再次创建。",
+                                      "api": "delete:/api/dev/${appName}/helper"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "wrapper",
+                          "data": {
+                            "appName": "${appName}"
+                          },
+                          "body": [
+                            {
+                              "type": "tpl",
+                              "tpl": "<div class='mb-3 text-lg font-medium'>运行日志</div>"
+                            },
+                            {
+                              "type": "log",
+                              "height": 520,
+                              "className": "flex-grow helper-detail-log",
+                              "stomp": "/user/queue/app/${appName}/helper/logs",
+                              "initDestination": "/app/user/queue/app/${appName}/helper/logs/init",
+                              "autoScroll": true,
+                              "keepSingleListener": false,
+                              "operation": [
+                                "clear",
+                                "showLineNumber",
+                                "filter",
+                                "scrollToBottom"
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "actions": []
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "icon": "fa fa-info-circle w-4",
+                    "label": "${TRUNCATE(imageState.reference, 18)}",
+                    "visibleOn": "${imageState && imageState.reference}",
+                    "disabledTip": "${imageState && LEN(imageState.reference) > 18 ? imageState.reference : ''}",
+                    "disabled": true
+                  }
+                ]
+              },
+              {
+                "type": "tooltip-wrapper",
+                "content": "基座镜像已过期，请更新镜像",
+                "placement": "bottom",
+                "className": "ml-3 image-version",
+                "visibleOn": "${imageState && imageState.updateRecommended}",
+                "body": [
+                  {
+                    "type": "icon",
+                    "icon": "danger-solid-info",
+                    "className": "w-5 text-danger"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

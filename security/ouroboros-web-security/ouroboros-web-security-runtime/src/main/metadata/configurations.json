@@ -1,0 +1,150 @@
+[
+  {
+    "key": "security.auth.token.storageType",
+    "label": "客户端令牌存储类型",
+    "groupPath": "security.auth",
+    "order": 10,
+    "description": "选择长期存储时若长时间不登陆依然会因为令牌超出有效期而失效",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "string",
+    "defaultValue": "localStorage",
+    "editorSchema": {
+      "type": "button-group-select",
+      "options": [
+        {
+          "label": "长期存储",
+          "value": "localStorage"
+        },
+        {
+          "label": "浏览器会话",
+          "value": "sessionStorage"
+        }
+      ]
+    }
+  },
+  {
+    "key": "security.auth.login.localPassword.enabled",
+    "label": "启用本地账号密码登录",
+    "groupPath": "security.auth",
+    "order": 20,
+    "description": "关闭后禁用本地 /api/auth/login，LDAP、CAS、OAuth 等外部登录方式不受影响",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "boolean",
+    "defaultValue": "true"
+  },
+  {
+    "key": "security.session.idleLogout",
+    "label": "是否启用空闲超时退出",
+    "groupPath": "security.session",
+    "order": 10,
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "boolean",
+    "defaultValue": "false"
+  },
+  {
+    "key": "security.session.idleTimeout",
+    "label": "空闲超时时间",
+    "groupPath": "security.session",
+    "order": 20,
+    "description": "空闲超时时间（单位：秒）",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "int",
+    "defaultValue": "3600"
+  },
+  {
+    "key": "security.session.idleMonitoringMethod",
+    "label": "空闲检测方式",
+    "groupPath": "security.session",
+    "order": 30,
+    "description": "用户交互：用户停止与页面的交互即开始计时空闲时间；页面可见性：页面被最小化或切换浏览器标签后开始计时空闲时间；网络活动：最后一次网络请求后开始计时空闲时间",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "string",
+    "defaultValue": "Interaction",
+    "editorSchema": {
+      "type": "button-group-select",
+      "options": [
+        {
+          "value": "Interaction",
+          "label": "用户交互"
+        },
+        {
+          "value": "Visibility",
+          "label": "页面可见性"
+        },
+        {
+          "value": "RequestActivity",
+          "label": "网络活动"
+        }
+      ]
+    }
+  },
+  {
+    "key": "security.session.maxSessionsControl",
+    "label": "是否启用会话数限制",
+    "groupPath": "security.session",
+    "order": 40,
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "boolean",
+    "defaultValue": "false"
+  },
+  {
+    "key": "security.session.maxSessionsPerUserClient",
+    "label": "每个用户在每种客户端上可以有几个会话",
+    "groupPath": "security.session",
+    "order": 50,
+    "description": "小于等于0时不限制",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "int",
+    "defaultValue": "-1",
+    "min": -1
+  },
+  {
+    "key": "security.session.maxSessionsPerUser",
+    "label": "每个用户可以有几个会话",
+    "groupPath": "security.session",
+    "order": 60,
+    "description": "小于等于0时不限制",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "int",
+    "defaultValue": "-1"
+  },
+  {
+    "key": "security.session.maxSessionsPreventsLogin",
+    "label": "达到上限后拒绝登录",
+    "groupPath": "security.session",
+    "order": 70,
+    "description": "开启后达到上限拒绝登录，否则注销最老的会话",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "boolean",
+    "defaultValue": "false"
+  },
+  {
+    "key": "security.user.profile",
+    "label": "用户资料设置",
+    "groupPath": "security",
+    "order": 70,
+    "scope": "backend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "object",
+    "defaultValue": "{\"fields\": [{\"name\": \"nickname\", \"label\": \"昵称\", \"type\": \"string\", \"required\": false, \"viewableBy\": [\"SELF\", \"ADMIN\"], \"editableBy\": [\"SELF\", \"ADMIN\"], \"validators\": {\"maxLength\": 100}}, {\"name\": \"formalName\", \"label\": \"正式名称\", \"type\": \"string\", \"required\": false, \"viewableBy\": [\"SELF\", \"ADMIN\"], \"editableBy\": [], \"validators\": {}}, {\"name\": \"displayName\", \"label\": \"显示名称\", \"type\": \"string\", \"required\": false, \"viewableBy\": [\"SELF\", \"ADMIN\"], \"editableBy\": [], \"validators\": {}}, {\"name\": \"avatar\", \"label\": \"头像\", \"type\": \"string\", \"required\": false, \"viewableBy\": [\"SELF\", \"ADMIN\"], \"editableBy\": [], \"validators\": {}}, {\"name\": \"email\", \"label\": \"联系邮箱\", \"type\": \"email\", \"required\": false, \"viewableBy\": [\"SELF\", \"ADMIN\"], \"editableBy\": [\"SELF\", \"ADMIN\"], \"validators\": {}}, {\"name\": \"phoneNumber\", \"label\": \"联系电话\", \"type\": \"phone\", \"required\": false, \"viewableBy\": [\"SELF\", \"ADMIN\"], \"editableBy\": [\"SELF\", \"ADMIN\"], \"validators\": {}}, {\"name\": \"gender\", \"label\": \"性别\", \"type\": \"enum\", \"required\": false, \"viewableBy\": [\"SELF\", \"ADMIN\"], \"editableBy\": [], \"validators\": {\"options\": [\"male\", \"female\", \"other\", \"unspecified\"]}}, {\"name\": \"birthdate\", \"label\": \"出生日期\", \"type\": \"date\", \"required\": false, \"viewableBy\": [\"SELF\", \"ADMIN\"], \"editableBy\": [], \"validators\": {}}], \"verification\": {\"email\": \"NONE\", \"phone\": \"NONE\"}}",
+    "managementAccessPolicyRequired": true,
+    "editorSchema": {
+      "type": "json-editor"
+    }
+  }
+]

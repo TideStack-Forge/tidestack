@@ -1,0 +1,36 @@
+{
+  "name": "dingtalk.contact.department.children",
+  "title": "钉钉读取直属子部门",
+  "type": "OpenAPI",
+  "isEnabled": true,
+  "authCredential": "dingtalk.application-token",
+  "description": "仅直属子部门，调用方负责逐层遍历；应用通讯录部门读取权限及可见范围",
+  "timeout": 10000,
+  "retry": 0,
+  "retrySafe": true,
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "dept_id": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "required": [
+      "dept_id"
+    ]
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://oapi.dingtalk.com/topapi/v2/department/listsub",
+    "parameters": [
+      {
+        "in": "BODY",
+        "name": "dept_id",
+        "value": "${dept_id}",
+        "required": true
+      }
+    ]
+  },
+  "group": "钉钉/通讯录"
+}

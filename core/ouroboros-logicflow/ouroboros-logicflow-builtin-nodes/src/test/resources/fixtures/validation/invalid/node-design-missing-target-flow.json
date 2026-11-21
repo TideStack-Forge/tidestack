@@ -1,0 +1,32 @@
+{
+  "name": "node-design-missing-target-flow",
+  "description": "Call flow node that references a missing child flow should be invalid",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "caller",
+  "exitNode": "caller",
+  "nodes": [
+    {
+      "name": "caller",
+      "type": "callFlow",
+      "description": "",
+      "flowName": "missing-child-flow",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    }
+  ],
+  "connections": []
+}

@@ -1,0 +1,125 @@
+{
+  "type": "mq",
+  "fileSuffix": ".mq.json",
+  "displayName": "MQ 绑定",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.mq.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/metadata",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.mq.json",
+    "fields": [
+      {
+        "name": "bindingName",
+        "label": "绑定名称",
+        "documentPath": [
+          "bindingName"
+        ],
+        "required": true,
+        "defaultFromPath": "camel-name"
+      },
+      {
+        "name": "destination",
+        "label": "目标主题",
+        "documentPath": [
+          "destination"
+        ],
+        "required": true
+      },
+      {
+        "name": "description",
+        "label": "描述",
+        "documentPath": [
+          "description"
+        ]
+      }
+    ],
+    "document": {
+      "bindingType": "producer",
+      "bindingName": "example",
+      "destination": "example.topic",
+      "binder": "",
+      "contentType": "application/json",
+      "broadcast": false,
+      "routingKey": "",
+      "description": "示例 MQ 绑定"
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "MQ 绑定",
+    "actions": [],
+    "body": [
+      {
+        "type": "select",
+        "name": "bindingType",
+        "label": "绑定类型",
+        "required": true,
+        "options": [
+          {
+            "label": "生产者",
+            "value": "producer"
+          },
+          {
+            "label": "消费者",
+            "value": "consumer"
+          }
+        ]
+      },
+      {
+        "type": "input-text",
+        "name": "bindingName",
+        "label": "绑定名称",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "destination",
+        "label": "目标主题",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "binder",
+        "label": "Binder"
+      },
+      {
+        "type": "input-text",
+        "name": "group",
+        "label": "消费组",
+        "visibleOn": "${bindingType == 'consumer'}"
+      },
+      {
+        "type": "input-text",
+        "name": "flowName",
+        "label": "逻辑流",
+        "visibleOn": "${bindingType == 'consumer'}"
+      },
+      {
+        "type": "input-text",
+        "name": "contentType",
+        "label": "内容类型"
+      },
+      {
+        "type": "switch",
+        "name": "broadcast",
+        "label": "广播"
+      },
+      {
+        "type": "input-text",
+        "name": "routingKey",
+        "label": "路由键"
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "描述",
+        "minRows": 2
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/mq.schema.json"
+}

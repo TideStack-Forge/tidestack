@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/i18n/import",
+  "type": "amis",
+  "title": "导入语言文件"
+}

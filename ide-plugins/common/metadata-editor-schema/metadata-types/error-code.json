@@ -1,0 +1,109 @@
+{
+  "type": "error-code",
+  "fixedFileName": "error-codes.error.json",
+  "displayName": "错误码",
+  "sourcePathPatterns": [
+    "src/main/metadata/error-codes.error.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/metadata",
+  "packagedPathPatterns": [
+    "metadata/error-codes.error.json"
+  ],
+  "documentShape": "array",
+  "editorKinds": [
+    "form",
+    "table"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "error-codes.error.json",
+    "fields": [
+      {
+        "name": "title",
+        "label": "标题",
+        "documentPath": [
+          "0",
+          "title"
+        ],
+        "required": true
+      },
+      {
+        "name": "defaultMessageTemplate",
+        "label": "默认消息模板",
+        "documentPath": [
+          "0",
+          "defaultMessageTemplate"
+        ],
+        "required": true
+      }
+    ],
+    "document": [
+      {
+        "code": 40000,
+        "title": "Example Error",
+        "defaultMessageTemplate": "示例错误消息",
+        "category": "COMMON",
+        "description": "示例错误码定义",
+        "enabled": true
+      }
+    ]
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "错误码",
+    "documentShape": "array",
+    "actions": [],
+    "body": [
+      {
+        "type": "combo",
+        "name": "items",
+        "label": "错误码列表",
+        "multiple": true,
+        "multiLine": true,
+        "draggable": true,
+        "addButtonText": "新增错误码",
+        "items": [
+          {
+            "type": "input-number",
+            "name": "code",
+            "label": "错误码",
+            "required": true
+          },
+          {
+            "type": "input-text",
+            "name": "title",
+            "label": "标题",
+            "required": true
+          },
+          {
+            "type": "input-text",
+            "name": "defaultMessageTemplate",
+            "label": "默认消息模板",
+            "required": true
+          },
+          {
+            "type": "input-text",
+            "name": "bizCode",
+            "label": "业务错误标识"
+          },
+          {
+            "type": "input-text",
+            "name": "category",
+            "label": "分类"
+          },
+          {
+            "type": "switch",
+            "name": "enabled",
+            "label": "启用"
+          },
+          {
+            "type": "textarea",
+            "name": "description",
+            "label": "描述",
+            "minRows": 2
+          }
+        ]
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/error-code.schema.json"
+}

@@ -1,0 +1,44 @@
+{
+  "name": "custom-topbar-component",
+  "version": "1.0.3",
+  "description": "custom-topbar-component",
+  "author": "",
+  "scripts": {
+    "start": "webpack serve --config webpack.config.js --mode development",
+    "dev": "webpack serve --config webpack.config.js --mode development",
+    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint --ext .js,.jsx src webpack.config.js",
+    "test": "npm run test:unit",
+    "test:unit": "vitest run",
+    "build": "node build/index.js",
+    "zip": "node ./scripts/zip-package.cjs dist debugConsoleHeader.zip",
+    "package": "npm run build && npm run zip",
+    "sync": "node ./scripts/sync-package.cjs",
+    "package:sync": "npm run package && npm run sync"
+  },
+  "dependencies": {
+    "ouroboros-sdk": "^1.2.4-beta.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/plugin-transform-private-methods": "^7.29.7",
+    "@babel/preset-env": "^7.29.7",
+    "@babel/preset-react": "^7.29.7",
+    "@babel/preset-typescript": "^7.29.7",
+    "ajv": "^8.18.0",
+    "babel-loader": "^9.2.1",
+    "cross-zip": "^4.0.1",
+    "css-loader": "^7.1.2",
+    "eslint": "^9.39.5",
+    "eslint-plugin-react": "^7.37.5",
+    "html-webpack-plugin": "^5.6.3",
+    "mini-css-extract-plugin": "^2.9.2",
+    "sass": "^1.101.0",
+    "sass-loader": "^13.3.2",
+    "style-loader": "^3.3.3",
+    "typescript": "^5.8.3",
+    "vitest": "^4.1.10",
+    "webpack": "^5.108.4",
+    "webpack-cli": "^7.2.1",
+    "webpack-dev-server": "^6.0.0"
+  }
+}

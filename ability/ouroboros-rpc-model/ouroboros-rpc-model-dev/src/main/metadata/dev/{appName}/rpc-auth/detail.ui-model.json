@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/rpc-auth/detail",
+  "type": "amis",
+  "title": "认证详情"
+}

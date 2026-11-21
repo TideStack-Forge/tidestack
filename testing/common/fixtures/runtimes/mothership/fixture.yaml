@@ -1,0 +1,56 @@
+{
+  "id": "runtimes/mothership",
+  "title": "Mothership Runtime",
+  "class": "runtimes",
+  "capabilities": [
+    "backend-runtime",
+    "app-runtime",
+    "local-preflight"
+  ],
+  "lifecycle": {
+    "up": "",
+    "check": "HTTP probe /actuator/health -> 200; lifecycle 503 means runtime is not ready",
+    "reset": "",
+    "down": ""
+  },
+  "inputs": [
+    {
+      "name": "baseUrl",
+      "required": false,
+      "description": "Mothership runtime base URL, typically provided by --app-base-url or OB_TEST_APP_BASE_URL"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "runtimeKind",
+      "value": "mothership"
+    },
+    {
+      "name": "baseUrlEnv",
+      "value": "OB_TEST_APP_BASE_URL"
+    },
+    {
+      "name": "unauthenticatedProbe",
+      "value": "/api/auth/authorities"
+    },
+    {
+      "name": "healthProbe",
+      "value": "/actuator/health"
+    }
+  ],
+  "healthChecks": [
+    {
+      "name": "actuator-health",
+      "expect": "200 from /actuator/health; 503 means LifecycleGuardFilter is still blocking readiness"
+    },
+    {
+      "name": "local-runtime-integrity",
+      "expect": "main jar, loader.path, and open jars remain present when running on localhost"
+    }
+  ],
+  "prerequisites": [],
+  "notes": [
+    "Use this fixture when app runtime routes such as app.* must avoid develop-side route conflicts.",
+    "Standalone mothership smoke still requires explicit datasource and runtime extension alignment."
+  ]
+}

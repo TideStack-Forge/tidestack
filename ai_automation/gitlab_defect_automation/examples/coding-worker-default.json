@@ -1,0 +1,26 @@
+{
+  "instance_id": "coding-worker-default",
+  "secret_ref": "vault://automation/coding/monorepo",
+  "repo": {
+    "path": "/Users/songmingxu/Projects/ouroboros",
+    "default_branch": "dev"
+  },
+  "worktree": {
+    "root": "/Users/songmingxu/Projects/ouroboros/.worktrees"
+  },
+  "branch_prefix": "codex/",
+  "verification": {
+    "commands": [
+      "mvn test --file ./path/to/module/pom.xml -Dtest=TargetedTest"
+    ]
+  },
+  "mr": {
+    "target_branch": "dev",
+    "template": "defect-fix-default"
+  },
+  "allowed_paths": [
+    "core/",
+    "ability/",
+    "frontends/web/"
+  ]
+}

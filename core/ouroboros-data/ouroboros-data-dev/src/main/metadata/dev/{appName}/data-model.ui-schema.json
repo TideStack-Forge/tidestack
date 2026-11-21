@@ -1,0 +1,69 @@
+{
+  "name": "/dev/{appName}/data-model",
+  "schema": {
+    "type": "page",
+    "title": "数据模型",
+    "toolbar": [],
+    "body": {
+      "type": "crud",
+      "name": "dataModelList",
+      "api": "get:/api/dev/${appName}/metadata/data-model?mode=raw",
+      "columns": [
+        {
+          "name": "fullName",
+          "label": "模型名",
+          "type": "tpl",
+          "tpl": "${fullName}<span class='italic text-secondary'>${rawName ? (' (' + rawName + ')') : ''}</span>"
+        },
+        {
+          "name": "label",
+          "label": "显示名"
+        },
+        {
+          "name": "fields.length",
+          "label": "字段数量"
+        },
+        {
+          "name": "pluginDescriptors.length",
+          "label": "插件"
+        }
+      ],
+      "itemAction": {
+        "actionType": "dialog",
+        "dialog": {
+          "title": "查看${fullName}",
+          "url": "/dev/${appName}/data-model/detail",
+          "size": "lg",
+          "data": {
+            "appName": "${appName}",
+            "fullName": "${fullName}"
+          },
+          "actions": [
+            {
+              "type": "action",
+              "actionType": "close",
+              "label": "关闭"
+            }
+          ]
+        }
+      },
+      "headerToolbar": [
+        "reload"
+      ],
+      "footerToolbar": [
+        "statistics",
+        "pagination",
+        "switch-per-page"
+      ],
+      "perPage": 20,
+      "perPageAvailable": [
+        10,
+        20,
+        50
+      ],
+      "loadDataOnce": true,
+      "alwaysShowPagination": true,
+      "autoFillHeight": true
+    }
+  }
+}

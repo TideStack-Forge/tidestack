@@ -1,0 +1,13 @@
+{
+  "editorId": "i18n",
+  "editorName": "TideStack I18n Locale Metadata Editor",
+  "editorNameKey": "customEditor.i18n",
+  "metadataType": "i18n",
+  "schemaName": "i18n",
+  "viewType": "tidestack.metadataEditor.i18n",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.i18n",
+  "fileMatchPatterns": [
+    "*.i18n.json"
+  ],
+  "priority": "default"
+}

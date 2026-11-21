@@ -1,0 +1,3 @@
+com.ouroboros.businesslog.provider.DbBusinessOperationTemplateProvider$Proxy
+com.ouroboros.businesslog.provider.FileBusinessOperationTemplateProvider$Proxy
+com.ouroboros.businesslog.provider.JarBusinessOperationTemplateProvider

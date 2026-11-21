@@ -1,0 +1,98 @@
+{
+  "scenario": "ide/metadata-editors",
+  "testType": "e2e",
+  "suite": "regression",
+  "mode": "e2e",
+  "runner": "testing/common/runners/playwright/browser_asset_bridge.py",
+  "integrationScenario": {
+    "scenario": "testing/integration/regression/ide/metadata-editors/scenario.yaml",
+    "contract": "testing/integration/regression/ide/metadata-editors/contract.md",
+    "cases": "testing/integration/regression/ide/metadata-editors/cases.md"
+  },
+  "caseIds": [
+    "IDE-OPEN-001",
+    "IDE-SAVE-002",
+    "IDE-CONFLICT-003",
+    "IDE-EXTERNAL-004",
+    "IDE-POPUP-005",
+    "IDE-SERVICE-006",
+    "IDE-NATIVE-007",
+    "IDE-SMOKE-008",
+    "IDE-FLOW-009",
+    "IDE-SCRIPT-010",
+    "IDE-FLOW-011",
+    "IDE-FLOW-012",
+    "IDE-FLOW-013",
+    "IDE-SCRIPT-014"
+  ],
+  "steps": [
+    {
+      "name": "check",
+      "run": "node ide-plugins/tests/run.mjs --check"
+    },
+    {
+      "name": "verify",
+      "run": "node ide-plugins/tests/run.mjs"
+    }
+  ],
+  "reports": {
+    "evidenceDir": "tmp/testing-evidence/ide-metadata-editors"
+  },
+  "defaultMode": "plan",
+  "browserAssets": {
+    "projectRoot": "ide-plugins/vscode-plugin",
+    "contracts": [
+      "testing/integration/regression/ide/metadata-editors/contract.md",
+      "testing/integration/regression/ide/metadata-editors/cases.md"
+    ],
+    "sources": [
+      "ide-plugins/tests/run.mjs",
+      "ide-plugins/common/metadata-editor-runtime/tests/integration/hosts/fixture.ts",
+      "ide-plugins/common/metadata-editor-runtime/tests/integration/hosts/document.spec.ts",
+      "testing/common/fixtures/data/ide-metadata-workspace/documents.json",
+      "ide-plugins/common/metadata-editor-runtime/tests/integration/hosts/logicflow.spec.ts",
+      "ide-plugins/common/metadata-editor-runtime/tests/integration/hosts/languageServiceFixture.ts",
+      "ide-plugins/common/metadata-editor-runtime/tests/integration/hosts/iconPixels.ts",
+      "ide-plugins/common/metadata-editor-schema/scripts/build.mjs",
+      "ide-plugins/intellij-plugin/src/test/kotlin/com/ouroboros/idea/metadata/MetadataBrowserFixtureTest.kt"
+    ],
+    "scripts": [
+      {
+        "id": "ide-preflight",
+        "kind": "shell",
+        "command": "node ide-plugins/tests/run.mjs --check",
+        "workdir": ".",
+        "requiredPaths": [
+          "ide-plugins/tests/run.mjs"
+        ],
+        "description": "Check isolated IDE metadata fixture dependencies.",
+        "caseIds": []
+      },
+      {
+        "id": "ide-regression",
+        "kind": "shell",
+        "command": "node ide-plugins/tests/run.mjs",
+        "workdir": ".",
+        "requiredPaths": [
+          "ide-plugins/tests/run.mjs"
+        ],
+        "description": "Build and verify shared browser cases and both native IDE hosts.",
+        "caseIds": [
+          "IDE-OPEN-001",
+          "IDE-SAVE-002",
+          "IDE-CONFLICT-003",
+          "IDE-EXTERNAL-004",
+          "IDE-POPUP-005",
+          "IDE-SERVICE-006",
+          "IDE-NATIVE-007",
+          "IDE-SMOKE-008",
+          "IDE-FLOW-009",
+          "IDE-SCRIPT-010",
+          "IDE-FLOW-011",
+          "IDE-FLOW-012",
+          "IDE-FLOW-013"
+        ]
+      }
+    ]
+  }
+}

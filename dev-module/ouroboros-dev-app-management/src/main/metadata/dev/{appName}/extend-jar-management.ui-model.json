@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/extend-jar-management",
+  "type": "amis",
+  "title": "Jar包管理"
+}

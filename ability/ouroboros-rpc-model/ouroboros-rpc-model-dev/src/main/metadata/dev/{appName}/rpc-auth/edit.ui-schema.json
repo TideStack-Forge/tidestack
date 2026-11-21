@@ -1,0 +1,28 @@
+{
+  "name": "/dev/{appName}/rpc-auth/edit",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "labelWidth": 120,
+    "wrapWithPanel": false,
+    "api": {
+      "url": "/api/dev/${appName}/rpc-auth/${name}",
+      "method": "put"
+    },
+    "initApi": {
+      "url": "/api/dev/${appName}/rpc-auth/${name}",
+      "method": "get"
+    },
+    "rules": [
+      {
+        "rule": "${ type === 'AccessToken' ? (response && response.expireIn || expire && expire.expireIn): true }",
+        "message": "过期时间路径和过期时间必须有一个有值"
+      }
+    ],
+    "body": {
+      "type": "amis-schema",
+      "schemaId": "/dev/{appName}/rpc-auth/form-items"
+    },
+    "mode": "horizontal"
+  }
+}

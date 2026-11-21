@@ -1,0 +1,419 @@
+{
+  "schemaVersion": 1,
+  "pathCases": [
+    {
+      "name": "menu files fall back from Java package directories to the metadata source root",
+      "metadataType": "menu",
+      "selectedDirectory": "src/main/java/com/acme",
+      "input": "admin/user-list",
+      "expectedCreationDirectory": "src/main/metadata",
+      "expectedDefaultInputPath": "src/main/metadata/example.menu.json",
+      "expectedDefaultPathInput": "example.menu.json",
+      "expectedPath": "src/main/metadata/admin/user-list.menu.json"
+    },
+    {
+      "name": "menu files keep nested metadata directories",
+      "metadataType": "menu",
+      "selectedDirectory": "src/main/metadata/pages",
+      "input": "nested/user-list.menu.json",
+      "expectedCreationDirectory": "src/main/metadata/pages",
+      "expectedDefaultInputPath": "src/main/metadata/pages/example.menu.json",
+      "expectedDefaultPathInput": "example.menu.json",
+      "expectedPath": "src/main/metadata/pages/nested/user-list.menu.json"
+    },
+    {
+      "name": "directory inputs use the metadata type default file name",
+      "metadataType": "ui-schema",
+      "selectedDirectory": "src/main/metadata",
+      "input": "admin/",
+      "expectedCreationDirectory": "src/main/metadata",
+      "expectedDefaultInputPath": "src/main/metadata/example.ui-schema.json",
+      "expectedDefaultPathInput": "example.ui-schema.json",
+      "expectedPath": "src/main/metadata/admin/example.ui-schema.json"
+    },
+    {
+      "name": "fixed collection files are created at the metadata source root",
+      "metadataType": "app-module",
+      "selectedDirectory": "src/main/metadata/pages",
+      "input": "app-modules.json",
+      "expectedCreationDirectory": "src/main/metadata",
+      "expectedDefaultInputPath": "src/main/metadata/app-modules.json",
+      "expectedDefaultPathInput": "app-modules.json",
+      "expectedPath": "src/main/metadata/app-modules.json"
+    },
+    {
+      "name": "error code collection files are created at the metadata source root",
+      "metadataType": "error-code",
+      "selectedDirectory": "src/main/metadata/pages",
+      "input": "error-codes.error.json",
+      "expectedCreationDirectory": "src/main/metadata",
+      "expectedDefaultInputPath": "src/main/metadata/error-codes.error.json",
+      "expectedDefaultPathInput": "error-codes.error.json",
+      "expectedPath": "src/main/metadata/error-codes.error.json"
+    },
+    {
+      "name": "rpc auth files keep nested metadata directories",
+      "metadataType": "rpc-auth",
+      "selectedDirectory": "src/main/metadata/rpc/auth",
+      "input": "shared-credential",
+      "expectedCreationDirectory": "src/main/metadata/rpc/auth",
+      "expectedDefaultInputPath": "src/main/metadata/rpc/auth/example.rpc.auth.json",
+      "expectedDefaultPathInput": "example.rpc.auth.json",
+      "expectedPath": "src/main/metadata/rpc/auth/shared-credential.rpc.auth.json"
+    },
+    {
+      "name": "app metadata fixed file is created at the metadata source root",
+      "metadataType": "app-metadata",
+      "selectedDirectory": "src/main/metadata/pages",
+      "input": "app.metadata.json",
+      "expectedCreationDirectory": "src/main/metadata",
+      "expectedDefaultInputPath": "src/main/metadata/app.metadata.json",
+      "expectedDefaultPathInput": "app.metadata.json",
+      "expectedPath": "src/main/metadata/app.metadata.json"
+    },
+    {
+      "name": "module diff fixed file is created at the metadata source root",
+      "metadataType": "modules-diff",
+      "selectedDirectory": "src/main/metadata/pages",
+      "input": "modules.diff.json",
+      "expectedCreationDirectory": "src/main/metadata",
+      "expectedDefaultInputPath": "src/main/metadata/modules.diff.json",
+      "expectedDefaultPathInput": "modules.diff.json",
+      "expectedPath": "src/main/metadata/modules.diff.json"
+    },
+    {
+      "name": "fixed collection files reject nested paths",
+      "metadataType": "app-module",
+      "selectedDirectory": "src/main/metadata/pages",
+      "input": "pages/app-modules.json",
+      "expectedCreationDirectory": "src/main/metadata",
+      "expectedDefaultInputPath": "src/main/metadata/app-modules.json",
+      "expectedDefaultPathInput": "app-modules.json",
+      "expectedErrorContains": [
+        "app-modules.json"
+      ]
+    },
+    {
+      "name": "new suffix metadata files inherit nested metadata directories",
+      "metadataType": "flow-node",
+      "selectedDirectory": "src/main/metadata/logic",
+      "input": "approval/start",
+      "expectedCreationDirectory": "src/main/metadata/logic",
+      "expectedDefaultInputPath": "src/main/metadata/logic/example.flow-node.json",
+      "expectedDefaultPathInput": "example.flow-node.json",
+      "expectedPath": "src/main/metadata/logic/approval/start.flow-node.json"
+    },
+    {
+      "name": "new MQ metadata files inherit nested metadata directories",
+      "metadataType": "mq",
+      "selectedDirectory": "src/main/metadata/mq-binding",
+      "input": "orders/created",
+      "expectedCreationDirectory": "src/main/metadata/mq-binding",
+      "expectedDefaultInputPath": "src/main/metadata/mq-binding/example.mq.json",
+      "expectedDefaultPathInput": "example.mq.json",
+      "expectedPath": "src/main/metadata/mq-binding/orders/created.mq.json"
+    },
+    {
+      "name": "suffix metadata rejects files ending in another metadata suffix",
+      "metadataType": "menu",
+      "selectedDirectory": "src/main/metadata",
+      "input": "admin/user-list.dev-menu.json",
+      "expectedCreationDirectory": "src/main/metadata",
+      "expectedDefaultInputPath": "src/main/metadata/example.menu.json",
+      "expectedDefaultPathInput": "example.menu.json",
+      "expectedErrorContains": [
+        ".menu.json"
+      ]
+    }
+  ],
+  "templateDefaultCases": [
+    {
+      "name": "ui-schema derives dot name and title from the target path",
+      "metadataType": "ui-schema",
+      "targetPath": "src/main/metadata/admin/user-list.ui-schema.json",
+      "expectedValues": {
+        "name": "Admin.UserList",
+        "title": "User List",
+        "description": "示例 UI Schema"
+      }
+    },
+    {
+      "name": "menu derives camel full name title and slash url from the target path",
+      "metadataType": "menu",
+      "targetPath": "src/main/metadata/admin/user-list.menu.json",
+      "expectedValues": {
+        "fullName": "admin.userList",
+        "title": "User List",
+        "url": "/admin/user-list"
+      }
+    },
+    {
+      "name": "field-type derives name and label from the target path",
+      "metadataType": "field-type",
+      "targetPath": "src/main/metadata/customer/status.field-type.json",
+      "expectedValues": {
+        "name": "customer.status",
+        "label": "Status",
+        "description": "示例字段类型"
+      }
+    },
+    {
+      "name": "micro-web derives name and public path from the target path",
+      "metadataType": "micro-web",
+      "targetPath": "src/main/metadata/admin-console.micro-web.json",
+      "expectedValues": {
+        "name": "adminConsole",
+        "publicPath": "/admin-console",
+        "packageName": "example.zip"
+      }
+    },
+    {
+      "name": "rpc derives name title and keeps template group from the target path",
+      "metadataType": "rpc",
+      "targetPath": "src/main/metadata/rpc/open-api.rpc.json",
+      "expectedValues": {
+        "name": "rpc.openApi",
+        "title": "Open Api",
+        "group": "default",
+        "description": "示例 RPC 模型"
+      }
+    },
+    {
+      "name": "mq derives binding name from the target path",
+      "metadataType": "mq",
+      "targetPath": "src/main/metadata/mq/orders-created.mq.json",
+      "expectedValues": {
+        "bindingName": "mq.ordersCreated",
+        "destination": "example.topic",
+        "description": "示例 MQ 绑定"
+      }
+    },
+    {
+      "name": "schedule derives name from the target path",
+      "metadataType": "schedule",
+      "targetPath": "src/main/metadata/schedule/daily-sync.schedule.json",
+      "expectedValues": {
+        "name": "schedule.dailySync",
+        "cron": "0 0 2 * * ?",
+        "flowName": "example.flow"
+      }
+    },
+    {
+      "name": "i18n keeps locale default and derives name from the target path",
+      "metadataType": "i18n",
+      "targetPath": "src/main/metadata/i18n/zh-cn.i18n.json",
+      "expectedValues": {
+        "locale": "zh-CN",
+        "name": "Zh Cn",
+        "version": "v1"
+      }
+    },
+    {
+      "name": "data dict derives name and title from the target path",
+      "metadataType": "data-dict",
+      "targetPath": "src/main/metadata/data-dict/customer-status.dict.json",
+      "expectedValues": {
+        "name": "dataDict.customerStatus",
+        "title": "Customer Status",
+        "group": "default"
+      }
+    },
+    {
+      "name": "app metadata fixed file uses fixed stem defaults",
+      "metadataType": "app-metadata",
+      "targetPath": "src/main/metadata/app.metadata.json",
+      "expectedValues": {
+        "title": "Example",
+        "description": "示例应用元数据"
+      }
+    }
+  ],
+  "templateSerializationCases": [
+    {
+      "name": "ui-schema applies wrapper template field values",
+      "metadataType": "ui-schema",
+      "targetPath": "src/main/metadata/admin/user-list.ui-schema.json",
+      "values": {
+        "name": "Admin.UserList",
+        "title": "用户列表",
+        "description": "用户列表页面"
+      },
+      "expectedDocument": {
+        "name": "Admin.UserList",
+        "title": "用户列表",
+        "description": "用户列表页面",
+        "schema": {
+          "type": "page",
+          "body": []
+        }
+      }
+    },
+    {
+      "name": "app-module applies collection template field values",
+      "metadataType": "app-module",
+      "targetPath": "src/main/metadata/app-modules.json",
+      "values": {
+        "fullName": "admin",
+        "title": "后台管理",
+        "description": "后台管理模块"
+      },
+      "expectedDocument": [
+        {
+          "fullName": "admin",
+          "title": "后台管理",
+          "description": "后台管理模块",
+          "icon": "fa fa-cube",
+          "order": 0,
+          "menu": "example.menu",
+          "subMenus": [],
+          "authorities": []
+        }
+      ]
+    },
+    {
+      "name": "error-code applies collection template field values",
+      "metadataType": "error-code",
+      "targetPath": "src/main/metadata/error-codes.error.json",
+      "values": {
+        "title": "Not Found",
+        "defaultMessageTemplate": "Resource not found"
+      },
+      "expectedDocument": [
+        {
+          "code": 40000,
+          "title": "Not Found",
+          "defaultMessageTemplate": "Resource not found",
+          "category": "COMMON",
+          "description": "示例错误码定义",
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "name": "rpc applies template field values without removing request details",
+      "metadataType": "rpc",
+      "targetPath": "src/main/metadata/rpc/open-api.rpc.json",
+      "values": {
+        "name": "openApi",
+        "title": "Open API",
+        "group": "metadata",
+        "description": "Open API RPC"
+      },
+      "expectedDocument": {
+        "group": "metadata",
+        "name": "openApi",
+        "title": "Open API",
+        "type": "OpenApi",
+        "description": "Open API RPC",
+        "isEnabled": true,
+        "authCredential": "",
+        "request": {
+          "method": "get",
+          "url": "https://example.invalid/api/example"
+        }
+      }
+    },
+    {
+      "name": "mq applies template field values without removing binding defaults",
+      "metadataType": "mq",
+      "targetPath": "src/main/metadata/mq/orders-created.mq.json",
+      "values": {
+        "bindingName": "ordersCreated",
+        "destination": "orders.created",
+        "description": "订单创建事件"
+      },
+      "expectedDocument": {
+        "bindingType": "producer",
+        "bindingName": "ordersCreated",
+        "destination": "orders.created",
+        "binder": "",
+        "contentType": "application/json",
+        "broadcast": false,
+        "routingKey": "",
+        "description": "订单创建事件"
+      }
+    },
+    {
+      "name": "schedule applies template field values without removing data",
+      "metadataType": "schedule",
+      "targetPath": "src/main/metadata/schedule/daily-sync.schedule.json",
+      "values": {
+        "name": "dailySync",
+        "cron": "0 0 3 * * ?",
+        "flowName": "daily.sync"
+      },
+      "expectedDocument": {
+        "name": "dailySync",
+        "description": "示例定时任务",
+        "cron": "0 0 3 * * ?",
+        "flowName": "daily.sync",
+        "data": {}
+      }
+    },
+    {
+      "name": "i18n applies locale template field values without removing messages",
+      "metadataType": "i18n",
+      "targetPath": "src/main/metadata/i18n/en-us.i18n.json",
+      "values": {
+        "locale": "en-US",
+        "name": "English",
+        "version": "v2"
+      },
+      "expectedDocument": {
+        "locale": "en-US",
+        "name": "English",
+        "version": "v2",
+        "enabled": true,
+        "isDefault": false,
+        "direction": "LTR",
+        "messages": {
+          "common": {
+            "example": "示例文案"
+          }
+        }
+      }
+    },
+    {
+      "name": "data dict applies template field values without removing items",
+      "metadataType": "data-dict",
+      "targetPath": "src/main/metadata/data-dict/customer-status.dict.json",
+      "values": {
+        "name": "customerStatus",
+        "title": "客户状态",
+        "group": "customer"
+      },
+      "expectedDocument": {
+        "name": "customerStatus",
+        "title": "客户状态",
+        "type": "STATIC",
+        "group": "customer",
+        "editable": false,
+        "treeMode": false,
+        "items": []
+      }
+    },
+    {
+      "name": "modules diff applies array template field values",
+      "metadataType": "modules-diff",
+      "targetPath": "src/main/metadata/modules.diff.json",
+      "values": {
+        "fullName": "Admin.User",
+        "title": "用户管理"
+      },
+      "expectedDocument": [
+        {
+          "diffType": "add",
+          "fullName": "Admin.User",
+          "parent": "Example",
+          "title": "用户管理",
+          "description": "示例模块树 Diff",
+          "icon": "fa fa-cube",
+          "order": 0,
+          "menu": "Example.Module",
+          "subMenus": [],
+          "authorities": []
+        }
+      ]
+    }
+  ]
+}

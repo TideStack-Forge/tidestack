@@ -1,0 +1,10 @@
+{
+  "fullName": "DocumentManagement",
+  "url": "/document-management",
+  "icon": "fa fa-files-o",
+  "title": "文档管理",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "runtime",
+  "order": 50
+}

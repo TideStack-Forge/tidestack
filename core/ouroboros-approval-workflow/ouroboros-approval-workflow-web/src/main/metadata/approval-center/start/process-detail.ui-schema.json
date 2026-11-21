@@ -1,0 +1,31 @@
+{
+  "name": "/approval-center/start/process-detail",
+  "schema": {
+    "type": "property",
+    "mode": "simple",
+    "column": 1,
+    "separator": "：",
+    "items": [
+      {
+        "label": "流程 ID",
+        "content": "${id}"
+      },
+      {
+        "label": "流程部署 ID",
+        "content": "${processDefinitionId}"
+      },
+      {
+        "label": "流程名称",
+        "content": "${name}"
+      },
+      {
+        "label": "流程描述",
+        "content": "${description}"
+      },
+      {
+        "label": "流程分类",
+        "content": "${title}"
+      }
+    ]
+  }
+}

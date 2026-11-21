@@ -1,0 +1,152 @@
+.heroBanner {
+  padding: 4.5rem 0;
+  background:
+    radial-gradient(ellipse at top right, var(--handbook-brand-wash), transparent 65%),
+    var(--ifm-background-color);
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.heroLayout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  align-items: center;
+  gap: 4rem;
+}
+
+.eyebrow {
+  margin: 0 0 1rem;
+  color: var(--ifm-color-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.title {
+  margin-bottom: 1.5rem;
+  color: var(--ifm-font-color-base);
+  font-size: clamp(2.25rem, 4vw, 3.5rem);
+  line-height: 1.25;
+  letter-spacing: -0.035em;
+}
+
+.lead {
+  max-width: 33rem;
+  margin-bottom: 2rem;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 1.0625rem;
+  line-height: 1.8;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+}
+
+.buttons :global(.button) {
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+.overviewLink,
+.tutorialLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 44px;
+  font-weight: 600;
+}
+
+.tutorial {
+  padding: 2rem;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: var(--ifm-card-border-radius);
+  background: var(--ifm-background-surface-color);
+}
+
+.tutorial h2 {
+  margin-bottom: 0.75rem;
+  font-size: 1.375rem;
+  line-height: 1.5;
+}
+
+.tutorialDescription {
+  margin-bottom: 1.5rem;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.9375rem;
+}
+
+.steps {
+  display: grid;
+  gap: 1.25rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.steps li {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin: 0;
+}
+
+.stepNumber {
+  color: var(--ifm-color-primary);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.steps strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.9375rem;
+}
+
+.steps div > span {
+  display: block;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.875rem;
+}
+
+.tutorialLink {
+  width: 100%;
+  padding-top: 1rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+  font-size: 0.9375rem;
+}
+
+.heroBanner a:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 4px;
+  border-radius: 0.25rem;
+}
+
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 3rem 0;
+  }
+
+  .heroLayout {
+    gap: 2rem;
+  }
+
+  .tutorial {
+    padding: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .heroBanner {
+    padding: 2.5rem 0;
+  }
+
+  .heroLayout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}

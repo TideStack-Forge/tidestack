@@ -1,0 +1,98 @@
+{
+  "name": "/approval-center/add-sign-form",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "title": false,
+    "id": "add-sign-form",
+    "mode": "normal",
+    "initApi": {
+      "method": "GET",
+      "url": "/api/approval-workflow/task/${id}/add-sign-targets"
+    },
+    "body": [
+      {
+        "name": "addSign.targetUserIds",
+        "type": "select",
+        "label": "加签给",
+        "required": true,
+        "multiple": true,
+        "clearable": true,
+        "source": "${items|pick:data:label~value}"
+      },
+      {
+        "name": "addSign.position",
+        "type": "radios",
+        "label": "插入位置",
+        "required": true,
+        "value": "AFTER_CURRENT",
+        "options": [
+          {
+            "label": "当前节点前",
+            "value": "BEFORE_CURRENT"
+          },
+          {
+            "label": "当前节点后",
+            "value": "AFTER_CURRENT"
+          }
+        ]
+      },
+      {
+        "name": "comment",
+        "type": "textarea",
+        "clearable": true,
+        "showCounter": true,
+        "required": true,
+        "label": "填写加签说明",
+        "placeholder": "加签请求时，请填写加签说明"
+      }
+    ],
+    "actions": [
+      {
+        "type": "action",
+        "actionType": "cancel",
+        "label": "取消"
+      },
+      {
+        "type": "action",
+        "actionType": "confirm",
+        "level": "primary",
+        "label": "确认",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "validate",
+                "componentId": "add-sign-form"
+              },
+              {
+                "actionType": "ajax",
+                "api": {
+                  "method": "POST",
+                  "url": "/api/approval-workflow/task/${id}",
+                  "data": {
+                    "&": "$$",
+                    "action": "addSign",
+                    "formData": "$formData"
+                  }
+                },
+                "expression": "!validateResult.error",
+                "outputVar": "submitResponse"
+              },
+              {
+                "actionType": "reload",
+                "componentId": "approval-center",
+                "expression": "!submitResponse.error"
+              },
+              {
+                "actionType": "closeDrawer",
+                "componentId": "drawer-detail",
+                "expression": "!submitResponse.error"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

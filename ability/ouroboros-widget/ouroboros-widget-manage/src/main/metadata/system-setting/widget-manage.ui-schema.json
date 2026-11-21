@@ -1,0 +1,166 @@
+{
+  "name": "/system-setting/widget-manage",
+  "schema": {
+    "type": "page",
+    "title": "门户栏目管理",
+    "body": [
+      {
+        "type": "crud",
+        "id": "widgetSchemaList",
+        "mode": "table",
+        "syncLocation": false,
+        "api": {
+          "method": "get",
+          "url": "/api/widget-schema",
+          "data": {
+            "keyword": "${keyword}"
+          }
+        },
+        "filter": {
+          "title": "",
+          "body": [
+            {
+              "type": "input-text",
+              "name": "keyword",
+              "placeholder": "搜索栏目名称、标题、分类、场景或描述",
+              "clearable": true,
+              "size": "md"
+            }
+          ]
+        },
+        "headerToolbar": [
+          {
+            "type": "button",
+            "label": "创建栏目",
+            "icon": "fa fa-plus",
+            "level": "primary",
+            "actionType": "dialog",
+            "dialog": {
+              "type": "dialog",
+              "title": "创建栏目",
+              "size": "xl",
+              "url": "/system-setting/widget-manage/add",
+              "data": {},
+              "showCloseButton": true,
+              "showErrorMsg": true,
+              "showLoading": true,
+              "closeOnEsc": false
+            },
+            "reload": "widgetSchemaList"
+          },
+          "bulkActions",
+          {
+            "type": "reload",
+            "align": "right"
+          }
+        ],
+        "footerToolbar": [
+          "statistics",
+          "pagination"
+        ],
+        "columns": [
+          {
+            "name": "definition.name",
+            "label": "栏目名称",
+            "type": "text",
+            "searchable": false
+          },
+          {
+            "name": "definition.title",
+            "label": "显示名",
+            "type": "text",
+            "searchable": false
+          },
+          {
+            "name": "definition.category",
+            "label": "分类",
+            "type": "text",
+            "searchable": false
+          },
+          {
+            "name": "definition.scene",
+            "label": "场景",
+            "type": "text",
+            "searchable": false
+          },
+          {
+            "name": "definition.description",
+            "label": "描述",
+            "type": "text",
+            "searchable": false
+          },
+          {
+            "name": "fromWidgetSchema",
+            "label": "可编辑",
+            "type": "status",
+            "map": {
+              "true": {
+                "label": "是",
+                "status": "success",
+                "icon": "fa fa-check"
+              },
+              "false": {
+                "label": "否",
+                "status": "default",
+                "icon": "fa fa-times"
+              }
+            }
+          },
+          {
+            "name": "createdAt",
+            "label": "创建时间",
+            "type": "datetime",
+            "format": "YYYY-MM-DD HH:mm:ss"
+          },
+          {
+            "name": "updatedAt",
+            "label": "更新时间",
+            "type": "datetime",
+            "format": "YYYY-MM-DD HH:mm:ss"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "fixed": "right",
+            "buttons": [
+              {
+                "type": "button",
+                "label": "查看",
+                "level": "link",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "栏目详情",
+                  "size": "lg",
+                  "url": "/system-setting/widget-manage/detail",
+                  "showCloseButton": true,
+                  "closeOnEsc": true,
+                  "actions": []
+                },
+                "visibleOn": "${fromWidgetSchema}"
+              },
+              {
+                "type": "button",
+                "label": "编辑",
+                "level": "link",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "编辑栏目",
+                  "size": "xl",
+                  "url": "/system-setting/widget-manage/edit",
+                  "showCloseButton": true,
+                  "showErrorMsg": true,
+                  "showLoading": true,
+                  "closeOnEsc": false
+                },
+                "reload": "widgetSchemaList",
+                "visibleOn": "${fromWidgetSchema}"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

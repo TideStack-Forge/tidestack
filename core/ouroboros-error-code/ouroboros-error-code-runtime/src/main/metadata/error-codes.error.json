@@ -1,0 +1,18 @@
+[
+  {
+    "code": 42200,
+    "title": "Validation Failed",
+    "defaultMessageTemplate": "参数校验失败",
+    "category": "COMMON",
+    "description": "Starter fallback definition for request validation errors.",
+    "enabled": true
+  },
+  {
+    "code": 50000,
+    "title": "Internal Error",
+    "defaultMessageTemplate": "服务暂时不可用，请稍后重试",
+    "category": "COMMON",
+    "description": "Starter fallback definition for unclassified internal errors.",
+    "enabled": true
+  }
+]

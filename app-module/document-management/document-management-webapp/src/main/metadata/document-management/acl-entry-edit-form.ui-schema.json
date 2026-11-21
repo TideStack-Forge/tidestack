@@ -1,0 +1,66 @@
+{
+  "name": "/document-management/acl-entry-edit-form",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "api": {
+      "method": "put",
+      "url": "/api/document-libraries/${libraryId}/directories/${directoryId}/acl-entries?principal=${principal}&principalType=${principalType}",
+      "messages": {
+        "success": "权限修改成功"
+      }
+    },
+    "body": [
+      {
+        "type": "static",
+        "name": "principalTypeDisplayName",
+        "label": "主体类型"
+      },
+      {
+        "type": "static",
+        "name": "principalDisplayName",
+        "label": "主体"
+      },
+      {
+        "type": "checkboxes",
+        "name": "permissions",
+        "label": "权限",
+        "required": true,
+        "options": [
+          {
+            "label": "查看",
+            "value": "view"
+          },
+          {
+            "label": "下载",
+            "value": "download"
+          },
+          {
+            "label": "创建文件",
+            "value": "create_file"
+          },
+          {
+            "label": "创建目录",
+            "value": "create_dir"
+          },
+          {
+            "label": "重命名/移动",
+            "value": "rename_move"
+          },
+          {
+            "label": "删除目录",
+            "value": "delete_dir"
+          },
+          {
+            "label": "删除文件",
+            "value": "delete_file"
+          },
+          {
+            "label": "管理权限",
+            "value": "manage"
+          }
+        ]
+      }
+    ]
+  }
+}

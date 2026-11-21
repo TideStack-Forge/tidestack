@@ -1,0 +1,43 @@
+{
+  "name": "return-terminal-result",
+  "description": "Execution fixture returning through ReturnNode without an explicit exitNode",
+  "isEnabled": true,
+  "inputDataType": "string",
+  "outputDataType": "any",
+  "entryNode": "entryMutex",
+  "nodes": [
+    {
+      "name": "entryMutex",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    },
+    {
+      "name": "earlyReturn",
+      "type": "return",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "string"
+        }
+      ],
+      "outputPorts": []
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "entryMutex",
+      "sourceOutputPort": 0,
+      "targetNode": "earlyReturn",
+      "targetInputPort": 0
+    }
+  ]
+}

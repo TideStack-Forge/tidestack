@@ -1,0 +1,216 @@
+{
+  "type": "page",
+  "css": {
+    ".container": {
+      "width": "1620px"
+    }
+  },
+  "body": [
+    {
+      "type": "crud",
+      "name": "instance-details-crud",
+      "syncLocation": false,
+      "api": {
+        "url": "/api/approval-process/${processDefinitionId}/instance?page=${page}&perPage=${perPage}&status=${status}&processStarter=${processStarter}",
+        "method": "get"
+      },
+      "defaultParams": {
+        "page": 1,
+        "perPage": 15
+      },
+      "filterTogglable": true,
+      "headerToolbar": [
+        "load-more",
+        "export-excel",
+        "filter-toggler",
+        {
+          "type": "reload",
+          "align": "right",
+          "icon": "iconfont icon-refresh",
+          "label": "刷新",
+          "tooltip": "",
+          "level": "primary"
+        }
+      ],
+      "footerToolbar": [
+        "statistics",
+        "switch-per-page",
+        "pagination"
+      ],
+      "alwaysShowPagination": true,
+      "hideQuickSaveBtn": true,
+      "filter": {
+        "title": "流程筛选",
+        "debug": true,
+        "body": [
+          {
+            "type": "group",
+            "body": [
+              {
+                "type": "input-text",
+                "name": "processStarter",
+                "label": "发起人",
+                "clearable": true,
+                "placeholder": "请输入发起人名称",
+                "size": "md"
+              },
+              {
+                "type": "list-select",
+                "name": "status",
+                "label": "状态",
+                "clearable": true,
+                "options": [
+                  {
+                    "label": "全部",
+                    "value": "all"
+                  },
+                  {
+                    "label": "已结束",
+                    "value": "finished"
+                  },
+                  {
+                    "label": "进行中",
+                    "value": "running"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "type": "reset",
+            "label": "重置"
+          },
+          {
+            "type": "submit",
+            "level": "primary",
+            "label": "查询"
+          }
+        ]
+      },
+      "columns": [
+        {
+          "name": "id",
+          "label": "流程实例ID"
+        },
+        {
+          "name": "starter",
+          "label": "审批发起人"
+        },
+        {
+          "name": "taskId",
+          "label": "当前任务ID"
+        },
+        {
+          "name": "taskName",
+          "label": "当前（最后）任务名称"
+        },
+        {
+          "name": "startTime",
+          "label": "开始时间"
+        },
+        {
+          "name": "${endTime ? endTime : '正在进行'}",
+          "label": "结束时间"
+        },
+        {
+          "name": "status",
+          "label": "实例状态",
+          "type": "mapping",
+          "value": [
+            "running",
+            "finished"
+          ],
+          "map": {
+            "running": "<span class='label label-success'>进行中</span>",
+            "finished": "<span class='label label-danger'>已结束</span>"
+          }
+        },
+        {
+          "type": "operation",
+          "label": "操作",
+          "buttons": [
+            {
+              "type": "button",
+              "label": "查看",
+              "level": "light",
+              "actionType": "drawer",
+              "tooltip": "查看该审批流程实例的具体信息",
+              "drawer": {
+                "position": "right",
+                "width": 600,
+                "title": "流程实例信息",
+                "closeOnOutside": true,
+                "body": [
+                  {
+                    "type": "card",
+                    "body": {
+                      "type": "property",
+                      "mode": "simple",
+                      "column": 1,
+                      "separator": "：",
+                      "items": [
+                        {
+                          "label": "流程实例ID",
+                          "content": "${id}"
+                        },
+                        {
+                          "label": "发起人名称",
+                          "content": "${starter}"
+                        },
+                        {
+                          "label": "当前任务ID",
+                          "content": "${tskId}"
+                        },
+                        {
+                          "label": "当前任务名称",
+                          "content": "${taskName}"
+                        },
+                        {
+                          "label": "流程实例状态",
+                          "content": "${status == 'finished' ? '已结束' : '进行中'}"
+                        },
+                        {
+                          "label": "开始时间",
+                          "content": "${startTime}"
+                        },
+                        {
+                          "label": "结束时间",
+                          "content": "${endTime ? endTime : '正在进行'}"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "card",
+                    "body": {
+                      "type": "timeline",
+                      "source": {
+                        "method": "GET",
+                        "url": "/api/approval-process/task/timeline/${taskId}"
+                      }
+                    }
+                  }
+                ],
+                "actions": []
+              }
+            },
+            {
+              "type": "button",
+              "label": "强制结束",
+              "level": "danger",
+              "tooltip": "点击后将强行结束这一审批流程实例",
+              "actionType": "ajax",
+              "confirmText": "确认要强行结束该流程实例吗？",
+              "api": "post:/api/approval-process/instance/${id}/finish",
+              "disabledOn": "this.status != 'running'",
+              "tooltip": "点击后将强制当前审批流程实例结束",
+              "disabledTip": "该审批流程已结束"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

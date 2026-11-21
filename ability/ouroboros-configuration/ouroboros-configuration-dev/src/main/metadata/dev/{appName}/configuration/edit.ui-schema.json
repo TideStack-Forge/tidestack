@@ -1,0 +1,113 @@
+{
+  "name": "/dev/{appName}/configuration/edit",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "wrapWithPanel": false,
+    "body": [
+      {
+        "label": "配置键",
+        "type": "input-text",
+        "name": "key",
+        "required": true,
+        "static": true
+      },
+      {
+        "name": "label",
+        "type": "input-text",
+        "label": "配置项名称",
+        "required": true
+      },
+      {
+        "name": "description",
+        "type": "textarea",
+        "label": "描述",
+        "value": "无"
+      },
+      {
+        "type": "button-group-select",
+        "label": "范围",
+        "name": "scope",
+        "required": true,
+        "options": [
+          {
+            "label": "前端",
+            "value": "frontend"
+          },
+          {
+            "label": "后端",
+            "value": "backend"
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "body": [
+          {
+            "name": "modifiable",
+            "type": "switch",
+            "label": "是否允许修改"
+          },
+          {
+            "name": "nullable",
+            "type": "switch",
+            "label": "是否允许为空"
+          }
+        ]
+      },
+      {
+        "name": "valueType",
+        "type": "select",
+        "label": "值类型",
+        "multiple": false,
+        "source": {
+          "url": "/api/sys/configuration/value-type",
+          "method": "get"
+        }
+      },
+      {
+        "name": "defaultValue",
+        "type": "script-editor",
+        "label": "默认值",
+        "requiredOn": "!this.nullable",
+        "language": "template",
+        "codeSite": "configuration.value",
+        "codePointer": "/defaultValue",
+        "codeResourceType": "configuration",
+        "intelligenceApi": "/api/dev/${appName}/code-intelligence/context"
+      },
+      {
+        "name": "editorSchema",
+        "type": "amis-schema-editor",
+        "label": "值编辑器",
+        "showSwitch": true,
+        "onText": "自定义编辑器",
+        "offText": "默认编辑器"
+      },
+      {
+        "name": "obsolete",
+        "type": "switch",
+        "label": "是否过时",
+        "onText": "过时",
+        "offText": "不过时"
+      },
+      {
+        "name": "obsoleteCause",
+        "type": "textarea",
+        "label": "过时原因",
+        "required": true,
+        "visibleOn": "${obsolete}",
+        "clearValueOnHidden": true
+      }
+    ],
+    "mode": "horizontal",
+    "initApi": {
+      "url": "/api/dev/${appName}/configuration/${key}",
+      "method": "get"
+    },
+    "api": {
+      "url": "/api/dev/${appName}/configuration/${key}",
+      "method": "put"
+    }
+  }
+}

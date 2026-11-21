@@ -1,0 +1,171 @@
+bootstrap_version: 1
+roadmap: logicflow-open-source-extraction
+source_feature: 2026-07-25-logicflow-public-repo-bootstrap
+source_public_boundary: logicflow-open-source-boundary.yaml
+source_bundle_classification: logicflow-extension-bundle-classification.yaml
+status: done
+created: 2026-07-25
+scope: standalone-distribution
+platform_source_public_in_monorepo: true
+
+dry_run:
+  mode: clean-snapshot
+  default_output_dir: target/logicflow-public-repo-dry-run
+  report_path: tmp/testing-evidence/open-source/logicflow-public-repo-bootstrap/bootstrap-report.md
+  expose_internal_git_history: false
+  expose_internal_commit_sha: false
+
+support_modules:
+  - module: common-expression
+    source: libs/common/common-expression
+    target: common-expression
+    classification: shared-public-test-support
+  - module: common-code-intelligence
+    source: libs/common/common-code-intelligence
+    target: common-code-intelligence
+    classification: shared-public-foundation
+  - module: ouroboros-util
+    source: libs/util/ouroboros-util
+    target: ouroboros-util
+    classification: shared-public-foundation
+
+public_modules:
+  - module: ouroboros-logicflow-core
+    source: core/ouroboros-logicflow/ouroboros-logicflow-core
+    target: ouroboros-logicflow-core
+    classification: public
+  - module: ouroboros-logicflow-builtin-nodes
+    source: core/ouroboros-logicflow/ouroboros-logicflow-builtin-nodes
+    target: ouroboros-logicflow-builtin-nodes
+    classification: public
+  - module: ouroboros-logicflow-authoring
+    source: core/ouroboros-logicflow/ouroboros-logicflow-authoring
+    target: ouroboros-logicflow-authoring
+    classification: public
+  - module: ouroboros-logicflow-data-model
+    source: core/ouroboros-logicflow/ouroboros-logicflow-data-model
+    target: ouroboros-logicflow-data-model
+    classification: public-integration
+
+generated_public_surface:
+  root_parent_pom: pom.xml
+  public_bom_module: ouroboros-logicflow-bom
+  readme: README.md
+  english_readme: README.en.md
+  contributing: CONTRIBUTING.md
+  english_contributing: CONTRIBUTING.en.md
+  license: LICENSE
+  notice: NOTICE
+  docs:
+    default_language: zh-CN
+    english_copies:
+      - README.en.md
+      - CONTRIBUTING.en.md
+      - OPEN_SOURCE_SNAPSHOT.en.md
+      - docs/adapter-integration-guide.en.md
+      - docs/data-model-integration.en.md
+  ci_stub: .github/workflows/build.yml
+  samples:
+    - samples/script-node-standalone
+
+dependency_management:
+  repository_build_entry: public-root-parent
+  consumer_alignment_entry: ouroboros-logicflow-bom
+  consumer_should_inherit_root_parent: false
+  root_parent_imports:
+    - spring-boot-dependencies
+    - junit-bom
+  root_parent_managed_dependencies:
+    - group_id: tools.jackson.core
+      artifact_id: jackson-core
+      version: 3.1.4
+      reason: "Matches monorepo BOM baseline required by json-schema-validator 3.0.6."
+    - group_id: tools.jackson.core
+      artifact_id: jackson-databind
+      version: 3.1.4
+      reason: "Matches monorepo BOM baseline required by json-schema-validator 3.0.6."
+    - group_id: com.fasterxml.jackson.core
+      artifact_id: jackson-annotations
+      version: "2.21"
+      reason: "Provides JsonSerializeAs required by Jackson 3.1.4."
+    - group_id: junit
+      artifact_id: junit
+      version: 4.13.2
+      reason: "Keeps existing JUnit 4 tests compiling in standalone public dry-run."
+  root_parent_test_dependencies:
+    - org.junit.platform:junit-platform-launcher
+    - org.junit.jupiter:junit-jupiter
+    - org.junit.vintage:junit-vintage-engine
+    - junit:junit
+  public_bom_managed_modules:
+    - ouroboros-logicflow-core
+    - ouroboros-logicflow-builtin-nodes
+    - ouroboros-logicflow-authoring
+    - ouroboros-logicflow-data-model
+    - ouroboros-data-core
+
+required_capabilities:
+  - ScriptNode
+  - NodeBuilder SPI discovery
+  - LogicFlowNodeDefineProvider
+  - DataModel node bundle
+  - META-INF/ouroboros/logic-flow-node-define/*.json
+
+forbidden_paths:
+  - .git
+  - .codestable
+  - .github/internal
+  - target
+  - frontends
+  - platform
+  - dev-module
+  - app-module
+  - security
+  - ouroboros-logicflow-extra-nodes
+  - ouroboros-logicflow-runtime
+  - ouroboros-logicflow-dev
+  - ouroboros-logicflow-web-adapter
+  - ouroboros-logicflow-all
+
+forbidden_import_prefixes:
+  - com.ouroboros.dev
+  - com.ouroboros.web
+  - com.ouroboros.security
+  - com.ouroboros.websocket
+  - com.ouroboros.mq
+  - com.ouroboros.message
+  - com.ouroboros.modelmanage
+  - com.ouroboros.vcs
+  - com.ouroboros.exception
+  - com.ouroboros.metadata
+  - com.ouroboros.model
+
+forbidden_maven_artifacts:
+  - ouroboros-dev-model-manage-webapi-scaffold
+  - ouroboros-message-queue-core
+  - ouroboros-web-security-core
+  - ouroboros-websocket-core
+  - common-app
+  - common-dev
+  - common-web
+  - common-exception
+  - common-metadata
+  - common-model
+  - common-script
+  - ouroboros-util-excel
+  - ouroboros-logicflow-extra-nodes
+  - ouroboros-logicflow-runtime
+  - ouroboros-logicflow-dev
+  - ouroboros-logicflow-web-adapter
+  - ouroboros-logicflow-all
+
+verification:
+  bootstrap_command: bash scripts/open-source/logicflow/bootstrap-public-repo-dry-run.sh --check
+  leak_check_command: bash scripts/open-source/logicflow/check-public-repo-leaks.sh
+  dry_run_build_command: mvn test
+  dry_run_build_cwd: target/logicflow-public-repo-dry-run
+  latest_result: dependency-cleanup-complete-needs-public-dry-run-rerun-2026-08-20
+  latest_evidence:
+    - "2026-08-20 cleanup removed builtin-nodes test common-expression / com.ouroboros.expression.EL, authoring common-metadata / ouroboros-util / com.ouroboros.metadata.resource.*, and data-model com.ouroboros.util imports."
+    - "Public modules are now core, builtin-nodes, authoring, and data-model; data-model depends on public ouroboros-data-core."
+    - "bootstrap-public-repo-dry-run.sh --check still needs a current rerun after public data artifacts are available to the standalone LogicFlow public repo."

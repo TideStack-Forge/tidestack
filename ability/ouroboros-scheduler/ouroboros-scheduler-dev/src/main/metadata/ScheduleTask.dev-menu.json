@@ -1,0 +1,10 @@
+{
+  "fullName": "OperationsMonitoring.ScheduledTasks",
+  "url": "/dev/{appName}/schedule",
+  "icon": "fa fa-calendar",
+  "title": "计划任务",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 10
+}

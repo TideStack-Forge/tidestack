@@ -1,0 +1,99 @@
+{
+  "type": "authority",
+  "fileSuffix": ".authority.json",
+  "displayName": "权限项模型",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.authority.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/authority",
+  "editorKinds": [
+    "form",
+    "table"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.authority.json",
+    "fields": [
+      {
+        "name": "fullName",
+        "label": "完整名称",
+        "documentPath": [
+          "fullName"
+        ],
+        "required": true,
+        "defaultFromPath": "camel-name"
+      },
+      {
+        "name": "title",
+        "label": "标题",
+        "documentPath": [
+          "title"
+        ],
+        "required": true,
+        "defaultFromPath": "title"
+      }
+    ],
+    "document": {
+      "fullName": "example.authority",
+      "title": "示例权限项",
+      "apis": [],
+      "uiViews": [],
+      "menuItems": [],
+      "order": 0
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "权限项模型",
+    "actions": [],
+    "body": [
+      {
+        "type": "input-text",
+        "name": "fullName",
+        "label": "完整名称",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "title",
+        "label": "标题",
+        "required": true
+      },
+      {
+        "type": "input-number",
+        "name": "order",
+        "label": "排序"
+      },
+      {
+        "type": "input-array",
+        "name": "apis",
+        "label": "关联接口",
+        "items": {
+          "type": "input-text",
+          "name": "api",
+          "label": "接口"
+        }
+      },
+      {
+        "type": "input-array",
+        "name": "uiViews",
+        "label": "关联界面",
+        "items": {
+          "type": "input-text",
+          "name": "uiView",
+          "label": "界面"
+        }
+      },
+      {
+        "type": "input-array",
+        "name": "menuItems",
+        "label": "关联菜单",
+        "items": {
+          "type": "input-text",
+          "name": "menuItem",
+          "label": "菜单项"
+        }
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/authority.schema.json"
+}

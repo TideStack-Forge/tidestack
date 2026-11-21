@@ -1,0 +1,97 @@
+{
+  "name": "/dev/{appName}/ui-model",
+  "schema": {
+    "type": "page",
+    "title": "前端页面管理（UI模型）",
+    "toolbar": [
+      {
+        "type": "button",
+        "actionType": "dialog",
+        "label": "新建",
+        "icon": "fa fa-plus",
+        "level": "primary",
+        "align": "right",
+        "dialog": {
+          "url": "/dev/${appName}/ui-model/add"
+        }
+      }
+    ],
+    "body": {
+      "type": "crud",
+      "name": "uiModelList",
+      "api": "get:/api/dev/${appName}/ui-model",
+      "columns": [
+        {
+          "name": "path",
+          "label": "路径"
+        },
+        {
+          "name": "title",
+          "label": "标题",
+          "type": "wrapper",
+          "className": "flex items-center",
+          "body": [
+            {
+              "type": "icon",
+              "icon": "${icon}",
+              "vendor": "",
+              "className": "w-4 mr-1",
+              "visibleOn": "${icon}"
+            },
+            {
+              "type": "tpl",
+              "tpl": "${title}"
+            }
+          ]
+        },
+        {
+          "name": "type",
+          "type": "mapping",
+          "map": {
+            "amis": "UI Schema",
+            "micro": "微前端",
+            "internal": "内部页面"
+          },
+          "label": "类型"
+        },
+        {
+          "type": "operation",
+          "label": "操作",
+          "buttons": [
+            {
+              "type": "button",
+              "actionType": "dialog",
+              "label": "编辑",
+              "icon": "fa fa-pencil",
+              "level": "primary",
+              "dialog": {
+                "url": "/dev/${appName}/ui-model/edit"
+              }
+            },
+            {
+              "type": "button",
+              "actionType": "ajax",
+              "label": "删除",
+              "icon": "fa fa-trash",
+              "level": "danger",
+              "confirmText": "您确认要删除?",
+              "api": "delete:/api/dev/${appName}/ui-model/${fullName}"
+            }
+          ]
+        }
+      ],
+      "footerToolbar": [
+        "statistics",
+        "pagination",
+        "switch-per-page"
+      ],
+      "perPageAvailable": [
+        10,
+        20,
+        50
+      ],
+      "loadDataOnce": true,
+      "alwaysShowPagination": true
+    }
+  }
+}

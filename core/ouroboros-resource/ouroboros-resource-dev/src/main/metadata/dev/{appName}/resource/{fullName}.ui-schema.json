@@ -1,0 +1,207 @@
+{
+  "name": "/dev/{appName}/resource/{fullName}",
+  "schema": {
+    "type": "page",
+    "title": "资源详情",
+    "body": {
+      "type": "service",
+      "api": {
+        "method": "get",
+        "url": "/api/dev/${appName}/resource/${fullName}/status"
+      },
+      "body": [
+        {
+          "type": "panel",
+          "title": "资源元数据",
+          "body": {
+            "type": "form",
+            "mode": "horizontal",
+            "initApi": {
+              "method": "get",
+              "url": "/api/dev/${appName}/resource/${fullName}/init-form"
+            },
+            "api": {
+              "method": "put",
+              "url": "/api/dev/${appName}/resource/${fullName}"
+            },
+            "actions": [
+              {
+                "type": "button",
+                "label": "保存",
+                "level": "primary",
+                "actionType": "submit"
+              },
+              {
+                "type": "button",
+                "label": "提交",
+                "level": "success",
+                "actionType": "ajax",
+                "confirmText": "确认提交当前修改吗？",
+                "api": {
+                  "method": "post",
+                  "url": "/api/dev/${appName}/resource/${fullName}/commit",
+                  "data": {
+                    "commitMsg": "更新资源元数据"
+                  }
+                }
+              },
+              {
+                "type": "button",
+                "label": "回滚",
+                "level": "warning",
+                "actionType": "ajax",
+                "confirmText": "确认回滚未提交的修改吗？",
+                "api": {
+                  "method": "post",
+                  "url": "/api/dev/${appName}/resource/${fullName}/rollback"
+                }
+              }
+            ],
+            "body": [
+              {
+                "type": "static",
+                "name": "model.scope",
+                "label": "范围"
+              },
+              {
+                "type": "static",
+                "name": "model.key",
+                "label": "资源 Key"
+              },
+              {
+                "type": "static",
+                "name": "model.fileName",
+                "label": "文件名"
+              },
+              {
+                "type": "input-text",
+                "name": "model.displayName",
+                "label": "显示名称"
+              },
+              {
+                "type": "textarea",
+                "name": "model.description",
+                "label": "描述"
+              },
+              {
+                "type": "input-text",
+                "name": "model.versionTag",
+                "label": "版本标记"
+              },
+              {
+                "type": "static",
+                "name": "model.contentType",
+                "label": "内容类型"
+              },
+              {
+                "type": "static",
+                "name": "model.size",
+                "label": "大小(B)"
+              },
+              {
+                "type": "static",
+                "name": "model.checksum",
+                "label": "校验和"
+              },
+              {
+                "type": "input-kv",
+                "name": "model.metadata",
+                "label": "扩展元数据"
+              }
+            ]
+          }
+        },
+        {
+          "type": "panel",
+          "title": "资源内容",
+          "body": [
+            {
+              "type": "form",
+              "api": {
+                "method": "post",
+                "url": "/api/dev/${appName}/resource/content"
+              },
+              "body": [
+                {
+                  "type": "hidden",
+                  "name": "scope",
+                  "value": "${model.scope}"
+                },
+                {
+                  "type": "hidden",
+                  "name": "key",
+                  "value": "${model.key}"
+                },
+                {
+                  "type": "input-file",
+                  "name": "file",
+                  "label": "上传文件",
+                  "autoUpload": false
+                }
+              ],
+              "actions": [
+                {
+                  "type": "submit",
+                  "label": "上传内容",
+                  "level": "primary"
+                }
+              ]
+            },
+            {
+              "type": "button",
+              "label": "下载当前内容",
+              "level": "link",
+              "actionType": "download",
+              "api": {
+                "method": "get",
+                "url": "/api/dev/${appName}/resource/content?scope=${model.scope}&key=${model.key}"
+              }
+            },
+            {
+              "type": "button",
+              "label": "删除当前内容",
+              "level": "link",
+              "className": "text-danger",
+              "actionType": "ajax",
+              "confirmText": "确认删除当前资源内容吗？",
+              "api": {
+                "method": "delete",
+                "url": "/api/dev/${appName}/resource/content?scope=${model.scope}&key=${model.key}"
+              }
+            }
+          ]
+        },
+        {
+          "type": "panel",
+          "title": "变更记录",
+          "body": {
+            "type": "crud",
+            "api": {
+              "method": "get",
+              "url": "/api/dev/${appName}/resource/${fullName}/change-log"
+            },
+            "columns": [
+              {
+                "name": "revision",
+                "label": "版本"
+              },
+              {
+                "name": "message",
+                "label": "说明"
+              },
+              {
+                "name": "author",
+                "label": "作者"
+              },
+              {
+                "name": "timestamp",
+                "label": "时间",
+                "type": "datetime"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "editorId": "configuration-group",
+  "editorName": "TideStack Configuration Group Metadata Editor",
+  "editorNameKey": "customEditor.configurationGroup",
+  "metadataType": "configuration-group",
+  "schemaName": "configuration-group",
+  "viewType": "tidestack.metadataEditor.configurationGroup",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.configurationGroup",
+  "fileMatchPatterns": [
+    "configuration-groups.json",
+    "**/src/main/metadata/configuration-groups.json",
+    "**/resources/META-INF/ouroboros/metadata/configuration-groups.json",
+    "**/resources/META-INF/ouroboros/configuration-groups.json"
+  ],
+  "priority": "default"
+}

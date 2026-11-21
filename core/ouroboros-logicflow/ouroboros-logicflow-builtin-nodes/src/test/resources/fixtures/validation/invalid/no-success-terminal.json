@@ -1,0 +1,37 @@
+{
+  "name": "no-success-terminal",
+  "description": "Invalid flow with no explicit exitNode and no ReturnNode",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "constSource",
+  "nodes": [
+    {
+      "name": "constSource",
+      "type": "const",
+      "description": "",
+      "dataType": "string",
+      "value": "hello"
+    },
+    {
+      "name": "normalNode",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "constSource",
+      "sourceOutputPort": 0,
+      "targetNode": "normalNode",
+      "targetInputPort": 0
+    }
+  ]
+}

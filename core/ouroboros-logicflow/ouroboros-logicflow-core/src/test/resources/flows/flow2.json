@@ -1,0 +1,54 @@
+{
+  "name": "flow2",
+  "description": "",
+  "isEnabled": true,
+  "inputDataType": "map",
+  "outputDataType": "map",
+  "entryNode": "node1",
+  "exitNode": "nodeX",
+  "nodes": [
+    {
+      "name": "node1",
+      "type": "mapping",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "port1",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "port1",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "mapping": {
+        "aa": "$0.a",
+        "bb": "a + b"
+      }
+    },
+    {
+      "name": "nodeX",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "port1",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "node1",
+      "sourceOutputPort": 0,
+      "targetNode": "nodeX",
+      "targetInputPort": 0
+    }
+  ]
+}

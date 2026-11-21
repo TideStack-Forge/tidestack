@@ -1,0 +1,73 @@
+{
+    "name": "/dev/{appName}/rpc-auth/form-items",
+    "schema": {
+        "type": "wrapper",
+        "className": "p-0",
+        "body": [
+            {
+                "label": "名称",
+                "type": "input-text",
+                "name": "name",
+                "required": true,
+                "staticOn": "${!add}",
+                "placeholder": "请输入身份认证名（须符合变量命名规范且唯一）"
+            },
+            {
+                "label": "标题",
+                "type": "input-text",
+                "name": "title",
+                "required": true,
+                "placeholder": "请输入标题"
+            },
+            {
+                "label": "认证类型",
+                "type": "list-select",
+                "name": "type",
+                "required": true,
+                "selectFirst": true,
+                "source": "/api/dev/${appName}/rpc-auth/credential-types"
+            },
+            {
+                "name": "isEnabled",
+                "type": "switch",
+                "label": "是否启用",
+                "value": true
+            },
+            {
+                "name": "description",
+                "type": "textarea",
+                "label": "描述"
+            },
+            {
+                "type": "amis-schema",
+                "schemaId": "/dev/{appName}/rpc-auth/type/${type}"
+            },
+            {
+                "type": "collapse-group",
+                "body": [
+                    {
+                        "type": "collapse",
+                        "title": "输入输出结构（可选）",
+                        "collapsed": true,
+                        "body": [
+                            {
+                                "type": "json-data-editor",
+                                "name": "inputSchema",
+                                "label": "输入结构（JSON Schema）",
+                                "allowValueTypes": "object",
+                                "description": "用于代码提示；不会执行调用来采集数据。"
+                            },
+                            {
+                                "type": "json-data-editor",
+                                "name": "outputSchema",
+                                "label": "输出结构（JSON Schema）",
+                                "allowValueTypes": "object",
+                                "description": "用于代码提示；不会执行调用来采集数据。"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

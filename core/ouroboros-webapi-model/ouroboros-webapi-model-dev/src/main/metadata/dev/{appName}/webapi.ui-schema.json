@@ -1,0 +1,201 @@
+{
+  "name": "/dev/{appName}/webapi",
+  "schema": {
+    "type": "page",
+    "css": {
+      ".cover-bg": {
+        "background": "#EDEEF0"
+      }
+    },
+    "body": {
+      "type": "crud",
+      "model": "table",
+      "name": "webapiList",
+      "api": "get:/api/dev/${appName}/webapi",
+      "rowClassNameExpr": "${ isChanged ? 'cover-bg' : '' }",
+      "headerToolbar": [
+        {
+          "label": "刷新",
+          "icon": "fa fa-repeat",
+          "type": "button",
+          "actionType": "reload"
+        }
+      ],
+      "columns": [
+        {
+          "label": "API",
+          "type": "wrapper",
+          "size": "none",
+          "className": "flex items-center",
+          "body": {
+            "type": "wrapper",
+            "size": "sm",
+            "className": "flex items-center m-0",
+            "body": [
+              {
+                "type": "icon",
+                "vendor": "",
+                "icon": "${ nodeType == 'group' ? 'fa fa-folder' : 'fa fa-blot' }",
+                "className": {
+                  "mr-2": true,
+                  "text-success": "${UPPER(method) == 'GET'}",
+                  "text-primary": "${UPPER(method) == 'POST'}",
+                  "text-warning": "${UPPER(method) == 'PATCH'}",
+                  "text-yellow-600": "${UPPER(method) == 'PUT'}",
+                  "text-danger": "${UPPER(method) == 'DELETE'}"
+                }
+              },
+              {
+                "type": "tpl",
+                "tpl": "${method|upperCase}",
+                "className": {
+                  "mr-2": true,
+                  "inline-block": true,
+                  "font-bold": true,
+                  "text-success": "${UPPER(method) == 'GET'}",
+                  "text-primary": "${UPPER(method) == 'POST'}",
+                  "text-warning": "${UPPER(method) == 'PATCH'}",
+                  "text-yellow-600": "${UPPER(method) == 'PUT'}",
+                  "text-danger": "${UPPER(method) == 'DELETE'}"
+                },
+                "visibleOn": "${method}"
+              },
+              {
+                "type": "tpl",
+                "tpl": "${ path }"
+              }
+            ]
+          }
+        },
+        {
+          "name": "currentModel.summary",
+          "label": "描述"
+        },
+        {
+          "type": "container",
+          "label": "请求处理方式",
+          "body": [
+            {
+              "type": "wrapper",
+              "className": "flex m-0 items-center",
+              "size": "none",
+              "visibleOn": "currentModel && currentModel.handlerType == 'RequestMapping'",
+              "body": [
+                {
+                  "type": "tooltip-wrapper",
+                  "title": "RequestMapping",
+                  "content": "类名：${currentModel.className}<br/>方法名：${currentModel.methodName}(${currentModel.methodArgument|map:split:'.'|map:last|join:', '})",
+                  "body": [
+                    {
+                      "type": "icon",
+                      "icon": "data:image/svg+xml,%3Csvg%20t%3D%221728185900088%22%20class%3D%22icon%22%20viewBox%3D%220%200%201024%201024%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20p-id%3D%227506%22%20width%3D%22300%22%20height%3D%22300%22%3E%3Cpath%20d%3D%22M487.168%20538.595556c137.955556%20169.329778-2.787556%20406.528-4.152889%20408.775111l9.301333%205.717333c-186.225778-22.158222-332.316444-214.556444-332.316444-448%200-217.258667%20126.492444-399.047111%20294.200889-441.088-43.406222%2097.848889-106.097778%20303.900444%2032.967111%20474.595556zM552.391111%2069.603556l-9.187555-5.603556c186.140444%2022.300444%20332.117333%20214.641778%20332.117333%20448%200%20217.258667-126.492444%20399.047111-294.200889%20441.059556%2043.434667-97.848889%20106.126222-303.872-32.967111-474.567112-137.955556-169.329778%202.787556-406.528%204.238222-408.888888z%22%20fill%3D%22%23672a11%22%20p-id%3D%227507%22%20data-spm-anchor-id%3D%22a313x.search_index.0.i7.eb263a81oTa3NB%22%20class%3D%22selected%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E"
+                    },
+                    {
+                      "type": "tpl",
+                      "tpl": "${currentModel.className | split:'.' | last}::<b>${currentModel.methodName}</b>(${currentModel.methodArgument|map:split:'.'|map:last|join:', '})",
+                      "className": "text-secondary ml-1"
+                    }
+                  ]
+                },
+                {
+                  "type": "button",
+                  "level": "link",
+                  "icon": "fa fa-eye",
+                  "label": "查看",
+                  "actionType": "dialog",
+                  "dialog": {
+                    "type": "dialog",
+                    "size": "md",
+                    "title": "查看详情",
+                    "url": "/dev/${appName}/webapi/request-mapping-detail"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "container",
+              "visibleOn": "currentModel && currentModel.handlerType == 'BusinessAction'",
+              "body": [
+                {
+                  "type": "tpl",
+                  "tpl": "业务模型：${currentModel.businessModel} / Action：${currentModel.action}"
+                }
+              ]
+            },
+            {
+              "type": "wrapper",
+              "size": "none",
+              "className": "flex m-0 items-center",
+              "visibleOn": "currentModel && currentModel.handlerType == 'LogicFlow'",
+              "body": [
+                {
+                  "type": "tooltip-wrapper",
+                  "title": "逻辑流",
+                  "content": "逻辑流名：${currentModel.logicFlowName}",
+                  "body": [
+                    {
+                      "type": "icon",
+                      "icon": {
+                        "id": "svg-icon-logicflow"
+                      }
+                    },
+                    {
+                      "type": "tpl",
+                      "tpl": "${currentModel.logicFlowName}",
+                      "className": "${ currentModel.isChanged ? 'italic font-black text-secondary ml-1' : 'text-secondary ml-1' }"
+                    }
+                  ]
+                },
+                {
+                  "type": "button",
+                  "level": "link",
+                  "icon": "fa fa-eye",
+                  "label": "查看",
+                  "actionType": "dialog",
+                  "dialog": {
+                    "type": "dialog",
+                    "size": "full",
+                    "title": "查看逻辑流 ${currentModel.logicFlowName}",
+                    "url": "/dev/${appName}/webapi/flow-model-detail"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "operation",
+          "label": "操作",
+          "buttons": [
+            {
+              "type": "button",
+              "level": "link",
+              "label": "切换处理方式",
+              "icon": "data:image/svg+xml,%3Csvg%20t%3D%221728187178726%22%20class%3D%22icon%22%20viewBox%3D%220%200%201024%201024%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20p-id%3D%2214372%22%20width%3D%22300%22%20height%3D%22300%22%3E%3Cpath%20d%3D%22M670.72%20325.696L511.552%20152l87.68-87.872%20360.96%20389.504L832%20453.76v0.64H64V325.76h606.72z%20m-318.4%20382.08l157.248%20172.8-94.976%2079.552L63.872%20579.84l147.712-0.704v-0.128H960v128.768H352.32z%22%20fill%3D%22%231296db%22%20p-id%3D%2214373%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E",
+              "className": "text-black",
+              "visibleOn": "${ nodeType == 'api'}",
+              "actionType": "dialog",
+              "dialog": {
+                "type": "dialog",
+                "size": "md",
+                "title": "切换处理方式",
+                "url": "/dev/${appName}/webapi/change-handler-type"
+              }
+            },
+            {
+              "type": "button",
+              "level": "link",
+              "label": "复原",
+              "className": "text-danger",
+              "icon": "fa fa-trash",
+              "visibleOn": "${isChanged && nodeType == 'api'}",
+              "actionType": "ajax",
+              "confirmText": "您确认要复原?",
+              "api": "delete:/api/dev/${appName}/webapi/${fullName}"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

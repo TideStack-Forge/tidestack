@@ -1,0 +1,7 @@
+{
+  "fullName": "systemSetting.logicflow",
+  "title": "逻辑流运行时管理",
+  "icon": "fa fa-random",
+  "url": "/system-setting/logicflows",
+  "order": 25
+}

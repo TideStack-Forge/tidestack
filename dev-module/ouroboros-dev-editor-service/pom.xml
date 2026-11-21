@@ -1,0 +1,23 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent><groupId>com.ouroboros</groupId><artifactId>dev-module</artifactId><version>2.0.0-rc.1-SNAPSHOT</version></parent>
+  <artifactId>ouroboros-dev-editor-service</artifactId>
+  <dependencies>
+    <dependency><groupId>com.ouroboros</groupId><artifactId>ouroboros-dev-helper-runtime</artifactId><version>${ouroboros.version}</version><scope>test</scope></dependency>
+    <dependency><groupId>com.ouroboros</groupId><artifactId>ouroboros-dev-code-intelligence</artifactId></dependency>
+    <dependency><groupId>com.ouroboros</groupId><artifactId>ouroboros-dev-helper-dev-metadata-provider</artifactId><version>${ouroboros.version}</version></dependency>
+    <dependency><groupId>com.ouroboros</groupId><artifactId>ouroboros-logicflow-dev</artifactId></dependency>
+    <dependency><groupId>com.ouroboros</groupId><artifactId>ouroboros-field-type-dev</artifactId></dependency>
+    <dependency><groupId>com.ouroboros</groupId><artifactId>ouroboros-rpc-model-dev</artifactId></dependency>
+    <dependency><groupId>com.ouroboros</groupId><artifactId>ouroboros-notification-dev</artifactId></dependency>
+    <dependency><groupId>com.ouroboros</groupId><artifactId>ouroboros-configuration-dev</artifactId></dependency>
+    <dependency><groupId>com.ouroboros</groupId><artifactId>ouroboros-business-log-dev</artifactId></dependency>
+    <dependency><groupId>com.ouroboros</groupId><artifactId>ouroboros-business-model-dev</artifactId></dependency>
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-web</artifactId></dependency>
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-test</artifactId><scope>test</scope></dependency>
+  </dependencies>
+  <build><plugins><plugin><groupId>org.springframework.boot</groupId><artifactId>spring-boot-maven-plugin</artifactId>
+    <configuration><mainClass>com.ouroboros.dev.editor.LocalEditorApplication</mainClass></configuration>
+    <executions><execution><goals><goal>repackage</goal></goals></execution></executions>
+  </plugin></plugins></build>
+</project>

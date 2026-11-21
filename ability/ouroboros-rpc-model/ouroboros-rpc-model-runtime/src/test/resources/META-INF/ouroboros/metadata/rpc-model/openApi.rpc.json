@@ -1,0 +1,13 @@
+{
+  "group": "metadata",
+  "name": "openApi",
+  "title": "Metadata OpenAPI",
+  "type": "OpenApi",
+  "description": "Metadata directory override sample",
+  "isEnabled": true,
+  "authCredential": "sharedCredential",
+  "request": {
+    "method": "get",
+    "url": "https://example.invalid/api/user/info"
+  }
+}

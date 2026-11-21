@@ -1,0 +1,59 @@
+{
+  "name": "/system-setting/role-management/detail",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "body": [
+      {
+        "label": "角色名称",
+        "type": "input-text",
+        "name": "name",
+        "placeholder": "",
+        "clearable": true,
+        "required": true,
+        "validations": {
+          "maxLength": 100,
+          "minLength": 1
+        },
+        "static": true
+      },
+      {
+        "type": "input-tree",
+        "label": "权限",
+        "name": "authorities",
+        "valueField": "authority",
+        "source": "${authorities}"
+      },
+      {
+        "type": "select",
+        "label": "用户",
+        "name": "users",
+        "multiple": true,
+        "autoCheckChildren": true,
+        "enableNodePath": false,
+        "showIcon": true,
+        "initiallyOpen": true,
+        "labelField": "nickname",
+        "valueField": "userIdentity",
+        "joinValues": false,
+        "extractValue": true,
+        "source": {
+          "method": "get",
+          "url": "/api/sys/user"
+        },
+        "static": true,
+        "visibleOn": "${ canManageUsers }"
+      }
+    ],
+    "mode": "horizontal",
+    "initApi": {
+      "url": "/api/sys/role/${id}",
+      "method": "get",
+      "responseData": {
+        "&": "$$",
+        "users": "${users|pick:userIdentity}"
+      }
+    },
+    "wrapWithPanel": false
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "name": "cycle-basic",
+  "description": "Simple cyclic graph built from mutex nodes",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "nodeA",
+  "exitNode": "nodeB",
+  "nodes": [
+    {
+      "name": "nodeA",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    },
+    {
+      "name": "nodeB",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "nodeA",
+      "sourceOutputPort": 0,
+      "targetNode": "nodeB",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "nodeB",
+      "sourceOutputPort": 0,
+      "targetNode": "nodeA",
+      "targetInputPort": 0
+    }
+  ]
+}

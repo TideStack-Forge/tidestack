@@ -1,0 +1,34 @@
+{
+  "name": "/dev/{appName}/business-model/change-log",
+  "schema": {
+    "type": "crud",
+    "loadDataOnce": true,
+    "api": {
+      "method": "get",
+      "url": "/api/dev/${appName}/business-model/${fullName}/change-log"
+    },
+    "columns": [
+      {
+        "name": "time",
+        "type": "date",
+        "fromNow": true,
+        "label": "时间",
+        "popOver": {
+          "trigger": "hover",
+          "position": "left-top-left-bottom",
+          "showIcon": false,
+          "body": "${time | date:YYYY-MM-DD HH\\:mm\\:ss:}"
+        }
+      },
+      {
+        "name": "message",
+        "label": "提交信息"
+      },
+      {
+        "name": "authorName",
+        "label": "作者"
+      }
+    ],
+    "perPage": 50
+  }
+}

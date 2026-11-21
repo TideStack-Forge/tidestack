@@ -1,0 +1,11 @@
+{
+  "fullName": "systemSetting.integrationManagement.connections.enterprise.verify",
+  "title": "检查企业连接",
+  "delegable": false,
+  "apis": [
+    "GET /api/sys/integration-management/sections/{section}",
+    "POST /api/sys/enterprise-connections/{connectionId}/verify"
+  ],
+  "uiViews": ["/system-setting/integration-management"],
+  "menuItems": ["systemSetting.integrationManagement"]
+}

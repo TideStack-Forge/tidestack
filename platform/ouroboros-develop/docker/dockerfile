@@ -1,0 +1,23 @@
+ARG BASE_IMAGE=registry.cn-hangzhou.aliyuncs.com/ouroboros/ouroboros-mothership:latest
+
+FROM $BASE_IMAGE
+
+LABEL name=ouroboros-develop
+# LABEL 和 ENV 都不支持 ARG
+# LABEL develop-version=$VERSION
+# ENV DEVELOP_VERSION=$VERSION
+
+# 静态层
+COPY ./root /
+
+# 公共层
+COPY ./common-layer /
+
+# 模板层
+COPY ./template-layer /
+
+# 构建层
+COPY ./build-layer /
+
+RUN mkdir -p /app/base/web/ouroboros \
+    && ln -sfn /app/base/service/manifest.json /app/base/web/ouroboros/runtime-manifest.json

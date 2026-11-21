@@ -1,0 +1,133 @@
+{
+  "name": "/system-setting/data-dict/item-detail",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "static": true,
+    "body": [
+      {
+        "type": "tabs",
+        "tabs": [
+          {
+            "title": "字典项",
+            "tab": [
+              {
+                "type": "combo",
+                "label": false,
+                "name": "items",
+                "multiple": true,
+                "multiLine": true,
+                "canAccessSuperData": true,
+                "strictMode": false,
+                "scaffold": {
+                  "code": "",
+                  "label": "",
+                  "order": 0,
+                  "extraProps": {},
+                  "hasChildren": false,
+                  "children": []
+                },
+                "items": [
+                  {
+                    "type": "group",
+                    "body": [
+                      {
+                        "name": "code",
+                        "label": "编码",
+                        "type": "input-text",
+                        "placeholder": "字典项编码",
+                        "required": true,
+                        "unique": true
+                      },
+                      {
+                        "name": "label",
+                        "label": "标题",
+                        "type": "input-text",
+                        "placeholder": "字典项标题",
+                        "required": true
+                      },
+                      {
+                        "name": "order",
+                        "label": "顺序",
+                        "type": "input-number",
+                        "min": 0,
+                        "placeholder": "字典项顺序",
+                        "required": true
+                      },
+                      {
+                        "type": "button",
+                        "icon": "fa fa-gear",
+                        "columnClassName": "flex-grow-0",
+                        "actionType": "drawer",
+                        "drawer": {
+                          "type": "drawer",
+                          "title": "字典项配置",
+                          "url": "/system-setting/data-dict/item-configuration"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "label": "包含子选项",
+                    "type": "switch",
+                    "name": "hasChildren",
+                    "mode": "inline",
+                    "className": "block",
+                    "visibleOn": "${treeMode}"
+                  },
+                  {
+                    "$ref": "defineDataDictItemsForm",
+                    "label": "子选项",
+                    "name": "children",
+                    "visibleOn": "this.hasOwnProperty('hasChildren') && this.hasChildren",
+                    "addButtonText": "新增子选项"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "状态转移表",
+            "tab": [
+              {
+                "type": "table",
+                "source": "$items",
+                "columns": [
+                  {
+                    "name": "code",
+                    "label": "当前状态",
+                    "type": "text"
+                  },
+                  {
+                    "name": "extraProps.stateTransition",
+                    "type": "list",
+                    "source": "$rows",
+                    "label": "状态转移描述",
+                    "placeholder": "-",
+                    "listItem": {
+                      "title": "转移状态:${to}",
+                      "titleClassName": "mb-2 ",
+                      "body": "状态转移描述:${condition}"
+                    }
+                  }
+                ]
+              }
+            ],
+            "visibleOn": "${type === 'state_table'}"
+          }
+        ]
+      }
+    ],
+    "mode": "horizontal",
+    "data": {
+      "static": "true"
+    },
+    "initApi": {
+      "url": "/api/sys/data-dict-manage/${name}/items",
+      "method": "get",
+      "adaptor": "function addHasChildrenToItems(arr) {\r\n  arr.forEach(item => {\r\n    if (item.children && item.children.length > 0) {\r\n      item.hasChildren = true;\r\n      addHasChildrenToItems(item.children);\r\n    } else {\r\n      item.hasChildren = false;\r\n    }\r\n  });\r\n  return arr\r\n}\r\nreturn {\r\n  ...payload,\r\n  data: addHasChildrenToItems(payload.data.items)\r\n}"
+    },
+    "actions": [],
+    "wrapWithPanel": false
+  }
+}

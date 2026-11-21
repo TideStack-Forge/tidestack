@@ -1,0 +1,13 @@
+{
+  "fullName": "notification",
+  "title": "消息通知",
+  "apis": [
+    "GET /api/notification",
+    "GET /api/notification/unread-count",
+    "PATCH /api/notification/{id}/read",
+    "PATCH /api/notification/mark-read",
+    "PATCH /api/notification/me-all/mark-read"
+  ],
+  "uiViews": ["/notification"],
+  "menuItems": ["notification"]
+}

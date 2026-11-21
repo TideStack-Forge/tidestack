@@ -1,0 +1,2 @@
+com.ouroboros.mq.runtime.OuroborosMQRuntimeAutoConfiguration
+com.ouroboros.mq.OuroborosCommonMQCoreAutoConfiguration

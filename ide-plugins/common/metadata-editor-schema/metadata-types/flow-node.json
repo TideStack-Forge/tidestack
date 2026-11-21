@@ -1,0 +1,109 @@
+{
+  "type": "flow-node",
+  "fileSuffix": ".flow-node.json",
+  "displayName": "逻辑流节点",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.flow-node.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/metadata",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.flow-node.json",
+    "fields": [
+      {
+        "name": "type",
+        "label": "类型",
+        "documentPath": [
+          "type"
+        ],
+        "required": true,
+        "defaultFromPath": "camel-name"
+      },
+      {
+        "name": "label",
+        "label": "标签",
+        "documentPath": [
+          "label"
+        ],
+        "required": true,
+        "defaultFromPath": "title"
+      },
+      {
+        "name": "description",
+        "label": "描述",
+        "documentPath": [
+          "description"
+        ]
+      },
+      {
+        "name": "group",
+        "label": "分组",
+        "documentPath": [
+          "group"
+        ]
+      }
+    ],
+    "document": {
+      "type": "example",
+      "label": "示例节点",
+      "description": "示例逻辑流节点",
+      "group": "自定义",
+      "order": 0,
+      "scaffold": {
+        "type": "example",
+        "name": "示例节点",
+        "inputPorts": [],
+        "outputPorts": []
+      },
+      "properties": []
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "逻辑流节点",
+    "actions": [],
+    "body": [
+      {
+        "type": "input-text",
+        "name": "type",
+        "label": "类型",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "label",
+        "label": "标签",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "group",
+        "label": "分组"
+      },
+      {
+        "type": "input-number",
+        "name": "order",
+        "label": "排序"
+      },
+      {
+        "type": "switch",
+        "name": "isTerminal",
+        "label": "终止节点"
+      },
+      {
+        "type": "input-text",
+        "name": "terminalKind",
+        "label": "终止类型"
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "描述",
+        "minRows": 3
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/flow-node.schema.json"
+}

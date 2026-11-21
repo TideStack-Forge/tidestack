@@ -1,0 +1,10 @@
+{
+  "fullName": "Integration.NotificationManagement",
+  "url": "/dev/{appName}/notification",
+  "icon": "fas fa-bell",
+  "title": "消息通知模版",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 30
+}

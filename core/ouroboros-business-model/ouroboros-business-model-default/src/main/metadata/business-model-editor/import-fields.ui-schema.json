@@ -1,0 +1,146 @@
+{
+  "name": "/business-model-editor/import-fields",
+  "schema": {
+    "type": "wizard",
+    "wrapWithPanel": false,
+    "debug": true,
+    "steps": [
+      {
+        "title": "选择文件",
+        "api": {
+          "url": "/api/dev/${appName}/business-model-helper/${fullName}/import-fields",
+          "method": "POST",
+          "data": {
+            "file": "${file}",
+            "mode": "${mode}"
+          },
+          "responseData": {
+            "fields": "${ CONCAT([{name: 'id', title: 'ID', type: '雪花主键', isPrimaryKey: true}], items) }"
+          }
+        },
+        "body": [
+          {
+            "type": "alert",
+            "title": "从表头生成字段",
+            "body": "上传一个Excel文件，系统把第一个Sheet页的第一行作为表头来生成字段列表。（id列将被忽略）",
+            "level": "info",
+            "showIcon": true,
+            "className": "mb-5",
+            "visibleOn": "${ mode === 'row' }"
+          },
+          {
+            "type": "alert",
+            "title": "从字段表导入",
+            "body": "上传一个Excel文件，系统将第一个Sheet页中的每一行作为一个业务模型字段，列头需包含：字段名、显示名、类型。（id字段将被忽略）",
+            "level": "info",
+            "showIcon": true,
+            "className": "mb-5",
+            "visibleOn": "${ mode === 'column' }"
+          },
+          {
+            "type": "button-group-select",
+            "name": "mode",
+            "label": "模式",
+            "value": "row",
+            "options": [
+              {
+                "label": "从表头生成字段",
+                "value": "row"
+              },
+              {
+                "label": "从字段表导入",
+                "value": "column"
+              }
+            ]
+          },
+          {
+            "type": "input-file",
+            "name": "file",
+            "label": false,
+            "accept": ".xls,.xlsx",
+            "drag": true,
+            "required": true,
+            "asBlob": true
+          }
+        ],
+        "actions": [
+          {
+            "label": "下一步",
+            "type": "button",
+            "level": "primary",
+            "actionType": "next"
+          }
+        ]
+      },
+      {
+        "title": "检查字段",
+        "body": [
+          {
+            "type": "combo",
+            "name": "fields",
+            "label": false,
+            "id": "importedFields",
+            "multiple": true,
+            "items": [
+              {
+                "type": "input-text",
+                "name": "name",
+                "label": "字段名"
+              },
+              {
+                "type": "input-text",
+                "name": "title",
+                "label": "显示名"
+              },
+              {
+                "type": "select",
+                "name": "type",
+                "label": "类型",
+                "required": true,
+                "source": {
+                  "method": "get",
+                  "url": "/api/app/${appName}/field-types/${isPrimaryKey ? 'primary' : 'normal'}",
+                  "cache": 1000
+                },
+                "searchable": true
+              },
+              {
+                "type": "container",
+                "colSize": "max-content",
+                "className": "w-16",
+                "columnClassName": "flex-grow-0 min-w-max",
+                "body": [
+                  {
+                    "type": "checkbox",
+                    "name": "isPrimaryKey",
+                    "label": "主键",
+                    "inputClassName": "pt-0",
+                    "disabled": true
+                  },
+                  {
+                    "type": "hidden",
+                    "name": "isRequired",
+                    "value": "${isPrimaryKey}"
+                  },
+                  {
+                    "type": "hidden",
+                    "name": "isUnique",
+                    "value": "${isPrimaryKey}"
+                  }
+                ]
+              }
+            ],
+            "deleteBtn": {
+              "type": "button",
+              "label": "",
+              "icon": "fa fa-times",
+              "level": "link",
+              "disabledOn": "${ fields[index].isPrimaryKey }"
+            }
+          }
+        ]
+      }
+    ],
+    "footerClassName": "flex justify-end"
+  }
+}

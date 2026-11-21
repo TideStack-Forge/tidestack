@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/dashboard",
+  "type": "amis",
+  "title": "应用开发看板"
+}

@@ -1,0 +1,2 @@
+com.ouroboros.data.runtime.adapter.OuroborosDataModelLifecycleAdapter
+com.ouroboros.data.runtime.adapter.OuroborosTypedModelLifecycleAdapter

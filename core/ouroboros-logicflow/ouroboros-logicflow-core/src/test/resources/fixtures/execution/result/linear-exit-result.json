@@ -1,0 +1,47 @@
+{
+  "name": "linear-exit-result",
+  "description": "Linear execution fixture returning a deterministic exit value",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "map",
+  "entryNode": "entryMutex",
+  "exitNode": "resultConst",
+  "nodes": [
+    {
+      "name": "entryMutex",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    },
+    {
+      "name": "resultConst",
+      "type": "const",
+      "description": "",
+      "dataType": "map",
+      "value": {
+        "done": true
+      }
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "entryMutex",
+      "sourceOutputPort": 0,
+      "targetNode": "resultConst",
+      "targetInputPort": 0
+    }
+  ]
+}

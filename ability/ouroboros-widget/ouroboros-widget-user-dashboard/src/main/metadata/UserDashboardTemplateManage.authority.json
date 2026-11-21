@@ -1,0 +1,18 @@
+{
+  "fullName": "systemSetting.UserDashboardTemplateManage",
+  "title": "门户模版管理",
+  "apis": [
+    "GET /api/user-dashboard-template",
+    "GET /api/user-dashboard-template/{id}",
+    "POST /api/user-dashboard-template",
+    "PUT /api/user-dashboard-template/{id}",
+    "DELETE /api/user-dashboard-template/{id}",
+    "GET /api/user-dashboard-template/select"
+  ],
+  "uiViews": [
+    "/system-setting/user-dashboard-template-manage"
+  ],
+  "menuItems": [
+    "systemSetting.UserDashboardTemplateManage"
+  ]
+}

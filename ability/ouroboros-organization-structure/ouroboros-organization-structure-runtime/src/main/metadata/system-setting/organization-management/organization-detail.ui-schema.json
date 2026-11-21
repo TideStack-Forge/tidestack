@@ -1,0 +1,78 @@
+{
+  "name": "/system-setting/organization-management/organization-detail",
+  "schema": {
+    "type": "page",
+    "title": "",
+    "body": [
+      {
+        "type": "service",
+        "api": {
+          "method": "get",
+          "url": "/api/organization/nodes/${id}"
+        },
+        "body": [
+          {
+            "type": "fieldset",
+            "title": "基本信息",
+            "body": [
+              {
+                "type": "static",
+                "label": "名称",
+                "name": "name"
+              },
+              {
+                "type": "static",
+                "label": "类型",
+                "name": "type",
+                "tpl": "${nodeType === 'position' ? '岗位' : nodeAdminLevelScope === 'ORG' ? '组织' : '部门'}"
+              },
+              {
+                "type": "static",
+                "label": "描述",
+                "name": "description",
+                "placeholder": "无"
+              },
+              {
+                "type": "static",
+                "label": "负责人",
+                "name": "leaderEmployeeDetail.name",
+                "placeholder": "未设置"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "service",
+        "api": {
+          "method": "get",
+          "url": "/api/organization/nodes/${id}/children"
+        },
+        "body": [
+          {
+            "type": "fieldset",
+            "title": "子节点信息",
+            "body": [
+              {
+                "type": "table",
+                "source": "${items}",
+                "placeholder": "暂无子节点",
+                "columns": [
+                  {
+                    "name": "name",
+                    "label": "名称"
+                  },
+                  {
+                    "name": "type",
+                    "label": "类型",
+                    "tpl": "${type === 'position' ? '岗位' : adminLevelScope === 'ORG' ? '组织' : '部门'}"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

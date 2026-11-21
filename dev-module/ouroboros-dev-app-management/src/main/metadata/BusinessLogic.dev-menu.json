@@ -1,0 +1,8 @@
+{
+  "fullName": "BusinessLogic",
+  "icon": "fas fa-cogs",
+  "title": "业务逻辑",
+  "placement": "main",
+  "stage": "dev",
+  "order": 50
+}

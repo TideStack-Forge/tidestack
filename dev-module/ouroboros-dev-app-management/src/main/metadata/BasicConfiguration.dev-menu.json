@@ -1,0 +1,8 @@
+{
+  "fullName": "BasicConfiguration",
+  "icon": "fas fa-wrench",
+  "title": "基础配置",
+  "placement": "main",
+  "stage": "dev",
+  "order": 80
+}

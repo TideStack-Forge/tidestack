@@ -1,0 +1,32 @@
+{
+  "name": "node-design-self-call-flow",
+  "description": "Call flow node that references its own flow name should be invalid",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "caller",
+  "exitNode": "caller",
+  "nodes": [
+    {
+      "name": "caller",
+      "type": "callFlow",
+      "description": "",
+      "flowName": "node-design-self-call-flow",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    }
+  ],
+  "connections": []
+}

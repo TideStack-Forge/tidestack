@@ -1,0 +1,197 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>ouroboros-ability-all</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ouroboros-ability-all-core</artifactId>
+    <packaging>jar</packaging>
+    <name>ouroboros-ability-all-core</name>
+
+    <dependencies>
+        <!-- 启用Java 21 编译基线 -->
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-to-slf4j</artifactId>
+        </dependency>
+
+        <!-- 动态数据模型 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-data-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-statistics-reporting-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-data-typed-core</artifactId>
+        </dependency>
+
+        <!-- 统一配置模块 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-configuration-core</artifactId>
+        </dependency>
+
+        <!-- 安全框架 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-web-security-annotation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-web-security-core</artifactId>
+        </dependency>
+
+        <!-- 组织架构 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-organization-structure-core</artifactId>
+        </dependency>
+
+        <!-- UI模型 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-ui-model-core</artifactId>
+        </dependency>
+
+        <!-- 菜单模型 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-menu-model-core</artifactId>
+        </dependency>
+
+        <!-- 字段类型 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-field-type-core</artifactId>
+        </dependency>
+
+        <!-- 业务模型 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-business-model-core</artifactId>
+        </dependency>
+
+        <!-- 逻辑流引擎 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-logicflow-core</artifactId>
+        </dependency>
+
+        <!-- Webapi 模型 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-webapi-model-core</artifactId>
+        </dependency>
+
+        <!-- 消息通知 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-notification-core</artifactId>
+        </dependency>
+
+        <!-- 数据字典 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-data-dict-core</artifactId>
+        </dependency>
+
+        <!-- RPC模型 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-rpc-model-core</artifactId>
+        </dependency>
+
+        <!-- AI能力包 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-ai-core</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- groovy 测试编译阶段生效（如果没有此插件groovy不会编译） -->
+            <plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compileTests</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Java 21 编译基线 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <!-- Java 21 compile baseline -->
+                    <release>21</release>
+                    <source>21</source>
+                    <target>21</target>
+                    <!-- The following setting can be avoided on Java 14 and higher -->
+                    <compilerArgs>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!-- 防止在IDEA中build失败-->
+        <profile>
+            <id>intellij-idea-only</id>
+            <activation>
+                <property>
+                    <name>idea.maven.embedder.version</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <release>21</release>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <!-- JDK21 -->
+        <profile>
+            <id>jdk21</id>
+            <properties>
+                <maven.compiler.source>21</maven.compiler.source>
+                <maven.compiler.target>21</maven.compiler.target>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <release>21</release>
+                            <source>21</source>
+                            <target>21</target>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

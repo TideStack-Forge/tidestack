@@ -1,0 +1,16 @@
+[
+  {
+    "path": "notification",
+    "title": "通知设置",
+    "icon": "bell",
+    "order": 20,
+    "description": "多渠道通知与提醒配置"
+  },
+  {
+    "path": "notification.jpush",
+    "title": "极光通知",
+    "icon": "bullhorn",
+    "order": 60,
+    "description": "极光推送通知配置"
+  }
+]

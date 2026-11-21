@@ -1,0 +1,71 @@
+{
+  "id": "workflow/approval-flow",
+  "title": "Approval Workflow Regression",
+  "domain": "workflow",
+  "testType": "integration",
+  "suite": "regression",
+  "risk": "p0",
+  "modes": [
+    "harness",
+    "e2e"
+  ],
+  "fixtures": {
+    "services": [],
+    "runtimes": [
+      "develop",
+      "mothership"
+    ],
+    "frontends": [
+      "develop-shell",
+      "runtime-shell"
+    ],
+    "data": [
+      "app-metadata-root",
+      "approval-workflow-org-seed",
+      "approval-workflow-roles-seed",
+      "approval-workflow-users-seed",
+      "approval-workflow-business-model-seed",
+      "approval-workflow-flows-seed"
+    ],
+    "identities": [
+      "admin"
+    ]
+  },
+  "entrypoints": {
+    "backendBaseUrlEnv": "OB_TEST_BASE_URL",
+    "appBackendBaseUrlEnv": "OB_TEST_APP_BASE_URL",
+    "frontendBaseUrlEnv": "OB_TEST_FRONTEND_BASE_URL",
+    "runtimeFrontendBaseUrlEnv": "OB_TEST_RUNTIME_FRONTEND_BASE_URL"
+  },
+  "caseTable": "cases.md",
+  "artifacts": {
+    "contract": "contract.md",
+    "harness": "harness.playbook.md",
+    "manualDevToTest": "dev-to-test-manual-cases.md",
+    "e2e": "testing/e2e/regression/workflow/approval-flow/e2e.yaml"
+  },
+  "reporting": {
+    "summaryFormat": "markdown",
+    "evidenceRoot": "tmp/testing-evidence/workflow-approval-flow"
+  },
+  "exclusions": [],
+  "notes": [
+    "This scenario covers the approval workflow lifecycle across five separate surfaces: business-model configuration, approval workflow definition metadata authoring, app metadata refresh/refresh, runtime definition deployment, and runtime approval execution.",
+    "APF-FORM-001 means creating/configuring a business model, not using a simple form designer. The confirmed product route shape is /dev/{appName}/business-model, with create/edit routes under that prefix.",
+    "APF-BIND-001 covers two bindings that must not be conflated: workflow definition form binding via form.formType/form.formId, and business-model workflow config via workflow.bindings[0].processId/workflow.bindings[0].statusField/workflow.bindings[0].statusMap.",
+    "APF-METADATA-001 verifies that develop save creates workflow/{name}.workflow.json static metadata and does not create runtime deployment fields.",
+    "APF-ASSET-001 and APF-ASSET-COMMIT-001 verify that develop save and app metadata commit are separate steps; save writes static workflow assets, commit fixes the metadata version consumed by the base runtime.",
+    "APF-RUNTIME-BOOT-001, APF-RUNTIME-LAYER-001, and APF-RUNTIME-REFRESH-001 verify that the base runtime reads AppContext.homePath, discovers workflow/*.workflow.json, validates the full snapshot, and refreshes metadata-layer WorkflowModel records before READY.",
+    "APF-RUNTIME-LAYER-002 verifies that the base runtime reads the application metadata path, discovers workflow/*.workflow.json, and refreshes WorkflowModel records before any deployment.",
+    "APF-DEPLOY-001 deploys the refreshed runtime WorkflowModel to the workflow engine; deployment is separate from develop save and only deployment produces processDefinitionId.",
+    "APF-METADATA-LAYER-UPDATE-001, APF-METADATA-LAYER-ADOPT-001, and APF-METADATA-LAYER-REMOVE-001 cover high-version metadata-layer updates, adopted instance ownership, static metadata-layer deletion, re-deploy, and history retention.",
+    "APF-RESET-DESIGN-001 covers the official reset operation: offline current availability, preserve Flowable history, overwrite current model from source metadata, set status=draft, clear processDefinitionId, set adopted=false, and require explicit deploy for the next engine version.",
+    "Stable V2 topology coverage uses ordinary multi-outgoing edges for split semantics. GatewayNode is not a supported design-time resource graph node; XOR is the default, and OR requires convergence on JoinNode(joinType=OR).",
+    "Node-type coverage includes StartNode, ApprovalNode, HandleNode, CcNode, SubflowNode, JoinNode, and EndNode through browser E2E or design-to-runtime bridge evidence.",
+    "Health readiness uses /actuator/health semantics through LifecycleGuardFilter and nginx /actuator/ proxying; login APIs are diagnostic signals only, not health checks.",
+    "Browser execution must run the approval-workflow-users-seed lifecycle before user-switching cases; it recreates awf.approver1/2/3 with deterministic passwords and writes the generated employeeId mapping to tmp/testing-evidence/workflow-approval-flow/approval-workflow-identities.json.",
+    "Tests basic actions (approve, reject, rollback) and advanced actions limited to transfer, addSign, freeReject, and freeApprove.",
+    "Multi-user approval flow includes sequential and parallel approval/countersign nodes, with evidence captured under tmp/testing-evidence/workflow-approval-flow.",
+    "Manual development-platform-to-runtime acceptance cases are documented in dev-to-test-manual-cases.md, including field-level test data for each case."
+  ]
+}

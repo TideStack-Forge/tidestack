@@ -1,0 +1,41 @@
+{
+  "name": "zero-output-sink-leaf",
+  "entryNode": "entry",
+  "exitNode": "exit",
+  "nodes": [
+    {
+      "name": "entry",
+      "type": "const",
+      "dataType": "string",
+      "value": "ok"
+    },
+    {
+      "name": "sink",
+      "type": "testSink"
+    },
+    {
+      "name": "exit",
+      "type": "mutex",
+      "inputPorts": [
+        {
+          "name": "input",
+          "dataType": "any"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "entry",
+      "sourceOutputPort": 0,
+      "targetNode": "sink",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "entry",
+      "sourceOutputPort": 0,
+      "targetNode": "exit",
+      "targetInputPort": 0
+    }
+  ]
+}

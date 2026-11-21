@@ -1,0 +1,12 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>ouroboros-logicflow</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>ouroboros-logicflow-editor-assets</artifactId>
+    <name>Ouroboros Logicflow Editor Assets</name>
+    <description>Shared editor resources; no development or runtime business wiring.</description>
+</project>

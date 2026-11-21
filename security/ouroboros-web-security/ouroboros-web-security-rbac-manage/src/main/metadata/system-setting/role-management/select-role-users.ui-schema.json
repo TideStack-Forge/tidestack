@@ -1,0 +1,51 @@
+{
+  "name": "/system-setting/role-management/select-role-users",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "api": {
+      "url": "/api/sys/role/${id}/user",
+      "method": "put",
+      "data": "${users}"
+    },
+    "initApi": {
+      "url": "/api/sys/role/${id}/user",
+      "method": "get",
+      "responseData": {
+        "users": "${items|pick:userIdentity}",
+        "roleUserInit": true
+      }
+    },
+    "body": [
+      {
+        "type": "picker",
+        "label": false,
+        "name": "users",
+        "multiple": true,
+        "joinValues": false,
+        "extractValue": true,
+        "embed": true,
+        "valueField": "userIdentity",
+        "labelField": "userIdentity",
+        "visibleOn": "${roleUserInit === true && canManageUsers}",
+        "source": {
+          "method": "get",
+          "url": "/api/sys/user"
+        },
+        "pickerSchema": {
+          "mode": "table",
+          "name": "userList",
+          "columns": [
+            {
+              "type": "text",
+              "label": "账号",
+              "name": "userIdentity"
+            }
+          ]
+        }
+      }
+    ],
+    "mode": "horizontal",
+    "wrapWithPanel": false
+  }
+}

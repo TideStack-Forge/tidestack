@@ -1,0 +1,69 @@
+{
+  "modelType": "default",
+  "namespace": "ssoFixture",
+  "name": "record",
+  "title": "统一认证验收记录",
+  "isEnabled": true,
+  "apis": {
+    "search": {
+      "isEnabled": true
+    },
+    "getOne": {
+      "isEnabled": true
+    },
+    "add": {
+      "isEnabled": true
+    },
+    "update": {
+      "isEnabled": true
+    },
+    "delete": {
+      "isEnabled": true
+    }
+  },
+  "fields": [
+    {
+      "name": "id",
+      "title": "编号",
+      "type": "雪花主键",
+      "isPrimaryKey": true,
+      "isRequired": true,
+      "valueType": "String"
+    },
+    {
+      "name": "name",
+      "title": "名称",
+      "type": "单行文本",
+      "size": 100,
+      "isDisplayField": true
+    },
+    {
+      "name": "category",
+      "title": "分类",
+      "type": "单行文本",
+      "size": 30
+    }
+  ],
+  "accessControl": {
+    "search": {
+      "isEnabled": true,
+      "delegable": true,
+      "filters": {
+        "category": true
+      }
+    },
+    "add": {
+      "isEnabled": true
+    },
+    "update": {
+      "isEnabled": true,
+      "delegable": true,
+      "filters": {
+        "category": true
+      }
+    },
+    "delete": {
+      "isEnabled": true
+    }
+  }
+}

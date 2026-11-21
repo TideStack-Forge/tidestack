@@ -1,0 +1,534 @@
+{
+  "name": "/dev/apps",
+  "schema": {
+    "type": "page",
+    "asideResizor": true,
+    "title": "应用列表",
+    "definitions": {
+      "addAppModal": {
+        "type": "dialog",
+        "title": "创建应用",
+        "url": "/dev/apps/add",
+        "showCloseButton": true,
+        "showErrorMsg": true,
+        "showLoading": true,
+        "closeOnEsc": false,
+        "data": {
+          "&": "$$",
+          "defaultCategory": "${categoryTree}"
+        },
+        "withDefaultData": true,
+        "dataMapSwitch": true
+      },
+      "editAppInfoModal": {
+        "type": "dialog",
+        "showCloseButton": true,
+        "closeOnEsc": false,
+        "showErrorMsg": true,
+        "showLoading": true,
+        "title": "编辑应用",
+        "url": "/dev/apps/edit",
+        "data": {
+          "&": "$$",
+          "originName": "${name}"
+        }
+      },
+      "showAppInfoModal": {
+        "type": "drawer",
+        "title": "应用信息 - ${title}",
+        "url": "/dev/apps/info",
+        "closeOnEsc": true,
+        "closeOnOutside": true
+      },
+      "changeAppCategoryModal": {
+        "type": "dialog",
+        "title": "修改分类",
+        "url": "/dev/apps/change"
+      },
+      "renameAppModal": {
+        "type": "dialog",
+        "title": "重命名",
+        "url": "/dev/apps/rename"
+      },
+      "createTemplateModal": {
+        "type": "dialog",
+        "title": "从应用创建模板",
+        "url": "/dev/apps/create-template",
+        "showCloseButton": true,
+        "showErrorMsg": true,
+        "showLoading": true,
+        "closeOnEsc": false,
+        "data": {
+          "appName": "${name}"
+        }
+      },
+      "exportAppModal": {
+        "type": "dialog",
+        "title": "导出应用",
+        "url": "/dev/apps/export",
+        "showCloseButton": true,
+        "showErrorMsg": true,
+        "showLoading": true,
+        "closeOnEsc": false,
+        "data": {
+          "appName": "${name}"
+        }
+      },
+      "importAppModal": {
+        "type": "dialog",
+        "title": "导入应用",
+        "url": "/dev/apps/import",
+        "showCloseButton": true,
+        "showErrorMsg": true,
+        "showLoading": true,
+        "closeOnEsc": false
+      },
+      "addCategoryModal": {
+        "type": "dialog",
+        "title": "新增",
+        "url": "/dev/category/add"
+      },
+      "editCategoryModal": {
+        "type": "dialog",
+        "title": "编辑",
+        "url": "/dev/category/edit"
+      }
+    },
+    "css": {
+      ".is-checked": {
+        "background-color": "var(--select-tree-active-bg-color)"
+      },
+      ".cxd-Tree-itemLabel:hover": {
+        "background-color": "var(--Tree-item-onHover-bg-pure)"
+      },
+      ".cxd-Tree-itemLabel.is-checked:hover": {
+        "background-color": "var(--select-tree-active-bg-color)"
+      },
+      ".cxd-Card-meta": {
+        "overflow": "hidden"
+      }
+    },
+    "body": [
+      {
+        "type": "crud",
+        "id": "appList",
+        "name": "appList",
+        "mode": "cards",
+        "syncLocation": false,
+        "api": {
+          "method": "get",
+          "url": "/api/app",
+          "data": {
+            "category": "${category}"
+          },
+          "responseData": {
+            "items": {
+              "$items": {
+                "&": "$appInfo",
+                "createdAt": "$createdAt",
+                "updatedAt": "$updatedAt",
+                "canManageEditAccess": "$canManageEditAccess"
+              }
+            }
+          }
+        },
+        "filter": {
+          "wrapWithPanel": false,
+          "body": [
+            {
+              "type": "input-text",
+              "name": "keywords",
+              "placeholder": "请输入关键词",
+              "size": "lg",
+              "addOn": {
+                "type": "button",
+                "icon": "fa fa-search",
+                "label": "过滤",
+                "actionType": "submit"
+              }
+            }
+          ],
+          "className": "mb-3"
+        },
+        "source": "${ items | filter:name,title,description:match:keywords }",
+        "card": {
+          "className": "hover:shadow-md",
+          "header": {
+            "title": "${title}",
+            "subTitle": "${name}",
+            "className": "pb-1"
+          },
+          "toolbar": [
+            {
+              "type": "dropdown-button",
+              "label": "",
+              "icon": "fa fa-ellipsis-v text-secondary hover:text-primary",
+              "align": "right",
+              "hideCaret": true,
+              "closeOnClick": true,
+              "menuClassName": "shadow-md",
+              "buttons": [
+                {
+                  "label": "重命名",
+                  "type": "button",
+                  "icon": "fa-solid fa-i-cursor text-center w-4 mr-2",
+                  "actionType": "dialog",
+                  "dialog": {
+                    "$ref": "renameAppModal",
+                    "data": {
+                      "newName": "${name}",
+                      "name": "${name}"
+                    }
+                  }
+                },
+                {
+                  "label": "修改分类",
+                  "type": "button",
+                  "icon": "fa-solid fa-folder-tree text-center w-4 mr-2",
+                  "actionType": "dialog",
+                  "dialog": {
+                    "$ref": "changeAppCategoryModal",
+                    "data": {
+                      "name": "${name}",
+                      "category": "${category}",
+                      "newCategory": "${category}"
+                    }
+                  }
+                },
+                {
+                  "label": "编辑信息",
+                  "type": "button",
+                  "icon": "fa fa-edit text-center w-4 mr-2",
+                  "actionType": "dialog",
+                  "dialog": {
+                    "$ref": "editAppInfoModal"
+                  }
+                },
+                {
+                  "label": "编辑权限",
+                  "type": "button",
+                  "icon": "fa fa-user-shield text-center w-4 mr-2",
+                  "visibleOn": "${canManageEditAccess}",
+                  "actionType": "dialog",
+                  "dialog": {
+                    "type": "dialog",
+                    "title": "编辑权限",
+                    "size": "lg",
+                    "url": "/dev/${name}/edit-access",
+                    "showCloseButton": true,
+                    "showErrorMsg": true,
+                    "showLoading": true,
+                    "closeOnEsc": false
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "label": "创建模板",
+                  "type": "button",
+                  "icon": "fa-solid fa-file-code text-center w-4 mr-2",
+                  "actionType": "dialog",
+                  "dialog": {
+                    "$ref": "createTemplateModal"
+                  }
+                },
+                {
+                  "label": "导出应用",
+                  "type": "button",
+                  "icon": "fa-solid fa-download text-center w-4 mr-2",
+                  "actionType": "dialog",
+                  "dialog": {
+                    "$ref": "exportAppModal"
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "button",
+                  "label": "删除应用",
+                  "icon": "fa fa-trash text-danger text-center w-4 mr-2",
+                  "className": "hover:text-danger",
+                  "actionType": "ajax",
+                  "api": {
+                    "method": "delete",
+                    "url": "/api/app/${name}"
+                  },
+                  "confirmText": "确定要删除 ${title}(${name}) 吗？"
+                }
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "label": "打开",
+              "type": "button",
+              "icon": "fa fa-folder-open",
+              "level": "success",
+              "onEvent": {
+                "click": {
+                  "actions": [
+                    {
+                      "args": {
+                        "api": {
+                          "url": "/api/dev/${name}/dev-workspace-menu",
+                          "method": "get"
+                        }
+                      },
+                      "actionType": "ajax",
+                      "outputVar": "menu"
+                    },
+                    {
+                      "actionType": "publish",
+                      "args": {
+                        "eventName": "updateMenu",
+                        "options": {
+                          "replayStage": "SYS_INIT_USER",
+                          "replayScope": "SESSION"
+                        },
+                        "eventData": "${menu}"
+                      }
+                    },
+                    {
+                      "actionType": "publish",
+                      "args": {
+                        "eventName": "updateAppName",
+                        "eventData": "编辑「${title}」",
+                        "options": {
+                          "replayStage": "SYS_INIT_USER",
+                          "replayScope": "SESSION"
+                        }
+                      }
+                    },
+                    {
+                      "actionType": "openOrSwitchTab",
+                      "args": {
+                        "url": "/dev/${name}/dashboard",
+                        "replaceCurrentTab": true
+                      },
+                      "stopPropagation": true
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "body": [
+            {
+              "type": "container",
+              "className": "flex justify-center pb-4",
+              "body": [
+                {
+                  "type": "avatar",
+                  "src": "${ CONTAINS(icon, ':') ? icon : null }",
+                  "text": "${ LEFT(name, 4) | upperCase }",
+                  "size": 96,
+                  "fit": "fill",
+                  "visibleOn": "${ CONTAINS(icon, ':') || !icon }",
+                  "style": {
+                    "backgroundColor": "DeepSkyBlue",
+                    "color": "#fff",
+                    "fontSize": "1.5em"
+                  }
+                },
+                {
+                  "type": "icon",
+                  "icon": "${icon}",
+                  "vendor": "",
+                  "style": {
+                    "fontSize": "48px",
+                    "width": "96px",
+                    "height": "96px",
+                    "textAlign": "center",
+                    "lineHeight": "96px",
+                    "borderRadius": "50%",
+                    "backgroundColor": "DeepSkyBlue",
+                    "color": "#fff"
+                  },
+                  "visibleOn": "${ icon && !CONTAINS(icon, ':') }"
+                }
+              ]
+            },
+            {
+              "label": "创建时间",
+              "type": "date",
+              "name": "createdAt",
+              "fromNow": true
+            },
+            {
+              "label": "描述",
+              "name": "description"
+            }
+          ],
+          "itemAction": {
+            "actionType": "drawer",
+            "drawer": {
+              "$ref": "showAppInfoModal"
+            }
+          }
+        },
+        "perPageAvailable": [
+          20
+        ],
+        "primaryField": "name",
+        "footable": true,
+        "placeholder": "暂无应用",
+        "loadDataOnce": true
+      }
+    ],
+    "aside": [
+      {
+        "type": "container",
+        "body": [
+          {
+            "type": "container",
+            "body": [
+              {
+                "type": "button",
+                "label": "分类管理",
+                "block": true,
+                "actionType": "drawer",
+                "drawer": {
+                  "type": "drawer",
+                  "title": "分类管理",
+                  "url": "/dev/category",
+                  "showCloseButton": false,
+                  "showErrorMsg": true,
+                  "showLoading": true,
+                  "resizable": true,
+                  "position": "left",
+                  "actions": [
+                    {
+                      "type": "action",
+                      "actionType": "confirm",
+                      "label": "确认",
+                      "level": "primary"
+                    }
+                  ]
+                },
+                "reload": "categoryTree"
+              },
+              {
+                "type": "button",
+                "icon": "fa fa-refresh",
+                "className": "ml-1",
+                "actionType": "reload",
+                "target": "categoryTree"
+              }
+            ],
+            "style": {
+              "position": "static",
+              "display": "flex",
+              "flexWrap": "nowrap"
+            },
+            "wrapperBody": false,
+            "isFixedHeight": false,
+            "isFixedWidth": false
+          },
+          {
+            "type": "input-tree",
+            "label": "",
+            "name": "categoryTree",
+            "id": "categoryTree",
+            "multiple": false,
+            "enableNodePath": false,
+            "showIcon": true,
+            "initiallyOpen": true,
+            "showOutline": true,
+            "heightAuto": true,
+            "onEvent": {
+              "change": {
+                "actions": [
+                  {
+                    "actionType": "reload",
+                    "componentName": "appList",
+                    "args": {
+                      "resetPage": true
+                    },
+                    "dataMergeMode": "merge",
+                    "data": {
+                      "category": "${event.data.value}"
+                    }
+                  }
+                ]
+              }
+            },
+            "source": {
+              "url": "/api/app/category",
+              "method": "get",
+              "responseData": {
+                "items": [
+                  {
+                    "name": "所有应用",
+                    "fullPath": "",
+                    "icon": "home",
+                    "children": "${items}"
+                  }
+                ]
+              }
+            },
+            "className": "m-t-xs",
+            "creatable": false,
+            "editable": false,
+            "labelField": "name",
+            "valueField": "fullPath",
+            "rootLabel": "所有应用"
+          }
+        ],
+        "style": {
+          "position": "static",
+          "display": "block"
+        },
+        "wrapperBody": false,
+        "isFixedHeight": false,
+        "isFixedWidth": false,
+        "size": "xs"
+      }
+    ],
+    "toolbar": [
+      {
+        "type": "button",
+        "icon": "fa fa-refresh",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "componentName": "appList",
+                "actionType": "reload"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "button",
+        "label": "创建应用",
+        "level": "primary",
+        "block": false,
+        "actionType": "dialog",
+        "dialog": {
+          "$ref": "addAppModal"
+        },
+        "reload": "appList",
+        "icon": "fa fa-plus"
+      },
+      {
+        "type": "button",
+        "label": "导入应用",
+        "level": "default",
+        "block": false,
+        "actionType": "dialog",
+        "dialog": {
+          "$ref": "importAppModal"
+        },
+        "reload": "appList",
+        "icon": "fa fa-upload"
+      }
+    ],
+    "asideMinWidth": 200,
+    "asideMaxWidth": 500,
+    "asideSticky": true,
+    "asideClassName": "w-60"
+  }
+}

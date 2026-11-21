@@ -1,0 +1,151 @@
+{
+  "name": "/dev/{appName}/field-types/detail",
+  "schema": {
+    "initApi": {
+      "method": "get",
+      "url": "/api/dev/${appName}/field/${name}",
+      "responseData": {
+        "schema": "$$"
+      }
+    },
+    "mode": "horizontal",
+    "type": "form",
+    "className": "h-full flex flex-col",
+    "title": false,
+    "wrapWithPanel": false,
+    "body": [
+      {
+        "type": "tabs",
+        "tabsMode": "simple",
+        "tabs": [
+          {
+            "title": "基本信息",
+            "tab": [
+              {
+                "type": "group",
+                "body": [
+                  {
+                    "type": "input-text",
+                    "name": "schema.name",
+                    "label": "字段类型名",
+                    "static": true
+                  },
+                  {
+                    "type": "input-text",
+                    "name": "schema.label",
+                    "label": "显示名称",
+                    "static": true
+                  }
+                ]
+              },
+              {
+                "type": "group",
+                "body": [
+                  {
+                    "type": "input-number",
+                    "name": "schema.order",
+                    "label": "排序",
+                    "static": true
+                  },
+                  {
+                    "type": "switch",
+                    "name": "schema.isPrimaryKeyType",
+                    "label": "主键字段类型",
+                    "static": true
+                  }
+                ]
+              },
+              {
+                "type": "textarea",
+                "name": "schema.description",
+                "label": "说明",
+                "minRows": 3,
+                "maxRows": 6,
+                "static": true
+              },
+              {
+                "type": "input-text",
+                "name": "schema.primaryKeyGenerator",
+                "label": "主键生成器",
+                "visibleOn": "${schema.isPrimaryKeyType}",
+                "static": true
+              }
+            ]
+          },
+          {
+            "title": "数据与校验",
+            "tab": [
+              {
+                "type": "json-data-editor",
+                "name": "schema.dataType",
+                "label": "数据类型",
+                "allowValueTypes": "object",
+                "static": true
+              },
+              {
+                "type": "json-data-editor",
+                "name": "schema.validations",
+                "label": "校验规则",
+                "allowValueTypes": "object",
+                "static": true
+              },
+              {
+                "type": "json-data-editor",
+                "name": "schema.validationErrors",
+                "label": "校验提示",
+                "allowValueTypes": "object",
+                "static": true
+              }
+            ]
+          },
+          {
+            "title": "参数定义",
+            "tab": [
+              {
+                "type": "ui-schema-editor",
+                "name": "schema.paramsUiSchema",
+                "label": "参数 UI Schema",
+                "multiple": true,
+                "switchLayout": false,
+                "previewText": "参数项预览",
+                "static": true
+              }
+            ]
+          },
+          {
+            "title": "界面渲染",
+            "tab": [
+              {
+                "type": "ui-schema-editor",
+                "name": "schema.ui.input",
+                "label": "录入组件",
+                "switchLayout": false,
+                "static": true
+              },
+              {
+                "type": "ui-schema-editor",
+                "name": "schema.ui.display",
+                "label": "展示组件",
+                "switchLayout": false,
+                "static": true
+              }
+            ]
+          },
+          {
+            "title": "完整定义",
+            "tab": [
+              {
+                "type": "json-data-editor",
+                "name": "schema",
+                "label": "完整定义",
+                "allowValueTypes": "object",
+                "static": true
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "actions": []
+  }
+}

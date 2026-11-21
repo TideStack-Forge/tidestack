@@ -1,0 +1,7 @@
+com.ouroboros.logicflow.authoring.analysis.builtin.ScriptNodeAnalyzer
+com.ouroboros.logicflow.authoring.analysis.builtin.MappingNodeAnalyzer
+com.ouroboros.logicflow.authoring.analysis.builtin.FilterNodeAnalyzer
+com.ouroboros.logicflow.authoring.analysis.builtin.SwitchNodeAnalyzer
+com.ouroboros.logicflow.authoring.analysis.builtin.CollectionNodeAnalyzer
+com.ouroboros.logicflow.authoring.analysis.builtin.ConstNodeAnalyzer
+com.ouroboros.logicflow.authoring.analysis.builtin.ShapeTransformNodeAnalyzer

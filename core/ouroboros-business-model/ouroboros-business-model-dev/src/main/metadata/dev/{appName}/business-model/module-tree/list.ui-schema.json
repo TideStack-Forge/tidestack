@@ -1,0 +1,90 @@
+{
+  "name": "/dev/{appName}/business-model/module-tree/list",
+  "schema": {
+    "syncLocation": false,
+    "perPageAvailable": [
+      10
+    ],
+    "columns": [
+      {
+        "name": "name",
+        "label": "模块名",
+        "type": "container",
+        "className": "flex",
+        "style": {
+          "paddingTop": "17px",
+          "paddingBottom": "17px"
+        },
+        "body": [
+          {
+            "type": "icon",
+            "icon": "${icon}",
+            "vendor": "",
+            "className": "w-4",
+            "visibleOn": "${icon}"
+          },
+          {
+            "type": "tpl",
+            "tpl": "${name}"
+          }
+        ]
+      },
+      {
+        "name": "title",
+        "label": "显示名"
+      },
+      {
+        "name": "order",
+        "label": "排序"
+      },
+      {
+        "type": "operation",
+        "label": "操作",
+        "buttons": [
+          {
+            "actionType": "dialog",
+            "dialog": {
+              "$ref": "editModuleDialog"
+            },
+            "level": "link",
+            "icon": "fa fa-edit",
+            "label": "",
+            "type": "button"
+          },
+          {
+            "actionType": "ajax",
+            "level": "link",
+            "icon": "fa fa-times text-danger",
+            "confirmText": "确定要删除 ${title} 吗？",
+            "label": "",
+            "api": "delete:/api/dev/${appName}/business-model/module-tree/${fullName}",
+            "type": "button",
+            "messages": {
+              "success": "模块删除成功"
+            }
+          }
+        ]
+      }
+    ],
+    "primaryField": "fullPath",
+    "type": "crud",
+    "loadDataOnce": true,
+    "bulkActions": [],
+    "api": {
+      "method": "get",
+      "url": "/api/dev/${appName}/business-model/module-tree"
+    },
+    "headerToolbar": [
+      {
+        "type": "button",
+        "actionType": "dialog",
+        "label": "新建",
+        "icon": "fa fa-plus",
+        "level": "primary",
+        "dialog": {
+          "$ref": "addModuleDialog"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "development/groovy-language-service",
+  "title": "Groovy 4 language semantics and platform context integration",
+  "domain": "development",
+  "testType": "integration",
+  "suite": "feature",
+  "risk": "p1",
+  "modes": [
+    "harness"
+  ],
+  "caseTable": "cases.md",
+  "artifacts": {
+    "contract": "contract.md",
+    "harness": "harness.playbook.md"
+  },
+  "reporting": {
+    "summaryFormat": "json",
+    "evidenceRoot": "tmp/testing-evidence/groovy-language-service"
+  },
+  "notes": [
+    "Segmented acceptance: real stdio/TCP, helper/platform over RabbitMQ, and AMIS/Monaco; product login and canvas navigation excluded.",
+    "Keep the product runtime on Groovy 4.0.30 and Java 21.",
+    "Optional dedicated Docker language container uses the registered dev-runtime lifecycle. Kubernetes is verified against a mock API only."
+  ]
+}

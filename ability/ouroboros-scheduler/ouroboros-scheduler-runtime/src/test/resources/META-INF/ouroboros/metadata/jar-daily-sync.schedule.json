@@ -1,0 +1,5 @@
+{
+  "name": "jar-daily-sync",
+  "cron": "0 0 2 * * ?",
+  "flowName": "daily.sync"
+}

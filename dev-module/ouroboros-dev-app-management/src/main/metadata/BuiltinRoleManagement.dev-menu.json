@@ -1,0 +1,10 @@
+{
+  "url": "/dev/{appName}/builtin-role",
+  "fullName": "OrganizationManagement.BuiltinRoleManagement",
+  "icon": "fas fa-user-shield",
+  "title": "内置角色管理",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 10
+}

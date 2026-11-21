@@ -1,0 +1,3 @@
+com.ouroboros.workflow.approval.resolver.RoleCandidateUserResolver
+com.ouroboros.workflow.approval.resolver.PositionCandidateUserResolver
+com.ouroboros.workflow.approval.resolver.FormFieldCandidateUserResolver

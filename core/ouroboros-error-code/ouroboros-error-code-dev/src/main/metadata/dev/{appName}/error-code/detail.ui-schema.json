@@ -1,0 +1,52 @@
+{
+  "name": "/dev/{appName}/error-code/detail",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "title": false,
+    "mode": "horizontal",
+    "static": true,
+    "initApi": {
+      "method": "get",
+      "url": "/api/dev/${appName}/error-code/${name}"
+    },
+    "body": [
+      {
+        "type": "static",
+        "name": "code",
+        "label": "错误码"
+      },
+      {
+        "type": "static",
+        "name": "title",
+        "label": "标题"
+      },
+      {
+        "type": "static",
+        "name": "defaultMessageTemplate",
+        "label": "默认消息模板"
+      },
+      {
+        "type": "static",
+        "name": "bizCode",
+        "label": "业务标识"
+      },
+      {
+        "type": "static",
+        "name": "category",
+        "label": "分类"
+      },
+      {
+        "type": "static-text",
+        "name": "description",
+        "label": "说明"
+      },
+      {
+        "type": "static",
+        "name": "enabled",
+        "label": "启用",
+        "tpl": "${enabled === false ? '否' : '是'}"
+      }
+    ]
+  }
+}

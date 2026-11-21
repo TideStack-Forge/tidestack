@@ -1,0 +1,40 @@
+const docsSiteUrl =
+  process.env.DOCS_SITE_URL ||
+  process.env.DEPLOY_PRIME_URL ||
+  process.env.URL ||
+  (process.env.GITHUB_REPOSITORY_OWNER
+    ? `https://${process.env.GITHUB_REPOSITORY_OWNER}.github.io`
+    : null) ||
+  'http://localhost'
+
+const docsBaseUrl = process.env.DOCS_BASE_URL || '/'
+
+// 基本信息
+const baseMeta = {
+  title: '潮汐栈',
+  tagline: '需求进，应用出',
+  favicon: 'img/favicon.ico',
+
+  url: docsSiteUrl,
+  baseUrl: docsBaseUrl,
+  organizationName: 'Xinpai',
+  projectName: 'tidestack-handbook',
+}
+
+// 供 Docusaurus 使用的基本信息
+const siteMeta = {
+  ...baseMeta,
+  onBrokenLinks: 'throw',
+}
+
+// 供其他配置文件使用的完整信息
+const fullMeta = {
+  ...baseMeta,
+  logo: {
+    alt: '潮汐栈',
+    src: 'img/logo.svg',
+  },
+  socialCardImage: 'img/ouroboros-social-card.png',
+}
+
+export { siteMeta, fullMeta }

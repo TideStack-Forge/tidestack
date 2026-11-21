@@ -1,0 +1,9 @@
+{
+  "fullName": "OrganizationManagement.PersonnelProfileFormScheme",
+  "url": "/dev/{appName}/organization-management/personnel-profile-form-scheme",
+  "title": "人员档案表单方案",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 110
+}

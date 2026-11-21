@@ -1,0 +1,10 @@
+{
+  "fullName": "UIDesign.UIManagement.UIModel",
+  "url": "/dev/{appName}/ui-model",
+  "icon": "icon-ui-model",
+  "title": "UI 模型",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 20
+}

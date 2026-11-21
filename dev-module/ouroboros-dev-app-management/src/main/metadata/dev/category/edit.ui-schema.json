@@ -1,0 +1,70 @@
+{
+  "name": "/dev/category/edit",
+  "schema": {
+    "type": "form",
+    "mode": "horizontal",
+    "title": false,
+    "api": {
+      "method": "put",
+      "url": "/api/app/category/${fullPath}",
+      "messages": {}
+    },
+    "body": [
+      {
+        "type": "nested-select",
+        "label": "上级分类",
+        "name": "parentPath",
+        "onlyChildren": true,
+        "searchable": false,
+        "onlyLeaf": false,
+        "multiple": false,
+        "clearable": true,
+        "source": {
+          "url": "/api/app/category",
+          "method": "get",
+          "data": {
+            "except": "${name}"
+          }
+        },
+        "labelField": "name",
+        "valueField": "fullPath"
+      },
+      {
+        "name": "name",
+        "label": "分类名",
+        "type": "input-text",
+        "required": true,
+        "validations": {
+          "matchRegexp": "^[\\u4e00-\\u9fa5\\w\\-]+[\\u4e00-\\u9fa5\\w\\-\\d]+$"
+        },
+        "validationErrors": {
+          "matchRegexp": "分类名只能包含中文、字母、数字、下划线、中划线，且不能以数字开头"
+        }
+      },
+      {
+        "label": "图标",
+        "type": "ouroboros-icon-picker",
+        "name": "icon"
+      },
+      {
+        "type": "input-number",
+        "label": "排序",
+        "name": "order",
+        "keyboard": true,
+        "step": 1,
+        "precision": 0,
+        "value": 0,
+        "required": true
+      },
+      {
+        "type": "hidden",
+        "name": "fullPath"
+      },
+      {
+        "type": "hidden",
+        "name": "children"
+      }
+    ],
+    "wrapWithPanel": false
+  }
+}

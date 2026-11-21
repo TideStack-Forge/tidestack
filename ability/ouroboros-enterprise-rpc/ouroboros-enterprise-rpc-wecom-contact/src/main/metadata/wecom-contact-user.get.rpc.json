@@ -1,0 +1,36 @@
+{
+  "name": "wecom.contact.user.get",
+  "title": "企业微信读取成员详情",
+  "type": "OpenAPI",
+  "isEnabled": true,
+  "authCredential": "wecom.application-token",
+  "description": "自建应用，稳定身份字段 userid；应用成员查看权限及可见范围",
+  "timeout": 10000,
+  "retry": 0,
+  "retrySafe": true,
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "userid": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "userid"
+    ]
+  },
+  "request": {
+    "method": "GET",
+    "url": "https://qyapi.weixin.qq.com/cgi-bin/user/get",
+    "parameters": [
+      {
+        "in": "QUERY",
+        "name": "userid",
+        "value": "${userid}",
+        "required": true
+      }
+    ]
+  },
+  "group": "企业微信/通讯录"
+}

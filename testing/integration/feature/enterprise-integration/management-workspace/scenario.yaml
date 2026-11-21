@@ -1,0 +1,5 @@
+id: enterprise-integration-management-workspace
+name: 企业集成管理工作区
+category: feature
+contract: contract.md
+cases: cases.md

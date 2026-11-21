@@ -1,0 +1,71 @@
+{
+  "formatVersion": "0.1",
+  "modelType": "default",
+  "name": "BusinessModel1",
+  "description": "用于基本测试用例的业务模型",
+  "title": "测试业务模型1",
+  "isEnabled": true,
+  "isAttachment": false,
+  "fields": [
+    {
+      "name": "id",
+      "type": "单行文本",
+      "isPrimaryKey": true,
+      "isRequired": true,
+      "primaryKeyGenerator": "snowflake"
+    },
+    {
+      "name": "name",
+      "type": "单行文本",
+      "isRequired": true
+    },
+    {
+      "name": "age",
+      "type": "整数数字"
+    },
+    {
+      "name": "birthday",
+      "type": "日期"
+    }
+  ],
+  "features": {
+    "isEnableAuditFields": true,
+    "isEnableSoftDelete": true
+  },
+  "statusFlow": {
+    "isEnabled": false
+  },
+  "apis": {
+    "add": {
+      "isEnabled": true
+    },
+    "update": {
+      "isEnabled": true,
+      "canPatchUpdate": true,
+      "canFullUpdate": true
+    },
+    "delete": {
+      "isEnabled": true
+    },
+    "getOne": {
+      "isEnabled": true
+    },
+    "search": {
+      "isEnabled": true
+    }
+  },
+  "views": {
+    "index": {
+      "isEnabled": true
+    },
+    "detail": {
+      "isEnabled": true
+    },
+    "edit": {
+      "isEnabled": true
+    },
+    "add": {
+      "isEnabled": true
+    }
+  }
+}

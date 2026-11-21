@@ -1,0 +1,281 @@
+{
+  "name": "/dev/{appName}/ui-schema",
+  "schema": {
+    "type": "page",
+    "title": "管理自定义页面",
+    "body": [
+      {
+        "name": "crud",
+        "type": "crud",
+        "model": "table",
+        "api": {
+          "method": "get",
+          "url": "/api/dev/${appName}/ui-schema?keyword=${keyword}"
+        },
+        "headerToolbar": [
+          "reload",
+          {
+            "actionType": "dialog",
+            "dialog": {
+              "size": "full",
+              "bodyClassName": "p-0 m-0",
+              "title": "新建自定义页面",
+              "url": "/dev/${appName}/ui-schema/add",
+              "actions": [
+                {
+                  "type": "button",
+                  "actionType": "submit",
+                  "level": "primary",
+                  "label": "提交"
+                }
+              ]
+            },
+            "level": "primary",
+            "label": "新建",
+            "icon": "fa fa-plus",
+            "type": "action",
+            "align": "right"
+          }
+        ],
+        "filter": {
+          "body": [
+            {
+              "type": "input-text",
+              "name": "keyword",
+              "label": "关键字"
+            }
+          ]
+        },
+        "rowClassNameExpr": "${lockState == 'LOCKED' ? 'bg-red-50' : lockState == 'OWNED' ? 'bg-green-50' : ''}",
+        "columns": [
+          {
+            "type": "container",
+            "name": "model.name",
+            "label": "名称",
+            "bodyClassName": "flex items-center",
+            "body": [
+              {
+                "type": "icon",
+                "icon": "${icon || 'far fa-window-maximize'}",
+                "vendor": "",
+                "className": "w-11 mr-3 text-center text-3xl text-secondary"
+              },
+              {
+                "type": "container",
+                "body": [
+                  {
+                    "type": "container",
+                    "bodyClassName": "flex flex-row",
+                    "body": [
+                      {
+                        "type": "tpl",
+                        "tpl": "${model.name}",
+                        "hiddenOn": "${ isChanged }"
+                      },
+                      {
+                        "type": "tooltip-wrapper",
+                        "content": "存在未提交的修改",
+                        "body": "${model.name}&nbsp;*",
+                        "className": "font-bold italic",
+                        "visibleOn": "${ isChanged }"
+                      },
+                      {
+                        "type": "tooltip-wrapper",
+                        "title": "${lockUser == SystemContext.user.userIdentity ? '' : '模型已被锁定'}",
+                        "content": "${lockUser == SystemContext.user.userIdentity ? '你正在编辑该模型' : '该模型正在被 ' + lockUserName + ' 编辑'}",
+                        "body": {
+                          "type": "icon",
+                          "icon": "fa fa-lock ml-1",
+                          "className": {
+                            "text-danger": "${ lockUser != SystemContext.user.userIdentity }",
+                            "text-success": "${ lockUser == SystemContext.user.userIdentity }"
+                          },
+                          "vendor": ""
+                        },
+                        "visibleOn": "${isLocked}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "model.title",
+            "label": "备注名"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "width": 130,
+            "buttons": [
+              {
+                "$ref": "editModelButton",
+                "level": "primary",
+                "hiddenOn": "${lockState == 'OWNED'}"
+              },
+              {
+                "type": "button-group",
+                "buttons": [
+                  {
+                    "$ref": "editModelButton",
+                    "label": false,
+                    "level": "success",
+                    "tooltip": "继续编辑"
+                  },
+                  {
+                    "type": "button",
+                    "actionType": "ajax",
+                    "label": false,
+                    "icon": "fa fa-undo",
+                    "level": "warning",
+                    "tooltipPlacement": "top",
+                    "tooltip": "放弃变更并解锁",
+                    "api": {
+                      "method": "post",
+                      "url": "/api/dev/${appName}/ui-schema/${model.name}/rollback"
+                    },
+                    "confirmText": "确认要放弃变更吗？该操作无法撤销！"
+                  }
+                ],
+                "visibleOn": "${lockState == 'OWNED'}"
+              },
+              {
+                "type": "dropdown-button",
+                "label": "",
+                "icon": "fa fa-ellipsis-v text-secondary hover:text-primary",
+                "align": "right",
+                "buttons": [
+                  {
+                    "actionType": "dialog",
+                    "label": "代码",
+                    "icon": "fa fa-code text-center w-4 mr-2",
+                    "dialog": {
+                      "size": "full",
+                      "bodyClassName": "p-0 m-0",
+                      "title": {
+                        "type": "tpl",
+                        "tpl": "<strong>代码编辑：${name}</strong>"
+                      },
+                      "url": "/dev/${appName}/ui-schema/code",
+                      "data": {
+                        "&": "${model}",
+                        "appName": "${appName}"
+                      }
+                    }
+                  },
+                  {
+                    "actionType": "ajax",
+                    "icon": "fa fa-trash text-danger text-center w-4 mr-2",
+                    "className": "hover:text-danger",
+                    "label": "删除",
+                    "confirmText": "确定要删除「${model.name}」吗？",
+                    "api": {
+                      "method": "delete",
+                      "messages": {
+                        "success": "保存成功"
+                      },
+                      "url": "/api/dev/${appName}/ui-schema/${model.name}"
+                    }
+                  }
+                ],
+                "hideCaret": true,
+                "closeOnClick": true,
+                "className": "ml-2",
+                "menuClassName": "shadow-md"
+              }
+            ]
+          }
+        ],
+        "itemAction": {
+          "type": "action",
+          "actionType": "dialog",
+          "dialog": {
+            "size": "lg",
+            "bodyClassName": "p-0 m-0",
+            "title": "预览 「${model.title || model.name}」",
+            "closeOnEsc": true,
+            "closeOnOutside": true,
+            "url": "/dev/${appName}/ui-schema/preview",
+            "actions": [
+              {
+                "type": "button",
+                "label": "编辑 Schema",
+                "level": "primary",
+                "icon": "fa fa-edit",
+                "onEvent": {
+                  "click": {
+                    "actions": [
+                      {
+                        "actionType": "openOrSwitchTab",
+                        "args": {
+                          "title": "编辑 UI Schema「${name}」",
+                          "url": "/dev/${appName}/ui-schema/${name}"
+                        }
+                      },
+                      {
+                        "actionType": "closeDialog"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "button",
+                "label": "关闭",
+                "actionType": "close"
+              }
+            ],
+            "data": {
+              "&": "${model}",
+              "appName": "${appName}"
+            }
+          }
+        },
+        "footerToolbar": [
+          "statistics",
+          "pagination",
+          "switch-per-page"
+        ],
+        "perPageAvailable": [
+          10,
+          20,
+          50
+        ],
+        "loadDataOnce": true,
+        "alwaysShowPagination": true
+      }
+    ],
+    "definitions": {
+      "editModelButton": {
+        "type": "button",
+        "icon": "fa fa-edit",
+        "level": "primary",
+        "label": "编辑",
+        "disabledOn": "${ lockState == 'LOCKED' }",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "ajax",
+                "args": {
+                  "api": {
+                    "method": "post",
+                    "url": "/api/dev/${appName}/ui-schema/${model.name}/lock"
+                  }
+                }
+              },
+              {
+                "actionType": "openOrSwitchTab",
+                "args": {
+                  "title": "编辑 UI Schema「${model.name}」",
+                  "url": "/dev/${appName}/ui-schema/${model.name}"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

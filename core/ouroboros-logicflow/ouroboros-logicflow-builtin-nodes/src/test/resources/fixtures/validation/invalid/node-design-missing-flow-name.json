@@ -1,0 +1,32 @@
+{
+  "name": "node-design-missing-flow-name",
+  "description": "Call flow node without flowName should be invalid",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "caller",
+  "exitNode": "caller",
+  "nodes": [
+    {
+      "name": "caller",
+      "type": "callFlow",
+      "description": "",
+      "flowName": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    }
+  ],
+  "connections": []
+}

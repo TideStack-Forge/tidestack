@@ -1,0 +1,32 @@
+{
+  "name": "多员工",
+  "label": "员工（多选）",
+  "order": 320,
+  "dataType": {
+    "type": "Employees",
+    "size": "${maxLength * 20}"
+  },
+  "ui": {
+    "input": {
+      "type": "employee-picker",
+      "multiple": true,
+      "minLength": "${minLength}",
+      "maxLength": "${maxLength}"
+    }
+  },
+  "validations": {},
+  "paramsUiSchema": [
+    {
+      "type": "input-number",
+      "name": "minLength",
+      "label": "最少选择",
+      "value": 1
+    },
+    {
+      "type": "input-number",
+      "name": "maxLength",
+      "label": "最多选择",
+      "value": 99
+    }
+  ]
+}

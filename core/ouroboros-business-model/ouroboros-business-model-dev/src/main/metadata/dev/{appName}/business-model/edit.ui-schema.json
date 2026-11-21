@@ -1,0 +1,162 @@
+{
+  "name": "/dev/{appName}/business-model/edit",
+  "schema": {
+    "type": "form",
+    "id": "edit-business-model-dialog-form",
+    "api": {
+      "method": "put",
+      "url": "/api/dev/${appName}/business-model/${fullName}?includeValidationSnapshot=true",
+      "requestAdaptor": "api.data = {...api.data}; delete api.data.validationSnapshot; delete api.data.validationState; delete api.data.validationSummary; delete api.data.validationErrors; delete api.data.validationDiagnostics; delete api.data.lastValidatedTime; return api;"
+    },
+    "initApi": {
+      "method": "get",
+      "url": "/api/dev/${appName}/business-model/${fullName}?includeValidationSnapshot=true",
+      "responseData": {
+        "&": "$businessModel",
+        "appName": "$appName",
+        "validationSnapshot": "$validationSnapshot"
+      }
+    },
+    "data": {
+      "appName": "${appName}"
+    },
+    "body": [
+      {
+        "type": "alert",
+        "level": "warning",
+        "showIcon": true,
+        "className": "mb-3",
+        "visibleOn": "${validationSnapshot && ((validationSnapshot.validationDiagnostics && validationSnapshot.validationDiagnostics.length) || (validationSnapshot.validationErrors && validationSnapshot.validationErrors.length) || validationSnapshot.validationSummary)}",
+        "body": "${validationSnapshot.validationSummary || '当前业务模型存在后端校验错误'}"
+      },
+      {
+        "type": "each",
+        "name": "validationSnapshot.validationErrors",
+        "visibleOn": "${validationSnapshot && validationSnapshot.validationErrors && validationSnapshot.validationErrors.length}",
+        "items": {
+          "type": "container",
+          "className": "border rounded-sm p-3 mb-2 bg-white",
+          "body": [
+            {
+              "type": "tpl",
+              "tpl": "${item}"
+            }
+          ]
+        }
+      },
+      {
+        "type": "service",
+        "schemaApi": {
+          "method": "get",
+          "url": "/api/amis-schema?path=/dev/{appName}/business-model/editor&appName=${appName}&fullName=${fullName}&modelType=${modelType}"
+        },
+        "className": "h-full"
+      }
+    ],
+    "messages": {},
+    "wrapWithPanel": false,
+    "className": "h-full",
+    "onEvent": {
+      "submitSucc": {
+        "actions": [
+          {
+            "actionType": "setValue",
+            "componentName": "edit-business-model-dialog-form",
+            "args": {
+              "value": {
+                "&": "${result.data.businessModel}",
+                "appName": "${result.data.appName}",
+                "validationSnapshot": "${result.data.validationSnapshot}"
+              }
+            }
+          },
+          {
+            "actionType": "toast",
+            "expression": "${(result.data.validationSnapshot.validationDiagnostics && result.data.validationSnapshot.validationDiagnostics.length) || (result.data.validationSnapshot.validationErrors && result.data.validationSnapshot.validationErrors.length) || result.data.validationSnapshot.validationSummary}",
+            "args": {
+              "msgType": "warning",
+              "msg": "${result.data.validationSnapshot.validationSummary ? '已保存，但存在后端校验错误：' + result.data.validationSnapshot.validationSummary : '已保存，但存在后端校验错误'}"
+            }
+          },
+          {
+            "actionType": "toast",
+            "expression": "${!((result.data.validationSnapshot.validationDiagnostics && result.data.validationSnapshot.validationDiagnostics.length) || (result.data.validationSnapshot.validationErrors && result.data.validationSnapshot.validationErrors.length) || result.data.validationSnapshot.validationSummary)}",
+            "args": {
+              "msgType": "success",
+              "msg": "保存成功"
+            }
+          },
+          {
+            "actionType": "reload",
+            "componentName": "modelList"
+          },
+          {
+            "actionType": "dialog",
+            "args": {
+              "dialog": {
+                "title": "请输入修改说明",
+                "name": "commit-business-model-dialog",
+                "body": {
+                  "type": "form",
+                  "title": "",
+                  "api": "POST:/api/dev/${appName}/business-model/${fullName}/commit",
+                  "body": {
+                    "label": false,
+                    "type": "textarea",
+                    "name": "commitMsg",
+                    "required": true
+                  },
+                  "onEvent": {
+                    "submitSucc": {
+                      "actions": [
+                        {
+                          "actionType": "reload",
+                          "componentName": "modelList"
+                        },
+                        {
+                          "actionType": "toast",
+                          "args": {
+                            "msgType": "success",
+                            "msg": "提交成功"
+                          },
+                          "expression": "result.data"
+                        },
+                        {
+                          "actionType": "toast",
+                          "args": {
+                            "msgType": "success",
+                            "msg": "文件没有改变"
+                          },
+                          "expression": "!result.data"
+                        },
+                        {
+                          "actionType": "close",
+                          "componentName": "commit-business-model-dialog"
+                        },
+                        {
+                          "actionType": "close",
+                          "componentName": "edit-business-model-dialog"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "actions": [
+      {
+        "type": "button",
+        "actionType": "submit",
+        "label": "保存并提交",
+        "level": "primary",
+        "size": "lg",
+        "close": false,
+        "icon": "fa fa-check"
+      }
+    ]
+  }
+}

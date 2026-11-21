@@ -1,0 +1,212 @@
+{
+  "type": "webapi",
+  "fileSuffix": ".webapi.json",
+  "displayName": "WebAPI 模型",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.webapi.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/metadata",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.webapi.json",
+    "fields": [
+      {
+        "name": "method",
+        "label": "HTTP 方法",
+        "documentPath": [
+          "method"
+        ],
+        "required": true
+      },
+      {
+        "name": "path",
+        "label": "路径",
+        "documentPath": [
+          "path"
+        ],
+        "required": true,
+        "defaultFromPath": "slash-path"
+      },
+      {
+        "name": "summary",
+        "label": "摘要",
+        "documentPath": [
+          "summary"
+        ],
+        "defaultFromPath": "title"
+      }
+    ],
+    "document": {
+      "method": "GET",
+      "path": "/example",
+      "scope": "internal",
+      "handlerType": "LogicFlow",
+      "summary": "示例 WebAPI",
+      "description": "示例 WebAPI 模型",
+      "deprecated": false,
+      "tags": []
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "WebAPI 模型",
+    "actions": [],
+    "body": [
+      {
+        "type": "select",
+        "name": "method",
+        "label": "HTTP 方法",
+        "required": true,
+        "options": [
+          {
+            "label": "GET",
+            "value": "GET"
+          },
+          {
+            "label": "POST",
+            "value": "POST"
+          },
+          {
+            "label": "PUT",
+            "value": "PUT"
+          },
+          {
+            "label": "DELETE",
+            "value": "DELETE"
+          },
+          {
+            "label": "PATCH",
+            "value": "PATCH"
+          }
+        ]
+      },
+      {
+        "type": "input-text",
+        "name": "path",
+        "label": "路径",
+        "required": true
+      },
+      {
+        "type": "select",
+        "name": "scope",
+        "label": "作用域",
+        "options": [
+          {
+            "label": "内部 API",
+            "value": "internal"
+          },
+          {
+            "label": "开放 API",
+            "value": "open"
+          },
+          {
+            "label": "公共 API",
+            "value": "public"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "name": "handlerType",
+        "label": "处理器类型",
+        "options": [
+          {
+            "label": "RequestMapping",
+            "value": "RequestMapping"
+          },
+          {
+            "label": "RouterFunction",
+            "value": "RouterFunction"
+          },
+          {
+            "label": "逻辑流",
+            "value": "LogicFlow"
+          }
+        ]
+      },
+      {
+        "type": "input-text",
+        "name": "summary",
+        "label": "摘要"
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "描述",
+        "minRows": 2
+      },
+      {
+        "type": "input-text",
+        "name": "operationId",
+        "label": "操作 ID"
+      },
+      {
+        "type": "input-array",
+        "name": "tags",
+        "label": "标签",
+        "items": {
+          "type": "input-text"
+        }
+      },
+      {
+        "type": "switch",
+        "name": "deprecated",
+        "label": "已废弃"
+      },
+      {
+        "type": "json-editor",
+        "name": "parameters",
+        "label": "参数",
+        "allowClear": true
+      },
+      {
+        "type": "json-editor",
+        "name": "requestBody",
+        "label": "请求体",
+        "allowClear": true
+      },
+      {
+        "type": "json-editor",
+        "name": "responses",
+        "label": "响应",
+        "allowClear": true
+      },
+      {
+        "type": "json-editor",
+        "name": "security",
+        "label": "安全要求",
+        "allowClear": true
+      },
+      {
+        "type": "json-editor",
+        "name": "servers",
+        "label": "服务器",
+        "allowClear": true
+      },
+      {
+        "type": "json-editor",
+        "name": "externalDocs",
+        "label": "外部文档",
+        "allowClear": true
+      },
+      {
+        "type": "input-kvs",
+        "name": "extraProps",
+        "label": "扩展属性",
+        "keyItem": {
+          "label": "键"
+        },
+        "valueItems": [
+          {
+            "type": "input-text",
+            "name": "_value",
+            "label": "值"
+          }
+        ]
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/webapi.schema.json"
+}

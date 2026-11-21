@@ -1,0 +1,32 @@
+ouroboros:
+  ai:
+    # Spring AI default provider line example.
+    # corrective exit packet: status=go, alias_action=switch; Anthropic readiness is chat=pass, embedding=n/a.
+    providerConnections:
+      - providerInstanceId: anthropic-prod
+        providerFamily: ANTHROPIC
+        transportKind: HTTP
+        endpointRef: https://api.anthropic.com
+        credentialsRef: secret://ai/anthropic/prod
+
+    models:
+      - modelId: anthropic-chat
+        providerInstanceId: anthropic-prod
+        providerFamily: ANTHROPIC
+        providerKey: anthropic
+        modelName: claude-3-7-sonnet-20250219
+        capabilities:
+          - CHAT
+          - TOOL_CALLING
+        defaultOptions:
+          temperature: 0.2
+          maxTokens: 4096
+          providerOptions:
+            anthropicVersion: 2023-06-01
+            serviceTier: standard_only
+
+    # Anthropic 生产接入建议保留原生 descriptor，不要退化成 OpenAI compatibility mode。
+    # 这里展示的是 descriptor 形状；Anthropic embedding 是 n/a，不应声明默认 embedding model。
+    # RAG/MCP readiness is explicit-opt-in, and this file does not claim streaming service or independent tool executor support.
+    knowledgeBases: []
+    mcpEndpoints: []

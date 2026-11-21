@@ -1,0 +1,60 @@
+{
+  "name": "/dev/{appName}/error-code/add",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "title": false,
+    "mode": "horizontal",
+    "body": [
+      {
+        "type": "input-number",
+        "name": "code",
+        "label": "错误码",
+        "required": true,
+        "placeholder": "请输入数值型错误码"
+      },
+      {
+        "type": "input-text",
+        "name": "title",
+        "label": "标题",
+        "required": true,
+        "placeholder": "请输入错误码标题"
+      },
+      {
+        "type": "input-text",
+        "name": "defaultMessageTemplate",
+        "label": "默认消息模板",
+        "required": true,
+        "placeholder": "请输入默认错误消息"
+      },
+      {
+        "type": "input-text",
+        "name": "bizCode",
+        "label": "业务标识",
+        "placeholder": "可选，需全局唯一"
+      },
+      {
+        "type": "input-text",
+        "name": "category",
+        "label": "分类",
+        "placeholder": "可选，如 auth / order"
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "说明",
+        "placeholder": "补充说明该错误码的适用场景"
+      },
+      {
+        "type": "switch",
+        "name": "enabled",
+        "label": "启用",
+        "value": true
+      }
+    ],
+    "api": {
+      "method": "post",
+      "url": "/api/dev/${appName}/error-code"
+    }
+  }
+}

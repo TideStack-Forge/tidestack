@@ -1,0 +1,179 @@
+{
+  "type": "business",
+  "fileSuffix": ".business.json",
+  "displayName": "业务模型",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.business.json",
+    "business-model/**/*.business.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/metadata",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.business.json",
+    "fields": [
+      {
+        "name": "namespace",
+        "label": "命名空间",
+        "documentPath": [
+          "namespace"
+        ],
+        "defaultFromPath": "dot-name"
+      },
+      {
+        "name": "name",
+        "label": "模型名",
+        "documentPath": [
+          "name"
+        ],
+        "required": true,
+        "defaultFromPath": "camel-name"
+      },
+      {
+        "name": "title",
+        "label": "标题",
+        "documentPath": [
+          "title"
+        ],
+        "required": true,
+        "defaultFromPath": "title"
+      },
+      {
+        "name": "description",
+        "label": "描述",
+        "documentPath": [
+          "description"
+        ]
+      }
+    ],
+    "document": {
+      "formatVersion": "1.0",
+      "modelType": "default",
+      "name": "example",
+      "title": "示例业务模型",
+      "description": "示例默认业务模型",
+      "isEnabled": false,
+      "isAttachment": false,
+      "fields": [],
+      "features": {
+        "isEnabledAuditFields": true,
+        "isEnabledSoftDelete": true,
+        "isEnabledChangeLog": false,
+        "isEnabledDraft": false,
+        "isEnabledExclusiveLock": false
+      },
+      "enableArchiveDelete": false,
+      "enableScd2History": false,
+      "statusFlow": {
+        "isEnabled": false,
+        "statues": []
+      },
+      "apis": {
+        "search": {
+          "isEnabled": true,
+          "isAuto": true,
+          "scriptLanguage": "javascript",
+          "beforeScriptLanguage": "javascript",
+          "afterScriptLanguage": "javascript"
+        },
+        "getOne": {
+          "isEnabled": true,
+          "isAuto": true,
+          "scriptLanguage": "javascript",
+          "beforeScriptLanguage": "javascript",
+          "afterScriptLanguage": "javascript"
+        },
+        "add": {
+          "isEnabled": true,
+          "isAuto": true,
+          "scriptLanguage": "javascript",
+          "beforeScriptLanguage": "javascript",
+          "afterScriptLanguage": "javascript"
+        },
+        "update": {
+          "isEnabled": true,
+          "isAuto": true,
+          "scriptLanguage": "javascript",
+          "beforeScriptLanguage": "javascript",
+          "afterScriptLanguage": "javascript"
+        },
+        "delete": {
+          "isEnabled": true,
+          "isAuto": true,
+          "scriptLanguage": "javascript",
+          "beforeScriptLanguage": "javascript",
+          "afterScriptLanguage": "javascript"
+        }
+      },
+      "views": {
+        "index": {
+          "isEnabled": true,
+          "isAuto": true,
+          "type": "表格",
+          "isExportAllEnabled": true,
+          "isExportCurrentPageEnabled": true,
+          "isImportEnabled": true,
+          "isImportByUploadEnabled": false
+        },
+        "add": {
+          "isEnabled": true,
+          "mode": "dialog",
+          "isAuto": true,
+          "layoutType": "horizontal",
+          "labelWidth": 120
+        },
+        "edit": {
+          "isEnabled": true,
+          "mode": "dialog",
+          "isAuto": true,
+          "layoutType": "horizontal",
+          "labelWidth": 120
+        },
+        "detail": {
+          "isEnabled": true,
+          "mode": "dialog",
+          "isAuto": true,
+          "layoutType": "horizontal",
+          "labelWidth": 120
+        }
+      },
+      "accessControl": {
+        "search": {
+          "isEnabled": false,
+          "fieldControl": false,
+          "filters": {
+            "$byEmployee": false,
+            "$byDepartment": false,
+            "$byCompany": false
+          }
+        },
+        "add": {
+          "isEnabled": false,
+          "fieldControl": false
+        },
+        "update": {
+          "isEnabled": false,
+          "fieldControl": false,
+          "filters": {
+            "$byEmployee": false,
+            "$byDepartment": false,
+            "$byCompany": false
+          }
+        },
+        "delete": {
+          "isEnabled": false,
+          "filters": {
+            "$byEmployee": false,
+            "$byDepartment": false,
+            "$byCompany": false
+          }
+        }
+      },
+      "custom": [],
+      "namespace": "example"
+    }
+  },
+  "editorSchemaFile": "editor-schemas/business-default.json",
+  "jsonSchemaFile": "schemas/business.schema.json"
+}

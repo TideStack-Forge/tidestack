@@ -1,0 +1,66 @@
+{
+  "id": "services/openldap",
+  "title": "OpenLDAP Service",
+  "class": "services",
+  "capabilities": [
+    "ldap-server",
+    "directory-auth",
+    "external-dependency"
+  ],
+  "lifecycle": {
+    "up": "shell: docker compose -f testing/common/fixtures/services/openldap/docker-compose.yaml up -d",
+    "check": "LDAP TCP port should be reachable and a simple bind should succeed",
+    "reset": "",
+    "down": "shell: docker compose -f testing/common/fixtures/services/openldap/docker-compose.yaml down -v"
+  },
+  "inputs": [
+    {
+      "name": "ldapAdminPasswordEnv",
+      "required": false,
+      "description": "Optional env override for LDAP admin password, defaults to OB_TEST_LDAP_ADMIN_PASSWORD"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "serviceKind",
+      "value": "openldap"
+    },
+    {
+      "name": "connectionUrlEnv",
+      "value": "OB_TEST_LDAP_URL"
+    },
+    {
+      "name": "hostEnv",
+      "value": "OB_TEST_LDAP_HOST"
+    },
+    {
+      "name": "portEnv",
+      "value": "OB_TEST_LDAP_PORT"
+    },
+    {
+      "name": "baseDn",
+      "value": "dc=example,dc=org"
+    },
+    {
+      "name": "adminDn",
+      "value": "cn=admin,dc=example,dc=org"
+    }
+  ],
+  "healthChecks": [
+    {
+      "name": "ldap-port-open",
+      "expect": "TCP port for LDAP is reachable"
+    },
+    {
+      "name": "ldap-simple-bind",
+      "expect": "simple bind using admin DN succeeds"
+    }
+  ],
+  "prerequisites": [
+    "Docker runtime available on test host"
+  ],
+  "notes": [
+    "This fixture provides the external service dependency only; provider configuration in Ouroboros runtime is still scenario-specific.",
+    "Use env variables to inject service URL into backend runtime under test."
+  ]
+}

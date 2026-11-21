@@ -1,0 +1,45 @@
+{
+  "scenario": "auth/sso-dynamic-config-oidc",
+  "testType": "e2e",
+  "suite": "regression",
+  "mode": "e2e",
+  "contracts": [
+    "testing/integration/feature/auth/sso-dynamic-config-oidc/contract.md",
+    "testing/integration/feature/auth/sso-dynamic-config-oidc/cases.md"
+  ],
+  "preflight": "testing/integration/feature/auth/sso-dynamic-config-oidc/scripts/run.cjs",
+  "steps": [
+    {
+      "name": "browser-protocol-profile",
+      "run": "node testing/integration/feature/auth/sso-dynamic-config-oidc/scripts/browser-acceptance.cjs"
+    },
+    {
+      "name": "bounded-business-delegation",
+      "run": "node testing/integration/feature/auth/sso-dynamic-config-oidc/scripts/business-acceptance.cjs"
+    },
+    {
+      "name": "smtp-contact-proof",
+      "run": "node testing/integration/feature/auth/sso-dynamic-config-oidc/scripts/email-acceptance.cjs"
+    },
+    {
+      "name": "configuration-management-isolation",
+      "run": "node testing/integration/feature/auth/sso-dynamic-config-oidc/scripts/configuration-acceptance.cjs"
+    },
+    {
+      "name": "dynamic-client-registration",
+      "run": "node testing/integration/feature/auth/sso-dynamic-config-oidc/scripts/dcr-acceptance.cjs"
+    },
+    {
+      "name": "dynamic-registration-policy-lock-order",
+      "run": "node testing/integration/feature/auth/sso-dynamic-config-oidc/scripts/dcr-concurrency.cjs"
+    },
+    {
+      "name": "dynamic-registration-cache-recovery",
+      "run": "node testing/integration/feature/auth/sso-dynamic-config-oidc/scripts/dcr-resilience.cjs"
+    }
+  ],
+  "reports": {
+    "summary": "tmp/testing-evidence/sso-dynamic-config-oidc/verification-report.md",
+    "evidenceDir": "tmp/testing-evidence/sso-dynamic-config-oidc/system"
+  }
+}

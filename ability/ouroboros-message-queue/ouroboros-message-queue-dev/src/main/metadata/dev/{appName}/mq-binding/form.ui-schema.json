@@ -1,0 +1,90 @@
+{
+  "name": "/dev/{appName}/mq-binding/form",
+  "schema": {
+    "type": "form",
+    "title": "",
+    "wrapWithPanel": false,
+    "body": [
+      {
+        "type": "input-text",
+        "label": "名称",
+        "name": "bindingName",
+        "required": true,
+        "validations": {
+          "isVariableName": true
+        },
+        "validationErrors": {
+          "isVariableName": "请输入合法的任务名（只能包含字母和数字，且不可以数字开头）"
+        }
+      },
+      {
+        "type": "textarea",
+        "label": "描述",
+        "name": "description"
+      },
+      {
+        "type": "button-group-select",
+        "label": "绑定类型",
+        "name": "bindingType",
+        "options": [
+          {
+            "label": "消费者",
+            "value": "consumer"
+          },
+          {
+            "label": "生产者",
+            "value": "producer"
+          }
+        ],
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "label": "绑定目标",
+        "name": "destination",
+        "description": "Topic或Exchange",
+        "required": true
+      },
+      {
+        "type": "select",
+        "label": "逻辑流",
+        "name": "flowName",
+        "source": "get:/api/dev/${appName}/metadata/logic-flow",
+        "required": true,
+        "searchable": true,
+        "clearValueOnHidden": true,
+        "visibleOn": "${bindingType == 'consumer'}"
+      },
+      {
+        "type": "fieldSet",
+        "collapsable": true,
+        "collapsed": true,
+        "title": "高级选项",
+        "body": [
+          {
+            "type": "input-text",
+            "label": "路由键/分区键",
+            "name": "routingKey"
+          },
+          {
+            "type": "input-text",
+            "label": "分组",
+            "name": "group"
+          },
+          {
+            "type": "input-text",
+            "label": "消息队列名",
+            "name": "binder",
+            "description": "当项目中存在多个消息队列配置时需要配置，否则请留空"
+          },
+          {
+            "type": "input-kv",
+            "name": "extraProps",
+            "label": "自定义属性",
+            "description": "消息队列生产者/消费者的扩展配置属性"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "editorId": "mq",
+  "editorName": "TideStack MQ Binding Metadata Editor",
+  "editorNameKey": "customEditor.mq",
+  "metadataType": "mq",
+  "schemaName": "mq",
+  "viewType": "tidestack.metadataEditor.mq",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.mq",
+  "fileMatchPatterns": [
+    "*.mq.json"
+  ],
+  "priority": "default"
+}

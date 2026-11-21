@@ -1,0 +1,132 @@
+{
+  "name": "/system-setting/business-log-template/override",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "wrapWithPanel": false,
+    "mode": "horizontal",
+    "initApi": {
+      "method": "post",
+      "url": "/api/sys/business-log-template/override-from-source"
+    },
+    "api": {
+      "method": "post",
+      "url": "/api/sys/business-log-template"
+    },
+    "reload": "businessLogTemplateList",
+    "body": [
+      {
+        "type": "hidden",
+        "name": "templateKey"
+      },
+      {
+        "type": "select",
+        "name": "httpMethod",
+        "label": "请求方法",
+        "required": true,
+        "options": [
+          {
+            "label": "GET",
+            "value": "GET"
+          },
+          {
+            "label": "POST",
+            "value": "POST"
+          },
+          {
+            "label": "PUT",
+            "value": "PUT"
+          },
+          {
+            "label": "PATCH",
+            "value": "PATCH"
+          },
+          {
+            "label": "DELETE",
+            "value": "DELETE"
+          }
+        ]
+      },
+      {
+        "type": "input-text",
+        "name": "url",
+        "label": "URL",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "moduleName",
+        "label": "模块名",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "operation",
+        "label": "操作名",
+        "required": true
+      },
+      {
+        "type": "select",
+        "name": "level",
+        "label": "级别",
+        "required": true,
+        "options": [
+          {
+            "label": "一般",
+            "value": "INFO"
+          },
+          {
+            "label": "警告",
+            "value": "WARN"
+          },
+          {
+            "label": "危险",
+            "value": "DANGER"
+          }
+        ]
+      },
+      {
+        "type": "input-text",
+        "name": "businessKeyName",
+        "label": "业务键字段"
+      },
+      {
+        "type": "textarea",
+        "name": "summaryTemplate",
+        "label": "摘要模板",
+        "minRows": 3
+      },
+      {
+        "type": "input-array",
+        "name": "sensitiveFields",
+        "label": "脱敏字段",
+        "value": [],
+        "addButtonText": "新增脱敏字段",
+        "items": [
+          {
+            "type": "input-text",
+            "placeholder": "字段名"
+          }
+        ]
+      },
+      {
+        "type": "switch",
+        "name": "shouldSaveResponseBody",
+        "label": "保存响应体",
+        "value": false
+      }
+    ],
+    "actions": [
+      {
+        "type": "button",
+        "actionType": "cancel",
+        "label": "取消"
+      },
+      {
+        "type": "submit",
+        "label": "提交",
+        "level": "primary"
+      }
+    ]
+  }
+}

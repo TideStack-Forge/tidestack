@@ -1,0 +1,108 @@
+sync_pipeline_version: 1
+roadmap: logicflow-open-source-extraction
+source_feature: 2026-07-26-logicflow-public-sync-pipeline
+status: active
+created: 2026-07-26
+
+referenced_manifests:
+  bootstrap: logicflow-public-repo-bootstrap.yaml
+  public_boundary: logicflow-open-source-boundary.yaml
+  adapter_boundary: logicflow-platform-adapter-boundary.yaml
+  bundle_classification: logicflow-extension-bundle-classification.yaml
+
+export_contract:
+  source: referenced_manifests.bootstrap
+  rule: "sync pipeline must call the bootstrap clean-snapshot export and must not define a second export boundary"
+  sync_manifest_export_boundary: forbidden
+
+clean_worktree_gate:
+  operational_mode: required
+  self_check_mode: negative_probe
+  dirty_override_argument: forbidden
+  success_ledger_on_dirty_worktree: forbidden
+
+hash_normalization:
+  algorithm: sha256
+  scope: generated_public_snapshot_content
+  ordering: stable_path_sort
+  line_endings: normalize_to_lf
+  excluded_categories:
+    - version_control_metadata
+    - build_artifacts
+    - internal_ledger
+    - sync_report
+    - generated_time
+    - machine_paths
+  current_examples:
+    - .git
+    - target
+    - private sync ledger
+    - sync report
+
+private_ledger:
+  path: tmp/testing-evidence/open-source/logicflow-public-sync-pipeline/private-sync-ledger.yaml
+  exported_to_public_snapshot: false
+  required_fields:
+    - direction
+    - patch_id
+    - internal_base_ref
+    - export_content_hash
+    - public_commit
+    - public_origin
+    - synced_at
+    - status
+  allowed_statuses:
+    - planned
+    - dry-run-passed
+    - applied
+    - blocked
+
+public_commit_plan:
+  path: tmp/testing-evidence/open-source/logicflow-public-sync-pipeline/public-commit-plan.md
+  real_commit_created_by_this_feature: false
+  public_remote_created_by_this_feature: false
+  scrub_rules:
+    forbid_internal_commit_sha: true
+    forbid_internal_absolute_path: true
+    forbid_internal_author_email: true
+    forbid_internal_branch_or_task_id: true
+  maintainer_identity: "configured outside this feature before real public commit"
+  message_template: "Update LogicFlow public snapshot"
+
+patch_import_policy:
+  inputs:
+    - local_patch_file
+    - local_public_ref
+  network_remote_access: forbidden
+  classification_sources:
+    - referenced_manifests.public_boundary
+    - referenced_manifests.adapter_boundary
+    - referenced_manifests.bundle_classification
+    - referenced_manifests.bootstrap
+  public_candidate_outcome: write_apply_plan
+  adapter_touch_outcome: block_and_require_new_feature
+  generated_public_metadata_outcome: block_and_require_maintainer_review
+  report_path: tmp/testing-evidence/open-source/logicflow-public-sync-pipeline/patch-import-report.md
+
+required_capability_verification:
+  sources:
+    - referenced_manifests.bootstrap
+    - referenced_manifests.bundle_classification
+  rule: "declared required capabilities and samples must remain in the generated public snapshot"
+
+existing_checks:
+  bootstrap_command: bash scripts/open-source/logicflow/bootstrap-public-repo-dry-run.sh --check
+  leak_check_command: bash scripts/open-source/logicflow/check-public-repo-leaks.sh
+  dry_run_build_command: mvn test
+  dry_run_build_cwd: target/logicflow-public-repo-dry-run
+
+governance_handoff:
+  next_item: logicflow-open-source-governance-gates
+  unified_gate_suite_in_this_feature: forbidden
+  warning_blocking_policy_in_this_feature: forbidden
+
+upstream_pending_review:
+  source_report: tmp/testing-evidence/open-source/logicflow-public-repo-bootstrap/bootstrap-report.md
+  preserved_items:
+    - NOTICE/copyright holder review
+  sync_pass_means_releasable: false

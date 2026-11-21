@@ -1,0 +1,143 @@
+{
+  "name": "ListWidget",
+  "title": "通用列表",
+  "description": "通用的数据列表小组件，以列表形式展示数据",
+  "category": "数据展示",
+  "allowHeader": true,
+  "sizeConstraints": {
+    "min": {
+      "cols": 4,
+      "rows": 6
+    },
+    "max": {
+      "cols": 24,
+      "rows": 30
+    }
+  },
+  "defaultSize": {
+    "cols": 8,
+    "rows": 12
+  },
+  "defaultConfig": {
+    "api": "",
+    "titleTpl": "${title}",
+    "subTitleTpl": "",
+    "descTpl": "${description}",
+    "avatarTpl": "",
+    "remarkTpl": ""
+  },
+  "defaultStyleConfig": {
+    "showBorder": true,
+    "showShadow": true
+  },
+  "configFormItems": [
+    {
+      "type": "fieldSet",
+      "title": "数据源配置",
+      "body": [
+        {
+          "type": "ae-apiControl",
+          "name": "api",
+          "label": "数据接口",
+          "required": true,
+          "description": "接口需返回包含 items 数组的对象"
+        }
+      ]
+    },
+    {
+      "type": "fieldSet",
+      "title": "内容配置",
+      "body": [
+        {
+          "type": "ae-tplFormulaControl",
+          "name": "titleTpl",
+          "label": "标题模板",
+          "required": true,
+          "value": "${title}",
+          "placeholder": "如: ${title}",
+          "description": "用于显示列表项的主标题"
+        },
+        {
+          "type": "ae-tplFormulaControl",
+          "name": "subTitleTpl",
+          "label": "副标题模板",
+          "placeholder": "如: ${subTitle}",
+          "description": "显示在主标题下方"
+        },
+        {
+          "type": "ae-textareaFormulaControl",
+          "name": "descTpl",
+          "label": "描述模板",
+          "value": "${description}",
+          "placeholder": "如: ${description}",
+          "description": "显示详细描述信息"
+        },
+        {
+          "type": "ae-tplFormulaControl",
+          "name": "avatarTpl",
+          "label": "头像模板",
+          "placeholder": "如: ${avatar}",
+          "description": "显示列表项左侧的头像"
+        },
+        {
+          "type": "ae-tplFormulaControl",
+          "name": "remarkTpl",
+          "label": "备注模板",
+          "placeholder": "如: ${remark}",
+          "description": "显示列表项右侧的备注信息"
+        }
+      ]
+    }
+  ],
+  "thumbSchema": {
+    "type": "service",
+    "data": {
+      "exampleListItems": [
+        {
+          "title": "示例标题1",
+          "description": "这是描述信息"
+        },
+        {
+          "title": "示例标题2",
+          "description": "这是描述信息"
+        }
+      ]
+    },
+    "body": {
+      "type": "list",
+      "source": "$exampleListItems",
+      "listItem": {
+        "title": "${title}",
+        "body": "${description}"
+      }
+    }
+  },
+  "schemaTpl": {
+    "type": "crud",
+    "mode": "list",
+    "api": "#{api}",
+    "listItem": {
+      "title": "#{titleTpl}",
+      "subTitle": "#{subTitleTpl}",
+      "avatar": "#{avatarTpl}",
+      "desc": "#{descTpl}",
+      "remark": "#{remarkTpl}"
+    }
+  },
+  "exampleData": {
+    "items": [
+      {
+        "title": "示例标题1",
+        "description": "这是第一条数据的描述信息",
+        "avatar": "https://via.placeholder.com/40",
+        "remark": "备注1"
+      },
+      {
+        "title": "示例标题2",
+        "description": "这是第二条数据的描述信息",
+        "avatar": "https://via.placeholder.com/40",
+        "remark": "备注2"
+      }
+    ]
+  }
+}

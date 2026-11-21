@@ -1,0 +1,155 @@
+@keyframes logicflow-debug-stream { to { stroke-dashoffset: -24; } }
+
+.logicflow-debug-workbench {
+  --debug-ink: #1f2937;
+  --debug-muted: #64748b;
+  --debug-border: var(--logicflow-chrome-toolbar-border-color);
+  --debug-surface: var(--logicflow-chrome-button-background);
+  --debug-blue: var(--logicflow-chrome-button-pressed-color);
+  --debug-blue-soft: var(--logicflow-chrome-button-pressed-background);
+  --debug-green: #047857;
+  --debug-red: #b91c1c;
+  --debug-red-soft: #fef2f2;
+  --debug-amber: #92400e;
+  display: contents;
+  color: var(--debug-ink);
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: left;
+
+  *, *::before, *::after { box-sizing: border-box; }
+  button:where(:not(.panel-close-button)), select {
+    min-height: var(--logicflow-chrome-button-size);
+    border: 1px solid var(--logicflow-chrome-button-border-color);
+    border-radius: var(--logicflow-chrome-button-radius);
+    padding: 4px 10px;
+    background: var(--debug-surface);
+    color: var(--logicflow-chrome-button-color);
+    font: inherit;
+    font-size: var(--logicflow-chrome-font-size);
+  }
+  button {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    cursor: pointer; white-space: nowrap;
+    transition: background-color 120ms, border-color 120ms, color 120ms;
+    &:hover:not(:disabled) { border-color: var(--logicflow-chrome-button-hover-border-color); color: var(--logicflow-chrome-button-hover-color); background: #f8fafc; }
+    &:disabled { opacity: .45; cursor: default; }
+    &[aria-pressed="true"] { color: var(--debug-blue); border-color: var(--logicflow-chrome-button-pressed-border-color); background: var(--debug-blue-soft); }
+  }
+  button:focus-visible, select:focus-visible, summary:focus-visible, input:focus-visible { outline: 2px solid var(--debug-blue); outline-offset: 2px; }
+  select { min-width: 0; text-overflow: ellipsis; }
+  p { padding: 0; margin: 0; }
+  code, pre { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace; }
+  pre { margin: 0; color: #334155; font-size: 12px; line-height: 1.6; tab-size: 2; }
+  strong { font-weight: 600; }
+  .fa { width: 14px; text-align: center; }
+  .logicflow-debug-primary {
+    color: #fff; background: var(--debug-blue); border-color: var(--debug-blue);
+    &:hover:not(:disabled) { color: #fff; background: #1d4ed8; border-color: #1d4ed8; }
+  }
+  .logicflow-debug-stop {
+    color: var(--debug-red); border-color: #fecaca;
+    &:hover:not(:disabled) { background: var(--debug-red-soft); border-color: #fca5a5; }
+    .fa { font-size: 10px; }
+  }
+  .toolbar { max-width: calc(100% - var(--logicflow-chrome-toolbar-left) - 16px); }
+  &:has(.logicflow-debug-detail) .toolbar { max-width: calc(100% - var(--logicflow-chrome-toolbar-left) - 450px - 48px); }
+  .toolbar-command-group { min-width: 0; }
+  .logicflow-debug-detail { z-index: 11; min-height: 0; width: min(450px, calc(100% - 32px));
+    &.is-expanded { width: min(640px, calc(100% - 32px)); z-index: 21; }
+  }
+}
+.logicflow-debug-panel-title { flex: 1; display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.logicflow-debug-panel-title > i { color: var(--debug-blue); }
+.logicflow-debug-panel-actions { display: flex; gap: 6px; }
+.logicflow-debug-capture-controls { display: flex; flex-direction: column; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid var(--debug-border); }
+.logicflow-debug-target { display: flex; flex-direction: column; gap: 6px; margin: 0; min-width: 0;
+  > span { color: var(--debug-muted); font-size: 12px; }
+  select { width: 100%; }
+}
+.logicflow-debug-session-controls { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.logicflow-debug-session-state {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--debug-muted);
+  > i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  &.is-active { color: var(--debug-green); }
+  &.is-draining, &.is-saturated, &.is-incomplete { color: var(--debug-amber); }
+}
+.logicflow-debug-run-heading { display: flex; align-items: center; gap: 8px; padding: 14px 0 8px;
+  > span { min-width: 20px; padding: 0 4px; border-radius: 4px; background: #f1f5f9; color: var(--debug-muted); text-align: center; font-size: 11px; font-variant-numeric: tabular-nums; }
+}
+.logicflow-debug-run-summary { display: flex; gap: 16px; padding-bottom: 8px; font-size: 11px; color: var(--debug-muted); }
+.logicflow-debug-run-summary > span, .logicflow-debug-legend > span { display: inline-flex; align-items: center; gap: 6px; }
+.logicflow-debug-run-summary i, .logicflow-debug-legend i { width: 6px; height: 6px; border-radius: 50%; background: #64748b; &.is-completed { background: #059669; } &.is-failed { background: #dc2626; } }
+.logicflow-debug-runs { flex: 1; min-height: 0; overflow: auto; padding: 2px 0 12px; }
+.logicflow-debug-workbench .logicflow-debug-run {
+  display: flex; flex-direction: column; width: 100%; gap: 8px; align-items: stretch;
+  padding: 10px; margin: 6px 0; border-radius: 10px; text-align: left;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, .05);
+  &[aria-pressed="true"] { box-shadow: inset 2px 0 var(--debug-blue); }
+}
+.logicflow-debug-run-line { display: flex; justify-content: space-between; gap: 8px; strong { font-size: 12px; } }
+.logicflow-debug-run-outcome { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--debug-muted); }
+.logicflow-debug-run.is-completed .logicflow-debug-run-outcome { color: var(--debug-green); }
+.logicflow-debug-run.is-failed .logicflow-debug-run-outcome { color: var(--debug-red); }
+.logicflow-debug-run-meta { display: flex; justify-content: space-between; gap: 8px; font-size: 11px; color: var(--debug-muted); font-variant-numeric: tabular-nums; }
+.logicflow-debug-run-empty { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 32px 4px; color: var(--debug-muted); text-align: center;
+  p { font-size: 12px; line-height: 1.75; } .fa { font-size: 22px; width: auto; color: #94a3b8; margin-bottom: 8px; }
+}
+.logicflow-debug-history { display: flex; flex-direction: column; gap: 8px; margin: 0; padding-top: 12px; border-top: 1px solid var(--debug-border);
+  > span { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--debug-muted); } select { width: 100%; }
+}
+.logicflow-debug-mode-label { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; white-space: nowrap; padding: 0 6px;
+  > i { color: var(--debug-blue); } > span { font-size: 11px; font-weight: 400; color: var(--debug-muted); }
+}
+.logicflow-debug-playback { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.logicflow-debug-invocation { margin: 0; select { max-width: 140px; } }
+.logicflow-debug-step-controls { position: relative;
+  > summary { display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid var(--logicflow-chrome-button-border-color); border-radius: var(--logicflow-chrome-button-radius); color: var(--debug-muted); list-style: none; cursor: pointer; &::-webkit-details-marker { display: none; } }
+  &[open] > summary { background: var(--debug-blue-soft); color: var(--debug-blue); }
+}
+.logicflow-debug-step-popover { position: absolute; top: 40px; left: 0; width: 320px; max-width: 70vw; padding: 16px; border: 1px solid var(--debug-border); border-radius: var(--logicflow-chrome-toolbar-radius); background: var(--debug-surface); box-shadow: var(--logicflow-chrome-toolbar-shadow); z-index: 2;
+  p { margin: 4px 0 16px; color: var(--debug-muted); font-size: 12px; } input { width: 100%; margin: 16px 0 4px; accent-color: var(--debug-blue); } > span { color: var(--debug-muted); font-size: 11px; }
+}
+.logicflow-debug-graph-stage { position: absolute; inset: 0; pointer-events: none; }
+.logicflow-debug-legend { position: absolute; bottom: 24px; left: var(--logicflow-chrome-toolbar-left); display: flex; flex-wrap: wrap; gap: 12px; align-items: center; pointer-events: none; color: var(--debug-muted); font-size: 11px; }
+.logicflow-debug-path-key::before { content: ''; width: 20px; border-top: 2px dashed var(--debug-blue); }
+.logicflow-debug-notices, .logicflow-debug-graph-notice { position: absolute; top: 76px; left: var(--logicflow-chrome-toolbar-left); max-width: 380px; margin-right: 16px; z-index: 10; }
+.logicflow-debug-graph-notice { padding: 8px 12px; border: 1px solid var(--debug-border); border-radius: var(--logicflow-chrome-button-radius); background: var(--debug-surface); color: var(--debug-muted); font-size: 12px; }
+.logicflow-debug-error { display: flex; align-items: center; gap: 8px; color: var(--debug-red); padding: 8px 12px; background: var(--debug-red-soft); }
+.logicflow-debug-warning { color: var(--debug-amber); padding: 8px 12px !important; background: #fffbeb; font-size: 12px; }
+.logicflow-debug-inspector-bar { display: flex; flex-direction: column; gap: 12px; padding: 16px 2px 0; min-width: 0; }
+.logicflow-debug-node-heading { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0;
+  > strong { overflow-wrap: anywhere; }
+}
+.logicflow-debug-eyebrow { color: var(--debug-muted); font-size: 11px; }
+.logicflow-debug-node-status { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--debug-muted);
+  > i { width: 5px; height: 5px; border-radius: 50%; background: currentColor; } &.is-completed { color: var(--debug-green); } &.is-failed { color: var(--debug-red); } &.is-blocked { color: var(--debug-amber); }
+}
+.logicflow-debug-detail-views { display: flex; align-items: stretch; gap: 12px; min-height: 40px; border-bottom: 1px solid var(--debug-border);
+  button { position: relative; gap: 6px; padding: 0 2px; border: 0; border-radius: 0; color: var(--debug-muted);
+    &[aria-pressed="true"] { background: transparent; color: var(--debug-blue); &::after { position: absolute; content: ''; bottom: 0; left: 0; right: 0; height: 2px; background: var(--debug-blue); } }
+  }
+  small { font-size: 10px; }
+}
+.logicflow-debug-error-dot { width: 5px; height: 5px; border-radius: 50%; background: #dc2626; }
+.logicflow-debug-data-panes { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: auto; }
+.logicflow-debug-code-pane { min-width: 0; flex: 0 0 auto;
+  &:not(:last-child) { border-bottom: 1px solid var(--debug-border); }
+  pre { padding: 12px 8px 20px; overflow: auto; white-space: pre; }
+}
+.logicflow-debug-code-heading { display: flex; justify-content: space-between; align-items: center; padding: 14px 8px 0; font-size: 12px; color: var(--debug-muted); strong { font-weight: 500; } span { font-family: monospace; font-size: 10px; } }
+.logicflow-debug-detail-empty { display: flex; flex: 1; gap: 12px; align-items: center; justify-content: center; padding: 24px 12px; color: var(--debug-muted); font-size: 12px; line-height: 1.8; }
+.logicflow-debug-exception { display: flex; flex: 1; flex-direction: column; min-height: 0; padding: 12px 2px 0;
+  pre { flex: 1; min-height: 0; padding: 12px 6px; overflow: auto; white-space: pre; }
+}
+.logicflow-debug-exception-summary { display: flex; flex-direction: column; align-items: flex-start; flex-shrink: 0; gap: 8px; padding: 12px; border: 1px solid #fee2e2; border-radius: var(--logicflow-chrome-button-radius); color: var(--debug-red); background: var(--debug-red-soft);
+  > code { max-width: 100%; overflow-wrap: anywhere; padding: 0; color: inherit; background: transparent; font-size: 11px; }
+}
+.logicflow-debug-event-list { flex: 1; min-height: 0; overflow: auto; list-style: none; padding: 8px 0; margin: 0;
+  li { border-bottom: 1px solid #f1f5f9; } button { width: 100%; justify-content: flex-start; min-height: 32px; border: 0; border-radius: 4px; padding: 6px; color: var(--debug-muted); font: 11px/1.5 'SFMono-Regular', Consolas, monospace; white-space: normal; text-align: left; overflow-wrap: anywhere; }
+}
+.logicflow-debug-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .logicflow-debug-workbench button { transition: none; }
+  .wrapper-editor-container.is-debugging .logicflow-canvas path { animation: none !important; }
+}

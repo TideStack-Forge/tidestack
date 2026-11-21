@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/rpc-model/add",
+  "type": "amis",
+  "title": "新增rpc"
+}

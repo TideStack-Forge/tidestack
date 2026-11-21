@@ -1,0 +1,1063 @@
+{
+  "name": "/dev/{appName}/versions",
+  "schema": {
+    "type": "page",
+    "title": "版本管理 - ${appName}",
+    "definitions": {
+      "createVersionModal": {
+        "type": "dialog",
+        "title": "发布新版本",
+        "url": "/dev/${appName}/versions/create",
+        "showCloseButton": true,
+        "showErrorMsg": true,
+        "showLoading": true,
+        "closeOnEsc": false,
+        "size": "lg",
+        "data": {
+          "appName": "${appName}"
+        }
+      },
+      "createManagedBranchDialog": {
+        "type": "dialog",
+        "title": "创建定制分支",
+        "showCloseButton": true,
+        "body": [
+          {
+            "type": "form",
+            "wrapWithPanel": false,
+            "api": {
+              "method": "post",
+              "url": "/api/dev/${appName}/vcs/branch/create-managed"
+            },
+            "body": [
+              {
+                "type": "input-text",
+                "name": "editionCode",
+                "label": "定制编码",
+                "required": true,
+                "placeholder": "请输入定制编码"
+              },
+              {
+                "type": "static",
+                "label": "派生规则",
+                "value": "定制分支固定从 master 派生"
+              }
+            ],
+            "actions": [
+              {
+                "type": "button",
+                "label": "取消",
+                "actionType": "cancel"
+              },
+              {
+                "type": "submit",
+                "label": "创建",
+                "level": "primary"
+              }
+            ],
+            "onEvent": {
+              "submitSucc": {
+                "actions": [
+                  {
+                    "actionType": "reload",
+                    "componentName": "vcsStateService"
+                  },
+                  {
+                    "actionType": "reload",
+                    "componentName": "managedBranchList"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "vcsPolicyDialog": {
+        "type": "dialog",
+        "title": "远程配置",
+        "showCloseButton": true,
+        "body": [
+          {
+            "type": "form",
+            "wrapWithPanel": false,
+            "initApi": {
+              "method": "get",
+              "url": "/api/dev/${appName}/vcs/config/policy"
+            },
+            "api": {
+              "method": "put",
+              "url": "/api/dev/${appName}/vcs/config/policy"
+            },
+            "body": [
+              {
+                "type": "input-text",
+                "name": "defaultRemote",
+                "label": "默认远程",
+                "placeholder": "请输入默认远程名称"
+              },
+              {
+                "type": "combo",
+                "name": "remotes",
+                "label": "远程列表",
+                "multiple": true,
+                "multiLine": true,
+                "draggable": false,
+                "addButtonText": "添加远程",
+                "items": [
+                  {
+                    "type": "input-text",
+                    "name": "name",
+                    "label": "远程名称",
+                    "required": true,
+                    "placeholder": "例如 origin",
+                    "mode": "normal"
+                  },
+                  {
+                    "type": "input-text",
+                    "name": "url",
+                    "label": "远程地址",
+                    "required": true,
+                    "placeholder": "请输入远程仓库地址",
+                    "mode": "normal"
+                  }
+                ],
+                "mode": "normal"
+              }
+            ],
+            "actions": [
+              {
+                "type": "button",
+                "label": "取消",
+                "actionType": "cancel"
+              },
+              {
+                "type": "submit",
+                "label": "保存",
+                "level": "primary"
+              }
+            ],
+            "onEvent": {
+              "submitSucc": {
+                "actions": [
+                  {
+                    "actionType": "reload",
+                    "componentName": "vcsStateService"
+                  },
+                  {
+                    "actionType": "reload",
+                    "componentName": "workspaceFiles"
+                  },
+                  {
+                    "actionType": "reload",
+                    "componentName": "managedBranchList"
+                  },
+                  {
+                    "actionType": "reload",
+                    "componentName": "versionList"
+                  },
+                  {
+                    "actionType": "reload",
+                    "componentName": "recentCommits"
+                  }
+                ]
+              }
+            },
+            "mode": "normal"
+          }
+        ],
+        "size": "lg"
+      },
+      "vcsLocalBindingDialog": {
+        "type": "dialog",
+        "title": "凭证配置",
+        "showCloseButton": true,
+        "body": [
+          {
+            "type": "form",
+            "wrapWithPanel": false,
+            "initApi": {
+              "method": "get",
+              "url": "/api/dev/${appName}/vcs/config/local-binding"
+            },
+            "api": {
+              "method": "put",
+              "url": "/api/dev/${appName}/vcs/config/local-binding"
+            },
+            "body": [
+              {
+                "type": "combo",
+                "name": "bindings",
+                "label": "远程凭证绑定",
+                "multiple": true,
+                "multiLine": true,
+                "draggable": false,
+                "addButtonText": "添加绑定",
+                "items": [
+                  {
+                    "type": "input-text",
+                    "name": "remoteName",
+                    "label": "远程名称",
+                    "required": true,
+                    "placeholder": "请输入远程名称",
+                    "mode": "normal"
+                  },
+                  {
+                    "type": "button-group-select",
+                    "name": "authType",
+                    "label": "认证方式",
+                    "value": "NONE",
+                    "options": [
+                      {
+                        "label": "不使用认证",
+                        "value": "NONE"
+                      },
+                      {
+                        "label": "HTTP Basic",
+                        "value": "HTTP_BASIC"
+                      },
+                      {
+                        "label": "SSH Key",
+                        "value": "SSH_KEY"
+                      }
+                    ],
+                    "mode": "normal"
+                  },
+                  {
+                    "type": "input-text",
+                    "name": "username",
+                    "label": "用户名",
+                    "visibleOn": "${authType == 'HTTP_BASIC'}",
+                    "requiredOn": "${authType == 'HTTP_BASIC'}",
+                    "clearValueOnHidden": true,
+                    "mode": "normal"
+                  },
+                  {
+                    "type": "input-password",
+                    "name": "password",
+                    "label": "密码",
+                    "visibleOn": "${authType == 'HTTP_BASIC'}",
+                    "requiredOn": "${authType == 'HTTP_BASIC'}",
+                    "clearValueOnHidden": true,
+                    "mode": "normal"
+                  },
+                  {
+                    "type": "input-text",
+                    "name": "sshKeyName",
+                    "label": "Key 名称",
+                    "placeholder": "默认 id_rsa",
+                    "visibleOn": "${authType == 'SSH_KEY'}",
+                    "clearValueOnHidden": true,
+                    "mode": "normal"
+                  },
+                  {
+                    "type": "textarea",
+                    "name": "sshPrivateKey",
+                    "label": "SSH 私钥",
+                    "placeholder": "首次保存时请输入 SSH 私钥；只更新其他信息时可留空",
+                    "minRows": 6,
+                    "maxRows": 10,
+                    "visibleOn": "${authType == 'SSH_KEY'}",
+                    "clearValueOnHidden": true,
+                    "mode": "normal"
+                  },
+                  {
+                    "type": "static",
+                    "name": "sshKeyPath",
+                    "label": "已保存 Key 路径",
+                    "visibleOn": "${authType == 'SSH_KEY' && sshKeyPath}",
+                    "mode": "normal"
+                  }
+                ],
+                "mode": "normal"
+              }
+            ],
+            "actions": [
+              {
+                "type": "button",
+                "label": "取消",
+                "actionType": "cancel"
+              },
+              {
+                "type": "submit",
+                "label": "保存",
+                "level": "primary"
+              }
+            ],
+            "onEvent": {
+              "submitSucc": {
+                "actions": [
+                  {
+                    "actionType": "reload",
+                    "componentName": "vcsStateService"
+                  },
+                  {
+                    "actionType": "reload",
+                    "componentName": "workspaceFiles"
+                  },
+                  {
+                    "actionType": "reload",
+                    "componentName": "managedBranchList"
+                  },
+                  {
+                    "actionType": "reload",
+                    "componentName": "versionList"
+                  },
+                  {
+                    "actionType": "reload",
+                    "componentName": "recentCommits"
+                  }
+                ]
+              }
+            },
+            "mode": "normal"
+          }
+        ],
+        "size": "lg"
+      },
+      "commitFilesDialog": {
+        "type": "dialog",
+        "title": "提交修改",
+        "size": "md",
+        "body": {
+          "type": "form",
+          "mode": "normal",
+          "wrapWithPanel": false,
+          "api": {
+            "method": "post",
+            "url": "/api/dev/${appName}/vcs/workspace/commit",
+            "data": {
+              "paths": "${paths}",
+              "message": "${message}"
+            }
+          },
+          "body": [
+            {
+              "type": "static",
+              "label": "文件",
+              "value": "${JOIN(paths, \", \")}"
+            },
+            {
+              "type": "textarea",
+              "name": "message",
+              "label": "提交说明",
+              "required": true,
+              "minRows": 3,
+              "maxRows": 6,
+              "placeholder": "说明本次修改"
+            }
+          ],
+          "onEvent": {
+            "submitSucc": {
+              "actions": [
+                {
+                  "actionType": "reload",
+                  "componentName": "vcsStateService"
+                },
+                {
+                  "actionType": "reload",
+                  "componentName": "workspaceFiles"
+                },
+                {
+                  "actionType": "reload",
+                  "componentName": "managedBranchList"
+                },
+                {
+                  "actionType": "reload",
+                  "componentName": "versionList"
+                },
+                {
+                  "actionType": "reload",
+                  "componentName": "recentCommits"
+                }
+              ]
+            }
+          },
+          "actions": [
+            {
+              "type": "button",
+              "actionType": "cancel",
+              "label": "取消"
+            },
+            {
+              "type": "submit",
+              "label": "提交",
+              "level": "primary"
+            }
+          ]
+        }
+      }
+    },
+    "body": [
+      {
+        "type": "service",
+        "id": "vcsStateService",
+        "name": "vcsStateService",
+        "api": {
+          "method": "get",
+          "url": "/api/dev/${appName}/vcs/state"
+        },
+        "className": "mb-3",
+        "body": [
+          {
+            "type": "grid",
+            "className": "mb-3",
+            "columns": [
+              {
+                "md": 4,
+                "body": {
+                  "type": "tpl",
+                  "tpl": "<div class=\"text-muted mb-1\">当前分支</div><strong>${currentBranch || \"-\"}</strong>"
+                }
+              },
+              {
+                "md": 4,
+                "body": {
+                  "type": "tpl",
+                  "tpl": "<div class=\"text-muted mb-1\">当前版本（提交）</div><strong>${currentRevision || \"尚无提交\"}</strong>",
+                  "className": "break-all"
+                }
+              },
+              {
+                "md": 4,
+                "body": {
+                  "type": "tpl",
+                  "tpl": "<div class=\"text-muted mb-1\">工作区</div><strong>${workspaceClean ? \"所有修改已提交\" : \"有待提交的修改\"}</strong>"
+                }
+              }
+            ]
+          },
+          {
+            "type": "flex",
+            "justify": "space-between",
+            "className": "mb-3",
+            "items": [
+              {
+                "type": "tpl",
+                "tpl": "${lastCommitMessage || \"\"}",
+                "className": "text-muted"
+              },
+              {
+                "type": "button-group",
+                "buttons": [
+                  {
+                    "type": "button",
+                    "label": "拉取",
+                    "icon": "fa fa-download",
+                    "disabledOn": "${!remoteUri || !workspaceClean}",
+                    "onEvent": {
+                      "click": {
+                        "actions": [
+                          {
+                            "actionType": "ajax",
+                            "args": {
+                              "api": {
+                                "method": "post",
+                                "url": "/api/dev/${appName}/vcs/pull"
+                              }
+                            }
+                          },
+                          {
+                            "actionType": "reload",
+                            "componentName": "vcsStateService"
+                          },
+                          {
+                            "actionType": "reload",
+                            "componentName": "managedBranchList"
+                          },
+                          {
+                            "actionType": "reload",
+                            "componentName": "workspaceFiles"
+                          },
+                          {
+                            "actionType": "reload",
+                            "componentName": "versionList"
+                          },
+                          {
+                            "actionType": "reload",
+                            "componentName": "recentCommits"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "label": "推送",
+                    "icon": "fa fa-upload",
+                    "disabledOn": "${!remoteUri || !workspaceClean}",
+                    "onEvent": {
+                      "click": {
+                        "actions": [
+                          {
+                            "actionType": "ajax",
+                            "args": {
+                              "api": {
+                                "method": "post",
+                                "url": "/api/dev/${appName}/vcs/push"
+                              }
+                            }
+                          },
+                          {
+                            "actionType": "reload",
+                            "componentName": "vcsStateService"
+                          },
+                          {
+                            "actionType": "reload",
+                            "componentName": "managedBranchList"
+                          },
+                          {
+                            "actionType": "reload",
+                            "componentName": "workspaceFiles"
+                          },
+                          {
+                            "actionType": "reload",
+                            "componentName": "versionList"
+                          },
+                          {
+                            "actionType": "reload",
+                            "componentName": "recentCommits"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tabs",
+            "tabsMode": "line",
+            "mountOnEnter": true,
+            "tabs": [
+              {
+                "title": "当前文件",
+                "body": [
+                  {
+                    "type": "crud",
+                    "id": "workspaceFiles",
+                    "name": "workspaceFiles",
+                    "syncLocation": false,
+                    "primaryField": "path",
+                    "api": {
+                      "method": "get",
+                      "url": "/api/dev/${appName}/vcs/workspace/files",
+                      "data": {
+                        "onlyChanged": "${onlyChanged}"
+                      }
+                    },
+                    "data": {
+                      "onlyChanged": true
+                    },
+                    "itemCheckableOn": "${canCommit}",
+                    "multiple": true,
+                    "keepItemSelectionOnPageChange": false,
+                    "perPage": 1000,
+                    "filter": {
+                      "wrapWithPanel": false,
+                      "mode": "inline",
+                      "body": [
+                        {
+                          "type": "switch",
+                          "name": "onlyChanged",
+                          "label": "仅看修改",
+                          "value": true,
+                          "submitOnChange": true
+                        }
+                      ]
+                    },
+                    "headerToolbar": [
+                      "bulkActions",
+                      {
+                        "type": "tpl",
+                        "tpl": "只可提交自己持有编辑锁的文件",
+                        "className": "text-muted"
+                      }
+                    ],
+                    "footerToolbar": [],
+                    "bulkActions": [
+                      {
+                        "type": "button",
+                        "label": "提交选中文件",
+                        "level": "primary",
+                        "actionType": "dialog",
+                        "dialog": {
+                          "$ref": "commitFilesDialog",
+                          "data": {
+                            "appName": "${appName}",
+                            "paths": "${ARRAYMAP(selectedItems, item => item.path)}"
+                          }
+                        }
+                      }
+                    ],
+                    "columns": [
+                      {
+                        "name": "path",
+                        "label": "文件路径",
+                        "type": "text"
+                      },
+                      {
+                        "name": "versionState",
+                        "label": "状态",
+                        "type": "mapping",
+                        "map": {
+                          "UNKNOWN": "未知",
+                          "UNVERSIONED": "新增",
+                          "CHANGED": "已修改",
+                          "NOTCHANGED": "无修改",
+                          "DELETED": "已删除"
+                        },
+                        "value": "${exists ? versionState : 'DELETED'}"
+                      },
+                      {
+                        "name": "lockOwner",
+                        "label": "锁持有人",
+                        "placeholder": "未锁定"
+                      },
+                      {
+                        "name": "lockState",
+                        "label": "编辑锁",
+                        "type": "mapping",
+                        "map": {
+                          "OWNED": "我持有",
+                          "LOCKED": "他人持有",
+                          "UNLOCKED": "未锁定"
+                        }
+                      },
+                      {
+                        "type": "operation",
+                        "label": "操作",
+                        "buttons": [
+                          {
+                            "type": "button",
+                            "label": "查看",
+                            "level": "link",
+                            "visibleOn": "${exists}",
+                            "actionType": "dialog",
+                            "dialog": {
+                              "title": "查看文件",
+                              "size": "lg",
+                              "body": {
+                                "type": "service",
+                                "api": {
+                                  "method": "get",
+                                  "url": "/api/dev/${appName}/vcs/workspace/file",
+                                  "data": {
+                                    "path": "${path}"
+                                  }
+                                },
+                                "body": [
+                                  {
+                                    "type": "tpl",
+                                    "tpl": "${path}",
+                                    "className": "text-muted mb-2"
+                                  },
+                                  {
+                                    "type": "editor",
+                                    "language": "json",
+                                    "name": "content",
+                                    "readOnly": true,
+                                    "size": "xxl"
+                                  }
+                                ]
+                              },
+                              "actions": [
+                                {
+                                  "type": "button",
+                                  "actionType": "close",
+                                  "label": "关闭"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "button",
+                            "label": "提交",
+                            "level": "link",
+                            "visibleOn": "${canCommit}",
+                            "actionType": "dialog",
+                            "dialog": {
+                              "$ref": "commitFilesDialog",
+                              "data": {
+                                "appName": "${appName}",
+                                "paths": [
+                                  "${path}"
+                                ]
+                              }
+                            }
+                          },
+                          {
+                            "type": "button",
+                            "label": "解锁",
+                            "level": "link",
+                            "visibleOn": "${canUnlock}",
+                            "confirmText": "确认释放此文件的编辑锁？",
+                            "onEvent": {
+                              "click": {
+                                "actions": [
+                                  {
+                                    "actionType": "ajax",
+                                    "api": {
+                                      "method": "post",
+                                      "url": "/api/dev/${appName}/vcs/workspace/unlock",
+                                      "data": {
+                                        "paths": [
+                                          "${path}"
+                                        ],
+                                        "force": false
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "actionType": "reload",
+                                    "componentName": "vcsStateService"
+                                  },
+                                  {
+                                    "actionType": "reload",
+                                    "componentName": "workspaceFiles"
+                                  },
+                                  {
+                                    "actionType": "reload",
+                                    "componentName": "managedBranchList"
+                                  },
+                                  {
+                                    "actionType": "reload",
+                                    "componentName": "versionList"
+                                  },
+                                  {
+                                    "actionType": "reload",
+                                    "componentName": "recentCommits"
+                                  }
+                                ]
+                              }
+                            }
+                          },
+                          {
+                            "type": "button",
+                            "label": "强制解锁",
+                            "level": "link",
+                            "visibleOn": "${canForceUnlock}",
+                            "confirmText": "强制解锁会解除他人的编辑锁，确认继续？",
+                            "onEvent": {
+                              "click": {
+                                "actions": [
+                                  {
+                                    "actionType": "ajax",
+                                    "api": {
+                                      "method": "post",
+                                      "url": "/api/dev/${appName}/vcs/workspace/unlock",
+                                      "data": {
+                                        "paths": [
+                                          "${path}"
+                                        ],
+                                        "force": true
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "actionType": "reload",
+                                    "componentName": "vcsStateService"
+                                  },
+                                  {
+                                    "actionType": "reload",
+                                    "componentName": "workspaceFiles"
+                                  },
+                                  {
+                                    "actionType": "reload",
+                                    "componentName": "managedBranchList"
+                                  },
+                                  {
+                                    "actionType": "reload",
+                                    "componentName": "versionList"
+                                  },
+                                  {
+                                    "actionType": "reload",
+                                    "componentName": "recentCommits"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "placeholder": "暂无文件修改"
+                  }
+                ]
+              },
+              {
+                "title": "分支",
+                "body": [
+                  {
+                    "type": "crud",
+                    "id": "managedBranchList",
+                    "name": "managedBranchList",
+                    "syncLocation": false,
+                    "api": {
+                      "method": "get",
+                      "url": "/api/dev/${appName}/vcs/branches",
+                      "responseData": {
+                        "items": "${items}"
+                      }
+                    },
+                    "columns": [
+                      {
+                        "name": "displayName",
+                        "type": "tpl",
+                        "label": "名称",
+                        "tpl": "${displayName || branchName}"
+                      },
+                      {
+                        "name": "branchName",
+                        "label": "分支"
+                      },
+                      {
+                        "name": "releaseTrack",
+                        "type": "tpl",
+                        "label": "轨道",
+                        "tpl": "${releaseTrack == 'master' ? '产品主线' : releaseTrack == 'custom' ? '定制线' : releaseTrack == 'unmanaged' ? '非受管' : releaseTrack || '-'}"
+                      },
+                      {
+                        "name": "editionCode",
+                        "label": "定制编码"
+                      },
+                      {
+                        "name": "current",
+                        "type": "mapping",
+                        "label": "当前",
+                        "map": {
+                          "true": "是",
+                          "false": "否"
+                        }
+                      },
+                      {
+                        "type": "operation",
+                        "label": "操作",
+                        "buttons": [
+                          {
+                            "type": "button",
+                            "label": "切换",
+                            "level": "link",
+                            "disabledOn": "${current}",
+                            "onEvent": {
+                              "click": {
+                                "actions": [
+                                  {
+                                    "actionType": "ajax",
+                                    "args": {
+                                      "api": {
+                                        "method": "post",
+                                        "url": "/api/dev/${appName}/vcs/branch/switch",
+                                        "data": {
+                                          "branchName": "${branchName}"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "actionType": "reload",
+                                    "componentName": "vcsStateService"
+                                  },
+                                  {
+                                    "actionType": "reload",
+                                    "componentName": "managedBranchList"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "perPageAvailable": [
+                      20
+                    ],
+                    "primaryField": "branchName",
+                    "footable": true,
+                    "placeholder": "暂无受管分支",
+                    "loadDataOnce": true,
+                    "className": "mb-3",
+                    "headerToolbar": [
+                      {
+                        "type": "button",
+                        "label": "创建定制分支",
+                        "level": "primary",
+                        "actionType": "dialog",
+                        "dialog": {
+                          "$ref": "createManagedBranchDialog"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "title": "发布版本",
+                "body": [
+                  {
+                    "type": "crud",
+                    "id": "versionList",
+                    "name": "versionList",
+                    "mode": "table",
+                    "syncLocation": false,
+                    "api": {
+                      "method": "get",
+                      "url": "/api/dev/${appName}/version",
+                      "responseData": {
+                        "items": "${items}"
+                      }
+                    },
+                    "perPageAvailable": [
+                      20
+                    ],
+                    "primaryField": "version",
+                    "footable": true,
+                    "placeholder": "暂无版本",
+                    "loadDataOnce": true,
+                    "columns": [
+                      {
+                        "name": "version",
+                        "label": "版本标签"
+                      },
+                      {
+                        "name": "description",
+                        "label": "说明"
+                      },
+                      {
+                        "name": "sourceBranch",
+                        "label": "来源分支"
+                      },
+                      {
+                        "name": "createdTime",
+                        "label": "发布时间"
+                      },
+                      {
+                        "name": "author",
+                        "label": "作者"
+                      },
+                      {
+                        "type": "operation",
+                        "label": "操作",
+                        "buttons": [
+                          {
+                            "type": "button",
+                            "label": "导出",
+                            "level": "link",
+                            "actionType": "download",
+                            "api": {
+                              "method": "get",
+                              "url": "/api/dev/${appName}/version/${version}/export"
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "headerToolbar": [
+                      {
+                        "type": "button",
+                        "label": "发布版本",
+                        "level": "primary",
+                        "icon": "fa fa-tag",
+                        "actionType": "dialog",
+                        "dialog": {
+                          "$ref": "createVersionModal"
+                        },
+                        "reload": "versionList"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "title": "提交记录",
+                "body": [
+                  {
+                    "type": "crud",
+                    "name": "recentCommits",
+                    "id": "recentCommits",
+                    "syncLocation": false,
+                    "api": "/api/dev/${appName}/version/recent-change-log?limit=50",
+                    "headerToolbar": [],
+                    "footerToolbar": [],
+                    "columns": [
+                      {
+                        "name": "id",
+                        "label": "提交",
+                        "type": "text"
+                      },
+                      {
+                        "name": "message",
+                        "label": "说明"
+                      },
+                      {
+                        "name": "authorName",
+                        "label": "提交人"
+                      },
+                      {
+                        "name": "time",
+                        "label": "提交时间",
+                        "type": "datetime"
+                      }
+                    ],
+                    "placeholder": "暂无提交记录"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "toolbar": [
+      {
+        "type": "button",
+        "label": "远程配置",
+        "icon": "fa fa-code-branch",
+        "actionType": "dialog",
+        "dialog": {
+          "$ref": "vcsPolicyDialog"
+        }
+      },
+      {
+        "type": "button",
+        "label": "凭证配置",
+        "icon": "fa fa-key",
+        "actionType": "dialog",
+        "dialog": {
+          "$ref": "vcsLocalBindingDialog"
+        }
+      },
+      {
+        "type": "button",
+        "label": "刷新",
+        "icon": "fa fa-refresh",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "reload",
+                "componentName": "vcsStateService"
+              },
+              {
+                "actionType": "reload",
+                "componentName": "workspaceFiles"
+              },
+              {
+                "actionType": "reload",
+                "componentName": "managedBranchList"
+              },
+              {
+                "actionType": "reload",
+                "componentName": "versionList"
+              },
+              {
+                "actionType": "reload",
+                "componentName": "recentCommits"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

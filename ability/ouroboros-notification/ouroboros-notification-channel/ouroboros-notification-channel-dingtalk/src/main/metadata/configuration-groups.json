@@ -1,0 +1,16 @@
+[
+  {
+    "path": "notification",
+    "title": "通知设置",
+    "icon": "bell",
+    "order": 20,
+    "description": "多渠道通知与提醒配置"
+  },
+  {
+    "path": "notification.dingTalk",
+    "title": "钉钉通知",
+    "icon": "comments",
+    "order": 40,
+    "description": "钉钉机器人与应用通知配置"
+  }
+]

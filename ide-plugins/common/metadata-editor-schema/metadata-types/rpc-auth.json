@@ -1,0 +1,86 @@
+{
+  "type": "rpc-auth",
+  "fileSuffix": ".rpc.auth.json",
+  "displayName": "RPC 认证",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.rpc.auth.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/rpc-model",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.rpc.auth.json",
+    "fields": [
+      {
+        "name": "name",
+        "label": "名称",
+        "documentPath": [
+          "name"
+        ],
+        "required": true,
+        "defaultFromPath": "camel-name"
+      },
+      {
+        "name": "title",
+        "label": "标题",
+        "documentPath": [
+          "title"
+        ],
+        "required": true,
+        "defaultFromPath": "title"
+      },
+      {
+        "name": "description",
+        "label": "描述",
+        "documentPath": [
+          "description"
+        ]
+      }
+    ],
+    "document": {
+      "name": "example",
+      "title": "示例 RPC 认证",
+      "type": "accessToken",
+      "description": "示例 RPC 认证",
+      "isEnabled": true
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "RPC 认证",
+    "actions": [],
+    "body": [
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "名称",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "title",
+        "label": "标题",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "type",
+        "label": "类型",
+        "required": true
+      },
+      {
+        "type": "switch",
+        "name": "isEnabled",
+        "label": "启用"
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "描述",
+        "minRows": 3
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/rpc-auth.schema.json"
+}

@@ -1,0 +1,30 @@
+ouroboros:
+  ai:
+    # Spring AI default provider line example for an OpenAI-compatible gateway.
+    # LiteLLM remains OPENAI family descriptor shape, not a separate default provider family.
+    providerConnections:
+      - providerInstanceId: litellm-gateway
+        providerFamily: OPENAI
+        transportKind: HTTP
+        endpointRef: http://litellm-gateway:4000/v1
+        credentialsRef: secret://ai/litellm/gateway
+
+    models:
+      - modelId: litellm-openai-chat
+        providerInstanceId: litellm-gateway
+        providerFamily: OPENAI
+        providerKey: litellm
+        modelName: gpt-4o-mini
+        capabilities:
+          - CHAT
+          - TOOL_CALLING
+        defaultOptions:
+          temperature: 0.2
+          maxTokens: 2048
+
+    # 如果 LiteLLM 背后代理 Anthropic，这里也只作为兼容模式示例。
+    # 生产场景仍建议保留独立的 ANTHROPIC family descriptor。
+    # environment/workspace 覆盖优先级需要由上层 provider/resolver 体系显式实现，不是这个 YAML 自动具备的能力。
+    # RAG/MCP readiness is explicit-opt-in and not enabled by this gateway descriptor.
+    knowledgeBases: []
+    mcpEndpoints: []

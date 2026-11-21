@@ -1,0 +1,32 @@
+{
+  "id": "ide/metadata-editors",
+  "title": "IDE metadata editor host and document regression",
+  "domain": "ide",
+  "testType": "integration",
+  "suite": "regression",
+  "risk": "p1",
+  "modes": [
+    "e2e"
+  ],
+  "fixtures": {
+    "services": [],
+    "runtimes": [],
+    "frontends": [],
+    "data": [
+      "ide-metadata-workspace"
+    ],
+    "identities": []
+  },
+  "caseTable": "cases.md",
+  "artifacts": {
+    "contract": "contract.md",
+    "harness": "harness.playbook.md"
+  },
+  "reporting": {
+    "summaryFormat": "json",
+    "evidenceRoot": "tmp/testing-evidence/ide-metadata-editors"
+  },
+  "exclusions": [
+    "Browser Chromium cannot certify JCEF; native JCEF is a separate required lane for full verification."
+  ]
+}

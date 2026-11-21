@@ -1,0 +1,21 @@
+[
+  {
+    "fullName": "systemSetting.integrationManagement.applications",
+    "title": "应用接入",
+    "parent": "systemSetting.integrationManagement",
+    "authorities": [
+      "systemSetting.integrationManagement.applications.security",
+      "systemSetting.integrationManagement.applications.manage"
+    ],
+    "order": 20
+  },
+  {
+    "fullName": "systemSetting.integrationManagement.applications.authServer.settings",
+    "title": "授权服务器设置",
+    "parent": "systemSetting.integrationManagement.applications",
+    "authorities": [
+      "systemSetting.integrationManagement.applications.authServer.settings"
+    ],
+    "order": 30
+  }
+]

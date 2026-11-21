@@ -1,0 +1,194 @@
+{
+  "name": "/system-setting/widget-manage/add",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "mode": "horizontal",
+    "api": {
+      "method": "post",
+      "url": "/api/widget-schema"
+    },
+    "body": [
+      {
+        "type": "tabs",
+        "tabs": [
+          {
+            "title": "基础信息",
+            "tab": [
+              {
+                "label": "名称",
+                "name": "name",
+                "type": "input-text",
+                "required": true
+              },
+              {
+                "label": "显示名",
+                "name": "title",
+                "type": "input-text",
+                "required": true
+              },
+              {
+                "label": "描述",
+                "name": "description",
+                "type": "input-text",
+                "required": true
+              },
+              {
+                "label": "分类",
+                "name": "category",
+                "type": "input-text"
+              },
+              {
+                "label": "生成器",
+                "name": "generatorName",
+                "type": "select",
+                "required": true,
+                "source": {
+                  "method": "get",
+                  "url": "/api/widget-schema/generators"
+                }
+              }
+            ]
+          },
+          {
+            "title": "生成器参数",
+            "disabledOn": "${!generatorName}",
+            "tab": {
+              "type": "ui-schema",
+              "visibleOn": "${generatorName}",
+              "source": {
+                "method": "get",
+                "url": "/api/widget-schema/generators/${generatorName}/form-items",
+                "responseData": {
+                  "type": "container",
+                  "body": "${items}"
+                }
+              }
+            }
+          },
+          {
+            "title": "显示配置",
+            "tab": [
+              {
+                "type": "switch",
+                "label": "允许显示头部",
+                "name": "allowHeader"
+              },
+              {
+                "type": "select",
+                "label": "配置对话框大小",
+                "name": "configDialogSize",
+                "value": "md",
+                "options": [
+                  {
+                    "label": "特小 (xs)",
+                    "value": "xs"
+                  },
+                  {
+                    "label": "小 (sm)",
+                    "value": "sm"
+                  },
+                  {
+                    "label": "中 (md)",
+                    "value": "md"
+                  },
+                  {
+                    "label": "大 (lg)",
+                    "value": "lg"
+                  },
+                  {
+                    "label": "特大 (xl)",
+                    "value": "xl"
+                  },
+                  {
+                    "label": "全屏 (full)",
+                    "value": "full"
+                  }
+                ],
+                "description": "配置小组件时弹出对话框的大小"
+              },
+              {
+                "type": "combo",
+                "name": "sizeConstraints.min",
+                "label": "最小尺寸",
+                "items": [
+                  {
+                    "type": "input-number",
+                    "label": "列数",
+                    "min": 1,
+                    "max": 24,
+                    "name": "cols",
+                    "required": true
+                  },
+                  {
+                    "type": "input-number",
+                    "label": "行数",
+                    "min": 3,
+                    "name": "rows",
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "combo",
+                "name": "sizeConstraints.max",
+                "label": "最大尺寸",
+                "items": [
+                  {
+                    "type": "input-number",
+                    "label": "列数",
+                    "name": "cols",
+                    "max": 24,
+                    "required": true
+                  },
+                  {
+                    "type": "input-number",
+                    "label": "行数",
+                    "name": "rows",
+                    "min": 3,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "combo",
+                "name": "defaultSize",
+                "label": "默认大小",
+                "items": [
+                  {
+                    "type": "input-number",
+                    "label": "列数",
+                    "name": "cols",
+                    "max": 24,
+                    "required": true
+                  },
+                  {
+                    "type": "input-number",
+                    "label": "行数",
+                    "name": "rows",
+                    "min": 3,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "fieldSet",
+                "title": "默认样式",
+                "collapsable": true,
+                "collapsed": true,
+                "body": [
+                  {
+                    "type": "ouroboros-widget-style-config",
+                    "name": "config.defaultStyleConfig",
+                    "subFormMode": "horizontal",
+                    "label": false
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

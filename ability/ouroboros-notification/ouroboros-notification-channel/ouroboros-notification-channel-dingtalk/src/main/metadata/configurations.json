@@ -1,0 +1,24 @@
+[
+  {
+    "key": "notification.dingTalk.appKey",
+    "label": "钉钉通知应用ID",
+    "groupPath": "notification.dingTalk",
+    "order": 10,
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string",
+    "restoreDefaultRemovesOverride": true,
+    "managementAccessPolicyRequired": true
+  },
+  {
+    "key": "notification.dingTalk.appSecret",
+    "label": "钉钉通知密钥",
+    "groupPath": "notification.dingTalk",
+    "order": 20,
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string",
+    "managementAccessPolicyRequired": true,
+    "restoreDefaultRemovesOverride": true
+  }
+]

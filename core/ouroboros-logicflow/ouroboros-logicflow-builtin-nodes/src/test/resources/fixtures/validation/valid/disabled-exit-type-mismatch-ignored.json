@@ -1,0 +1,49 @@
+{
+  "name": "disabled-exit-type-mismatch-ignored",
+  "description": "Disabled explicit exit node should be ignored by output type compatibility checks",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "map",
+  "entryNode": "mapSource",
+  "exitNode": "disabledExit",
+  "nodes": [
+    {
+      "name": "mapSource",
+      "type": "const",
+      "description": "",
+      "dataType": "map",
+      "value": {
+        "hello": "world"
+      }
+    },
+    {
+      "name": "earlyReturn",
+      "type": "return",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "map"
+        }
+      ],
+      "outputPorts": []
+    },
+    {
+      "name": "disabledExit",
+      "type": "const",
+      "description": "",
+      "isEnabled": false,
+      "dataType": "string",
+      "value": "ignored"
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "mapSource",
+      "sourceOutputPort": 0,
+      "targetNode": "earlyReturn",
+      "targetInputPort": 0
+    }
+  ]
+}

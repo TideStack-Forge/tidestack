@@ -1,0 +1,27 @@
+{
+  "name": "员工",
+  "label": "员工",
+  "order": 310,
+  "dataType": {
+    "type": "Employee",
+    "size": "20"
+  },
+  "ui": {
+    "input": {
+      "type": "employee-picker",
+      "multiple": false,
+      "minLength": 1,
+      "maxLength": 1,
+      "defaultCurrentEmployee": "${defaultCurrentEmployee}"
+    }
+  },
+  "validations": {},
+  "paramsUiSchema": [
+    {
+      "type": "switch",
+      "name": "defaultCurrentEmployee",
+      "label": "默认当前人员",
+      "value": false
+    }
+  ]
+}

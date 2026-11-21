@@ -1,0 +1,39 @@
+{
+  "capabilities": [
+    {
+      "id": "metadata-visual-editor",
+      "titleKey": "capability.metadataVisualEditor",
+      "descriptionKey": "capability.metadataVisualEditor.description",
+      "intellij": "available",
+      "vscode": "available"
+    },
+    {
+      "id": "metadata-new-file-templates",
+      "titleKey": "capability.metadataNewFileTemplates",
+      "descriptionKey": "capability.metadataNewFileTemplates.description",
+      "intellij": "available",
+      "vscode": "available"
+    },
+    {
+      "id": "tidestack-develop-config",
+      "titleKey": "capability.developConfig",
+      "descriptionKey": "capability.developConfig.description",
+      "intellij": "available",
+      "vscode": "available"
+    },
+    {
+      "id": "deploy-and-debug",
+      "titleKey": "capability.deployAndDebug",
+      "descriptionKey": "capability.deployAndDebug.description",
+      "intellij": "available",
+      "vscode": "planned"
+    },
+    {
+      "id": "project-templates",
+      "titleKey": "capability.projectTemplates",
+      "descriptionKey": "capability.projectTemplates.description",
+      "intellij": "planned",
+      "vscode": "planned"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "modelType": "default",
+  "namespace": "jar",
+  "name": "order",
+  "title": "Typed Order",
+  "isEnabled": true
+}

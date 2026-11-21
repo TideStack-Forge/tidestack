@@ -1,0 +1,26 @@
+{
+  "fullName": "Apps",
+  "title": "打开应用",
+  "apis": [
+    "POST /api/app",
+    "PUT /api/app/{originName}",
+    "POST /api/app/{name}/move",
+    "POST /api/app/{name}/rename",
+    "GET /api/app/category",
+    "POST /api/app/category",
+    "PUT /api/app/category/{fullPath}",
+    "DELETE /api/app/category/{fullPath}",
+    "GET /api/app",
+    "GET /api/dev/{name}/dev-workspace-menu",
+    "GET /api/app/{name}/edit-access-entry",
+    "DELETE /api/app/{name}",
+    "GET /api/app/{name}/menu",
+    "GET /api/dev/{appName}/approval-workflow/base-info/**"
+  ],
+  "uiViews": [
+    "/dev/apps"
+  ],
+  "menuItems": [
+    "Apps"
+  ]
+}

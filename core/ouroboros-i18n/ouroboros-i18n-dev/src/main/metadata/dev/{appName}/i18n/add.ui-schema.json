@@ -1,0 +1,115 @@
+{
+  "name": "/dev/{appName}/i18n/add",
+  "schema": {
+    "type": "page",
+    "title": "新增语言文件",
+    "toolbar": [
+      {
+        "type": "button",
+        "label": "返回列表",
+        "actionType": "link",
+        "link": "/dev/${appName}/i18n?page=1"
+      },
+      {
+        "type": "button",
+        "label": "创建",
+        "level": "primary",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "validate",
+                "componentName": "create-i18n-form",
+                "outputVar": "validateResult"
+              },
+              {
+                "actionType": "submit",
+                "componentName": "create-i18n-form",
+                "expression": "!validateResult.error",
+                "outputVar": "submitResult"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "body": [
+      {
+        "type": "form",
+        "id": "create-i18n-form",
+        "name": "create-i18n-form",
+        "wrapWithPanel": false,
+        "title": false,
+        "mode": "horizontal",
+        "body": [
+          {
+            "type": "input-text",
+            "name": "locale",
+            "label": "语言代码",
+            "required": true,
+            "placeholder": "请输入语言代码，例如 zh-CN"
+          },
+          {
+            "type": "input-text",
+            "name": "name",
+            "label": "语言名称",
+            "required": true,
+            "placeholder": "请输入语言名称"
+          },
+          {
+            "type": "input-text",
+            "name": "version",
+            "label": "版本",
+            "value": "1.0.0",
+            "placeholder": "默认 1.0.0"
+          },
+          {
+            "type": "select",
+            "name": "direction",
+            "label": "文本方向",
+            "value": "LTR",
+            "options": [
+              {
+                "label": "LTR",
+                "value": "LTR"
+              },
+              {
+                "label": "RTL",
+                "value": "RTL"
+              }
+            ]
+          },
+          {
+            "type": "switch",
+            "name": "enabled",
+            "label": "启用",
+            "value": true
+          },
+          {
+            "type": "switch",
+            "name": "isDefault",
+            "label": "默认语言",
+            "value": false
+          },
+          {
+            "type": "json-editor",
+            "name": "messages",
+            "label": "文案内容",
+            "value": {},
+            "pipeIn": "if (typeof value === 'object') return JSON.stringify(value, null, 2); return value || '{}';",
+            "pipeOut": "try {const v = JSON.parse(value || '{}'); if (typeof v === 'object' && !Array.isArray(v)) return v;} catch(e) {} return value;",
+            "validate": "try {const v = JSON.parse(value || '{}'); if (typeof v !== 'object' || Array.isArray(v)) return '文案内容必须为 JSON 对象';} catch(e) {return '文案内容必须为合法 JSON';}"
+          }
+        ],
+        "api": {
+          "method": "post",
+          "url": "/api/dev/${appName}/i18n",
+          "messages": {
+            "success": "语言文件创建成功"
+          }
+        },
+        "actions": []
+      }
+    ]
+  }
+}

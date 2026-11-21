@@ -1,0 +1,66 @@
+{
+  "name": "/dev/{appName}/ui-schema/add",
+  "schema": {
+    "mode": "horizontal",
+    "wrapperComponent": "div",
+    "labelWidth": 160,
+    "className": "h-full flex flex-col",
+    "api": {
+      "method": "post",
+      "url": "/api/dev/${appName}/ui-schema",
+      "data": {
+        "schema": "${schema|toJson}",
+        "&": "$$"
+      },
+      "messages": {
+        "success": "保存成功"
+      }
+    },
+    "type": "form",
+    "title": false,
+    "body": [
+      {
+        "type": "wrapper",
+        "className": "p-0 flex-shrink-0 flex-grow-0",
+        "body": [
+          {
+            "label": "Schema名字",
+            "description": "${ name ? '页面地址: ' : '请使用英文，不要使用空格和特殊字符，路径以 . 分隔，大驼峰格式会自动转成连字符url风格。' }${ name | kebabCasePath }",
+            "name": "name",
+            "type": "input-text",
+            "placeholder": "Schema ID",
+            "required": true,
+            "className": "mb-1"
+          },
+          {
+            "name": "title",
+            "label": "备注名",
+            "placeholder": "请输入文字以备注页面用途",
+            "type": "input-text",
+            "size": "lg",
+            "className": "mb-1"
+          }
+        ]
+      },
+      {
+        "type": "wrapper",
+        "className": "p-0 flex-shrink flex-grow h-full relative",
+        "body": {
+          "name": "schema",
+          "label": "",
+          "type": "amis-editor",
+          "resourceBrowserContext": {
+            "mode": "dev-app-frontend-resource",
+            "appName": "${appName}"
+          },
+          "required": true,
+          "value": {
+            "type": "page"
+          }
+        }
+      }
+    ],
+    "wrapWithPanel": false,
+    "actions": []
+  }
+}

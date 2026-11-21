@@ -1,0 +1,129 @@
+{
+  "type": "page",
+  "title": "新建数据集",
+  "toolbar": [
+    {
+      "type": "button",
+      "label": "取消",
+      "actionType": "link",
+      "link": "/dev/${appName}/dataset"
+    }
+  ],
+  "body": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "api": {
+      "method": "post",
+      "url": "/api/dev/${appName}/dataset"
+    },
+    "onEvent": {
+      "submitSucc": {
+        "actions": [
+          {
+            "actionType": "openOrSwitchTab",
+            "args": {
+              "title": "编辑数据集 · ${result.data.title || result.data.name}",
+              "url": "/dev/${appName}/dataset/${result.data.name}"
+            }
+          },
+          {
+            "actionType": "closeTab",
+            "args": {
+              "result": "${result.data}"
+            }
+          }
+        ]
+      }
+    },
+    "body": [
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "名称",
+        "required": true,
+        "placeholder": "例如：sales.orders"
+      },
+      {
+        "type": "input-text",
+        "name": "title",
+        "label": "标题",
+        "required": true,
+        "placeholder": "例如：订单分析数据集"
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "描述",
+        "minRows": 2,
+        "maxRows": 4
+      },
+      {
+        "type": "input-tag",
+        "name": "tags",
+        "label": "标签",
+        "value": [],
+        "joinValues": false,
+        "extractValue": true,
+        "clearable": true
+      },
+      {
+        "type": "switch",
+        "name": "isEnabled",
+        "label": "启用",
+        "value": true
+      },
+      {
+        "type": "hidden",
+        "name": "queryDefinition.type",
+        "value": "sql"
+      },
+      {
+        "type": "hidden",
+        "name": "queryDefinition.datasource",
+        "value": "default"
+      },
+      {
+        "type": "hidden",
+        "name": "queryDefinition.sql",
+        "value": "select 1 as id"
+      },
+      {
+        "type": "hidden",
+        "name": "queryDefinition.dialects",
+        "value": []
+      },
+      {
+        "type": "hidden",
+        "name": "parameters",
+        "value": []
+      },
+      {
+        "type": "hidden",
+        "name": "schema.fields",
+        "value": [
+          {
+            "name": "id",
+            "title": "ID",
+            "dataType": "integer",
+            "semanticRole": "identifier",
+            "nullable": false,
+            "sortable": false,
+            "filterable": false,
+            "exportable": true,
+            "visibleByDefault": true
+          }
+        ]
+      },
+      {
+        "type": "button-toolbar",
+        "buttons": [
+          {
+            "type": "submit",
+            "label": "创建并编辑",
+            "level": "primary"
+          }
+        ]
+      }
+    ]
+  }
+}

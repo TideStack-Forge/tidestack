@@ -1,0 +1,32 @@
+{
+  "id": "feature/oral-cases",
+  "title": "Oral Feature Verification",
+  "domain": "feature",
+  "testType": "integration",
+  "suite": "feature",
+  "risk": "p1",
+  "modes": [
+    "harness"
+  ],
+  "fixtures": {
+    "services": [],
+    "runtimes": [],
+    "frontends": [],
+    "data": [],
+    "identities": []
+  },
+  "caseTable": "cases.md",
+  "artifacts": {
+    "contract": "contract.md",
+    "harness": "harness.playbook.md"
+  },
+  "reporting": {
+    "summaryFormat": "markdown",
+    "evidenceRoot": "tmp/testing-evidence/feature-oral-cases"
+  },
+  "exclusions": [],
+  "notes": [
+    "Use this scenario when the feature is still evolving and test cases are initially given orally or in chat.",
+    "Stabilized feature cases should later be promoted into smoke or regression scenarios."
+  ]
+}

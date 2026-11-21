@@ -1,0 +1,83 @@
+{
+  "name": "/dev/apps/info",
+  "schema": {
+    "type": "form",
+    "mode": "horizontal",
+    "title": false,
+    "static": true,
+    "body": [
+      {
+        "type": "container",
+        "className": "flex justify-center pb-4",
+        "body": [
+          {
+            "type": "avatar",
+            "src": "${ CONTAINS(icon, ':') ? icon : null }",
+            "text": "${ LEFT(name, 4) | upperCase }",
+            "size": 96,
+            "fit": "fill",
+            "visibleOn": "${ CONTAINS(icon, ':') || !icon }",
+            "style": {
+              "backgroundColor": "DeepSkyBlue",
+              "color": "#fff",
+              "fontSize": "1.5em"
+            }
+          },
+          {
+            "type": "icon",
+            "icon": "${icon}",
+            "vendor": "",
+            "style": {
+              "fontSize": "48px",
+              "width": "96px",
+              "height": "96px",
+              "textAlign": "center",
+              "lineHeight": "96px",
+              "borderRadius": "50%",
+              "backgroundColor": "DeepSkyBlue",
+              "color": "#fff"
+            },
+            "visibleOn": "${ icon && !CONTAINS(icon, ':') }"
+          }
+        ]
+      },
+      {
+        "type": "input-text",
+        "label": "应用名",
+        "name": "name"
+      },
+      {
+        "type": "input-text",
+        "label": "应用标题",
+        "name": "title"
+      },
+      {
+        "type": "textarea",
+        "label": "描述",
+        "name": "description"
+      },
+      {
+        "type": "input-date",
+        "inputFormat": "YYYY年MM月DD日 HH:mm:ss",
+        "format": "",
+        "label": "创建时间",
+        "name": "createdAt"
+      },
+      {
+        "type": "input-date",
+        "inputFormat": "YYYY年MM月DD日 HH:mm:ss",
+        "format": "",
+        "label": "更新时间",
+        "name": "updatedAt"
+      }
+    ],
+    "actions": [
+      {
+        "type": "action",
+        "label": "关闭",
+        "actionType": "close"
+      }
+    ],
+    "wrapWithPanel": false
+  }
+}

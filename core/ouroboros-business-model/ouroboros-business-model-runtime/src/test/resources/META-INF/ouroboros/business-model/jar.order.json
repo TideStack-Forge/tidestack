@@ -1,0 +1,7 @@
+{
+  "modelType": "default",
+  "namespace": "jar",
+  "name": "order",
+  "title": "Legacy Order",
+  "isEnabled": true
+}

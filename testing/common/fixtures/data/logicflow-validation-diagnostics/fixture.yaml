@@ -1,0 +1,119 @@
+{
+  "id": "data/logicflow-validation-diagnostics",
+  "title": "Logicflow Validation Diagnostics Fixture",
+  "class": "data",
+  "capabilities": [
+    "develop-platform-api-seed",
+    "logicflow-diagnostics-snapshot-model"
+  ],
+  "lifecycle": {
+    "up": "shell: bash testing/common/fixtures/data/logicflow-validation-diagnostics/prepare.sh",
+    "check": "shell: bash testing/common/fixtures/data/logicflow-validation-diagnostics/prepare.sh",
+    "reset": "shell: bash testing/common/fixtures/data/logicflow-validation-diagnostics/prepare.sh",
+    "down": "fixture can remain in place for repeated diagnostics runs; clean manually if this scenario must not leave smoke data behind"
+  },
+  "inputs": [
+    {
+      "name": "shellBaseUrl",
+      "required": false,
+      "default": "http://127.0.0.1:18081",
+      "sources": [
+        {
+          "kind": "env",
+          "name": "SMOKE_PUBLIC_SHELL_URL"
+        }
+      ]
+    },
+    {
+      "name": "loginUsername",
+      "required": false,
+      "default": "admin",
+      "sources": [
+        {
+          "kind": "env",
+          "name": "SMOKE_LOGIN_USERNAME"
+        }
+      ]
+    },
+    {
+      "name": "loginPassword",
+      "required": false,
+      "default": "666666",
+      "sources": [
+        {
+          "kind": "env",
+          "name": "SMOKE_LOGIN_PASSWORD"
+        }
+      ]
+    },
+    {
+      "name": "appName",
+      "required": false,
+      "default": "logicflowsmoke",
+      "sources": [
+        {
+          "kind": "env",
+          "name": "SMOKE_APP_NAME"
+        }
+      ]
+    },
+    {
+      "name": "appTitle",
+      "required": false,
+      "default": "逻辑流烟测",
+      "sources": [
+        {
+          "kind": "env",
+          "name": "SMOKE_APP_TITLE"
+        }
+      ]
+    },
+    {
+      "name": "modelName",
+      "required": false,
+      "default": "smokevalidationfixture",
+      "sources": [
+        {
+          "kind": "env",
+          "name": "SMOKE_LOGICFLOW_MODEL_NAME"
+        }
+      ]
+    },
+    {
+      "name": "expectedNodeName",
+      "required": false,
+      "default": "caller",
+      "sources": [
+        {
+          "kind": "env",
+          "name": "SMOKE_EXPECTED_NODE_NAME"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "appName",
+      "fromInput": "appName"
+    },
+    {
+      "name": "modelName",
+      "fromInput": "modelName"
+    },
+    {
+      "name": "expectedNodeName",
+      "fromInput": "expectedNodeName"
+    }
+  ],
+  "healthChecks": [
+    {
+      "name": "logicflow-diagnostics-snapshot-model-ready",
+      "expect": "develop platform contains the target logicflow model, and the latest save response contains a persisted diagnostics snapshot plus diagnostics for the expected node"
+    }
+  ],
+  "prerequisites": [],
+  "notes": [
+    "The fixture is intentionally idempotent: repeated up/check/reset executions should keep the same invalid model available for browser diagnostics verification.",
+    "Cleanup is manual because the same app/model pair is useful across repeated scenario runs."
+  ]
+}

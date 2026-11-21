@@ -1,0 +1,8 @@
+{
+  "fullName": "AdvancedFeatures",
+  "icon": "fas fa-rocket",
+  "title": "高级功能",
+  "placement": "main",
+  "stage": "dev",
+  "order": 110
+}

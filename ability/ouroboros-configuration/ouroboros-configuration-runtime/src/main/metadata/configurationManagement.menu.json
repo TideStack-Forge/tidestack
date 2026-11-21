@@ -1,0 +1,7 @@
+{
+  "title": "配置管理",
+  "fullName": "systemSetting.configurationManagement",
+  "icon": "fa fa-cogs",
+  "url": "/system-setting/configuration-management",
+  "order": 10
+}

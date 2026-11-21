@@ -1,0 +1,28 @@
+[
+  {
+    "key": "notification.jpush.appKey",
+    "label": "极光通知应用KEY",
+    "groupPath": "notification.jpush",
+    "order": 10,
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string",
+    "restoreDefaultRemovesOverride": true
+  },
+  {
+    "key": "notification.jpush.masterSecret",
+    "label": "极光通知主密钥",
+    "groupPath": "notification.jpush",
+    "order": 20,
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string",
+    "managementAccessPolicyRequired": true,
+    "editorSchema": {
+      "type": "input-password",
+      "placeholder": "留空保留已配置凭据；填写表示替换",
+      "autoComplete": "new-password"
+    },
+    "restoreDefaultRemovesOverride": true
+  }
+]

@@ -1,0 +1,41 @@
+{
+  "name": "/app-templates/import",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "api": {
+      "method": "post",
+      "url": "/api/app-template/import"
+    },
+    "body": [
+      {
+        "type": "input-text",
+        "name": "templateName",
+        "label": "模板名称",
+        "placeholder": "请输入模板名称",
+        "description": "留空将使用压缩包内的模板名称"
+      },
+      {
+        "type": "input-file",
+        "name": "file",
+        "label": "模板文件",
+        "required": true,
+        "accept": ".zip",
+        "asBlob": true,
+        "description": "请选择ZIP格式的模板文件"
+      }
+    ],
+    "actions": [
+      {
+        "type": "button",
+        "label": "取消",
+        "actionType": "cancel"
+      },
+      {
+        "type": "submit",
+        "label": "导入",
+        "level": "primary"
+      }
+    ]
+  }
+}

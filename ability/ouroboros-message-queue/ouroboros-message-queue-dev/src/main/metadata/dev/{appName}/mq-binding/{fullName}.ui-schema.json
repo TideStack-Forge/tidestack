@@ -1,0 +1,57 @@
+{
+  "name": "/dev/{appName}/mq-binding/{fullName}",
+  "schema": {
+    "type": "page",
+    "title": "编辑MQ绑定「${fullName}」",
+    "toolbar": [
+      {
+        "type": "amis-schema",
+        "source": {
+          "method": "get",
+          "url": "/api/dev-fragment-schema/vcs-buttons",
+          "data": {
+            "apiPath": "mq-binding/${fullName}",
+            "statusId": "mqBindingStatus",
+            "formId": "mqBindingForm",
+            "actionType": "static"
+          }
+        },
+        "mergeProps": {
+          "onEvent": {
+            "fetchInited": {
+              "actions": [
+                {},
+                {}
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "body": [
+      {
+        "type": "amis-schema",
+        "schemaId": "dev/{appName}/mq-binding/form",
+        "title": "",
+        "wrapWithPanel": false,
+        "mode": "horizontal",
+        "id": "mqBindingForm",
+        "initApi": {
+          "method": "get",
+          "url": "/api/dev/${appName}/mq-binding/${fullName}"
+        },
+        "api": {
+          "method": "put",
+          "url": "/api/dev/${appName}/mq-binding/${fullName}"
+        },
+        "mergeProps": {
+          "body": [
+            {
+              "static": true
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

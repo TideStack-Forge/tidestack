@@ -1,0 +1,7 @@
+{
+  "fullName": "systemSetting.logicflow.observation.manage",
+  "title": "修改流程观测设置",
+  "apis": [
+    "PUT /api/runtime/logicflows/models/{name}/observation-policy"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "fullName": "BasicConfiguration.Datasource",
+  "url": "/dev/{appName}/datasource",
+  "icon": "fa fa-database",
+  "title": "数据源",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 10
+}

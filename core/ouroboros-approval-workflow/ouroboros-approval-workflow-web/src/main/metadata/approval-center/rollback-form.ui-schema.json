@@ -1,0 +1,68 @@
+{
+  "name": "/approval-center/rollback-form",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "title": false,
+    "id": "rollback-form",
+    "mode": "normal",
+    "body": [
+      {
+        "name": "comment",
+        "type": "textarea",
+        "clearable": true,
+        "showCounter": true,
+        "required": true,
+        "label": "填写回退理由",
+        "placeholder": "回退请求时，请填写回退理由"
+      }
+    ],
+    "actions": [
+      {
+        "type": "action",
+        "actionType": "cancel",
+        "label": "取消"
+      },
+      {
+        "type": "action",
+        "actionType": "confirm",
+        "level": "primary",
+        "label": "确认",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "validate",
+                "componentId": "rollback-form"
+              },
+              {
+                "actionType": "ajax",
+                "api": {
+                  "method": "POST",
+                  "url": "/api/approval-workflow/task/${id}",
+                  "data": {
+                    "&": "$$",
+                    "action": "rollback",
+                    "formData": "$formData"
+                  }
+                },
+                "expression": "!validateResult.error",
+                "outputVar": "submitResponse"
+              },
+              {
+                "actionType": "closeDrawer",
+                "componentId": "drawer-detail",
+                "expression": "!submitResponse.error"
+              },
+              {
+                "actionType": "reload",
+                "componentId": "approval-center",
+                "expression": "!submitResponse.error"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

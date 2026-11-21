@@ -1,0 +1,109 @@
+{
+  "runner": "h=0; for t in {files}; do case \"$t\" in *.py) python3 -m unittest discover -s \"$(dirname \"$t\")\" -p \"$(basename \"$t\")\" -v;; docs/handbook/*) h=1;; *) exit 2;; esac || exit $?; done; if [ \"$h\" = 1 ]; then npm --prefix docs/handbook run test:coverage || exit $?; fi; mvn -ntp -pl libs/common/common-expression,core/ouroboros-logicflow/ouroboros-logicflow-core -am test -Dtest=FlowCodeIntelligenceContractTest,FlowModelRevisionTest,FlowRuntimeLifecycleTest,SpEl*Test -Dsurefire.failIfNoSpecifiedTests=false",
+  "dependencies": {
+    "libs/storage/**": [
+      "testing/integration/feature/storage/independent-content-stores/test_storage_verification.py"
+    ],
+    "ability/ouroboros-file-upload/**": [
+      "testing/integration/feature/storage/independent-content-stores/test_storage_verification.py"
+    ],
+    "core/ouroboros-resource/**": [
+      "testing/integration/feature/storage/independent-content-stores/test_storage_verification.py"
+    ],
+    "app-module/document-management/**": [
+      "testing/integration/feature/storage/independent-content-stores/test_storage_verification.py"
+    ],
+    "dev-module/ouroboros-dev-app-management/src/main/java/com/ouroboros/dev/app/controller/AppLogoController.java": [
+      "testing/integration/feature/storage/independent-content-stores/test_storage_verification.py"
+    ],
+    "dev-module/ouroboros-dev-app-management/src/main/java/com/ouroboros/dev/app/controller/AppExtendJarController.java": [
+      "testing/integration/feature/storage/independent-content-stores/test_storage_verification.py"
+    ],
+    "dev-module/ouroboros-dev-app-management/src/main/java/com/ouroboros/dev/app/DevAppAutoConfiguration.java": [
+      "testing/integration/feature/storage/independent-content-stores/test_storage_verification.py"
+    ],
+    "dev-module/ouroboros-dev-app-management/src/test/java/com/ouroboros/dev/app/controller/*StorageTest.java": [
+      "testing/integration/feature/storage/independent-content-stores/test_storage_verification.py"
+    ],
+    "dev-module/ouroboros-dev-app-management/pom.xml": [
+      "testing/integration/feature/storage/independent-content-stores/test_storage_verification.py"
+    ],
+    "bom/pom.xml": [
+      "testing/integration/feature/storage/independent-content-stores/test_storage_verification.py"
+    ],
+    "libs/pom.xml": [
+      "testing/integration/feature/storage/independent-content-stores/test_storage_verification.py"
+    ],
+    "pom.xml": [
+      "testing/integration/feature/storage/independent-content-stores/test_storage_verification.py"
+    ],
+    "platform/ouroboros-develop/pom.xml": [
+      "testing/integration/feature/storage/independent-content-stores/test_storage_verification.py"
+    ],
+    "platform/ouroboros-mothership/pom.xml": [
+      "testing/integration/feature/storage/independent-content-stores/test_storage_verification.py"
+    ],
+    "testing/architecture-tests/**": [
+      "testing/integration/feature/storage/independent-content-stores/test_storage_verification.py"
+    ],
+    "testing/integration/feature/storage/independent-content-stores/**": [
+      "testing/integration/feature/storage/independent-content-stores/test_storage_verification.py"
+    ],
+    "Jenkinsfile": [
+      "testing/integration/feature/storage/independent-content-stores/test_storage_verification.py"
+    ],
+    "scripts/ci/preflight-backend-release.sh": [
+      "testing/integration/feature/storage/independent-content-stores/test_storage_verification.py"
+    ],
+    "dev-module/ouroboros-dev-app-management/src/main/java/com/ouroboros/dev/app/controller/AppSettingController.java": [
+      "testing/integration/feature/storage/independent-content-stores/test_storage_verification.py"
+    ],
+    "scripts/ci/dependency-policy.yaml": [
+      "scripts/ci/tests/test_verify_dependency_policy.py"
+    ],
+    "scripts/ci/verify_dependency_policy.py": [
+      "scripts/ci/tests/test_verify_dependency_policy.py"
+    ],
+    "core/ouroboros-logicflow/ouroboros-logicflow-core/src/test/java/com/ouroboros/logicflow/compiler/FlowRuntimeLifecycleTest.java": [
+      "scripts/ci/tests/test_verify_dependency_policy.py"
+    ],
+    "core/ouroboros-logicflow/ouroboros-logicflow-core/src/test/java/com/ouroboros/logicflow/model/FlowCodeIntelligenceContractTest.java": [
+      "scripts/ci/tests/test_verify_dependency_policy.py"
+    ],
+    "core/ouroboros-logicflow/ouroboros-logicflow-core/src/test/java/com/ouroboros/logicflow/model/FlowModelRevisionTest.java": [
+      "scripts/ci/tests/test_verify_dependency_policy.py"
+    ],
+    "libs/common/common-expression/src/test/java/com/ouroboros/expression/impl/SpElExpressionPlanTest.java": [
+      "scripts/ci/tests/test_verify_dependency_policy.py"
+    ],
+    "libs/common/common-expression/src/test/java/com/ouroboros/expression/impl/SpElImplAccessorFallbackTest.java": [
+      "scripts/ci/tests/test_verify_dependency_policy.py"
+    ],
+    "libs/common/common-expression/src/test/java/com/ouroboros/expression/impl/SpElImplLiteralPlaceholderTest.java": [
+      "scripts/ci/tests/test_verify_dependency_policy.py"
+    ],
+    "libs/common/common-expression/src/test/java/com/ouroboros/expression/impl/SpElInputAnalysisTest.java": [
+      "scripts/ci/tests/test_verify_dependency_policy.py"
+    ],
+    "libs/common/common-expression/src/test/java/com/ouroboros/expression/impl/SpElRestrictedPredicateTest.java": [
+      "scripts/ci/tests/test_verify_dependency_policy.py"
+    ],
+    "docs/handbook/package.json": [
+      "docs/handbook/src/components/CapabilityMarket/CapabilityMarket.test.jsx",
+      "docs/handbook/scripts/metadata-schemas.test.mjs",
+      "docs/handbook/src/components/SvgViewer/SvgViewer.test.jsx",
+      "docs/handbook/config/themeConfig.navbar.items.test.mjs",
+      "docs/handbook/config/prism-languages.test.mjs",
+      "docs/handbook/config/plugins/external-svg-images.test.mjs"
+    ],
+    "docs/handbook/package-lock.json": [
+      "docs/handbook/src/components/CapabilityMarket/CapabilityMarket.test.jsx",
+      "docs/handbook/scripts/metadata-schemas.test.mjs",
+      "docs/handbook/src/components/SvgViewer/SvgViewer.test.jsx",
+      "docs/handbook/config/themeConfig.navbar.items.test.mjs",
+      "docs/handbook/config/prism-languages.test.mjs",
+      "docs/handbook/config/plugins/external-svg-images.test.mjs"
+    ]
+  },
+  "timeout_s": 1800
+}

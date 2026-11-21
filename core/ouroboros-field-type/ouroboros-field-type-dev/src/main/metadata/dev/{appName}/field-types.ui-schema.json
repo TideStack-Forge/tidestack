@@ -1,0 +1,140 @@
+{
+  "name": "/dev/{appName}/field-types",
+  "schema": {
+    "type": "page",
+    "pullRefresh": {
+      "disabled": true
+    },
+    "asideResizor": false,
+    "title": "字段类型管理",
+    "body": [
+      {
+        "columns": [
+          {
+            "name": "name",
+            "label": "字段类型名"
+          },
+          {
+            "name": "label",
+            "label": "显示名称"
+          },
+          {
+            "name": "order",
+            "label": "排序"
+          },
+          {
+            "name": "isPrimaryKeyType",
+            "label": "主键类型",
+            "type": "mapping",
+            "map": {
+              "true": "<span class='label label-info'>是</span>",
+              "false": "<span class='text-muted'>否</span>",
+              "*": "-"
+            }
+          },
+          {
+            "name": "primaryKeyGenerator",
+            "label": "主键生成器"
+          },
+          {
+            "label": "参数项",
+            "type": "tpl",
+            "tpl": "${paramsUiSchema ? paramsUiSchema.length : 0}"
+          },
+          {
+            "name": "ui.input.type",
+            "label": "录入组件"
+          },
+          {
+            "name": "ui.display.type",
+            "label": "展示组件"
+          },
+          {
+            "buttons": [
+              {
+                "type": "button",
+                "actionType": "dialog",
+                "icon": "fa fa-eye",
+                "label": "查看",
+                "dialog": {
+                  "size": "full",
+                  "bodyClassName": "p-0 m-0",
+                  "title": {
+                    "type": "tpl",
+                    "tpl": "<strong>查看：${name}</strong>"
+                  },
+                  "url": "/dev/${appName}/field-types/detail",
+                  "actions": []
+                }
+              },
+              {
+                "actionType": "dialog",
+                "label": "编辑",
+                "icon": "fa fa-edit",
+                "dialog": {
+                  "size": "full",
+                  "bodyClassName": "p-0 m-0",
+                  "title": {
+                    "type": "tpl",
+                    "tpl": "<strong>编辑：${name}</strong>"
+                  },
+                  "url": "/dev/${appName}/field-types/edit"
+                }
+              },
+              {
+                "actionType": "ajax",
+                "icon": "fa fa-trash",
+                "level": "danger",
+                "confirmText": "确定要删除「${name}」吗？",
+                "label": "删除",
+                "api": {
+                  "method": "delete",
+                  "messages": {
+                    "success": "保存成功"
+                  },
+                  "url": "/api/dev/${appName}/field/${name}"
+                }
+              }
+            ],
+            "label": "操作",
+            "width": "240px",
+            "type": "operation"
+          }
+        ],
+        "name": "crud",
+        "model": "table",
+        "api": "get:/api/dev/${appName}/field",
+        "type": "crud",
+        "headerToolbar": [
+          "reload",
+          {
+            "actionType": "dialog",
+            "dialog": {
+              "size": "full",
+              "bodyClassName": "p-0 m-0",
+              "title": "新建字段类型",
+              "url": "/dev/${appName}/field-types/add"
+            },
+            "level": "primary",
+            "label": "新增",
+            "icon": "fa fa-plus",
+            "type": "action",
+            "align": "right"
+          }
+        ],
+        "footerToolbar": [
+          "statistics",
+          "pagination",
+          "switch-per-page"
+        ],
+        "perPageAvailable": [
+          10,
+          20,
+          50
+        ],
+        "loadDataOnce": true,
+        "alwaysShowPagination": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "fullName": "Chart",
+  "url": "/dev/{appName}/chart",
+  "icon": "fa fa-chart-pie",
+  "title": "图表",
+  "showMode": "tab",
+  "scope": "main",
+  "stage": "dev",
+  "order": 596
+}

@@ -1,0 +1,8 @@
+{
+  "url": "/system-setting/user-dashboard-template-manage",
+  "fullName": "systemSetting.UserDashboardTemplateManage",
+  "icon": "fa fa-file-alt",
+  "title": "门户模版管理",
+  "placement": "main",
+  "order": 20
+}

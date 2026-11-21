@@ -1,0 +1,473 @@
+{
+  "name": "/document-management/directory-content",
+  "schema": {
+    "type": "crud",
+    "syncLocation": false,
+    "columnsTogglable": false,
+    "loadDataOnce": true,
+    "id": "directory-content",
+    "mode": "table",
+    "api": {
+      "method": "get",
+      "url": "/api/document-libraries/${libraryId}/directories/${directoryId}/browse?orderBy=$orderBy&orderDir=$orderDir",
+      "sendOn": "${directoryId}",
+      "adaptor": "const {directoryId, libraryId, ...rest} = payload.data; return {...payload, data: rest};"
+    },
+    "headerToolbar": [
+      {
+        "type": "button-group",
+        "align": "right",
+        "visible": false,
+        "buttons": [
+          {
+            "type": "button",
+            "icon": "fa fa-th-large",
+            "tooltip": "卡片视图",
+            "level": "${viewMode === 'cards' ? 'primary' : 'default'}",
+            "onEvent": {
+              "click": {
+                "actions": [
+                  {
+                    "actionType": "setValue",
+                    "componentId": "directory-content",
+                    "args": {
+                      "value": {
+                        "viewMode": "cards"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "button",
+            "icon": "fa fa-list",
+            "tooltip": "列表视图",
+            "level": "${viewMode === 'table' || !viewMode ? 'primary' : 'default'}",
+            "onEvent": {
+              "click": {
+                "actions": [
+                  {
+                    "actionType": "setValue",
+                    "componentId": "directory-content",
+                    "args": {
+                      "value": {
+                        "viewMode": "table"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "button",
+        "label": "创建目录",
+        "level": "enhance",
+        "icon": "fa fa-folder-plus",
+        "visibleOn": "${permissions.canCreateDir}",
+        "hasAuth": "DocumentManagement.creator",
+        "actionType": "dialog",
+        "dialog": {
+          "title": "创建目录",
+          "size": "md",
+          "url": "/document-management/create-directory",
+          "data": {
+            "libraryId": "${libraryId}",
+            "directoryId": "${directoryId}",
+            "isRoot": "${path.length === 1}"
+          }
+        }
+      },
+      {
+        "type": "button",
+        "label": "上传文件",
+        "level": "enhance",
+        "icon": "fa fa-upload",
+        "visibleOn": "${permissions.canCreateFile}",
+        "hasAuth": "DocumentManagement.creator",
+        "actionType": "dialog",
+        "dialog": {
+          "title": "上传文件",
+          "size": "md",
+          "url": "/document-management/upload-file?libraryId=${libraryId}&directoryId=${directoryId}"
+        }
+      },
+      {
+        "type": "reload",
+        "icon": "fa fa-refresh",
+        "align": "right",
+        "label": "刷新"
+      },
+      {
+        "type": "button",
+        "icon": "fa fa-info-circle",
+        "level": "link",
+        "align": "right",
+        "tooltip": "目录属性",
+        "actionType": "dialog",
+        "dialog": {
+          "title": "目录属性",
+          "size": "lg",
+          "url": "/document-management/directory-properties",
+          "data": {
+            "libraryId": "${libraryId}",
+            "directoryId": "${directoryId}",
+            "path": "${path}"
+          }
+        }
+      }
+    ],
+    "columns": [
+      {
+        "name": "name",
+        "label": "名称",
+        "type": "container",
+        "bodyClassName": "flex items-center",
+        "body": [
+          {
+            "type": "icon",
+            "icon": "fa fa-folder",
+            "className": "mr-2",
+            "vendor": "",
+            "visibleOn": "${type === 'DIRECTORY'}"
+          },
+          {
+            "type": "mapping",
+            "name": "extension",
+            "className": "mr-2",
+            "visibleOn": "${type === 'DOCUMENT'}",
+            "map": {
+              "doc": "docx",
+              "docx": "docx",
+              "xls": "xlsx",
+              "xlsx": "xlsx",
+              "ppt": "pptx",
+              "pptx": "pptx",
+              "pdf": "pdf",
+              "csv": "csv",
+              "txt": "txt",
+              "md": "txt",
+              "log": "txt",
+              "mp3": "mp3",
+              "wav": "mp3",
+              "wma": "mp3",
+              "mp4": "mp4",
+              "mpg": "mp4",
+              "mpeg": "mp4",
+              "avi": "mp4",
+              "mkv": "mp4",
+              "mov": "mp4",
+              "wmv": "mp4",
+              "mpeg4": "mp4",
+              "jpg": "jpeg",
+              "jpeg": "jpeg",
+              "gif": "jpeg",
+              "bmp": "jpeg",
+              "webp": "jpeg",
+              "png": "jpeg",
+              "zip": "zip",
+              "rar": "zip",
+              "7z": "zip",
+              "html": "code",
+              "css": "code",
+              "js": "code",
+              "xml": "code",
+              "json": "code",
+              "exe": "exe",
+              "msi": "exe",
+              "dll": "exe",
+              "bat": "exe",
+              "jar": "exe",
+              "tar": "zip",
+              "gz": "zip",
+              "iso": "zip",
+              "*": "unknown"
+            },
+            "itemSchema": {
+              "type": "icon",
+              "icon": "filetype-${item}",
+              "className": "w-6 h-6",
+              "vendor": ""
+            }
+          },
+          {
+            "type": "tpl",
+            "tpl": "${name}"
+          }
+        ],
+        "sortable": true
+      },
+      {
+        "name": "size",
+        "label": "大小",
+        "type": "tpl",
+        "tpl": "${ !size ? '-' : ${size | bytes}}",
+        "width": 100,
+        "sortable": true
+      },
+      {
+        "name": "createdByDisplayName",
+        "label": "创建人",
+        "width": 160,
+        "sortable": true
+      },
+      {
+        "name": "createdAt",
+        "label": "创建时间",
+        "type": "datetime",
+        "width": 160,
+        "sortable": true
+      },
+      {
+        "type": "operation",
+        "label": "操作",
+        "width": 260,
+        "buttons": [
+          {
+            "type": "button",
+            "label": "打开",
+            "icon": "fa fa-folder-open",
+            "actionType": "link",
+            "url": "?type=DIRECTORY&directoryId=${id}&libraryId=${libraryId}",
+            "hiddenOn": "${type !== 'DIRECTORY'}"
+          },
+          {
+            "type": "button",
+            "label": "下载",
+            "icon": "fa fa-download",
+            "actionType": "download",
+            "api": "/api/document-libraries/${libraryId}/documents/${id}/download",
+            "visibleOn": "${type === 'DOCUMENT' && permissions.canDownload}"
+          },
+          {
+            "type": "button",
+            "label": "重命名",
+            "icon": "fa fa-edit",
+            "actionType": "dialog",
+            "visibleOn": "${permissions.canRenameMove}",
+            "dialog": {
+              "title": "重命名",
+              "size": "sm",
+              "url": "/document-management/rename-document",
+              "data": {
+                "libraryId": "$libraryId",
+                "id": "$id",
+                "newName": "$name"
+              }
+            }
+          },
+          {
+            "type": "button",
+            "label": "删除",
+            "icon": "fa fa-trash",
+            "level": "danger",
+            "actionType": "ajax",
+            "confirmText": "确定要删除吗？",
+            "visibleOn": "${(type === 'DOCUMENT' && permissions.canDeleteFile) || (type === 'DIRECTORY' && permissions.canDeleteDir)}",
+            "api": {
+              "method": "delete",
+              "url": "/api/document-libraries/${libraryId}/${type === 'DOCUMENT' ? 'documents' : 'directories'}/${id}",
+              "messages": {
+                "success": "删除成功"
+              }
+            },
+            "onEvent": {
+              "success": {
+                "actions": [
+                  {
+                    "actionType": "broadcast",
+                    "expression": "${type === 'DIRECTORY'}",
+                    "args": {
+                      "eventName": "directoryChange"
+                    },
+                    "data": {
+                      "libraryId": "${libraryId}",
+                      "directoryId": "${directoryId}"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "footerToolbar": [
+      "statistics",
+      "pagination"
+    ],
+    "columnsCount": 4,
+    "card": {
+      "className": "hover:shadow-md",
+      "header": {
+        "title": "${name}",
+        "subTitle": "${type === 'DIRECTORY' ? '文件夹' : FILESIZE(size)}",
+        "className": "pb-1"
+      },
+      "body": [
+        {
+          "type": "container",
+          "className": "flex justify-center py-4",
+          "body": [
+            {
+              "type": "icon",
+              "icon": "fa fa-folder",
+              "vendor": "",
+              "visibleOn": "${type === 'DIRECTORY'}",
+              "style": {
+                "fontSize": "64px",
+                "color": "#f59e0b",
+                "width": "100%"
+              }
+            },
+            {
+              "type": "mapping",
+              "name": "extension",
+              "visibleOn": "${type === 'DOCUMENT'}",
+              "map": {
+                "doc": "docx",
+                "docx": "docx",
+                "xls": "xlsx",
+                "xlsx": "xlsx",
+                "ppt": "pptx",
+                "pptx": "pptx",
+                "pdf": "pdf",
+                "csv": "csv",
+                "txt": "txt",
+                "md": "txt",
+                "log": "txt",
+                "mp3": "mp3",
+                "wav": "mp3",
+                "wma": "mp3",
+                "mp4": "mp4",
+                "mpg": "mp4",
+                "mpeg": "mp4",
+                "avi": "mp4",
+                "mkv": "mp4",
+                "mov": "mp4",
+                "wmv": "mp4",
+                "mpeg4": "mp4",
+                "jpg": "jpeg",
+                "jpeg": "jpeg",
+                "gif": "jpeg",
+                "bmp": "jpeg",
+                "webp": "jpeg",
+                "png": "jpeg",
+                "zip": "zip",
+                "rar": "zip",
+                "7z": "zip",
+                "html": "code",
+                "css": "code",
+                "js": "code",
+                "xml": "code",
+                "json": "code",
+                "exe": "exe",
+                "msi": "exe",
+                "dll": "exe",
+                "bat": "exe",
+                "jar": "exe",
+                "tar": "zip",
+                "gz": "zip",
+                "iso": "zip",
+                "*": "unknown"
+              },
+              "itemSchema": {
+                "type": "icon",
+                "icon": "filetype-${item}",
+                "vendor": "",
+                "style": {
+                  "fontSize": "64px",
+                  "width": "100%"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "label": "创建时间",
+          "type": "date",
+          "name": "createdAt",
+          "format": "YYYY-MM-DD HH:mm"
+        },
+        {
+          "label": "创建人",
+          "name": "createdByDisplayName"
+        }
+      ],
+      "actions": [
+        {
+          "type": "button",
+          "label": "打开",
+          "icon": "fa fa-folder-open",
+          "level": "primary",
+          "actionType": "link",
+          "url": "?type=DIRECTORY&directoryId=${id}&libraryId=${libraryId}",
+          "visibleOn": "${type === 'DIRECTORY'}"
+        },
+        {
+          "type": "button",
+          "label": "下载",
+          "icon": "fa fa-download",
+          "level": "success",
+          "actionType": "download",
+          "api": "/api/document-libraries/${libraryId}/documents/${id}/download",
+          "visibleOn": "${type === 'DOCUMENT' && permissions.canDownload}"
+        },
+        {
+          "type": "button",
+          "label": "重命名",
+          "icon": "fa fa-edit",
+          "actionType": "dialog",
+          "visibleOn": "${permissions.canRenameMove}",
+          "dialog": {
+            "title": "重命名",
+            "size": "sm",
+            "url": "/document-management/rename-document",
+            "data": {
+              "libraryId": "$libraryId",
+              "id": "$id",
+              "newName": "$name"
+            }
+          }
+        },
+        {
+          "type": "button",
+          "label": "删除",
+          "icon": "fa fa-trash",
+          "level": "danger",
+          "actionType": "ajax",
+          "confirmText": "确定要删除吗？",
+          "visibleOn": "${(type === 'DOCUMENT' && permissions.canDeleteFile) || (type === 'DIRECTORY' && permissions.canDeleteDir)}",
+          "api": {
+            "method": "delete",
+            "url": "/api/document-libraries/${libraryId}/${type === 'DOCUMENT' ? 'documents' : 'directories'}/${id}",
+            "messages": {
+              "success": "删除成功"
+            }
+          },
+          "onEvent": {
+            "success": {
+              "actions": [
+                {
+                  "actionType": "broadcast",
+                  "expression": "${type === 'DIRECTORY'}",
+                  "args": {
+                    "eventName": "directoryChange"
+                  },
+                  "data": {
+                    "libraryId": "${libraryId}",
+                    "directoryId": "${directoryId}"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

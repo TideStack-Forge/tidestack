@@ -1,0 +1,40 @@
+server:
+  tomcat:
+    relaxed-path-chars: '|,{,},[,]'
+    relaxed-query-chars: '|,{,},[,]'
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+
+  liquibase:
+    enabled: false
+
+  groovy:
+    template:
+      check-template-location: false
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://119.188.171.219:3308/mothership?useUnicode=true&characterEncoding=utf-8&nullCatalogMeansCurrent=true
+    username: mothership
+    password: mothership@123
+    migration-strategy: DISABLED
+
+logging:
+  level:
+    org.springframework.jdbc.core.JdbcTemplate: DEBUG
+
+root-path: .
+ouroboros:
+  resource-root: ${root-path}/ouroboros
+
+  micro-web:
+    web-root: ${root-path}/web
+
+  security:
+    token:
+      accessTokenExpire: 604800
+      refreshTokenExpire: 604800

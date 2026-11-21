@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>ouroboros-root</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>ouroboros-web-security</artifactId>
+    <packaging>pom</packaging>
+    <name>Ouroboros Web Security</name>
+
+    <modules>
+        <module>ouroboros-web-security-annotation</module>
+        <module>ouroboros-web-security-core</module>
+        <module>ouroboros-web-security-spring-adapter</module>
+        <module>ouroboros-web-security-rbac-manage</module>
+        <module>ouroboros-web-security-runtime</module>
+        <module>ouroboros-web-security-logicflow-node</module>
+        <module>ouroboros-web-security-test-support</module>
+    </modules>
+</project>

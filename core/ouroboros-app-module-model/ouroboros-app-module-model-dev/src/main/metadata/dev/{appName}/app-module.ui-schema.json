@@ -1,0 +1,165 @@
+{
+  "name": "/dev/{appName}/app-module",
+  "schema": {
+    "type": "page",
+    "title": "模块编排",
+    "body": [
+      {
+        "type": "form",
+        "title": null,
+        "initApi": {
+          "method": "get",
+          "url": "/api/dev/${appName}/app-module/init-form",
+          "requestAdaptor": "",
+          "adaptor": "",
+          "messages": {}
+        },
+        "body": [
+          {
+            "type": "tree-editor",
+            "name": "modules",
+            "labelField": "title",
+            "keyField": "fullName",
+            "deleteConfirmText": "确定要隐藏 ${title} 模块吗？",
+            "editable": true,
+            "removable": true,
+            "creatable": true,
+            "rootCreateTip": "添加模块",
+            "createTip": "添加子模块",
+            "editTip": "修改模块",
+            "removeTip": "隐藏模块",
+            "editControls": [
+              {
+                "type": "static-text",
+                "name": "fullName",
+                "label": "模块名"
+              },
+              {
+                "type": "input-text",
+                "name": "title",
+                "label": "标题",
+                "required": true
+              },
+              {
+                "type": "ouroboros-icon-picker",
+                "name": "icon",
+                "label": "图标"
+              }
+            ],
+            "addControls": [
+              {
+                "type": "input-text",
+                "name": "fullName",
+                "label": "模块名",
+                "validations": {
+                  "matchRegexp": "^[a-zA-Z][a-zA-Z0-9_]*(\\.[a-zA-Z][a-zA-Z0-9_]*)*$"
+                },
+                "validationErrors": {
+                  "matchRegexp": "请输入合法的模块名"
+                },
+                "description": "包名应遵循变量命名规则，并可使用 . 分隔，以清晰体现模块树的层次结构。",
+                "required": true
+              },
+              {
+                "type": "input-text",
+                "name": "title",
+                "label": "标题",
+                "required": true
+              },
+              {
+                "type": "ouroboros-icon-picker",
+                "name": "icon",
+                "label": "图标"
+              }
+            ],
+            "onEvent": {
+              "deleteSuccess": {
+                "actions": [
+                  {
+                    "actionType": "addItem",
+                    "componentName": "removedModules",
+                    "args": {
+                      "item": "$item"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "tree-editor",
+            "name": "removedModules",
+            "labelField": "title",
+            "keyField": "fullName",
+            "draggable": false,
+            "label": "已隐藏模块",
+            "itemActions": [
+              {
+                "type": "button",
+                "icon": "fa fa-undo",
+                "level": "link",
+                "tooltip": "恢复模块",
+                "onEvent": {
+                  "click": {
+                    "actions": [
+                      {
+                        "actionType": "addItem",
+                        "componentName": "modules",
+                        "args": {
+                          "item": "$item"
+                        }
+                      },
+                      {
+                        "actionType": "deleteItem",
+                        "componentName": "removedModules",
+                        "args": {
+                          "condition": "\\${fullName === event.data.item.fullName}"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "actions": [],
+        "feat": "Edit",
+        "dsType": "api",
+        "labelAlign": "left",
+        "static": true,
+        "api": {
+          "method": "put",
+          "url": "/api/dev/${appName}/app-module",
+          "data": {
+            "&": "$modules"
+          },
+          "requestAdaptor": "",
+          "adaptor": "",
+          "messages": {}
+        },
+        "id": "appModuleForm"
+      }
+    ],
+    "asideResizor": false,
+    "pullRefresh": {
+      "disabled": true
+    },
+    "toolbar": [
+      {
+        "type": "amis-schema",
+        "source": {
+          "method": "get",
+          "url": "/api/dev-fragment-schema/vcs-buttons",
+          "data": {
+            "apiPath": "app-module",
+            "statusId": "appModuleStatus",
+            "formId": "appModuleForm",
+            "startButton": "开始编排"
+          }
+        }
+      }
+    ],
+    "definitions": {}
+  }
+}

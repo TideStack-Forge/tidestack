@@ -1,0 +1,9 @@
+# SimpleBroker Configuration Example
+# Copy to application.yml and adjust for your environment
+# Note: SimpleBroker is single-instance only, no cluster support
+
+ouroboros:
+  websocket:
+    broker-type: simple
+    # No additional configuration needed for SimpleBroker
+    # It uses in-memory message broker suitable for single-instance deployments

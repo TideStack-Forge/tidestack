@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/notification",
+  "type": "amis",
+  "title": "通知模版管理"
+}

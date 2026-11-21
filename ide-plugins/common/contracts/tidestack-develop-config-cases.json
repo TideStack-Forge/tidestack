@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "contract": {
+    "schemaVersion": 1,
+    "projectPath": ".tidestack/develop.json",
+    "localPath": ".tidestack/develop.local.json",
+    "projectFields": ["schemaVersion", "developmentServerUrl", "appName"],
+    "localFields": ["schemaVersion", "devKey"]
+  },
+  "projectReadCases": [
+    {
+      "name": "reads canonical project config",
+      "document": {
+        "schemaVersion": 1,
+        "developmentServerUrl": "http://dev.local",
+        "appName": "demo"
+      },
+      "legacy": {},
+      "expected": {
+        "schemaVersion": 1,
+        "developmentServerUrl": "http://dev.local",
+        "appName": "demo"
+      }
+    },
+    {
+      "name": "reads legacy project platformUrl alias",
+      "document": {
+        "platformUrl": "http://legacy.local",
+        "appName": "demo"
+      },
+      "legacy": {},
+      "expected": {
+        "schemaVersion": 1,
+        "developmentServerUrl": "http://legacy.local",
+        "appName": "demo"
+      }
+    },
+    {
+      "name": "uses legacy fallback when project document is empty",
+      "document": {},
+      "legacy": {
+        "developmentServerUrl": "http://settings.local",
+        "appName": "settings-app"
+      },
+      "expected": {
+        "schemaVersion": 1,
+        "developmentServerUrl": "http://settings.local",
+        "appName": "settings-app"
+      }
+    }
+  ],
+  "localReadCases": [
+    {
+      "name": "reads canonical local config",
+      "document": {
+        "schemaVersion": 1,
+        "devKey": "current-key"
+      },
+      "legacy": {},
+      "expected": {
+        "schemaVersion": 1,
+        "devKey": "current-key"
+      }
+    },
+    {
+      "name": "reads legacy local debugKey alias",
+      "document": {
+        "debugKey": "legacy-key"
+      },
+      "legacy": {},
+      "expected": {
+        "schemaVersion": 1,
+        "devKey": "legacy-key"
+      }
+    },
+    {
+      "name": "uses legacy fallback when local document is empty",
+      "document": {},
+      "legacy": {
+        "devKey": "settings-key"
+      },
+      "expected": {
+        "schemaVersion": 1,
+        "devKey": "settings-key"
+      }
+    }
+  ],
+  "projectDocumentCases": [
+    {
+      "name": "writes ordered canonical project config and preserves unknown fields",
+      "existing": {
+        "platformUrl": "http://legacy.local",
+        "appName": "old-app",
+        "future": {
+          "enabled": true
+        }
+      },
+      "config": {
+        "schemaVersion": 1,
+        "developmentServerUrl": "http://current.local",
+        "appName": "demo"
+      },
+      "expectedKeys": ["schemaVersion", "developmentServerUrl", "appName", "future"],
+      "expected": {
+        "schemaVersion": 1,
+        "developmentServerUrl": "http://current.local",
+        "appName": "demo",
+        "future": {
+          "enabled": true
+        }
+      }
+    }
+  ],
+  "localDocumentCases": [
+    {
+      "name": "writes ordered canonical local config and removes derived legacy fields",
+      "existing": {
+        "debugKey": "legacy-key",
+        "profileId": "old-profile",
+        "containerId": "old-container",
+        "future": "keep"
+      },
+      "config": {
+        "schemaVersion": 1,
+        "devKey": "current-key"
+      },
+      "expectedKeys": ["schemaVersion", "devKey", "future"],
+      "expected": {
+        "schemaVersion": 1,
+        "devKey": "current-key",
+        "future": "keep"
+      }
+    }
+  ],
+  "importDocumentCases": [
+    {
+      "name": "imports plain platform config document",
+      "document": {
+        "schemaVersion": 1,
+        "developmentServerUrl": "http://dev.local",
+        "appName": "demo",
+        "devKey": "current-key"
+      },
+      "expected": {
+        "schemaVersion": 1,
+        "developmentServerUrl": "http://dev.local",
+        "appName": "demo",
+        "devKey": "current-key"
+      }
+    },
+    {
+      "name": "imports WebApiResult data payload downloaded from platform",
+      "document": {
+        "code": 0,
+        "message": "success",
+        "data": {
+          "schemaVersion": 1,
+          "developmentServerUrl": "http://dev.local",
+          "appName": "demo",
+          "devKey": "current-key"
+        }
+      },
+      "expected": {
+        "schemaVersion": 1,
+        "developmentServerUrl": "http://dev.local",
+        "appName": "demo",
+        "devKey": "current-key"
+      }
+    }
+  ],
+  "effectiveCases": [
+    {
+      "name": "combines project shared config with local private config",
+      "project": {
+        "schemaVersion": 1,
+        "developmentServerUrl": "http://current.local",
+        "appName": "demo"
+      },
+      "local": {
+        "schemaVersion": 1,
+        "devKey": "current-key"
+      },
+      "expected": {
+        "developmentServerUrl": "http://current.local",
+        "appName": "demo",
+        "devKey": "current-key"
+      }
+    }
+  ]
+}

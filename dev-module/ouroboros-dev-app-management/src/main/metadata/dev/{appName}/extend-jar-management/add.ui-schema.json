@@ -1,0 +1,43 @@
+{
+  "name": "/dev/{appName}/extend-jar-management/add",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "body": [
+      {
+        "type": "input-file",
+        "name": "packagePath",
+        "label": false,
+        "maxLength": 1,
+        "drag": true,
+        "useChunk": "auto",
+        "chunkSize": 5242880,
+        "startChunkApi": "POST:/api/dev/${appName}/extend-jar/start-chunk",
+        "chunkApi": "POST:/api/dev/${appName}/extend-jar/chunk",
+        "finishChunkApi": "POST:/api/dev/${appName}/extend-jar/finish-chunk",
+        "accept": ".jar",
+        "receiver": "/api/dev/${appName}/extend-jar",
+        "downloadUrl": false,
+        "onEvent": {
+          "success": {
+            "actions": [
+              {
+                "actionType": "clear",
+                "componentName": "packagePath"
+              },
+              {
+                "actionType": "reload",
+                "componentName": "extendJarList"
+              },
+              {
+                "actionType": "closeDialog",
+                "componentName": "uploadJarDialog"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "actions": []
+  }
+}

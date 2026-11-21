@@ -1,0 +1,8 @@
+com.ouroboros.workflow.approval.activiti6.transpiler.processor.StartNodeProcessor
+com.ouroboros.workflow.approval.activiti6.transpiler.processor.SingleApprovalProcessor
+com.ouroboros.workflow.approval.activiti6.transpiler.processor.HandleNodeProcessor
+com.ouroboros.workflow.approval.activiti6.transpiler.processor.CcNodeProcessor
+com.ouroboros.workflow.approval.activiti6.transpiler.processor.MultipleApprovalProcessor
+com.ouroboros.workflow.approval.activiti6.transpiler.processor.JoinNodeProcessor
+com.ouroboros.workflow.approval.activiti6.transpiler.processor.SubflowProcessor
+com.ouroboros.workflow.approval.activiti6.transpiler.processor.EndNodeProcessor

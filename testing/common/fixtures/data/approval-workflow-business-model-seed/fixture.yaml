@@ -1,0 +1,42 @@
+{
+  "id": "data/approval-workflow-business-model-seed",
+  "title": "Approval Workflow Business Model Seed",
+  "class": "data",
+  "capabilities": [
+    "business-model-seed",
+    "approval-form-fields",
+    "validation-rules"
+  ],
+  "lifecycle": {
+    "up": "",
+    "check": "business model seed contains deterministic field definitions with type and validation coverage for approval tests",
+    "reset": "",
+    "down": ""
+  },
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "seedType",
+      "value": "business-model"
+    },
+    {
+      "name": "businessModelSeedFile",
+      "value": "testing/common/fixtures/data/approval-workflow-business-model-seed/business-model.json"
+    },
+    {
+      "name": "businessModelId",
+      "value": "AWF_BM_EXPENSE_REQUEST"
+    }
+  ],
+  "healthChecks": [
+    {
+      "name": "business-model-fields-complete",
+      "expect": "business model contains deterministic field IDs, supported field types, and explicit validation constraints"
+    }
+  ],
+  "prerequisites": [],
+  "notes": [
+    "Model ID is referenced by approval-workflow-flows-seed to keep fixture composition deterministic.",
+    "The fixture captures portable model intent and omits runtime deployment identifiers."
+  ]
+}

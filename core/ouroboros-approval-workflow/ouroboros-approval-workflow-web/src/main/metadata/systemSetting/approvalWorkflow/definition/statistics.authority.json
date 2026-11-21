@@ -1,0 +1,20 @@
+{
+  "fullName": "systemSetting.approvalWorkflowDefinition.statistics",
+  "title": "审批流管理-统计",
+  "apis": [
+    "GET /api/approval-workflow/instance/statistic",
+    "GET /api/approval-workflow/statistics/duration",
+    "GET /api/approval-workflow/instance/{flowKey}/list",
+    "POST /api/approval-workflow/instance/{id}/cancel",
+    "GET /api/approval-workflow/instance/{instanceId}/timeline",
+    "GET /api/approval-workflow/instance/{instanceId}/diagram",
+    "GET /api/approval-workflow/instance/{instanceId}/info"
+  ],
+  "uiViews": [
+    "/system-setting/approval-workflow-definition/statistics",
+    "/system-setting/approval-workflow-definition/instance-details",
+    "/system-setting/approval-workflow-definition/instance-details/detail"
+  ],
+  "menuItems": [
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "type": "micro-web",
+  "fileSuffix": ".micro-web.json",
+  "displayName": "微前端",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.micro-web.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/metadata",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.micro-web.json",
+    "fields": [
+      {
+        "name": "name",
+        "label": "名称",
+        "documentPath": [
+          "name"
+        ],
+        "required": true,
+        "defaultFromPath": "camel-name"
+      },
+      {
+        "name": "publicPath",
+        "label": "公共路径",
+        "documentPath": [
+          "publicPath"
+        ],
+        "required": true,
+        "defaultFromPath": "slash-path"
+      },
+      {
+        "name": "packageName",
+        "label": "资源包名称",
+        "documentPath": [
+          "packageName"
+        ]
+      }
+    ],
+    "document": {
+      "name": "example",
+      "type": "app",
+      "publicPath": "/example/",
+      "packageName": "example.zip"
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "微前端",
+    "actions": [],
+    "body": [
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "名称",
+        "required": true
+      },
+      {
+        "type": "select",
+        "name": "type",
+        "label": "类型",
+        "options": [
+          {
+            "label": "应用",
+            "value": "app"
+          },
+          {
+            "label": "视图",
+            "value": "parcels"
+          },
+          {
+            "label": "库",
+            "value": "library"
+          }
+        ]
+      },
+      {
+        "type": "input-text",
+        "name": "publicPath",
+        "label": "公共路径"
+      },
+      {
+        "type": "input-text",
+        "name": "entry",
+        "label": "入口"
+      },
+      {
+        "type": "input-text",
+        "name": "packageName",
+        "label": "资源包名称"
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/micro-web.schema.json"
+}

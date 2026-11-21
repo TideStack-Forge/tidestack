@@ -1,0 +1,20 @@
+{
+  "name": "/dev/{appName}/rpc-auth/detail",
+  "schema": {
+    "type": "form",
+    "static": true,
+    "title": false,
+    "labelWidth": 120,
+    "wrapWithPanel": false,
+    "mode": "horizontal",
+    "initApi": {
+      "url": "/api/dev/${appName}/rpc-auth/${name}",
+      "method": "get"
+    },
+    "body": {
+      "type": "amis-schema",
+      "schemaId": "/dev/{appName}/rpc-auth/form-items"
+    },
+    "actions": []
+  }
+}

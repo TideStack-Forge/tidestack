@@ -1,0 +1,389 @@
+boundary_version: 1
+roadmap: logicflow-open-source-extraction
+created: 2026-07-24
+status: active
+scope: standalone-distribution
+platform_source_public_in_monorepo: true
+
+public_candidate_modules:
+  - ouroboros-logicflow-core
+  - ouroboros-logicflow-builtin-nodes
+  - ouroboros-logicflow-authoring
+  - ouroboros-logicflow-data-model
+
+global_rules:
+  shared_test_support:
+    common-expression: "Copied unchanged for authoring semantic tests; production LogicFlow modules still use expression ports and must not depend on this implementation."
+  public_export_policy: include_after_blockers_clear
+  internal_export_policy: exclude_by_default
+  public_candidates_must_not_depend_on:
+    maven_artifacts:
+      - ouroboros-dev-model-manage-webapi-scaffold
+      - ouroboros-message-queue-core
+      - ouroboros-web-security-core
+      - ouroboros-websocket-core
+      - common-app
+      - common-dev
+      - common-web
+      - common-exception
+      - common-metadata
+      - common-model
+      - common-script
+      - ouroboros-util-excel
+    import_prefixes:
+      - com.ouroboros.dev
+      - com.ouroboros.web
+      - com.ouroboros.security
+      - com.ouroboros.websocket
+      - com.ouroboros.mq
+      - com.ouroboros.modelmanage
+      - com.ouroboros.vcs
+      - com.ouroboros.exception
+      - com.ouroboros.metadata
+      - com.ouroboros.model
+  public_candidates_need_replacement_or_allowlist:
+    status: cleared_2026_08_20
+    maven_artifacts: []
+    import_prefixes: []
+    cleared_maven_artifacts:
+      - common-model
+      - common-script
+    cleared_import_prefixes:
+      - com.ouroboros.util
+      - com.ouroboros.model
+      - com.ouroboros.script
+  forbidden_paths_for_public_core:
+    - core/ouroboros-logicflow/ouroboros-logicflow-core/src/main/resources/META-INF/ouroboros/logic-flow-node-define/*.json
+    - core/ouroboros-logicflow/ouroboros-logicflow-core/src/main/java/com/ouroboros/logicflow/nodes/{CallFlowNode,ConcatNode,ConstNode,DistinctNode,FilterNode,IntersectNode,MappingNode,MergeNode,MutexNode,OmitNode,PickNode,ReturnNode,ScriptNode,SubtractNode,SwitchNode,TakeNode,ValidateNode}.java
+
+modules:
+  ouroboros-logicflow-core:
+    target_visibility: public
+    current_source: core/ouroboros-logicflow/ouroboros-logicflow-core
+    target_layer:
+      - runtime_contract
+      - extension_contract
+    export_policy: include_after_blockers_clear
+    current_blockers:
+      dependencies: []
+      dependency_replacement_needed: false
+      history_export_policy_missing: false
+      sync_pipeline_missing: false
+      governance_gates_missing: false
+      release_dry_run_missing: false
+      release_governance_blocked: true
+    cleared_blockers:
+      dependencies:
+        - ouroboros-util
+        - common-model
+        - common-expression
+        - common-script
+      forbidden_current_ownership:
+        - concrete_official_nodes
+        - META-INF/ouroboros/logic-flow-node-define/*.json
+      forbidden_platform_imports:
+        - com.ouroboros.data
+        - com.ouroboros.dev
+        - com.ouroboros.web
+        - com.ouroboros.security
+        - com.ouroboros.websocket
+        - com.ouroboros.message
+      history_export_policy:
+        - history-free clean snapshot dry-run
+      sync_pipeline:
+        - deterministic public sync dry-run
+        - private sync ledger
+        - public patch import dry-run
+      governance_gates:
+        - dependency/source/history/secret/build/sync gates
+        - blocking technical gate policy
+        - pending NOTICE/copyright holder review blocks release governance
+      release_dry_run:
+        - local release dry-run with snapshot+repo governance gates
+        - release checklist and residual risk report
+        - pending clean operational source and NOTICE/copyright holder review block release governance
+    required_guards:
+      - NodeFactory must discover NodeBuilder through SPI only.
+      - Duplicate node type builders must fail fast.
+      - Core must not own official node implementations or official NodeDefine JSON.
+      - Core must not import platform adapter packages.
+
+  ouroboros-logicflow-builtin-nodes:
+    target_visibility: public
+    current_source: core/ouroboros-logicflow/ouroboros-logicflow-builtin-nodes
+    target_layer:
+      - runtime_capability
+    export_policy: include_after_blockers_clear
+    owns:
+      - official_concrete_nodes
+      - official_node_builder_service_descriptor
+    current_blockers:
+      dependencies:
+        []
+      dependency_replacement_needed: false
+      history_export_policy_missing: false
+      sync_pipeline_missing: false
+      governance_gates_missing: false
+      release_dry_run_missing: false
+      release_governance_blocked: true
+    cleared_blockers:
+      dependencies:
+        - ouroboros-util
+        - common-script
+      history_export_policy:
+        - history-free clean snapshot dry-run
+      sync_pipeline:
+        - deterministic public sync dry-run
+        - private sync ledger
+        - public patch import dry-run
+      governance_gates:
+        - dependency/source/history/secret/build/sync gates
+        - blocking technical gate policy
+        - pending NOTICE/copyright holder review blocks release governance
+      release_dry_run:
+        - local release dry-run with snapshot+repo governance gates
+        - release checklist and residual risk report
+        - pending clean operational source and NOTICE/copyright holder review block release governance
+    must_not_own:
+      - NodeDefine provider/model owner
+      - platform data/web/dev adapters
+
+  ouroboros-logicflow-authoring:
+    target_visibility: public
+    current_source: core/ouroboros-logicflow/ouroboros-logicflow-authoring
+    target_layer:
+      - authoring_contract
+    export_policy: include_after_blockers_clear
+    owns:
+      - NodeDefine
+      - LogicFlowNodeDefineProvider
+      - JarLogicFlowNodeDefineProvider
+      - official_node_define_json
+    current_blockers:
+      dependencies: []
+      dependency_replacement_needed: false
+      history_export_policy_missing: false
+      sync_pipeline_missing: false
+      governance_gates_missing: false
+      release_dry_run_missing: false
+      release_governance_blocked: true
+    cleared_blockers:
+      dependencies:
+        []
+      history_export_policy:
+        - history-free clean snapshot dry-run
+      sync_pipeline:
+        - deterministic public sync dry-run
+        - private sync ledger
+        - public patch import dry-run
+      governance_gates:
+        - dependency/source/history/secret/build/sync gates
+        - blocking technical gate policy
+        - pending NOTICE/copyright holder review blocks release governance
+      release_dry_run:
+        - local release dry-run with snapshot+repo governance gates
+        - release checklist and residual risk report
+        - pending clean operational source and NOTICE/copyright holder review block release governance
+    must_not_own:
+      - runtime gate
+      - concrete node execution semantics
+      - platform dev controller
+      - frontend built-in second truth
+
+  ouroboros-logicflow-data-model:
+    target_visibility: public
+    current_source: core/ouroboros-logicflow/ouroboros-logicflow-data-model
+    target_layer:
+      - public_data_model_integration_contract
+    export_policy: include_after_blockers_clear
+    reason: "Depends only on public LogicFlow core and public Ouroboros data model contracts; data-model node builders and NodeDefine JSON are now part of the first public integration surface."
+    current_dependencies:
+      - ouroboros-logicflow-core
+      - ouroboros-data-core
+    owns:
+      - data_model_node_builders
+      - data_model_node_define_json
+    required_guards:
+      - may_import_com_ouroboros_data_only_inside_this_module
+      - no_platform_adapter_dependencies
+      - no_node_factory_hardcode
+
+  ouroboros-logicflow-extra-nodes:
+    target_visibility: internal-adapter
+    current_source: core/ouroboros-logicflow/ouroboros-logicflow-extra-nodes
+    target_layer:
+      - ouroboros_integration_contract
+    export_policy: exclude_by_default
+    reason: "Contains Excel and platform exception nodes; depends on common-exception, ouroboros-util-excel, and spring-web."
+    current_dependencies:
+      - ouroboros-logicflow-core
+      - common-exception
+      - ouroboros-util-excel
+      - spring-web
+    owns:
+      - ReadExcelNode
+      - OuroborosExceptionNode
+
+  ouroboros-logicflow-runtime:
+    target_visibility: internal-adapter
+    current_source: core/ouroboros-logicflow/ouroboros-logicflow-runtime
+    target_layer:
+      - ouroboros_integration_contract
+    export_policy: exclude_by_default
+    reason: "Depends on app-home runtime, builtin nodes, extra nodes, and the platform common-script adapter for LogicFlowScriptEngine. Debug analyzer/support and FlowRuntimeAnalyzer debug descriptor have been split into ouroboros-logicflow-debug-helper."
+    current_dependencies:
+      - common-app
+      - common-script
+      - spring-boot-autoconfigure
+      - ouroboros-logicflow-core
+      - ouroboros-logicflow-builtin-nodes
+      - ouroboros-logicflow-extra-nodes
+    owns:
+      - CommonScriptLogicFlowScriptEngine
+      - META-INF/services/com.ouroboros.logicflow.nodes.script.LogicFlowScriptEngine
+    must_not_own:
+      - LogicFlowDebugRuntimeAnalyzer
+      - LogicFlowDebugRuntimeSupport
+      - META-INF/services/com.ouroboros.logicflow.diagnostic.FlowRuntimeAnalyzer
+
+  ouroboros-logicflow-debug-helper:
+    target_visibility: private-dev
+    current_source: core/ouroboros-logicflow/ouroboros-logicflow-debug-helper
+    target_layer:
+      - ouroboros_integration_contract
+    export_policy: exclude_by_default
+    reason: "LogicFlow debug analyzer/support depends on platform debug/MQ infrastructure and ouroboros-util JSON serialization; the artifact should be materialized by dev-app-management and injected into TEST_APP containers instead of being bundled into default runtime images."
+    current_dependencies:
+      - ouroboros-logicflow-core
+      - ouroboros-message-queue-core
+      - ouroboros-util
+    owns:
+      - LogicFlowDebugRuntimeAnalyzer
+      - LogicFlowDebugRuntimeSupport
+      - META-INF/services/com.ouroboros.logicflow.diagnostic.FlowRuntimeAnalyzer
+
+  ouroboros-logicflow-dev:
+    target_visibility: private-dev
+    current_source: core/ouroboros-logicflow/ouroboros-logicflow-dev
+    target_layer:
+      - ouroboros_integration_contract
+    export_policy: exclude_by_default
+    reason: "Internal development API adapter with dev scaffold, security, message queue, websocket, web API, and script intelligence dependencies."
+    current_dependencies:
+      - ouroboros-dev-model-manage-webapi-scaffold
+      - ouroboros-logicflow-core
+      - ouroboros-logicflow-authoring
+      - ouroboros-web-security-core
+      - common-dev
+      - ouroboros-message-queue-core
+      - ouroboros-websocket-core
+      - common-script
+      - classgraph
+
+  ouroboros-logicflow-web-adapter:
+    target_visibility: internal-adapter
+    current_source: core/ouroboros-logicflow/ouroboros-logicflow-web-adapter
+    target_layer:
+      - ouroboros_integration_contract
+    export_policy: exclude_by_default
+    reason: "Spring WebMVC transaction/request adapter; depends on common-web, common-exception, common-expression, and ouroboros-util."
+    current_dependencies:
+      - jakarta.servlet-api
+      - spring-webmvc
+      - spring-tx
+      - ouroboros-logicflow-core
+      - ouroboros-logicflow-runtime
+      - common-exception
+      - common-expression
+      - common-web
+      - ouroboros-util
+      - slf4j-api
+
+  ouroboros-logicflow-all:
+    target_visibility: internal
+    current_source: core/ouroboros-logicflow/ouroboros-logicflow-all
+    target_layer:
+      - aggregation
+    export_policy: exclude_by_default
+    reason: "Internal aggregation module that pulls adapters and integration bundles together."
+    current_dependencies:
+      - ouroboros-logicflow-web-adapter
+      - ouroboros-logicflow-core
+      - ouroboros-logicflow-builtin-nodes
+      - ouroboros-logicflow-data-model
+      - ouroboros-logicflow-runtime
+      - ouroboros-logicflow-extra-nodes
+
+evidence:
+  module_poms_found: 9
+  node_builder_descriptors:
+    - core/ouroboros-logicflow/ouroboros-logicflow-builtin-nodes/src/main/resources/META-INF/services/com.ouroboros.logicflow.nodes.NodeBuilder
+    - core/ouroboros-logicflow/ouroboros-logicflow-data-model/src/main/resources/META-INF/services/com.ouroboros.logicflow.nodes.NodeBuilder
+    - core/ouroboros-logicflow/ouroboros-logicflow-extra-nodes/src/main/resources/META-INF/services/com.ouroboros.logicflow.nodes.NodeBuilder
+  node_define_resource_counts:
+    authoring_official: 17
+    data_model_public_integration: 11
+    extra_nodes_internal: 2
+  internal_foundation_dependency_clearance:
+    feature: 2026-07-25-logicflow-public-core-standalone-build
+    status: cleared-current-code-2026-08-20
+    forbidden_scan: "Current cleanup removed builtin-nodes test common-expression / com.ouroboros.expression.EL, removed authoring ouroboros-util/common-metadata / com.ouroboros.metadata.resource.*, and removed data-model com.ouroboros.util imports. Data-model may import public com.ouroboros.data contracts."
+    script_engine_correction: "ScriptNode uses LogicFlowScriptEngine SPI; engines declare languages through getSupportedLanguages(); LogicFlow can collect supported language lists; builtin-nodes has no Groovy/GraalJS/common-script concrete engine; runtime adapts platform common-script through CommonScriptLogicFlowScriptEngine."
+  adapter_boundary_manifest: logicflow-platform-adapter-boundary.yaml
+  extension_bundle_classification_manifest: logicflow-extension-bundle-classification.yaml
+  extension_bundle_classification:
+    feature: 2026-07-25-logicflow-extension-bundle-classification
+    status: passed
+    public_repo_include_bundle_ids:
+      - official-builtin
+      - data-model
+    public_repo_exclude_bundle_ids:
+      - extra-nodes
+      - external-fixture
+    evidence:
+      - "classification manifest covers 17 official builtin node types, 11 data-model node types, and 2 extra-nodes node types."
+      - "ScriptNode/script remains classified as official-builtin public required capability."
+      - "Architecture guard reads classification manifest and verifies descriptor/NodeDefine JSON/source pairing for official and internal bundles."
+      - "External fixture proves the future external bundle contract still uses NodeBuilder SPI plus NodeDefine JSON without NodeFactory hardcoding."
+  public_repo_bootstrap:
+    feature: 2026-07-25-logicflow-public-repo-bootstrap
+    status: current-check-passed-2026-08-20
+    manifest: logicflow-public-repo-bootstrap.yaml
+    dry_run_output: target/logicflow-public-repo-dry-run
+    report: tmp/testing-evidence/open-source/logicflow-public-repo-bootstrap/bootstrap-report.md
+    evidence:
+      - "bootstrap script generates a clean snapshot dry-run with public root parent, ouroboros-logicflow-bom, core, builtin-nodes, authoring, data-model, README, CONTRIBUTING, Apache-2.0 LICENSE, NOTICE, adapter guides, CI stub, and ScriptNode standalone sample."
+      - "2026-08-20 bootstrap --check passed against the current public candidate set."
+      - "Leak check blocks internal foundation artifacts/imports and allows com.ouroboros.data only in ouroboros-logicflow-data-model."
+  governance_gates:
+    feature: 2026-07-26-logicflow-open-source-governance-gates
+    status: current-technical-gates-passed-2026-08-20
+    manifest: logicflow-open-source-governance-gates.yaml
+    report_json: tmp/testing-evidence/open-source/logicflow-open-source-governance-gates/governance-gate-report.json
+    report_markdown: tmp/testing-evidence/open-source/logicflow-open-source-governance-gates/governance-gate-report.md
+    evidence:
+      - "governance gate runner covers dependency/source/history/secret/build/sync technical gates in snapshot mode and local public repo mode."
+      - "negative probes prove forbidden dependency/import, forbidden source path, internal metadata marker, and credential-like marker samples are blocked."
+      - "2026-08-20 governance --check passed technical gates; release_governance_status remains blocked by NOTICE/copyright holder review."
+  release_dry_run:
+    feature: 2026-07-26-logicflow-open-source-release-dry-run
+    status: current-check-passed-2026-08-20
+    manifest: logicflow-open-source-release-dry-run.yaml
+    report_json: tmp/testing-evidence/open-source/logicflow-open-source-release-dry-run/release-dry-run-report.json
+    report_markdown: tmp/testing-evidence/open-source/logicflow-open-source-release-dry-run/release-dry-run-report.md
+    release_checklist: tmp/testing-evidence/open-source/logicflow-open-source-release-dry-run/release-checklist.md
+    residual_risk_report: tmp/testing-evidence/open-source/logicflow-open-source-release-dry-run/residual-risk-report.md
+    local_public_repo_dry_run: target/logicflow-open-source-release-dry-run/public-repo
+    evidence:
+      - "run-release-dry-run.sh --check can generate a public snapshot, initialize a target-only local public repo, and run governance gates with repo mode input."
+      - "2026-08-20 run-release-dry-run.sh --check regenerated the current technical pass evidence."
+      - "local public repo dry-run has one public-safe commit and no remote, push, tag, or release."
+      - "release checklist and residual risk report remain internal artifacts and are not copied into the public snapshot or local public repo commit."
+  adapter_split_contract:
+    feature: 2026-07-25-logicflow-platform-adapter-split
+    status: passed
+    evidence:
+      - "Architecture guard covers public candidate no-backflow, data-model/extra-nodes bundle pairing, runtime SPI descriptors, dev provider consumption, and web facade consumption."
+      - "Dev targeted tests passed: LogicFlowNodeDefineProviderSpiContractTest and LogicflowNodeDefineControllerReturnNodeTest."
+      - "Adapter reactor passed with Byte Buddy agent + jacoco.skip workaround after original CMD-005 exposed an upstream Mockito attach baseline failure in ouroboros-data-core."
+  inventory_only_source_change_note: "This artifact was created after authoring, builtin, and core-boundary implementation in the same branch; core/ouroboros-logicflow diff is expected to include earlier ordered feature changes, not inventory-only source edits."

@@ -1,0 +1,50 @@
+{
+  "name": "unreachable-exit-terminal",
+  "description": "Invalid ordinary flow whose configured explicit exit is unreachable from the main entry",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "entry",
+  "exitNode": "deadExit",
+  "nodes": [
+    {
+      "name": "entry",
+      "type": "const",
+      "description": "",
+      "dataType": "string",
+      "value": "ok"
+    },
+    {
+      "name": "livePass",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    },
+    {
+      "name": "deadExit",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "entry",
+      "sourceOutputPort": 0,
+      "targetNode": "livePass",
+      "targetInputPort": 0
+    }
+  ]
+}

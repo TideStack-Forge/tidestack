@@ -1,0 +1,86 @@
+{
+  "type": "configuration-group-item",
+  "fileSuffix": ".config-group.json",
+  "displayName": "配置分组",
+  "sourcePathPatterns": [
+    "configuration-group/**/*.config-group.json",
+    "src/main/metadata/**/*.config-group.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/configuration-group",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.config-group.json",
+    "fields": [
+      {
+        "name": "path",
+        "label": "分组路径",
+        "documentPath": [
+          "path"
+        ],
+        "required": true,
+        "defaultFromPath": "camel-name"
+      },
+      {
+        "name": "title",
+        "label": "标题",
+        "documentPath": [
+          "title"
+        ],
+        "required": true,
+        "defaultFromPath": "title"
+      },
+      {
+        "name": "description",
+        "label": "描述",
+        "documentPath": [
+          "description"
+        ]
+      }
+    ],
+    "document": {
+      "path": "example",
+      "title": "示例配置分组",
+      "icon": "fa fa-folder",
+      "order": 0,
+      "description": "示例配置分组"
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "配置分组",
+    "actions": [],
+    "body": [
+      {
+        "type": "input-text",
+        "name": "path",
+        "label": "分组路径",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "title",
+        "label": "中文标题",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "icon",
+        "label": "图标"
+      },
+      {
+        "type": "input-number",
+        "name": "order",
+        "label": "排序"
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "描述",
+        "minRows": 2
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/configuration-group-item.schema.json"
+}

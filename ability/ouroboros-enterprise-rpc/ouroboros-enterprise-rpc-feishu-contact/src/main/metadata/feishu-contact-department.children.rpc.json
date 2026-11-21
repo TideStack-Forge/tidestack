@@ -1,0 +1,67 @@
+{
+  "name": "feishu.contact.department.children",
+  "title": "飞书读取直属子部门",
+  "type": "OpenAPI",
+  "isEnabled": true,
+  "authCredential": "feishu.application-token",
+  "description": "自建应用 tenant_access_token；必须处理 data.has_more/page_token；departmentId 为 URL 变量；contact:department.base:readonly、contact:department.organize:readonly 或相应通讯录读取权限",
+  "timeout": 10000,
+  "retry": 0,
+  "retrySafe": true,
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "department_id_type": {
+        "type": "string",
+        "enum": [
+          "department_id",
+          "open_department_id"
+        ],
+        "minLength": 1
+      },
+      "page_size": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 50
+      },
+      "page_token": {
+        "type": "string"
+      },
+      "departmentId": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_@.\\-]{0,63}$",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "department_id_type",
+      "page_size",
+      "departmentId"
+    ]
+  },
+  "request": {
+    "method": "GET",
+    "url": "https://open.feishu.cn/open-apis/contact/v3/departments/${departmentId}/children",
+    "parameters": [
+      {
+        "in": "QUERY",
+        "name": "department_id_type",
+        "value": "${department_id_type}",
+        "required": true
+      },
+      {
+        "in": "QUERY",
+        "name": "page_size",
+        "value": "${page_size}",
+        "required": true
+      },
+      {
+        "in": "QUERY",
+        "name": "page_token",
+        "value": "${page_token}",
+        "required": false
+      }
+    ]
+  },
+  "group": "飞书/通讯录"
+}

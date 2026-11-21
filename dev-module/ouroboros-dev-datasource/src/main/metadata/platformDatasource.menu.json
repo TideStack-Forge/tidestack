@@ -1,0 +1,8 @@
+{
+  "url": "/platform-datasource",
+  "fullName": "platformDatasource",
+  "icon": "fa fa-database",
+  "title": "平台数据源",
+  "placement": "main",
+  "order": -10
+}

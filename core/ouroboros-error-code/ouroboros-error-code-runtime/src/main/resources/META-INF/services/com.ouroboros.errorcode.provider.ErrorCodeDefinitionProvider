@@ -1,0 +1,2 @@
+com.ouroboros.errorcode.runtime.provider.WorkspaceErrorCodeDefinitionProvider
+com.ouroboros.errorcode.runtime.provider.ResourceErrorCodeDefinitionProvider

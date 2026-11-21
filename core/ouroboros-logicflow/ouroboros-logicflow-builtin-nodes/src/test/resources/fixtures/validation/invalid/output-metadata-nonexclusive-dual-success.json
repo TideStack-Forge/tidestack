@@ -1,0 +1,67 @@
+{
+  "name": "output-metadata-nonexclusive-dual-success",
+  "inputDataType": "string",
+  "outputDataType": "any",
+  "entryNode": "entry",
+  "exitNode": "rightExit",
+  "nodes": [
+    {
+      "name": "entry",
+      "type": "metadataParallelTestNode",
+      "inputPorts": [
+        {
+          "name": "input",
+          "dataType": "string"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "left",
+          "dataType": "string",
+          "exclusiveGroupId": "g1"
+        },
+        {
+          "name": "right",
+          "dataType": "string",
+          "exclusiveGroupId": "g1",
+          "defaultBranch": true
+        }
+      ]
+    },
+    {
+      "name": "leftReturn",
+      "type": "return",
+      "inputPorts": [
+        {
+          "name": "value",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": []
+    },
+    {
+      "name": "rightExit",
+      "type": "mutex",
+      "inputPorts": [
+        {
+          "name": "input",
+          "dataType": "string"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "entry",
+      "sourceOutputPort": 0,
+      "targetNode": "leftReturn",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "entry",
+      "sourceOutputPort": 1,
+      "targetNode": "rightExit",
+      "targetInputPort": 0
+    }
+  ]
+}

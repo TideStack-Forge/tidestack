@@ -1,0 +1,211 @@
+{
+  "name": "/document-management",
+  "schema": {
+    "type": "page",
+    "asideResizor": false,
+    "body": [
+      {
+        "type": "flex",
+        "className": "document-browser-container h-full w-full",
+        "items": [
+          {
+            "type": "service",
+            "id": "documentManagementSidebar",
+            "className": "document-nav-wrapper flex-shrink-0 flex-grow-0 h-full flex flex-col",
+            "style": {
+              "width": "300px",
+              "minWidth": "250px",
+              "maxWidth": "400px",
+              "borderRight": "1px solid #e8e8e8",
+              "padding": "10px",
+              "overflow": "auto"
+            },
+            "data": {
+              "selectedTreeNode": "${directoryId || libraryId}",
+              "libraryId": "${libraryId}",
+              "directoryId": "${directoryId}",
+              "type": "${type}"
+            },
+            "body": [
+              {
+                "type": "flex",
+                "justify": "space-between",
+                "alignItems": "center",
+                "className": "flex-shrink-0 flex-grow-0",
+                "style": {
+                  "margin": "0 0 10px 0",
+                  "padding": "0 10px"
+                },
+                "items": [
+                  {
+                    "type": "tpl",
+                    "tpl": "<h4 style='margin: 0;'>文档库</h4>"
+                  },
+                  {
+                    "type": "button",
+                    "icon": "fa fa-refresh",
+                    "level": "link",
+                    "size": "sm",
+                    "onEvent": {
+                      "click": {
+                        "actions": [
+                          {
+                            "actionType": "reload",
+                            "componentName": "selectedTreeNode"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "input-tree",
+                "name": "selectedTreeNode",
+                "className": "document-tree-nav flex-grow mb-0",
+                "style": {
+                  "max-height": "calc(100% - 106px)"
+                },
+                "inputClassName": "h-full",
+                "heightAuto": true,
+                "source": {
+                  "method": "get",
+                  "url": "/api/document-libraries/accessible?currentLibrary=${libraryId}&currentDirectory=${directoryId}"
+                },
+                "multiple": false,
+                "creatable": false,
+                "removable": false,
+                "editable": false,
+                "draggable": false,
+                "hideRoot": true,
+                "rootLabel": "文档库",
+                "rootValue": "root",
+                "valueField": "value",
+                "labelField": "label",
+                "menuTpl": "${label}${disabled ? '<span style=\"color: #ff4d4f; margin-left: 5px; font-size: 12px;\">[已禁用]</span>' : (locked ? '<span style=\"color: #faad14; margin-left: 5px; font-size: 12px;\">[已锁定]</span>' : '')}",
+                "iconField": "icon",
+                "childrenField": "children",
+                "deferField": "defer",
+                "selectFirst": false,
+                "initiallyOpen": true,
+                "onlyLeaf": false,
+                "unfoldedLevel": 1,
+                "onEvent": {
+                  "change": {
+                    "actions": [
+                      {
+                        "actionType": "broadcast",
+                        "args": {
+                          "eventName": "directoryChange"
+                        },
+                        "data": {
+                          "source": "tree",
+                          "type": "${item.type}",
+                          "libraryId": "${item.libraryId}",
+                          "directoryId": "${item.type === 'DIRECTORY' ? item.value : ''}",
+                          "item": "${item}"
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "flex",
+                "direction": "column",
+                "className": "flex-shrink-0 flex-grow-0",
+                "style": {
+                  "margin-top": "10px"
+                },
+                "items": [
+                  {
+                    "type": "button",
+                    "label": "创建文档库",
+                    "level": "enhance",
+                    "size": "md",
+                    "block": true,
+                    "icon": "fa fa-plus",
+                    "hasAuth": "DocumentManagement.creator",
+                    "actionType": "dialog",
+                    "reload": "selectedTreeNode",
+                    "dialog": {
+                      "title": "创建文档库",
+                      "size": "md",
+                      "url": "/document-management/create-library"
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "label": "管理控制台",
+                    "level": "enhance",
+                    "size": "md",
+                    "block": true,
+                    "icon": "fa fa-cog",
+                    "hasAuth": "DocumentManagement.admin",
+                    "actionType": "link",
+                    "link": "/document-management/admin-console",
+                    "blank": true
+                  }
+                ]
+              }
+            ],
+            "onEvent": {
+              "directoryChange": {
+                "weight": -99,
+                "actions": [
+                  {
+                    "actionType": "setValue",
+                    "expression": "${source !== 'tree'}",
+                    "args": {
+                      "value": {
+                        "selectedTreeNode": "${type === 'LIBRARY' ? libraryId : directoryId}",
+                        "libraryId": "${libraryId}",
+                        "directoryId": "${directoryId}",
+                        "type": "${type}"
+                      }
+                    }
+                  },
+                  {
+                    "actionType": "reload",
+                    "expression": "${source !== 'tree'}",
+                    "componentName": "selectedTreeNode"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "form",
+            "wrapWithPanel": false,
+            "className": "document-content-wrapper flex-grow ml-2",
+            "id": "documentContentMain",
+            "body": [
+              {
+                "type": "ui-schema",
+                "schemaId": "/document-management/library-content"
+              }
+            ],
+            "onEvent": {
+              "directoryChange": {
+                "weight": -99,
+                "actions": [
+                  {
+                    "actionType": "setValue",
+                    "args": {
+                      "value": {
+                        "type": "${type}",
+                        "libraryId": "${libraryId}",
+                        "directoryId": "${directoryId}",
+                        "viewMode": "table"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

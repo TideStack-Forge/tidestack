@@ -1,0 +1,248 @@
+classification_version: 1
+roadmap: logicflow-open-source-extraction
+source_feature: 2026-07-25-logicflow-extension-bundle-classification
+source_public_boundary: logicflow-open-source-boundary.yaml
+source_adapter_boundary: logicflow-platform-adapter-boundary.yaml
+status: active
+created: 2026-07-25
+
+global_rules:
+  classification_unit: bundle_and_node_type
+  public_repo_export_policy: include_public_bundles_only
+  official_type_override_policy: forbidden_without_separate_approval
+  extension_route:
+    node_builder_descriptor: META-INF/services/com.ouroboros.logicflow.nodes.NodeBuilder
+    node_define_resource_glob: META-INF/ouroboros/metadata/*.flow-node.json
+    node_define_provider: com.ouroboros.logicflow.authoring.provider.LogicFlowNodeDefineProvider
+    node_factory_hardcoded_extension_entry: forbidden
+
+bundles:
+  - id: official-builtin
+    module: ouroboros-logicflow-builtin-nodes
+    module_source: core/ouroboros-logicflow/ouroboros-logicflow-builtin-nodes
+    authoring_module: ouroboros-logicflow-authoring
+    authoring_source: core/ouroboros-logicflow/ouroboros-logicflow-authoring
+    target_visibility: public
+    bundle_kind: official-builtin
+    export_policy: include_in_public_repo
+    dependency_class: public-candidate
+    node_builder_descriptor: src/main/resources/META-INF/services/com.ouroboros.logicflow.nodes.NodeBuilder
+    node_define_resource_dir: ../ouroboros-logicflow-authoring/src/main/metadata
+    builder_count: 17
+    node_define_json_count: 17
+    required_capabilities:
+      - ScriptNode
+    required_guards:
+      - descriptor_and_json_bundle_pairing
+      - script_node_required
+      - public_candidate_no_internal_dependencies
+      - no_core_ownership
+      - no_node_factory_hardcode
+    nodes:
+      - type: callFlow
+        node_define: CallFlowNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.CallFlowNode$Builder
+        builder_source: CallFlowNode.java
+      - type: concat
+        node_define: ConcatNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.ConcatNode$Builder
+        builder_source: ConcatNode.java
+      - type: const
+        node_define: ConstNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.ConstNode$Builder
+        builder_source: ConstNode.java
+      - type: distinct
+        node_define: DistinctNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.DistinctNode$Builder
+        builder_source: DistinctNode.java
+      - type: filter
+        node_define: FilterNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.FilterNode$Builder
+        builder_source: FilterNode.java
+      - type: intersect
+        node_define: IntersectNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.IntersectNode$Builder
+        builder_source: IntersectNode.java
+      - type: mapping
+        node_define: MappingNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.MappingNode$Builder
+        builder_source: MappingNode.java
+      - type: merge
+        node_define: MergeNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.MergeNode$Builder
+        builder_source: MergeNode.java
+      - type: mutex
+        node_define: MutexNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.MutexNode$Builder
+        builder_source: MutexNode.java
+      - type: omit
+        node_define: OmitNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.OmitNode$Builder
+        builder_source: OmitNode.java
+      - type: pick
+        node_define: PickNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.PickNode$Builder
+        builder_source: PickNode.java
+      - type: return
+        node_define: ReturnNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.ReturnNode$Builder
+        builder_source: ReturnNode.java
+      - type: script
+        node_define: ScriptNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.ScriptNode$Builder
+        builder_source: ScriptNode.java
+        required_capability: true
+      - type: subtract
+        node_define: SubstractNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.SubtractNode$Builder
+        builder_source: SubtractNode.java
+        spelling_note: "NodeDefine file keeps existing Substract spelling while runtime class is SubtractNode."
+      - type: switch
+        node_define: SwitchNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.SwitchNode$Builder
+        builder_source: SwitchNode.java
+      - type: take
+        node_define: TakeNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.TakeNode$Builder
+        builder_source: TakeNode.java
+      - type: validate
+        node_define: ValidateNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.ValidateNode$Builder
+        builder_source: ValidateNode.java
+
+  - id: data-model
+    module: ouroboros-logicflow-data-model
+    module_source: core/ouroboros-logicflow/ouroboros-logicflow-data-model
+    target_visibility: public
+    bundle_kind: public-data-model-integration
+    export_policy: include_in_public_repo
+    dependency_class: public-integration
+    node_builder_descriptor: src/main/resources/META-INF/services/com.ouroboros.logicflow.nodes.NodeBuilder
+    node_define_resource_dir: src/main/metadata
+    builder_count: 11
+    node_define_json_count: 11
+    allowed_internal_dependencies:
+      - ouroboros-data-core
+    required_guards:
+      - descriptor_and_json_bundle_pairing
+      - public_candidate_no_internal_dependencies
+      - data_imports_scoped_to_data_model_bundle
+      - no_node_factory_hardcode
+    nodes:
+      - type: deleteData
+        node_define: DeleteDataNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.DeleteDataNode$Builder
+        builder_source: DeleteDataNode.java
+      - type: insertData
+        node_define: InsertDataNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.InsertDataNode$Builder
+        builder_source: InsertDataNode.java
+      - type: updateData
+        node_define: UpdateDataNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.UpdateDataNode$Builder
+        builder_source: UpdateDataNode.java
+      - type: partialUpdateData
+        node_define: PartialUpdateDataNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.PartialUpdateDataNode$Builder
+        builder_source: PartialUpdateDataNode.java
+      - type: searchData
+        node_define: SearchDataNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.SearchDataNode$Builder
+        builder_source: SearchDataNode.java
+      - type: pagedSearchData
+        node_define: PagedSearchDataNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.PagedSearchDataNode$Builder
+        builder_source: PagedSearchDataNode.java
+      - type: batchInsertData
+        node_define: BatchInsertDataNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.BatchInsertDataNode$Builder
+        builder_source: BatchInsertDataNode.java
+      - type: normalizeWhere
+        node_define: NoramlizeWhereNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.NormalizeWhereNode$Builder
+        builder_source: NormalizeWhereNode.java
+        spelling_note: "NodeDefine file keeps existing Noramlize spelling while runtime class is NormalizeWhereNode."
+      - type: countData
+        node_define: CountDataNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.CountDataNode$Builder
+        builder_source: CountDataNode.java
+      - type: getOneData
+        node_define: GetOneDataNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.GetOneDataNode$Builder
+        builder_source: GetOneDataNode.java
+      - type: dataModel
+        node_define: DataModelNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.DataModelNode$Builder
+        builder_source: DataModelNode.java
+
+  - id: extra-nodes
+    module: ouroboros-logicflow-extra-nodes
+    module_source: core/ouroboros-logicflow/ouroboros-logicflow-extra-nodes
+    target_visibility: internal-adapter
+    bundle_kind: platform-node-bundle
+    export_policy: exclude_by_default
+    dependency_class: internal-platform
+    node_builder_descriptor: src/main/resources/META-INF/services/com.ouroboros.logicflow.nodes.NodeBuilder
+    node_define_resource_dir: src/main/metadata
+    builder_count: 2
+    node_define_json_count: 2
+    allowed_internal_dependencies:
+      - common-exception
+      - ouroboros-util-excel
+      - spring-web
+    required_guards:
+      - descriptor_and_json_bundle_pairing
+      - public_candidate_no_backflow
+      - exclude_from_public_repo
+      - no_node_factory_hardcode
+    nodes:
+      - type: ouroborosExceptions
+        node_define: OuroborosExceptionNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.OuroborosExceptionsNode$Builder
+        builder_source: OuroborosExceptionsNode.java
+      - type: readExcel
+        node_define: ReadExcelNode.flow-node.json
+        builder_provider: com.ouroboros.logicflow.nodes.ReadExcelNode$Builder
+        builder_source: ReadExcelNode.java
+
+  - id: external-fixture
+    module: architecture-test-external-fixture
+    module_source: testing/architecture-tests/src/test/resources/logicflow-extension-fixture
+    target_visibility: test-only
+    bundle_kind: external-contract-fixture
+    export_policy: not_exported
+    dependency_class: external
+    node_builder_descriptor: META-INF/services/com.ouroboros.logicflow.nodes.NodeBuilder
+    node_define_resource_dir: META-INF/ouroboros/logic-flow-node-define
+    builder_count: 1
+    node_define_json_count: 1
+    required_guards:
+      - descriptor_and_json_bundle_pairing
+      - no_node_factory_hardcode
+    nodes:
+      - type: externalFixture
+        node_define: ExternalFixtureNode.json
+        builder_provider: com.example.logicflow.ExternalFixtureNode$Builder
+        builder_source: ExternalFixtureNode.java
+
+evidence:
+  bundle_inventory:
+    official_builtin:
+      builder_count: 17
+      node_define_json_count: 17
+      dependency_class: public-candidate
+    data_model:
+      builder_count: 11
+      node_define_json_count: 11
+      dependency_class: public-integration
+    extra_nodes:
+      builder_count: 2
+      node_define_json_count: 2
+      dependency_class: internal-platform
+  public_repo_bootstrap_input:
+    include_bundle_ids:
+      - official-builtin
+      - data-model
+    exclude_bundle_ids:
+      - extra-nodes
+      - external-fixture

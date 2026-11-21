@@ -1,0 +1,10 @@
+{
+  "fullName": "OrganizationManagement.BuiltinPositionManagement",
+  "url": "/dev/{appName}/builtin-position",
+  "icon": "fa fa-briefcase",
+  "title": "内置岗位管理",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 20
+}

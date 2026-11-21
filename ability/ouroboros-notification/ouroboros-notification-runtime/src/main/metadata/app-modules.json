@@ -1,0 +1,27 @@
+[
+  {
+    "fullName": "notification",
+    "title": "消息通知",
+    "menu": "notification",
+    "authorities": ["notification"],
+    "order": -90
+  },
+  {
+    "fullName": "systemSetting.notificationTemplate",
+    "title": "通知模板",
+    "parent": "systemSetting.basicConfiguration",
+    "menu": "systemSetting.notificationTemplate",
+    "authorities": ["systemSetting.notificationTemplate"],
+    "order": 50
+  },
+  {
+    "fullName": "systemSetting.notificationChannel",
+    "title": "通知渠道",
+    "parent": "systemSetting.basicConfiguration",
+    "menu": "systemSetting.notificationChannel",
+    "authorities": [
+      "systemSetting.notificationTemplate"
+    ],
+    "order": 51
+  }
+]

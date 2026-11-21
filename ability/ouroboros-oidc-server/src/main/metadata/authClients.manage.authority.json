@@ -1,0 +1,71 @@
+{
+  "fullName": "systemSetting.integrationManagement.applications.manage",
+  "title": "接入应用管理",
+  "delegable": false,
+  "apis": [
+    "GET /api/sys/auth-clients",
+    "GET /api/sys/auth-clients/{clientId}",
+    "PATCH /api/sys/auth-clients/{clientId}",
+    "POST /api/sys/auth-clients/{clientId}/restore-defaults",
+    "GET /api/sys/auth-clients/permissions",
+    "GET /api/sys/integration-management/sections/{section}"
+  ],
+  "uiViews": [
+    "/system-setting/integration-management",
+    "/system-setting/auth-clients"
+  ],
+  "menuItems": [
+    "systemSetting.integrationManagement"
+  ],
+  "accessControlDefine": {
+    "canControlFields": true,
+    "fieldSelectionRequired": true,
+    "controlledFields": [
+      {
+        "name": "clientName",
+        "label": "应用名称",
+        "type": "String"
+      },
+      {
+        "name": "oidc.scopes",
+        "label": "身份范围",
+        "type": "String"
+      },
+      {
+        "name": "apiAuthorization.allowedBoundary.permissions",
+        "label": "可授权权限",
+        "type": "String"
+      }
+    ],
+    "filterDefine": [
+      {
+        "name": "clientIds",
+        "label": "可管理应用",
+        "dataType": "Array",
+        "settingSchema": [
+          {
+            "type": "input-tag",
+            "name": "clientIds",
+            "label": "可管理应用",
+            "joinValues": false,
+            "extractValue": true
+          }
+        ]
+      },
+      {
+        "name": "grantableAuthorityNames",
+        "label": "可授权业务权限",
+        "dataType": "Array",
+        "settingSchema": [
+          {
+            "type": "input-tag",
+            "name": "grantableAuthorityNames",
+            "label": "可授权业务权限",
+            "joinValues": false,
+            "extractValue": true
+          }
+        ]
+      }
+    ]
+  }
+}

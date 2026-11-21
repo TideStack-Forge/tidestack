@@ -1,0 +1,327 @@
+version: 2
+roadmap: dynamic-data-model-open-source
+status: active
+source_contract: core/ouroboros-data/DESIGN.md
+matching_rule: most-specific-pattern-wins
+
+module_types:
+  data-core:
+    owns:
+      - model-language
+      - metadata
+      - api-spi-port-kernel
+      - expression-contract
+      - migration-contract
+      - generic-primary-key-spi
+    allowed_dependencies:
+      - libs-foundation
+    forbidden_imports:
+      - com.ouroboros.expression
+      - com.ouroboros.script
+      - com.ouroboros.lifecycle
+      - com.ouroboros.security
+      - com.ouroboros.app
+      - liquibase
+  data-plugins:
+    owns:
+      - data-domain-built-in-plugins
+      - data-model-plugin-builder-implementations
+      - data-model-meta-decorator-implementations
+      - archive-delete-support-contract
+      - plugin-specific-delete-transaction-coordinator-spi
+      - plugin-spi-service-registration
+    allowed_dependencies:
+      - data-core
+      - data-sql-migration
+      - libs-foundation
+    forbidden_imports:
+      - org.springframework
+      - com.ouroboros.expression
+      - com.ouroboros.script
+      - com.ouroboros.lifecycle
+      - com.ouroboros.security
+      - com.ouroboros.app
+      - com.querydsl
+      - liquibase
+    migration_note: "Current contents are data-model built-in plugins/decorators; broader data-domain plugin additions must add specific ownership rules before using the generic module name."
+  data-typed-core:
+    owns:
+      - typed-model-contract
+      - typed-model-pure-annotations
+      - data-model-scan-annotation
+      - typed-value-api-helpers
+    allowed_dependencies:
+      - data-core
+      - libs-foundation
+      - common-service
+      - common-exception-mapper
+    forbidden_imports:
+      - org.springframework
+      - common-all
+      - common-app
+      - common-script
+      - com.ouroboros.lifecycle
+      - com.ouroboros.security
+  data-typed-runtime:
+    owns:
+      - spring-typed-model-scanner
+      - typed-model-meta-provider
+      - typed-model-autoconfiguration
+      - deferred-model-registry
+      - platform-agnostic-typed-refresh-handler
+    allowed_dependencies:
+      - data-core
+      - data-typed-core
+      - libs-foundation
+    forbidden_imports:
+      - common-all
+      - common-app
+      - common-script
+      - com.ouroboros.lifecycle.event
+      - com.ouroboros.security
+      - com.ouroboros.exception.mapper
+    migration_note: "Do not keep one-layer compatibility artifacts. Consumers that previously depended on ouroboros-data-typed-model-runtime must depend directly on ouroboros-data-typed-core or ouroboros-data-typed-runtime according to actual API usage."
+  data-pkgen-coding:
+    owns:
+      - coding-primary-key-contract
+      - sequence-generator-contract
+      - coding-template-contract
+    allowed_dependencies:
+      - data-core
+      - libs-foundation
+    forbidden_imports:
+      - com.ouroboros.expression
+      - com.ouroboros.script
+      - org.springframework
+      - com.querydsl
+      - liquibase
+    implementation_owner: data-typed-runtime
+    script_context_owner: data-platform-adapter
+    migration_note: "Split legacy pkgen-coding contracts into data-pkgen-coding; keep the coding factory registration in data-pkgen-coding and DB-backed sequence/model in data-typed-runtime; move script-dependent wrappers to data-platform-adapter."
+  data-runtime:
+    owns:
+      - spring-jdbc-runtime
+      - datasource-datastation-autoconfiguration
+      - delete-transaction-coordinator
+      - datasource-datastation-spi-registration
+      - common-expression-adapter
+      - snowflake-adapter
+    allowed_dependencies:
+      - data-core
+      - data-plugins
+      - data-typed-core
+      - data-typed-runtime
+      - data-pkgen-coding
+      - data-sql
+      - common-expression
+      - spring-framework
+      - libs-foundation
+    forbidden_imports:
+      - com.ouroboros.lifecycle
+      - com.ouroboros.security
+      - common-app
+      - common-script
+  data-platform-adapter:
+    owns:
+      - ouroboros-lifecycle-bridge
+      - security-identity-adapter
+      - script-adapter
+      - js-host-access-adapter
+      - typed-refresh-event-adapter
+    allowed_dependencies:
+      - data-core
+      - data-typed-runtime
+      - data-runtime
+      - common-app
+      - common-script
+      - security-context
+      - libs-platform
+    forbidden_ownership:
+      - core-contract-definition
+      - public-spring-jdbc-runtime
+      - sql-migration-implementation
+  data-sql:
+    owns:
+      - sql-datastation
+      - querydsl-bridge
+      - sql-template-dialect
+      - crud-query-execution
+    allowed_dependencies:
+      - data-core
+      - libs-foundation
+    forbidden_imports:
+      - liquibase
+      - org.springframework.boot.autoconfigure.liquibase
+  data-sql-migration:
+    owns:
+      - sql-schema-migration
+      - liquibase-ddl-schema-diff
+      - migration-report-dry-run
+    allowed_dependencies:
+      - data-core
+      - libs-foundation
+  data-dev:
+    owns:
+      - development-ui
+      - menu-schema-helper
+    public_export: excluded-first-wave
+  data-test-support:
+    owns:
+      - test-fixtures
+      - builders
+      - public-test-helpers
+
+ownership:
+  - package_pattern: "com.ouroboros.data.model.MigrationStrategy"
+    owner: data-core
+    note: "Existing migration strategy enum remains the core migration contract."
+  - package_pattern: "com.ouroboros.data.station.Migratable"
+    owner: data-core
+    note: "Existing migration capability contract remains in core."
+  - package_pattern: "com.ouroboros.data.expression..*"
+    owner: data-core
+    note: "Expression port definitions only; common-expression adapter belongs to data-runtime."
+  - package_pattern: "com.ouroboros.data.model.SnowflakePrimaryKeyGeneratorFactory"
+    owner: data-runtime
+    note: "Snowflake PrimaryKeyGeneratorFactory implementation."
+  - package_pattern: "com.ouroboros.data.model.SnowflakeNodeIdProvider"
+    owner: data-runtime
+    migration_note: "Data-runtime-side node id provider configuration. If exposed publicly as a snowflake-specific contract, move to a future data-pkgen-snowflake interface-only module."
+  - package_pattern: "com.ouroboros.data.config.DefaultSnowflakeNodeIdProviderConfig"
+    owner: data-runtime
+    note: "Spring-backed snowflake node id provider config."
+  - package_pattern: "com.ouroboros.data.model.plugins..*"
+    owner: data-plugins
+    note: "Built-in DataModelPluginBuilder implementations; core keeps only the plugin SPI/mechanism."
+  - package_pattern: "com.ouroboros.data.model.decorators..*"
+    owner: data-plugins
+    note: "Built-in DataModelMetaDecorator implementations and their SPI registration."
+  - package_pattern: "com.ouroboros.data.model.deletepolicy..*"
+    owner: data-plugins
+    note: "ArchiveDelete plugin support contracts and plugin-specific delete transaction coordinator SPI."
+  - package_pattern: "com.ouroboros.data.model..*"
+    owner: data-core
+    note: "Model metadata, contracts, ports and platform-agnostic defaults unless a more specific rule above applies."
+  - package_pattern: "com.ouroboros.data.annotation.DataModelScan"
+    owner: data-typed-core
+    note: "Framework-free scan marker; Spring scanning/registration belongs to typed-runtime."
+  - package_pattern: "com.ouroboros.data.annotation.DataModelScanRegistry"
+    owner: data-typed-runtime
+    note: "Spring ImportBeanDefinitionRegistrar; not part of typed-core."
+  - package_pattern: "com.ouroboros.data.annotation..*"
+    owner: data-typed-core
+    note: "Pure typed model annotations. Do not add Spring annotations here."
+  - package_pattern: "com.ouroboros.data.model.TypedModelMetaHelper"
+    owner: data-typed-runtime
+    note: "Typed metadata helper currently depends on scan/runtime mechanics; keep with Spring typed runtime."
+  - package_pattern: "com.ouroboros.data.model.TypedDataModel"
+    owner: data-typed-core
+    note: "Typed model contract."
+  - package_pattern: "com.ouroboros.data.model.BaseTypedDataModel"
+    owner: data-typed-core
+    note: "Platform-agnostic typed model implementation over DataModel."
+  - package_pattern: "com.ouroboros.data.model.ModelValue"
+    owner: data-typed-core
+    note: "Typed model value helper."
+  - package_pattern: "com.ouroboros.data.model.serializer..*"
+    owner: data-typed-core
+    note: "Serializer helpers unless they require Spring runtime."
+  - package_pattern: "com.ouroboros.data.model.DeferredModelRegistry"
+    owner: data-typed-core
+    note: "Deferred registry state/contract belongs with the typed center; Spring lifecycle wiring belongs to data-typed-runtime."
+  - package_pattern: "com.ouroboros.data.model.DeferredTypedDataModel"
+    owner: data-typed-core
+    note: "Deferred typed access is part of the typed API surface."
+  - package_pattern: "com.ouroboros.data.model.TypedDataModelCenter"
+    owner: data-typed-core
+    migration_note: "Remove common-app SpringContextUtil dependency; use typed-core registry state with typed-runtime lifecycle wiring."
+  - package_pattern: "com.ouroboros.data.model.DeferredModelRegistryLifecycle"
+    owner: data-typed-runtime
+    note: "Spring lifecycle bridge that registers/clears the typed-core DeferredModelRegistry."
+  - package_pattern: "com.ouroboros.data.model.ModelRefreshedListener"
+    owner: data-typed-runtime
+    migration_note: "Refactor into platform-agnostic typed refresh handler; platform event listener belongs to data-platform-adapter."
+  - package_pattern: "com.ouroboros.data.model.SpringTypedModelMetaProvider"
+    owner: data-typed-runtime
+    note: "Spring typed model scanner/provider."
+  - package_pattern: "com.ouroboros.data.TypedDataModelAutoConfiguration"
+    owner: data-typed-runtime
+    note: "Typed runtime auto-configuration."
+  - package_pattern: "com.ouroboros.data.pkgenerator.CodingSequencer"
+    owner: data-pkgen-coding
+    note: "Coding sequence contract; next/peek do not imply DB implementation."
+  - package_pattern: "com.ouroboros.data.pkgenerator.CodingPrimaryKeyGenerator"
+    owner: data-pkgen-coding
+    note: "Coding primary key contract built on data-core PrimaryKeyGenerator."
+  - package_pattern: "com.ouroboros.data.pkgenerator.CodeGenerator"
+    owner: data-pkgen-coding
+    note: "Coding template facade contract if retained publicly."
+  - package_pattern: "com.ouroboros.data.pkgenerator.FixLengthCodingGeneratorFactory"
+    owner: data-pkgen-coding
+    migration_note: "Coding primary key factory/template implementation; uses data-core expression port and CodingSequencer contract without platform dependency."
+  - package_pattern: "com.ouroboros.data.pkgenerator.DBCodingSequencer"
+    owner: data-typed-runtime
+    migration_note: "DB-backed coding sequence implementation because it operates through the typed model runtime."
+  - package_pattern: "com.ouroboros.data.pkgenerator.model..*"
+    owner: data-typed-runtime
+    migration_note: "Typed persistence model for DB-backed coding sequence."
+  - package_pattern: "com.ouroboros.data.pkgenerator.CodeGenELAndScriptContext"
+    owner: data-platform-adapter
+    migration_note: "Expression/script wrapper implementation; script-dependent parts stay platform-adapter."
+  - package_pattern: "com.ouroboros.data.pkgenerator..*"
+    owner: data-pkgen-coding
+    current_state: mixed-legacy
+    migration_note: "Fallback only. New implementation reviews should prefer exact class/package rules above; do not treat the whole legacy package as public."
+  - package_pattern: "com.ouroboros.data.SpringDataStationAutoConfiguration"
+    owner: data-runtime
+    note: "Spring/JDBC data station auto-configuration."
+  - package_pattern: "com.ouroboros.data.SpringDataStationDefineProvider"
+    owner: data-runtime
+    note: "Spring DataStationDefineProvider bridge."
+  - package_pattern: "com.ouroboros.data.config.DataSourceConfiguration"
+    owner: data-runtime
+    note: "Datasource Spring configuration."
+  - package_pattern: "com.ouroboros.data.delete..*"
+    owner: data-runtime
+    note: "Spring SQL delete transaction coordinator."
+  - package_pattern: "com.ouroboros.data.runtime.lifecycle..*"
+    owner: data-runtime
+    note: "Data model lifecycle bridge/default refresh runtime; not data-core."
+  - package_pattern: "com.ouroboros.data.DataStationAutoConfiguration"
+    owner: data-platform-adapter
+    migration_note: "Ouroboros lifecycle event adapter for model refreshing."
+  - package_pattern: "com.ouroboros.data.DataModelCenterScriptContextWrapper"
+    owner: data-platform-adapter
+    note: "common-script context wrapper."
+  - package_pattern: "com.ouroboros.data.JsTypeMapping"
+    owner: data-platform-adapter
+    note: "JS host access adapter for platform script runtime."
+  - package_pattern: "com.ouroboros.app.datamodel.plugin.CurrentSecurityDataOperationIdentityProvider"
+    owner: data-platform-adapter
+    migration_note: "Move security-backed DataOperationIdentityProvider registration out of ability app runtime."
+  - package_pattern: "com.ouroboros.data.runtime..*"
+    owner: data-platform-adapter
+    note: "Runtime adapter package defaults to platform adapter unless explicitly classified as data-runtime."
+  - package_pattern: "com.ouroboros.data.migration..*"
+    owner: data-sql-migration
+    note: "SQL schema migration implementation."
+  - package_pattern: "com.ouroboros.data.sql..*"
+    owner: data-sql
+    migration_note: "Move Liquibase/DDL/schema diff classes to data-sql-migration."
+  - package_pattern: "com.ouroboros.data.dev..*"
+    owner: data-dev
+    note: "Development-only helpers; excluded from first-wave public export."
+  - package_pattern: "com.ouroboros.data.test..*"
+    owner: data-test-support
+    note: "Public test fixtures and builders."
+
+downstream_rules:
+  - "Every downstream design/checklist must read source_contract and this matrix before package/POM edits."
+  - "Topology changes must update the current module design and this ownership matrix together; historical task artifacts are not active gate inputs."
+  - "data-runtime owns public/common Spring-JDBC runtime and must stay free of lifecycle/security/common-app/common-script dependencies."
+  - "data-plugins owns data-domain built-in plugin/decorator implementations and must stay framework/platform/runtime-free; data-core owns only plugin contracts and mechanics."
+  - "Consumers that need full platform behavior must depend on both data-runtime and data-platform-adapter; do not recreate a single mixed runtime."
+  - "data-platform-adapter owns lifecycle/security/script glue and is not part of the public Spring runtime surface."
+  - "data-pkgen-coding owns coding-primary-key contracts plus dependency-light factory/template implementation; DB-backed sequence behavior belongs to data-typed-runtime and platform script wrappers belong to data-platform-adapter."
+  - "Do not model snowflake as part of data-pkgen-coding; concrete implementation is data-runtime-owned, and public snowflake-specific contracts should become data-pkgen-snowflake if needed."
+  - "data-sql may depend on data-sql-migration explicitly to keep SqlDataStation migration APIs usable; data-sql-migration must not depend back on data-sql."

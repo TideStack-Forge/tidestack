@@ -1,0 +1,60 @@
+{
+  "name": "/system-setting/custom-ui-schema/code",
+  "schema": {
+    "wrapperComponent": "div",
+    "className": "h-full relative overflow-y-hidden",
+    "mode": "normal",
+    "type": "form",
+    "wrapWithPanel": false,
+    "initApi": "get:/api/sys/custom-ui-schema/${id}",
+    "api": {
+      "method": "put",
+      "data": {
+        "&": "$$",
+        "schema": "${schema|toJson}"
+      },
+      "messages": {
+        "success": "保存成功"
+      },
+      "url": "/api/sys/custom-ui-schema/${id}"
+    },
+    "title": false,
+    "body": [
+      {
+        "type": "editor",
+        "name": "schema",
+        "language": "json",
+        "label": "",
+        "options": {
+          "minimap": {
+            "enabled": true
+          }
+        },
+        "className": "h-full",
+        "inputClassName": "h-full max-h-full",
+        "required": true
+      }
+    ],
+    "actions": [
+      {
+        "type": "button",
+        "label": "取消",
+        "actionType": "close"
+      },
+      {
+        "type": "button",
+        "label": "保存",
+        "level": "success",
+        "actionType": "submit",
+        "close": false,
+        "primary": true
+      },
+      {
+        "type": "button",
+        "label": "确定",
+        "actionType": "submit",
+        "level": "primary"
+      }
+    ]
+  }
+}

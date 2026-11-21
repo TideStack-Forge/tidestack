@@ -1,0 +1,39 @@
+{
+  "name": "/dev/{appName}/data-dict/detail",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "title": false,
+    "static": true,
+    "initApi": {
+      "url": "/api/dev/${appName}/data-dict/${name}",
+      "method": "get",
+      "adaptor": "function addHasChildrenToItems(arr) {\r\n  arr.forEach(item => {\r\n    if (item.children && item.children.length > 0) {\r\n      item.hasChildren = true;\r\n      addHasChildrenToItems(item.children);\r\n    } else {\r\n      item.hasChildren = false;\r\n    }\r\n  });\r\n  return arr\r\n}\r\nreturn {\r\n  ...payload,\r\n  data: addHasChildrenToItems(payload.data.items)\r\n}"
+    },
+    "body": [
+      {
+        "type": "tabs",
+        "tabs": [
+          {
+            "title": "字典项",
+            "tab": [
+              {
+                "$ref": "detailDataDictItems"
+              }
+            ]
+          },
+          {
+            "title": "状态转移表",
+            "tab": [
+              {
+                "$ref": "defineStateTransition"
+              }
+            ],
+            "visibleOn": "${type === 'state_table'}"
+          }
+        ]
+      }
+    ],
+    "mode": "horizontal"
+  }
+}

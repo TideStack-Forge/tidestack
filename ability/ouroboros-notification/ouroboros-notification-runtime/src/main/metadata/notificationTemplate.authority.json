@@ -1,0 +1,27 @@
+{
+  "fullName": "systemSetting.notificationTemplate",
+  "title": "通知模板",
+  "apis": [
+    "GET /api/sys/notification-template",
+    "POST /api/sys/notification-template",
+    "PUT /api/sys/notification-template/{id}",
+    "PATCH /api/sys/notification-template/{id}",
+    "DELETE /api/sys/notification-template/{id}",
+    "GET /api/sys/notification-template/{name}",
+    "GET /api/sys/notification-template/{name}/runtime-definition",
+    "POST /api/sys/notification-template/{name}/runtime-override/validate",
+    "PUT /api/sys/notification-template/{name}/runtime-override",
+    "POST /api/sys/notification-template/{name}/restore-default",
+    "GET /api/notification/adapter-schema/management"
+  ],
+  "uiViews": [
+    "/system-setting/notification-templates",
+    "/system-setting/notification-templates/detail",
+    "/system-setting/notification-templates/edit",
+    "/system-setting/notification-channels"
+  ],
+  "menuItems": [
+    "systemSetting.notificationTemplate",
+    "systemSetting.notificationChannel"
+  ]
+}

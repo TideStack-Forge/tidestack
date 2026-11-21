@@ -1,0 +1,188 @@
+{
+  "name": "/dev/{appName}/versions/create",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "api": {
+      "method": "post",
+      "url": "/api/dev/${appName}/version"
+    },
+    "body": [
+      {
+        "type": "service",
+        "id": "releaseStateService",
+        "api": {
+          "method": "get",
+          "url": "/api/dev/${appName}/vcs/state"
+        },
+        "body": [
+          {
+            "type": "alert",
+            "level": "info",
+            "showIcon": true,
+            "body": [
+              {
+                "type": "tpl",
+                "tpl": "当前将在分支 ${currentBranch || '-'} 上发布。master 分支会生成纯 v&lt;semver&gt; 标签；custom/{editionCode} 分支会生成 v&lt;semver&gt;-ce.&lt;editionCode&gt;。",
+                "wrapperComponent": "",
+                "inline": false
+              }
+            ]
+          },
+          {
+            "type": "alert",
+            "level": "warning",
+            "showIcon": true,
+            "body": [
+              {
+                "type": "tpl",
+                "tpl": "当前工作区存在未提交更改，发版会被阻止。请先处理工作区变更。",
+                "wrapperComponent": "",
+                "inline": false
+              }
+            ],
+            "visibleOn": "${!workspaceClean}",
+            "className": "mt-3"
+          }
+        ],
+        "className": "mb-4"
+      },
+      {
+        "type": "form",
+        "body": [
+          {
+            "type": "alert",
+            "level": "warning",
+            "body": [
+              {
+                "type": "tpl",
+                "tpl": "检测到未提交的文件，建议先提交所有更改后再发布版本。",
+                "wrapperComponent": "",
+                "inline": false
+              }
+            ],
+            "visibleOn": "${items.length > 0}",
+            "className": "mb-4"
+          },
+          {
+            "type": "collapse",
+            "header": "查看未提交的文件",
+            "visibleOn": "${items.length > 0}",
+            "body": [
+              {
+                "type": "input-tree",
+                "source": "${items}",
+                "name": "__fileTree",
+                "labelField": "title",
+                "valueField": "path",
+                "iconField": "icon",
+                "initiallyOpen": true,
+                "showIcon": true,
+                "enableNodePath": true,
+                "unfoldedLevel": 2,
+                "hideRoot": true,
+                "clearable": false,
+                "multiple": false,
+                "pathSeparator": "/",
+                "menuTpl": {
+                  "type": "tooltip-wrapper",
+                  "disabledOn": "${versionState !== 'UNVERSIONED'}",
+                  "content": "文件尚未纳入版本管理",
+                  "body": [
+                    {
+                      "type": "icon",
+                      "icon": "${lockState === 'UNLOCKED' ? 'fa fa-unlock': 'fa fa-lock'}",
+                      "vendor": "",
+                      "className": {
+                        "text-danger": "${lockState === 'LOCKED'}",
+                        "text-muted": "${lockState === 'UNLOCKED'}",
+                        "text-success": "${lockState === 'OWNED'}",
+                        "mr-2 text-sm": true
+                      },
+                      "visibleOn": "${lockState && lockState !== 'UNLOCKED'}"
+                    },
+                    {
+                      "type": "tpl",
+                      "tpl": "${name}${versionState && versionState !== 'NOTCHANGED' ? ' *' : ''}",
+                      "className": {
+                        "text-danger": "${versionState === 'UNVERSIONED'}",
+                        "font-extrabold italic": "${ versionState && versionState !== 'NOTCHANGED' }"
+                      }
+                    },
+                    {
+                      "type": "tpl",
+                      "tpl": "(${title})",
+                      "className": "text-muted ml-1",
+                      "visibleOn": "${title}"
+                    }
+                  ]
+                }
+              }
+            ],
+            "className": "mb-4"
+          }
+        ],
+        "dsType": "api",
+        "actions": [
+          {
+            "type": "submit",
+            "label": "提交",
+            "primary": true
+          }
+        ],
+        "feat": "View",
+        "initApi": {
+          "method": "get",
+          "url": "/api/dev/${appName}/version/current-files",
+          "data": {
+            "onlyUncommitted": true
+          }
+        },
+        "wrapWithPanel": false,
+        "labelAlign": "left"
+      },
+      {
+        "type": "static",
+        "name": "appName",
+        "label": "应用名称",
+        "value": "${appName}"
+      },
+      {
+        "type": "input-text",
+        "name": "version",
+        "label": "逻辑版本号",
+        "placeholder": "请输入版本号，如：v1.0.0",
+        "required": true,
+        "validations": {
+          "matchRegexp": "^v[a-zA-Z0-9][a-zA-Z0-9._-]*$"
+        },
+        "validationErrors": {
+          "matchRegexp": "版本号格式不正确，只能包含字母、数字、点号、下划线和短横线"
+        },
+        "description": "建议使用语义化版本格式，如：v1.0.0、v1.2.3等。master 发布会直接使用该标签，custom/{editionCode} 发布会由系统追加 -ce.&lt;editionCode&gt; 后缀。"
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "版本描述",
+        "placeholder": "请输入版本描述，说明本版本的主要更新内容",
+        "maxRows": 6,
+        "description": "可选，描述本版本的功能更新、bug修复等内容",
+        "minRows": 3
+      }
+    ],
+    "actions": [
+      {
+        "type": "button",
+        "label": "取消",
+        "actionType": "cancel"
+      },
+      {
+        "type": "submit",
+        "label": "发布版本",
+        "level": "primary"
+      }
+    ],
+    "labelAlign": "left"
+  }
+}

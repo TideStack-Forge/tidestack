@@ -1,0 +1,56 @@
+{
+  "type": "mqProducer",
+  "label": "发送消息队列",
+  "icon": "mq-product",
+  "shape": "rect",
+  "description": "发送到消息队列",
+  "group": "功能节点",
+  "order": 3012,
+  "svgs": {
+    "mq-product": "<svg t=\"1744163010194\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1433\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"300\" height=\"300\"><path d=\"M255.488 607.442824l-197.632-162.273883a20.630588 20.630588 0 0 1 5.300706-34.996706l892.385882-363.821176a20.600471 20.600471 0 0 1 27.798588 23.913412l-215.973647 891.934117a20.630588 20.630588 0 0 1-32.496941 11.565177l-209.438117-159.382589a20.660706 20.660706 0 0 0-26.112 0.933648l-114.296471 100.743529a20.600471 20.600471 0 0 1-34.243765-15.450353v-212.389647c0-5.481412 2.198588-10.752 6.083765-14.607059l441.705412-438.814118L280.606118 608.195765a20.570353 20.570353 0 0 1-25.118118-0.783059z\" p-id=\"1434\"></path></svg>"
+  },
+  "scaffold": {
+    "type": "mqProducer",
+    "name": "发送消息队列",
+    "inputPorts": [
+      {
+        "name": "payload",
+        "description": "消息载荷",
+        "dataType": ""
+      },
+      {
+        "name": "headers",
+        "description": "消息头",
+        "dataType": ""
+      }
+    ],
+    "outputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": ""
+      }
+    ]
+  },
+  "portRules": {
+    "input": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 2
+    },
+    "output": {
+      "ruleType": "limit",
+      "min": 0,
+      "max": 1
+    }
+  },
+  "properties": [
+    {
+      "type": "mq-binding-select",
+      "required": true,
+      "bindingType": "producer",
+      "name": "bindingName",
+      "label": "MQ绑定名"
+    }
+  ]
+}

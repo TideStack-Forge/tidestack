@@ -1,0 +1,3 @@
+com.ouroboros.app.AppMetadataWebAppInfoContributor$SingletonHolder
+com.ouroboros.app.AppConfigWebAppInfoContributor$SingletonHolder
+com.ouroboros.app.AppCustomStyleAppInfoContributor$Proxy

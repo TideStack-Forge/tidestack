@@ -1,0 +1,118 @@
+{
+  "description": "Qualification train: GE 6.0/e4.38 core plus Groovy 4.0.30 compiler source delta and Maven Central 4.0.30 base jars. Not an upstream release or product dependency.",
+  "baselineCommit": "757cc9196c27073dac8ec9c0d09edf3fce968530",
+  "compilerCommit": "bcdfa60231f1fb5ca396f124936aecb2e1299dba",
+  "files": [
+    {
+      "path": "ge-core/groovy-eclipse-core.jar",
+      "url": "https://groovy.jfrog.io/artifactory/plugins-release/org/codehaus/groovy/groovy-eclipse-integration/6.0.0/e4.38/plugins/org.codehaus.groovy.eclipse.core_6.0.0.v202512311652-e2512.jar",
+      "sha256": "743ba3b009e2ed4888e5027ce19cd60985f0d9d199098834e9495c0640721d58",
+      "size": 76020
+    },
+    {
+      "path": "ge-core/jdt-groovy-core.jar",
+      "url": "https://groovy.jfrog.io/artifactory/plugins-release/org/codehaus/groovy/groovy-eclipse-integration/6.0.0/e4.38/plugins/org.eclipse.jdt.groovy.core_6.0.0.v202512311652-e2512.jar",
+      "sha256": "919380d0e5444a096251f164280128b01c7197080ab2c64b13e1ea1537ec6705",
+      "size": 518890
+    },
+    {
+      "path": "ge-core/org.codehaus.groovy.eclipse.compilerResolver_6.0.0.v202512311652-e2512.jar",
+      "url": "https://groovy.jfrog.io/artifactory/plugins-release/org/codehaus/groovy/groovy-eclipse-integration/6.0.0/e4.38/plugins/org.codehaus.groovy.eclipse.compilerResolver_6.0.0.v202512311652-e2512.jar",
+      "sha256": "6086b67dc4747027fa2f9e41c58d7793afcf564a2518a262c805ce473057b980",
+      "size": 15547
+    },
+    {
+      "path": "ge-core/org.codehaus.groovy.eclipse.frameworkAdapter_6.0.0.v202512311652-e2512.jar",
+      "url": "https://groovy.jfrog.io/artifactory/plugins-release/org/codehaus/groovy/groovy-eclipse-integration/6.0.0/e4.38/plugins/org.codehaus.groovy.eclipse.frameworkAdapter_6.0.0.v202512311652-e2512.jar",
+      "sha256": "c3157dce07992a5c759946affeffbbc65cd0825226751d4ee8eb6f665b21518b",
+      "size": 7951
+    },
+    {
+      "path": "ge-core/org.codehaus.groovy_4.0.29.v202512311652-e2512.jar",
+      "url": "https://groovy.jfrog.io/artifactory/plugins-release/org/codehaus/groovy/groovy-eclipse-integration/6.0.0/e4.38/plugins/org.codehaus.groovy_4.0.29.v202512311652-e2512.jar",
+      "sha256": "733e21c637982b0e495ad19e1618202e1c39cf81842ce9bdae494f8a15799915",
+      "size": 25566596
+    },
+    {
+      "path": "ge-core/org.eclipse.jdt.core.compiler.batch_3.44.0.v202512311652-e2512.jar",
+      "url": "https://groovy.jfrog.io/artifactory/plugins-release/org/codehaus/groovy/groovy-eclipse-integration/6.0.0/e4.38/plugins/org.eclipse.jdt.core.compiler.batch_3.44.0.v202512311652-e2512.jar",
+      "sha256": "4d98f296436b1f1e11e16173f09e476e8da360576c99ab64ff3ef8bb9f25f01d",
+      "size": 3235061
+    },
+    {
+      "path": "ge-core/org.eclipse.jdt.core_3.44.0.v202512311652-e2512.jar",
+      "url": "https://groovy.jfrog.io/artifactory/plugins-release/org/codehaus/groovy/groovy-eclipse-integration/6.0.0/e4.38/plugins/org.eclipse.jdt.core_3.44.0.v202512311652-e2512.jar",
+      "sha256": "b6625a0957b13e35e86482b9db569f91e2b00ff0afb9c65798eb534c33ac1230",
+      "size": 4348791
+    },
+    {
+      "path": "ge430-libs/groovy-4.0.30.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/groovy/groovy/4.0.30/groovy-4.0.30.jar",
+      "sha256": "7f1c5221a9350642391c1468e8ed83856f760597980fdf90300dbd69930d6d1b",
+      "size": 7715295
+    },
+    {
+      "path": "ge430-libs/groovy-test-4.0.30.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/groovy/groovy-test/4.0.30/groovy-test-4.0.30.jar",
+      "sha256": "830f72cf9132f151e5eba3e18bffa36ce0ffe5b9865853f81c6f66db368b2027",
+      "size": 70515
+    }
+  ],
+  "sources": [
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/apache/groovy/ast/tools/ExpressionUtils.java",
+      "url": "https://api.github.com/repos/groovy/groovy-eclipse/contents/base/org.codehaus.groovy40/src/org/apache/groovy/ast/tools/ExpressionUtils.java?ref=bcdfa60231f1fb5ca396f124936aecb2e1299dba",
+      "gitBlobSha1": "b01bdebb1cc2fafd12bbf6f2d41d823e5553fe26"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/apache/groovy/parser/antlr4/AstBuilder.java",
+      "url": "https://api.github.com/repos/groovy/groovy-eclipse/contents/base/org.codehaus.groovy40/src/org/apache/groovy/parser/antlr4/AstBuilder.java?ref=bcdfa60231f1fb5ca396f124936aecb2e1299dba",
+      "gitBlobSha1": "0d90294b99d7b76ea19ed95f7e6d61125cb0010c"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/ClassNode.java",
+      "url": "https://api.github.com/repos/groovy/groovy-eclipse/contents/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/ClassNode.java?ref=bcdfa60231f1fb5ca396f124936aecb2e1299dba",
+      "gitBlobSha1": "c31c2b51b244278ab3567527afbaf4ef5bcfb811"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/AsmClassGenerator.java",
+      "url": "https://api.github.com/repos/groovy/groovy-eclipse/contents/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/AsmClassGenerator.java?ref=bcdfa60231f1fb5ca396f124936aecb2e1299dba",
+      "gitBlobSha1": "d0999d8abc40c8099771f7045a5c025db9f1a40e"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/asm/sc/StaticInvocationWriter.java",
+      "url": "https://api.github.com/repos/groovy/groovy-eclipse/contents/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/asm/sc/StaticInvocationWriter.java?ref=bcdfa60231f1fb5ca396f124936aecb2e1299dba",
+      "gitBlobSha1": "be05be93bf53606abfc147aaf08f90c9ff160293"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/control/ResolveVisitor.java",
+      "url": "https://api.github.com/repos/groovy/groovy-eclipse/contents/base/org.codehaus.groovy40/src/org/codehaus/groovy/control/ResolveVisitor.java?ref=bcdfa60231f1fb5ca396f124936aecb2e1299dba",
+      "gitBlobSha1": "4b20dc1a6def1fffb847e89bf286f765873137f0"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/vmplugin/v8/Java8.java",
+      "url": "https://api.github.com/repos/groovy/groovy-eclipse/contents/base/org.codehaus.groovy40/src/org/codehaus/groovy/vmplugin/v8/Java8.java?ref=bcdfa60231f1fb5ca396f124936aecb2e1299dba",
+      "gitBlobSha1": "13bde49593f8f4646c0468b7f6d57b3ae55d3586"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/META-INF/MANIFEST.MF",
+      "url": "https://api.github.com/repos/groovy/groovy-eclipse/contents/base/org.codehaus.groovy40/META-INF/MANIFEST.MF?ref=bcdfa60231f1fb5ca396f124936aecb2e1299dba",
+      "gitBlobSha1": "16d4971aa869fe1725f912eea4eb709458d05713"
+    }
+  ],
+  "removedOverrides": [
+    "org/codehaus/groovy/classgen/ClassCompletionVerifier"
+  ],
+  "unchangedTraceTree": "15029a36ea4144b3d691e210a4e2b622042b8d44",
+  "unchangedParserBlob": "2e3e3aa2a6b2c22c0e3e1e1cd366a819af1ebdca",
+  "sourceTreeDelta": [
+    "org/apache/groovy/ast/tools/ExpressionUtils.java",
+    "org/apache/groovy/parser/antlr4/AstBuilder.java",
+    "org/codehaus/groovy/ast/ClassNode.java",
+    "org/codehaus/groovy/classgen/AsmClassGenerator.java",
+    "org/codehaus/groovy/classgen/ClassCompletionVerifier.java",
+    "org/codehaus/groovy/classgen/asm/sc/StaticInvocationWriter.java",
+    "org/codehaus/groovy/control/ResolveVisitor.java",
+    "org/codehaus/groovy/vmplugin/v8/Java8.java"
+  ]
+}

@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: ouroboros-test
+
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+
+root-path: /Users/lianshuze/Desktop/test/mothership
+ouroboros:
+  micro-web:
+    web-root: ${root-path}/web

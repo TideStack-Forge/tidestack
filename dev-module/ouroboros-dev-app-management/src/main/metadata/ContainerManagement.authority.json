@@ -1,0 +1,13 @@
+{
+  "fullName": "ContainerManagement",
+  "title": "运行实例",
+  "apis": [
+    "GET /api/app/container"
+  ],
+  "uiViews": [
+    "/container-management"
+  ],
+  "menuItems": [
+    "ContainerManagement"
+  ]
+}

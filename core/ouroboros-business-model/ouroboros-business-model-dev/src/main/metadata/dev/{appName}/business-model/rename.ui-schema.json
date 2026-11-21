@@ -1,0 +1,25 @@
+{
+  "name": "/dev/{appName}/business-model/rename",
+  "schema": {
+    "type": "form",
+    "title": "",
+    "api": {
+      "method": "POST",
+      "url": "/api/dev/${appName}/business-model/${fullName}/rename"
+    },
+    "body": [
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": false,
+        "validations": {
+          "matchRegexp": "^[A-Za-z]+[A-Za-z0-9]*$"
+        },
+        "validationErrors": {
+          "matchRegexp": "模型名必须以字母开头，且只能包含字母、数字"
+        }
+      }
+    ],
+    "wrapWithPanel": false
+  }
+}

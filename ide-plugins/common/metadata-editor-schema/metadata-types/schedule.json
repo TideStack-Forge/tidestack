@@ -1,0 +1,98 @@
+{
+  "type": "schedule",
+  "fileSuffix": ".schedule.json",
+  "displayName": "定时任务",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.schedule.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/metadata",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.schedule.json",
+    "fields": [
+      {
+        "name": "name",
+        "label": "名称",
+        "documentPath": [
+          "name"
+        ],
+        "required": true,
+        "defaultFromPath": "camel-name"
+      },
+      {
+        "name": "cron",
+        "label": "Cron 表达式",
+        "documentPath": [
+          "cron"
+        ],
+        "required": true
+      },
+      {
+        "name": "flowName",
+        "label": "逻辑流",
+        "documentPath": [
+          "flowName"
+        ],
+        "required": true
+      }
+    ],
+    "document": {
+      "name": "example",
+      "description": "示例定时任务",
+      "cron": "0 0 2 * * ?",
+      "flowName": "example.flow",
+      "data": {}
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "定时任务",
+    "actions": [],
+    "body": [
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "名称",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "cron",
+        "label": "Cron 表达式",
+        "required": true,
+        "description": "Spring cron，例如 0 0 2 * * ?"
+      },
+      {
+        "type": "input-text",
+        "name": "flowName",
+        "label": "逻辑流",
+        "required": true
+      },
+      {
+        "type": "input-kvs",
+        "name": "data",
+        "label": "任务数据",
+        "keyItem": {
+          "label": "键",
+          "placeholder": "code"
+        },
+        "valueItems": [
+          {
+            "type": "input-text",
+            "name": "_value",
+            "label": "值"
+          }
+        ]
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "描述",
+        "minRows": 2
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/schedule.schema.json"
+}

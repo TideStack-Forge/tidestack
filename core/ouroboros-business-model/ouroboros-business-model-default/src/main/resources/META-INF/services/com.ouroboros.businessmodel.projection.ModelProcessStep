@@ -1,0 +1,99 @@
+# 权限处理步骤
+com.ouroboros.businessmodel.projection.behavior.BehaviorMPS
+com.ouroboros.businessmodel.projection.authority.BehaviorActionMPS
+com.ouroboros.businessmodel.projection.authority.BehaviorEventMPS
+
+# 权限处理步骤
+com.ouroboros.businessmodel.projection.authority.AddMPS
+com.ouroboros.businessmodel.projection.authority.CustomMPS
+com.ouroboros.businessmodel.projection.authority.DeleteMPS
+com.ouroboros.businessmodel.projection.authority.SearchMPS
+com.ouroboros.businessmodel.projection.authority.StatusFlowMPS
+com.ouroboros.businessmodel.projection.authority.UpdateMPS
+com.ouroboros.businessmodel.projection.authority.WorkflowMPS
+com.ouroboros.businessmodel.projection.authority.ParentMPS
+
+# 数据模型处理步骤
+com.ouroboros.businessmodel.projection.data.feature.AuditFieldsMPS
+com.ouroboros.businessmodel.projection.data.advance.AuthorityFieldsMPS
+com.ouroboros.businessmodel.projection.data.basic.PrimaryKeyMPS
+com.ouroboros.businessmodel.projection.data.basic.BasicMPS
+com.ouroboros.businessmodel.projection.data.plugin.PluginFeaturesMPS
+com.ouroboros.businessmodel.projection.data.feature.ChangeLogMPS
+com.ouroboros.businessmodel.projection.data.advance.DeleteCheckReferenceMPS
+com.ouroboros.businessmodel.projection.data.feature.DraftMPS
+com.ouroboros.businessmodel.projection.data.basic.RelationMPS
+com.ouroboros.businessmodel.projection.data.basic.ReferenceRelationMPS
+com.ouroboros.businessmodel.projection.data.feature.SoftDeleteMPS
+com.ouroboros.businessmodel.projection.data.feature.FeatureQueryMPS
+com.ouroboros.businessmodel.projection.data.feature.StatusFlowMPS
+com.ouroboros.businessmodel.projection.data.basic.RawNameMPS
+com.ouroboros.businessmodel.projection.data.feature.ExclusiveLockMPS
+
+# 逻辑流处理步骤
+com.ouroboros.businessmodel.projection.logicflow.AddMPS
+com.ouroboros.businessmodel.projection.logicflow.DeleteMPS
+com.ouroboros.businessmodel.projection.logicflow.SearchMPS
+com.ouroboros.businessmodel.projection.logicflow.GetOneMPS
+com.ouroboros.businessmodel.projection.logicflow.UpdateMPS
+
+# 菜单处理步骤
+com.ouroboros.businessmodel.projection.menu.MainMenuMPS
+
+# UI模型处理步骤
+com.ouroboros.businessmodel.projection.ui.AddMPS
+com.ouroboros.businessmodel.projection.ui.DetailMPS
+com.ouroboros.businessmodel.projection.ui.EditMPS
+com.ouroboros.businessmodel.projection.ui.IndexMPS
+com.ouroboros.businessmodel.projection.ui.StatusFlowMPS
+
+# UI Schema 处理步骤
+com.ouroboros.businessmodel.projection.uischema.AddMPS
+com.ouroboros.businessmodel.projection.uischema.DetailMPS
+com.ouroboros.businessmodel.projection.uischema.EditMPS
+com.ouroboros.businessmodel.projection.uischema.IndexMPS
+com.ouroboros.businessmodel.projection.uischema.StatusFlowMPS
+
+# WebApi 处理步骤
+com.ouroboros.businessmodel.projection.webapi.AddMPS
+com.ouroboros.businessmodel.projection.webapi.DeleteMPS
+com.ouroboros.businessmodel.projection.webapi.GetOneMPS
+com.ouroboros.businessmodel.projection.webapi.SearchMPS
+com.ouroboros.businessmodel.projection.webapi.StatusFlowMPS
+com.ouroboros.businessmodel.projection.webapi.UpdateMPS
+
+# 自定义逻辑处理步骤
+com.ouroboros.businessmodel.projection.custom.CustomAPIMPS
+com.ouroboros.businessmodel.projection.custom.CustomUIMPS
+
+# 工作流 API
+com.ouroboros.businessmodel.projection.workflow.api.StartProcessAPI
+com.ouroboros.businessmodel.projection.workflow.api.InitTaskFormAPI
+com.ouroboros.businessmodel.projection.workflow.api.SubmitTaskAPI
+
+# 工作流 逻辑
+com.ouroboros.businessmodel.projection.workflow.logicflow.StartProcessLogic
+com.ouroboros.businessmodel.projection.workflow.logicflow.InitTaskFormLogic
+com.ouroboros.businessmodel.projection.workflow.logicflow.SubmitTaskLogic
+com.ouroboros.businessmodel.projection.workflow.logicflow.ProcessCallbackLogic
+
+# 工作流 UI
+com.ouroboros.businessmodel.projection.workflow.ui.ApprovalFormUI
+com.ouroboros.businessmodel.projection.workflow.ui.ProcessDetailUI
+
+# 工作流 UI Schema
+com.ouroboros.businessmodel.projection.workflow.uischema.ApprovalFormUISchema
+com.ouroboros.businessmodel.projection.workflow.uischema.ProcessDetailUISchema
+
+# 导入
+com.ouroboros.businessmodel.projection.webapi.ImportMPS
+com.ouroboros.businessmodel.projection.logicflow.ImportMPS
+com.ouroboros.businessmodel.projection.authority.ImportMPS
+
+# 服务端导出
+com.ouroboros.businessmodel.projection.authority.ServerSideExportMPS
+
+# 批量删除
+com.ouroboros.businessmodel.projection.webapi.BatchDeleteMPS
+com.ouroboros.businessmodel.projection.logicflow.BatchDeleteMPS
+com.ouroboros.businessmodel.projection.authority.BatchDeleteMPS

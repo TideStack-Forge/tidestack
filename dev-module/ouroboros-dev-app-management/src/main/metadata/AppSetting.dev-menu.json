@@ -1,0 +1,9 @@
+{
+  "url": "/dev/{appName}/app-setting",
+  "fullName": "ApplicationManagement.AppSetting",
+  "icon": "icon-app-setting",
+  "title": "应用配置",
+  "placement": "main",
+  "stage": "dev",
+  "order": 20
+}

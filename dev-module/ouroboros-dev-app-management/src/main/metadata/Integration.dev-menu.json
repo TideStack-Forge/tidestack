@@ -1,0 +1,8 @@
+{
+  "fullName": "Integration",
+  "icon": "fas fa-diagram-project",
+  "title": "系统集成",
+  "placement": "main",
+  "stage": "dev",
+  "order": 70
+}

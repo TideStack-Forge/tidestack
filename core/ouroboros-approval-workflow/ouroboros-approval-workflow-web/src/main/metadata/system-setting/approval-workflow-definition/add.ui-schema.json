@@ -1,0 +1,195 @@
+{
+  "name": "/system-setting/approval-workflow-definition/add",
+  "schema": {
+    "type": "page",
+    "title": "新建审批流",
+    "bodyClassName": "p-3",
+    "toolbar": [
+      {
+        "type": "button",
+        "label": "关闭",
+        "size": "lg",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "closeCurrentTab"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "body": [
+      {
+        "type": "form",
+        "name": "create-approval-workflow-definition-form",
+        "title": false,
+        "mode": "horizontal",
+        "wrapWithPanel": true,
+        "panelClassName": "Panel--default",
+        "api": {
+          "url": "/api/approval-workflow/definition",
+          "method": "post",
+          "data": {
+            "formatVersion": 1,
+            "name": "${name}",
+            "title": "${title}",
+            "description": "${description || ''}",
+            "version": 1,
+            "enabled": true,
+            "form": {
+              "formType": "${formType}",
+              "formId": "${formId}"
+            },
+            "nodes": [
+              {
+                "type": "StartNode",
+                "name": "发起节点",
+                "id": "${name}-start",
+                "permission": []
+              },
+              {
+                "type": "ApprovalNode",
+                "name": "审批节点",
+                "id": "${name}-approve",
+                "subType": "单签",
+                "candidates": [],
+                "permission": [],
+                "actions": []
+              },
+              {
+                "type": "EndNode",
+                "name": "结束",
+                "id": "${name}-end"
+              }
+            ],
+            "edges": [
+              {
+                "id": "${name}-edge-start-approve",
+                "type": "SEQUENCE",
+                "sourceId": "${name}-start",
+                "targetId": "${name}-approve"
+              },
+              {
+                "id": "${name}-edge-approve-end",
+                "type": "SEQUENCE",
+                "sourceId": "${name}-approve",
+                "targetId": "${name}-end"
+              }
+            ]
+          },
+          "messages": {
+            "success": "审批流创建成功"
+          }
+        },
+        "body": [
+          {
+            "type": "input-text",
+            "name": "name",
+            "label": "流程标识",
+            "required": true,
+            "clearable": false,
+            "description": "创建后作为审批流定义的稳定标识。"
+          },
+          {
+            "type": "input-text",
+            "name": "title",
+            "label": "流程名称",
+            "required": true
+          },
+          {
+            "type": "textarea",
+            "name": "description",
+            "label": "流程描述",
+            "minRows": 3,
+            "maxRows": 6
+          },
+          {
+            "type": "button-group-select",
+            "name": "formType",
+            "label": "表单类型",
+            "value": "default",
+            "source": {
+              "method": "get",
+              "url": "/api/approval-workflow/base-info/form-types",
+              "data": {
+                "value": "${formType}"
+              }
+            },
+            "required": true,
+            "onEvent": {
+              "change": {
+                "actions": [
+                  {
+                    "actionType": "setValue",
+                    "args": {
+                      "value": {
+                        "formId": ""
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "select",
+            "name": "formId",
+            "label": "关联表单",
+            "source": {
+              "method": "get",
+              "url": "/api/approval-workflow/base-info/form/${formType}",
+              "sendOn": "${!!formType}"
+            },
+            "labelField": "title",
+            "valueField": "name",
+            "menuTpl": "${title} <span class=\"text-muted\">(${name})</span>",
+            "searchable": true,
+            "clearable": true,
+            "required": true,
+            "placeholder": "请选择关联表单"
+          }
+        ],
+        "actions": [
+          {
+            "type": "button",
+            "label": "取消",
+            "actionType": "closeCurrentTab"
+          },
+          {
+            "type": "submit",
+            "label": "创建并编辑",
+            "level": "primary"
+          }
+        ],
+        "onEvent": {
+          "submitSucc": {
+            "actions": [
+              {
+                "actionType": "sendToOpenerTab",
+                "args": {
+                  "msg": {
+                    "definitionId": "${name}",
+                    "definitionName": "${title}"
+                  }
+                }
+              },
+              {
+                "actionType": "openOrSwitchTab",
+                "args": {
+                  "url": "/system-setting/approval-workflow-definition/${name}",
+                  "title": "编辑审批流「${title}」",
+                  "reloadOnReceive": true
+                }
+              },
+              {
+                "actionType": "closeTab"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

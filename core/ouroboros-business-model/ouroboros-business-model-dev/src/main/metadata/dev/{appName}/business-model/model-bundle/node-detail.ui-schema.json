@@ -1,0 +1,7 @@
+{
+  "name": "/dev/{appName}/business-model/model-bundle/node-detail",
+  "schema": {
+    "type": "json",
+    "source": "${ nodeDetail }"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "name": "/approval-center/reject-form",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "title": false,
+    "mode": "normal",
+    "id": "reject-form",
+    "body": [
+      {
+        "name": "comment",
+        "type": "textarea",
+        "clearable": true,
+        "label": "填写驳回理由",
+        "showCounter": true,
+        "required": true,
+        "placeholder": "驳回请求时，请填写驳回理由"
+      }
+    ],
+    "actions": [
+      {
+        "type": "action",
+        "actionType": "cancel",
+        "label": "取消"
+      },
+      {
+        "type": "action",
+        "actionType": "confirm",
+        "level": "primary",
+        "label": "确认",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "validate",
+                "componentId": "reject-form"
+              },
+              {
+                "actionType": "ajax",
+                "api": {
+                  "method": "POST",
+                  "url": "/api/approval-workflow/task/${id}",
+                  "data": {
+                    "&": "$$",
+                    "action": "reject",
+                    "formData": "$formData"
+                  }
+                },
+                "expression": "!validateResult.error",
+                "outputVar": "submitResponse"
+              },
+              {
+                "actionType": "reload",
+                "componentId": "approval-center",
+                "expression": "!submitResponse.error"
+              },
+              {
+                "actionType": "closeDrawer",
+                "componentId": "drawer-detail",
+                "expression": "!submitResponse.error"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

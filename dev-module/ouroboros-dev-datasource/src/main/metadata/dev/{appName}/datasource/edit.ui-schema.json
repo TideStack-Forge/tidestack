@@ -1,0 +1,42 @@
+{
+  "name": "/dev/{appName}/datasource/edit",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "wrapWithPanel": false,
+    "body": [
+      {
+        "type": "input-text",
+        "name": "dataStationName",
+        "label": "应用数据源名称",
+        "required": true
+      },
+      {
+        "type": "select",
+        "name": "platformDataSourceName",
+        "searchable": true,
+        "label": "绑定平台数据源",
+        "required": true,
+        "labelField": "title",
+        "valueField": "name",
+        "source": {
+          "method": "get",
+          "url": "/api/platform-datasource?perPage=9999"
+        }
+      }
+    ],
+    "mode": "horizontal",
+    "initApi": {
+      "url": "/api/dev/${appName}/datasource/${id}",
+      "method": "get"
+    },
+    "api": {
+      "url": "/api/dev/${appName}/datasource/${id}",
+      "method": "put",
+      "data": {
+        "appName": "${appName}",
+        "&": "$$"
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "/dev/{appName}/rpc-auth/type/HttpBasic",
+  "schema": {
+    "type": "fieldSet",
+    "title": "HTTP基本认证配置",
+    "visibleOn": "${type === 'HttpBasic'}",
+    "collapsable": true,
+    "body": [
+      {
+        "name": "httpBasic.username",
+        "type": "script-editor",
+        "label": "用户名",
+        "required": true,
+        "placeholder": "请输入用户名，建议通过 #{配置项} 的方式引用配置项",
+        "language": "rpc-template",
+        "codeResourceType": "rpc-auth",
+        "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+        "codeSite": "rpc-auth.httpBasic.username",
+        "codePointer": "/httpBasic/username",
+        "description": "支持 #{配置键} 引用配置值。"
+      },
+      {
+        "name": "httpBasic.password",
+        "type": "script-editor",
+        "label": "密码",
+        "required": true,
+        "placeholder": "请输入密码，建议通过 #{配置项} 的方式引用配置项",
+        "language": "rpc-template",
+        "codeResourceType": "rpc-auth",
+        "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+        "codeSite": "rpc-auth.httpBasic.password",
+        "codePointer": "/httpBasic/password",
+        "description": "支持 #{配置键} 引用配置值。"
+      }
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>ouroboros-root</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+    <artifactId>ouroboros-widget</artifactId>
+    <name>Ouroboros Widget Module</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>ouroboros-widget-core</module>
+        <module>ouroboros-widget-runtime</module>
+        <module>ouroboros-widget-common</module>
+        <module>ouroboros-widget-user-dashboard</module>
+        <module>ouroboros-widget-user-profile</module>
+        <module>ouroboros-widget-shortcut</module>
+        <module>ouroboros-widget-manage</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+        </dependency>
+    </dependencies>
+</project>

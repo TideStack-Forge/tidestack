@@ -1,0 +1,14 @@
+{
+  "editorId": "dev-menu",
+  "editorName": "TideStack Dev Menu Metadata Editor",
+  "editorNameKey": "customEditor.devMenu",
+  "metadataType": "dev-menu",
+  "schemaName": "dev-menu",
+  "viewType": "tidestack.metadataEditor.devMenu",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.devMenu",
+  "fileMatchPatterns": [
+    "*.dev-menu.json",
+    "**/resources/META-INF/ouroboros/dev-menu-model/**/*.json"
+  ],
+  "priority": "default"
+}

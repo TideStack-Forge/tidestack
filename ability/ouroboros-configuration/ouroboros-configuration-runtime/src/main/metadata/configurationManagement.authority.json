@@ -1,0 +1,18 @@
+{
+  "fullName": "systemSetting.configurationManagement",
+  "title": "配置管理",
+  "apis": [
+    "GET /api/sys/configuration",
+    "PUT /api/sys/configuration",
+    "GET /api/sys/configuration/value-type",
+    "GET /api/sys/configuration/workbench/tree",
+    "GET /api/sys/configuration/workbench/group",
+    "GET /api/sys/configuration/workbench/item/{key}"
+  ],
+  "uiViews": [
+    "/system-setting/configuration-management"
+  ],
+  "menuItems": [
+    "systemSetting.configurationManagement"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "fullName": "DataAndModels.DataModel",
+  "url": "/dev/{appName}/data-model",
+  "icon": "fas fa-database",
+  "title": "数据模型",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 10
+}

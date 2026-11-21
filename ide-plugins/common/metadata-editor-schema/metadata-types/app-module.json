@@ -1,0 +1,135 @@
+{
+  "type": "app-module",
+  "fixedFileName": "app-modules.json",
+  "displayName": "应用模块",
+  "sourcePathPatterns": [
+    "src/main/metadata/app-modules.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/app-module",
+  "packagedPathPatterns": [
+    "app-modules.json"
+  ],
+  "documentShape": "array",
+  "editorKinds": [
+    "form",
+    "table"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "app-modules.json",
+    "fields": [
+      {
+        "name": "fullName",
+        "label": "模块全名",
+        "documentPath": [
+          "0",
+          "fullName"
+        ],
+        "required": true
+      },
+      {
+        "name": "title",
+        "label": "标题",
+        "documentPath": [
+          "0",
+          "title"
+        ],
+        "required": true
+      },
+      {
+        "name": "description",
+        "label": "描述",
+        "documentPath": [
+          "0",
+          "description"
+        ]
+      }
+    ],
+    "document": [
+      {
+        "fullName": "example",
+        "title": "示例应用模块",
+        "description": "示例应用模块",
+        "icon": "fa fa-cube",
+        "order": 0,
+        "menu": "example.menu",
+        "subMenus": [],
+        "authorities": []
+      }
+    ]
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "应用模块",
+    "documentShape": "array",
+    "actions": [],
+    "body": [
+      {
+        "type": "combo",
+        "name": "items",
+        "label": "应用模块列表",
+        "multiple": true,
+        "multiLine": true,
+        "draggable": true,
+        "addButtonText": "新增应用模块",
+        "items": [
+          {
+            "type": "input-text",
+            "name": "fullName",
+            "label": "模块全名",
+            "required": true
+          },
+          {
+            "type": "input-text",
+            "name": "title",
+            "label": "中文标题",
+            "required": true
+          },
+          {
+            "type": "textarea",
+            "name": "description",
+            "label": "描述",
+            "minRows": 2
+          },
+          {
+            "type": "input-text",
+            "name": "icon",
+            "label": "图标"
+          },
+          {
+            "type": "input-number",
+            "name": "order",
+            "label": "排序"
+          },
+          {
+            "type": "input-text",
+            "name": "menu",
+            "label": "关联菜单"
+          },
+          {
+            "type": "input-array",
+            "name": "subMenus",
+            "label": "子菜单",
+            "items": [
+              {
+                "type": "input-text",
+                "placeholder": "菜单全名"
+              }
+            ]
+          },
+          {
+            "type": "input-array",
+            "name": "authorities",
+            "label": "权限项",
+            "items": [
+              {
+                "type": "input-text",
+                "placeholder": "权限全名"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/app-module.schema.json"
+}

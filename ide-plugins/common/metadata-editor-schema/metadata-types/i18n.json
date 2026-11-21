@@ -1,0 +1,132 @@
+{
+  "type": "i18n",
+  "fileSuffix": ".i18n.json",
+  "displayName": "国际化语言包",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.i18n.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/metadata",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.i18n.json",
+    "fields": [
+      {
+        "name": "locale",
+        "label": "语言标识",
+        "documentPath": [
+          "locale"
+        ],
+        "required": true
+      },
+      {
+        "name": "name",
+        "label": "名称",
+        "documentPath": [
+          "name"
+        ],
+        "required": true,
+        "defaultFromPath": "title"
+      },
+      {
+        "name": "version",
+        "label": "版本",
+        "documentPath": [
+          "version"
+        ]
+      }
+    ],
+    "document": {
+      "locale": "zh-CN",
+      "name": "示例语言包",
+      "version": "v1",
+      "enabled": true,
+      "isDefault": false,
+      "direction": "LTR",
+      "messages": {
+        "common": {
+          "example": "示例文案"
+        }
+      }
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "国际化语言包",
+    "actions": [],
+    "body": [
+      {
+        "type": "input-text",
+        "name": "locale",
+        "label": "语言标识",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "名称",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "version",
+        "label": "版本"
+      },
+      {
+        "type": "switch",
+        "name": "enabled",
+        "label": "启用"
+      },
+      {
+        "type": "switch",
+        "name": "isDefault",
+        "label": "默认语言"
+      },
+      {
+        "type": "select",
+        "name": "direction",
+        "label": "文本方向",
+        "options": [
+          {
+            "label": "从左到右",
+            "value": "LTR"
+          },
+          {
+            "label": "从右到左",
+            "value": "RTL"
+          }
+        ]
+      },
+      {
+        "type": "input-kvs",
+        "name": "messages",
+        "label": "消息列表",
+        "keyItem": {
+          "label": "命名空间",
+          "placeholder": "common"
+        },
+        "valueItems": [
+          {
+            "type": "input-kvs",
+            "name": "_value",
+            "label": "消息条目",
+            "keyItem": {
+              "label": "消息键",
+              "placeholder": "example"
+            },
+            "valueItems": [
+              {
+                "type": "textarea",
+                "name": "_value",
+                "label": "消息文本",
+                "minRows": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/i18n.schema.json"
+}

@@ -1,0 +1,3 @@
+com.ouroboros.i18n.runtime.provider.JarI18nLocaleProvider
+com.ouroboros.i18n.runtime.provider.FileSystemI18nLocaleProvider$Proxy
+com.ouroboros.i18n.runtime.provider.DatabaseI18nLocaleProvider$Proxy

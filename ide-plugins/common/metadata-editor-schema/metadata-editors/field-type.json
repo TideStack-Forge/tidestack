@@ -1,0 +1,13 @@
+{
+  "editorId": "field-type",
+  "editorName": "TideStack Field Type Metadata Editor",
+  "editorNameKey": "customEditor.fieldType",
+  "metadataType": "field-type",
+  "schemaName": "field-type",
+  "viewType": "tidestack.metadataEditor.fieldType",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.fieldType",
+  "fileMatchPatterns": [
+    "*.field-type.json"
+  ],
+  "priority": "default"
+}

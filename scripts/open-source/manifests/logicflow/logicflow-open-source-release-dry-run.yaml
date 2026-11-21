@@ -1,0 +1,102 @@
+release_dry_run_version: 1
+roadmap: logicflow-open-source-extraction
+source_feature: 2026-07-26-logicflow-open-source-release-dry-run
+status: active
+created: 2026-07-26
+
+referenced_manifests:
+  open_source_boundary: logicflow-open-source-boundary.yaml
+  platform_adapter_boundary: logicflow-platform-adapter-boundary.yaml
+  extension_bundle_classification: logicflow-extension-bundle-classification.yaml
+  public_repo_bootstrap: logicflow-public-repo-bootstrap.yaml
+  public_sync_pipeline: logicflow-public-sync-pipeline.yaml
+  governance_gates: logicflow-open-source-governance-gates.yaml
+
+referenced_reports:
+  bootstrap_report: tmp/testing-evidence/open-source/logicflow-public-repo-bootstrap/bootstrap-report.md
+  sync_report: tmp/testing-evidence/open-source/logicflow-public-sync-pipeline/sync-report.md
+  metadata_scan_report: tmp/testing-evidence/open-source/logicflow-public-sync-pipeline/metadata-scan-report.md
+  patch_import_report: tmp/testing-evidence/open-source/logicflow-public-sync-pipeline/patch-import-report.md
+  governance_gate_report: tmp/testing-evidence/open-source/logicflow-open-source-governance-gates/governance-gate-report.json
+
+clean_source_policy:
+  operational_mode_requires_clean_worktree: true
+  check_mode_runs_implementation_probe: true
+  dirty_source_blocks_operational_release: true
+  prerequisite_inputs_required:
+    - release_dry_run_manifest
+    - public_repo_bootstrap_manifest
+    - public_sync_pipeline_manifest
+    - governance_gates_manifest
+    - open_source_boundary_manifest
+    - platform_adapter_boundary_manifest
+    - extension_bundle_classification_manifest
+    - bootstrap_runner
+    - sync_runner
+    - governance_runner
+
+local_public_repo_dry_run:
+  root: target/logicflow-open-source-release-dry-run
+  snapshot_dir: target/logicflow-open-source-release-dry-run/snapshot
+  repo_dir: target/logicflow-open-source-release-dry-run/public-repo
+  git_commit_allowed: true
+  public_remote_allowed: false
+  push_allowed: false
+  tag_allowed: false
+  release_allowed: false
+  public_commit:
+    author_name: LogicFlow Maintainers
+    author_email: logicflow-maintainers@example.invalid
+    message: Initial LogicFlow public snapshot
+
+reports:
+  artifact_dir: tmp/testing-evidence/open-source/logicflow-open-source-release-dry-run
+  json: tmp/testing-evidence/open-source/logicflow-open-source-release-dry-run/release-dry-run-report.json
+  markdown: tmp/testing-evidence/open-source/logicflow-open-source-release-dry-run/release-dry-run-report.md
+  release_checklist: tmp/testing-evidence/open-source/logicflow-open-source-release-dry-run/release-checklist.md
+  residual_risk: tmp/testing-evidence/open-source/logicflow-open-source-release-dry-run/residual-risk-report.md
+  clean_source_evidence: tmp/testing-evidence/open-source/logicflow-open-source-release-dry-run/clean-source-evidence.md
+
+runner:
+  command: bash scripts/open-source/logicflow/run-release-dry-run.sh --check
+  scope: internal-worktree-or-internal-ci
+  creates_real_public_repo: false
+  creates_local_throwaway_repo: true
+  adds_public_remote: false
+  pushes: false
+  tags: false
+  releases: false
+
+status_policy:
+  technical_dry_run_status:
+    passed_when:
+      - required inputs exist
+      - clean source gate has evidence
+      - local public repo dry-run exists under target
+      - governance technical gates pass with repo mode input
+      - public repo dry-run build passes
+      - sync and patch import evidence pass
+  release_governance_status:
+    blocked_when:
+      - NOTICE/copyright holder review is pending
+      - governance gate report has release blocking items
+      - operational clean source cannot be proven
+  publication_authorization_status: not-authorized
+
+pending_owner_reviews:
+  - id: notice-copyright-holder-review
+    item: NOTICE/copyright holder review
+    blocks: release_governance_status
+
+no_publication_policy:
+  public_repo_creation: forbidden
+  public_remote: forbidden
+  push: forbidden
+  tag: forbidden
+  release: forbidden
+  local_target_repo_only: true
+
+governance_handoff:
+  after_this_feature:
+    next_action: owner/legal NOTICE review and separate publication authorization
+    real_publication_authorized: false

@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/ui-schema/preview",
+  "type": "amis",
+  "title": "页面预览"
+}

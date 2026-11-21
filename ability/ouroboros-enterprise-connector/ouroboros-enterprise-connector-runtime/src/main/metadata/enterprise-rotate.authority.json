@@ -1,0 +1,17 @@
+{
+  "fullName": "systemSetting.integrationManagement.connections.enterprise.rotate",
+  "title": "替换企业凭据",
+  "delegable": false,
+  "apis": [
+    "GET /api/sys/integration-management/sections/{section}",
+    "PUT /api/sys/enterprise-connections",
+    "POST /api/sys/enterprise-connections/credentials/reencrypt",
+    "POST /api/sys/enterprise-connections/credentials/{connectionId}/clear"
+  ],
+  "uiViews": [
+    "/system-setting/integration-management"
+  ],
+  "menuItems": [
+    "systemSetting.integrationManagement"
+  ]
+}

@@ -1,0 +1,3 @@
+com.ouroboros.businessmodel.plugins.ArchiveDeleteFeaturePlugin
+com.ouroboros.businessmodel.plugins.Scd2HistoryFeaturePlugin
+com.ouroboros.businessmodel.plugins.SoftDeleteFeaturePlugin

@@ -1,0 +1,21 @@
+{
+  "fullName": "systemSetting.resourceManagement",
+  "title": "资源管理",
+  "apis": [
+    "GET /api/sys/resource/runtime",
+    "GET /api/sys/resource/runtime/directories",
+    "GET /api/sys/resource/runtime/content",
+    "GET /api/sys/resource/runtime/effective",
+    "POST /api/sys/resource/runtime/content",
+    "DELETE /api/sys/resource/runtime/content",
+    "POST /api/sys/resource/runtime/restore"
+  ],
+  "uiViews": [
+    "/system-setting/resource-management",
+    "/system-setting/resource-management/detail",
+    "/system-setting/resource-management/upload"
+  ],
+  "menuItems": [
+    "systemSetting.resourceManagement"
+  ]
+}

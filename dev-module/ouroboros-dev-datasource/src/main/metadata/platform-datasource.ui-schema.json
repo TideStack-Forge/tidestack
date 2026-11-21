@@ -1,0 +1,112 @@
+{
+  "name": "/platform-datasource",
+  "schema": {
+    "type": "page",
+    "title": "平台数据源",
+    "body": [
+      {
+        "type": "crud",
+        "id": "datasourceList",
+        "syncLocation": false,
+        "api": {
+          "method": "get",
+          "url": "/api/platform-datasource"
+        },
+        "columns": [
+          {
+            "type": "text",
+            "label": "名称",
+            "name": "name",
+            "inline": true,
+            "placeholder": "-"
+          },
+          {
+            "type": "text",
+            "label": "标题",
+            "name": "title",
+            "inline": true,
+            "placeholder": "-"
+          },
+          {
+            "name": "createdAt",
+            "label": "创建时间",
+            "type": "datetime",
+            "placeholder": "-",
+            "format": "YYYY-MM-DD HH:mm:ss"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "buttons": [
+              {
+                "type": "button",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "size": "lg",
+                  "title": "查看${title} - 数据源",
+                  "url": "/platform-datasource/detail"
+                },
+                "icon": "fa fa-eye"
+              },
+              {
+                "type": "button",
+                "icon": "fa fa-pencil",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "size": "lg",
+                  "title": "编辑${title} - 数据源",
+                  "url": "/platform-datasource/edit"
+                }
+              },
+              {
+                "type": "button",
+                "actionType": "ajax",
+                "icon": "fa fa-times text-danger",
+                "confirmText": "确认要删除${title}吗？",
+                "api": {
+                  "method": "delete",
+                  "url": "/api/platform-datasource/${id}"
+                }
+              }
+            ],
+            "placeholder": "-"
+          }
+        ],
+        "perPageAvailable": [
+          10,
+          20,
+          50
+        ],
+        "headerToolbar": [
+          "reload",
+          {
+            "type": "button",
+            "label": "新增",
+            "actionType": "dialog",
+            "level": "primary",
+            "align": "right",
+            "dialog": {
+              "type": "dialog",
+              "title": "新建数据源",
+              "size": "lg",
+              "url": "/platform-datasource/add"
+            }
+          }
+        ],
+        "footerToolbar": [
+          "statistics",
+          "switch-per-page",
+          "pagination"
+        ],
+        "alwaysShowPagination": true,
+        "mode": "table"
+      }
+    ],
+    "asideResizor": false,
+    "pullRefresh": {
+      "disabled": true
+    }
+  }
+}

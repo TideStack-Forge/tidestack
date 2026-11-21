@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.ouroboros.security.OuroborosSecurityAutoConfiguration,\
+com.ouroboros.security.externalauth.ExternalAuthAutoConfiguration

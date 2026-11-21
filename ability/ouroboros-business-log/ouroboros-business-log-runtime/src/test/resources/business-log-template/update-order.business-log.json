@@ -1,0 +1,14 @@
+{
+  "name": "update-order",
+  "httpMethod": "PUT",
+  "url": "/orders/{id}",
+  "moduleName": "订单",
+  "operation": "更新订单",
+  "level": "WARN",
+  "businessKeyName": "id",
+  "summaryTemplate": "更新订单 ${pathVariables.id}",
+  "sensitiveFields": [
+    "secret"
+  ],
+  "shouldSaveResponseBody": false
+}

@@ -1,0 +1,23 @@
+{
+  "name": "/system-setting/integration-management/enterprise-rpc",
+  "schema": {
+    "type": "page",
+    "body": [
+      {
+        "type": "alert",
+        "level": "info",
+        "body": "企业开放 API 随安装的能力包注册，企业身份、应用凭据与调用预算在外部连接中维护。接口定义、参数说明和受控测试沿原 RPC 管理入口使用。"
+      },
+      {
+        "type": "tpl",
+        "tpl": "测试仍需原 RPC 管理权限及企业 API 调用权限；发送消息等写接口可能产生真实业务效果。"
+      },
+      {
+        "type": "button",
+        "label": "查看接口与测试",
+        "actionType": "link",
+        "link": "/system-setting/rpc-runtime-management"
+      }
+    ]
+  }
+}

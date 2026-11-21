@@ -1,0 +1,114 @@
+{
+  "type": "rpc",
+  "fileSuffix": ".rpc.json",
+  "displayName": "RPC 模型",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.rpc.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/rpc-model",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.rpc.json",
+    "fields": [
+      {
+        "name": "name",
+        "label": "名称",
+        "documentPath": [
+          "name"
+        ],
+        "required": true,
+        "defaultFromPath": "camel-name"
+      },
+      {
+        "name": "title",
+        "label": "标题",
+        "documentPath": [
+          "title"
+        ],
+        "required": true,
+        "defaultFromPath": "title"
+      },
+      {
+        "name": "group",
+        "label": "组",
+        "documentPath": [
+          "group"
+        ]
+      },
+      {
+        "name": "description",
+        "label": "描述",
+        "documentPath": [
+          "description"
+        ]
+      }
+    ],
+    "document": {
+      "group": "default",
+      "name": "example",
+      "title": "示例 RPC",
+      "type": "OpenApi",
+      "description": "示例 RPC 模型",
+      "isEnabled": true,
+      "authCredential": "",
+      "request": {
+        "method": "get",
+        "url": "https://example.invalid/api/example"
+      }
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "RPC 模型",
+    "actions": [],
+    "body": [
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "名称",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "title",
+        "label": "标题",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "group",
+        "label": "组"
+      },
+      {
+        "type": "select",
+        "name": "type",
+        "label": "类型",
+        "options": [
+          {
+            "label": "OpenAPI",
+            "value": "OpenApi"
+          }
+        ]
+      },
+      {
+        "type": "switch",
+        "name": "isEnabled",
+        "label": "启用"
+      },
+      {
+        "type": "input-text",
+        "name": "authCredential",
+        "label": "认证凭据"
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "描述",
+        "minRows": 3
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/rpc.schema.json"
+}

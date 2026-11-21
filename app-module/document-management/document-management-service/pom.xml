@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>document-management</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>document-management-service</artifactId>
+    <name>Ouroboros Document Management Service</name>
+    <description>Business facade services for document management module</description>
+
+    <dependencies>
+        <dependency><groupId>com.ouroboros</groupId><artifactId>common-service</artifactId></dependency>
+        <dependency><groupId>com.ouroboros</groupId><artifactId>common-lock</artifactId></dependency>
+        <dependency><groupId>org.mockito</groupId><artifactId>mockito-core</artifactId><scope>test</scope></dependency>
+        <!-- Java 注解 -->
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+        </dependency>
+
+        <!-- 依赖 core 包 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>document-management-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Ouroboros 工具包 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-util</artifactId>
+        </dependency>
+
+        <!-- Ouroboros 公共包 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>common-all</artifactId>
+            <type>pom</type>
+        </dependency>
+
+        <!-- Exception Mapper -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>common-exception-mapper</artifactId>
+        </dependency>
+
+        <!-- 测试相关 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <release>21</release>
+                    <source>21</source>
+                    <target>21</target>
+                    <compilerArgs>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>vscode-only</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <release>21</release>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>intellij-idea-only</id>
+            <activation>
+                <property>
+                    <name>idea.maven.embedder.version</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <release>21</release>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

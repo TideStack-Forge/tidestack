@@ -1,0 +1,74 @@
+{
+  "name": "/dev/{appName}/logicflow-model/detail",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "className": "h-full relative overflow-y-hidden",
+    "initApi": {
+      "url": "/api/dev/${appName}/logic-flow/${name}?includeValidationSnapshot=true",
+      "method": "get",
+      "responseData": {
+        "flowModel": "$flowModel",
+        "validationSnapshot": "$validationSnapshot"
+      }
+    },
+    "body": [
+      {
+        "id": "logicFlowJsonEditor",
+        "type": "editor",
+        "label": false,
+        "language": "json",
+        "disabled": true,
+        "name": "flowModel",
+        "className": "h-full",
+        "inputClassName": "h-full max-h-full",
+        "options": {
+          "minimap": {
+            "enabled": true
+          }
+        },
+        "visible": false
+      },
+      {
+        "type": "logic-flow-editor",
+        "name": "flowModel",
+        "id": "logicFlowEditor",
+        "label": false,
+        "static": true,
+        "className": "h-full",
+        "nodeDefineApi": "/api/dev/${appName}/logicflow/node-define",
+        "validationSnapshot": "${validationSnapshot}"
+      }
+    ],
+    "actions": [
+      {
+        "type": "button",
+        "label": "编辑逻辑流",
+        "level": "primary",
+        "icon": "fa fa-edit",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "openOrSwitchTab",
+                "args": {
+                  "title": "编辑逻辑流「${name}」",
+                  "url": "/dev/${appName}/logicflow-model/${name}",
+                  "reloadOnReceive": true
+                }
+              },
+              {
+                "actionType": "closeDialog"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "button",
+        "label": "关闭",
+        "actionType": "close"
+      }
+    ]
+  }
+}

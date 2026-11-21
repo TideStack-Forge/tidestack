@@ -1,0 +1,84 @@
+{
+  "name": "/approval-center/start",
+  "schema": {
+    "type": "page",
+    "bodyClassName": "p-0",
+    "body": {
+      "type": "service",
+      "name": "service",
+      "api": {
+        "method": "get",
+        "url": "/api/approval-workflow/instance/available",
+        "data": {
+          "page": 1,
+          "perPage": 1000
+        }
+      },
+      "body": [
+        {
+          "type": "wrapper",
+          "style": {
+            "padding": "0",
+            "overflow": "hidden"
+          },
+          "body": {
+            "type": "button",
+            "label": "刷新",
+            "level": "primary",
+            "actionType": "reload",
+            "icon": "fa fa-repeat",
+            "target": "service",
+            "className": "float-right"
+          }
+        },
+        {
+          "type": "each",
+          "name": "items",
+          "items": {
+            "type": "cards",
+            "title": "<%= data.title || '未分类' %> — <%= data.cards.length %>",
+            "source": "${cards}",
+            "card": {
+              "itemAction": {
+                "type": "button",
+                "actionType": "link",
+                "link": "/approval-center/start/init-form?id=${id}"
+              },
+              "header": {
+                "title": "名称<span class='label label-info m-l-sm'>${name}</span>"
+              },
+              "media": {
+                "type": "image",
+                "className": "w-12 h-12",
+                "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAACZklEQVR4nO1asW7bMBC9pQvTrM1/5A+KZrfmNpmTP6hnf0RXe/aUIgRaOZsFI0TcDi08Nh2TJYNXablCgZ2wEWXRzMnmOfeABxgU/Xh8Pp6OgAEEAoGgBaikO1FJF0nY6WauNfAHvMFz2IcYoag2v+BzfUzhXXEBv3MN9ziEt/CaDMCvcFBomBUasNDwq8wEiA1qEfjldIbz+fyBo+kMXeN1tOfb2oWGn4vNNzLXkG3VgJG10fT6aUP2eB3t+aEGlHy1R6DYVQMqRTCFPYjOgE43ozPg87j2NbjiDbBVA7xw+BEf2BKiN0DVpDcVxABNnAGKsr1ti1bb3IYByIGtGwBM9MQALRmAcgQ0ZR9wSNy4tKz35wtgybU08guYrHPTarp6xq5XQah4XcGJXQ+4BbwxA96fnjw2Fh9Oj9E17nruo9fETepVsJxYfmkpcHT2CV3jruc+ek3cpB5wS1mpAbrlGpBryELFcw1jbnprIaixYKxXgXca7Ygeu4DZGlAQkyq+CsQAHXfKss0AiFSP3WuLRm9gJjAwGMS+ydjpVRAqviQ3PXYBb8qA9Oa28Q8MS37/e/e0QG/o/Bys5xGfPd+1zkq9ChYTyy/5BvztptmAYD2P+Oz5rnVW6rFLWakBpuUa0DdZ+AJXY3Z6a6E80yWpELteBd5ptCN67AIWA4xkALA6Aj3iohVTBhiVTIxKkIadjKMBSEnq+MIwEAPQq+PqDR9/udvLaePl5240dc63x/+7ZL243Q1F37MNtQwoN9FoQHrtnG+P+xvw0naXCFupATHBiAGdjMqEK5XEkdYCgQB2Df8Apafmas/ZMlcAAAAASUVORK5CYII=",
+                "position": "left"
+              },
+              "body": "描述：${description}",
+              "toolbar": [
+                {
+                  "type": "button",
+                  "label": "查看",
+                  "level": "light",
+                  "actionType": "dialog",
+                  "dialog": {
+                    "title": "流程信息",
+                    "closeOnEsc": true,
+                    "closeOnOutside": true,
+                    "actions": [
+                      {
+                        "type": "action",
+                        "actionType": "cancel",
+                        "label": "关闭"
+                      }
+                    ],
+                    "url": "/approval-center/start/process-detail"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "name": "feishu.contact.user.get",
+  "title": "飞书读取成员详情",
+  "type": "OpenAPI",
+  "isEnabled": true,
+  "authCredential": "feishu.application-token",
+  "description": "自建应用 tenant_access_token；userId 为 URL 变量，按 user_id_type 解释；contact:user.base:readonly 或相应通讯录读取权限",
+  "timeout": 10000,
+  "retry": 0,
+  "retrySafe": true,
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "user_id_type": {
+        "type": "string",
+        "enum": [
+          "user_id",
+          "open_id",
+          "union_id"
+        ],
+        "minLength": 1
+      },
+      "department_id_type": {
+        "type": "string",
+        "enum": [
+          "department_id",
+          "open_department_id"
+        ],
+        "minLength": 1
+      },
+      "userId": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_@.\\-]{0,63}$",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "user_id_type",
+      "department_id_type",
+      "userId"
+    ]
+  },
+  "request": {
+    "method": "GET",
+    "url": "https://open.feishu.cn/open-apis/contact/v3/users/${userId}",
+    "parameters": [
+      {
+        "in": "QUERY",
+        "name": "user_id_type",
+        "value": "${user_id_type}",
+        "required": true
+      },
+      {
+        "in": "QUERY",
+        "name": "department_id_type",
+        "value": "${department_id_type}",
+        "required": true
+      }
+    ]
+  },
+  "group": "飞书/通讯录"
+}

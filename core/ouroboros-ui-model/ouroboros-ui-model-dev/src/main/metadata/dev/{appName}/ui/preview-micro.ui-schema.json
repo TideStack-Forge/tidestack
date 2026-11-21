@@ -1,0 +1,70 @@
+{
+  "name": "/dev/{appName}/ui/preview-micro",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "mode": "horizontal",
+    "wrapWithPanel": false,
+    "api": "put:/api/dev/${appName}/micro-web/$name",
+    "initApi": "get:/api/dev/${appName}/micro-web/${currentModel.microWebName}",
+    "body": [
+      {
+        "type": "static-text",
+        "name": "name",
+        "label": "名称"
+      },
+      {
+        "type": "list-select",
+        "name": "type",
+        "label": "类型",
+        "options": [
+          {
+            "label": "微前端应用",
+            "value": "app"
+          },
+          {
+            "label": "微前端组件",
+            "value": "parcels"
+          },
+          {
+            "label": "AMIS组件库",
+            "value": "library"
+          }
+        ],
+        "required": true,
+        "value": "page"
+      },
+      {
+        "type": "input-file",
+        "name": "packagePath",
+        "label": "微前端包",
+        "maxLength": 1,
+        "drag": true,
+        "useChunk": false,
+        "accept": ".zip",
+        "receiver": "/api/dev/${appName}/micro-web/upload-package",
+        "description": "上传新的包，会覆盖原有包",
+        "downloadUrl": false
+      },
+      {
+        "type": "input-text",
+        "name": "publicPath",
+        "label": "微前端部署路径",
+        "required": true,
+        "visibleOn": "${packagePath}"
+      },
+      {
+        "type": "input-text",
+        "name": "entry",
+        "label": "微前端入口",
+        "requiredOn": "${!packagePath}",
+        "disabledOn": "${packagePath}"
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "描述"
+      }
+    ]
+  }
+}

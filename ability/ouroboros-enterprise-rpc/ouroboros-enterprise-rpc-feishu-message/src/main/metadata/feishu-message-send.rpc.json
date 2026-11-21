@@ -1,0 +1,83 @@
+{
+  "name": "feishu.message.send",
+  "title": "飞书发送文本消息",
+  "type": "OpenAPI",
+  "isEnabled": true,
+  "authCredential": "feishu.application-token",
+  "description": "自建应用 tenant_access_token，用户 ID 使用 user_id，机器人已启用；im:message:send_as_bot 或相应消息发送权限；content 为 JSON 字符串",
+  "timeout": 10000,
+  "retry": 0,
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "receive_id_type": {
+        "type": "string",
+        "enum": [
+          "user_id"
+        ]
+      },
+      "receive_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "msg_type": {
+        "type": "string",
+        "enum": [
+          "text"
+        ]
+      },
+      "content": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uuid": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 50
+      }
+    },
+    "required": [
+      "receive_id_type",
+      "receive_id",
+      "msg_type",
+      "content"
+    ]
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://open.feishu.cn/open-apis/im/v1/messages",
+    "parameters": [
+      {
+        "in": "QUERY",
+        "name": "receive_id_type",
+        "value": "${receive_id_type}",
+        "required": true
+      },
+      {
+        "in": "BODY",
+        "name": "receive_id",
+        "value": "${receive_id}",
+        "required": true
+      },
+      {
+        "in": "BODY",
+        "name": "msg_type",
+        "value": "${msg_type}",
+        "required": true
+      },
+      {
+        "in": "BODY",
+        "name": "content",
+        "value": "${content}",
+        "required": true
+      },
+      {
+        "in": "BODY",
+        "name": "uuid",
+        "value": "${uuid}",
+        "required": false
+      }
+    ]
+  },
+  "group": "飞书/消息"
+}

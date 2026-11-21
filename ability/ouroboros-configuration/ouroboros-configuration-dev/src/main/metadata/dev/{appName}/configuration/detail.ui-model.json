@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/configuration/detail",
+  "type": "amis",
+  "title": "配置项定义详情"
+}

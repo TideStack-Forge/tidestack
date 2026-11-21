@@ -1,0 +1,125 @@
+{
+  "formatVersion": "2.0",
+  "modelType": "default",
+  "name": "",
+  "title": "",
+  "description": "",
+  "isEnabled": false,
+  "isAttachment": false,
+  "fields": [],
+  "features": {
+    "isEnabledAuditFields": true,
+    "isEnabledSoftDelete": true,
+    "isEnabledChangeLog": false,
+    "isEnabledDraft": false,
+    "isEnabledExclusiveLock": false
+  },
+  "enableArchiveDelete": false,
+  "enableScd2History": false,
+  "statusFlow": {
+    "isEnabled": false,
+    "statues": []
+  },
+  "apis": {
+    "search": {
+      "isEnabled": true,
+      "isAuto": true,
+      "scriptLanguage": "javascript",
+      "beforeScriptLanguage": "javascript",
+      "afterScriptLanguage": "javascript"
+    },
+    "getOne": {
+      "isEnabled": true,
+      "isAuto": true,
+      "scriptLanguage": "javascript",
+      "beforeScriptLanguage": "javascript",
+      "afterScriptLanguage": "javascript"
+    },
+    "add": {
+      "isEnabled": true,
+      "isAuto": true,
+      "scriptLanguage": "javascript",
+      "beforeScriptLanguage": "javascript",
+      "afterScriptLanguage": "javascript"
+    },
+    "update": {
+      "isEnabled": true,
+      "isAuto": true,
+      "scriptLanguage": "javascript",
+      "beforeScriptLanguage": "javascript",
+      "afterScriptLanguage": "javascript"
+    },
+    "delete": {
+      "isEnabled": true,
+      "isAuto": true,
+      "scriptLanguage": "javascript",
+      "beforeScriptLanguage": "javascript",
+      "afterScriptLanguage": "javascript"
+    }
+  },
+  "views": {
+    "index": {
+      "isEnabled": true,
+      "isAuto": true,
+      "type": "表格",
+      "isExportAllEnabled": true,
+      "isExportCurrentPageEnabled": true,
+      "isImportEnabled": true,
+      "isImportByUploadEnabled": false
+    },
+    "add": {
+      "isEnabled": true,
+      "mode": "dialog",
+      "isAuto": true,
+      "layoutType": "horizontal",
+      "labelWidth": 120
+    },
+    "edit": {
+      "isEnabled": true,
+      "mode": "dialog",
+      "isAuto": true,
+      "layoutType": "horizontal",
+      "labelWidth": 120
+    },
+    "detail": {
+      "isEnabled": true,
+      "mode": "dialog",
+      "isAuto": true,
+      "layoutType": "horizontal",
+      "labelWidth": 120
+    }
+  },
+  "accessControl": {
+    "search": {
+      "isEnabled": false,
+      "fieldControl": false,
+      "filters": {
+        "$byEmployee": false,
+        "$byDepartment": false,
+        "$byCompany": false
+      }
+    },
+    "add": {
+      "isEnabled": false,
+      "fieldControl": false
+    },
+    "update": {
+      "isEnabled": false,
+      "fieldControl": false,
+      "filters": {
+        "$byEmployee": false,
+        "$byDepartment": false,
+        "$byCompany": false
+      }
+    },
+    "delete": {
+      "isEnabled": false,
+      "filters": {
+        "$byEmployee": false,
+        "$byDepartment": false,
+        "$byCompany": false
+      }
+    }
+  },
+  "custom": []
+}

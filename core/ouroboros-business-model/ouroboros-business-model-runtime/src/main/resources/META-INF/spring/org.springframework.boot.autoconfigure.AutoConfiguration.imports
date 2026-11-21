@@ -1,0 +1,5 @@
+com.ouroboros.businessmodel.AppBusinessModelAutoConfiguration
+com.ouroboros.businessmodel.action.BusinessActionRuntimeAutoConfiguration
+com.ouroboros.businessmodel.event.BusinessEventRuntimeAutoConfiguration
+com.ouroboros.businessmodel.workflow.BusinessWorkflowRuntimeAutoConfiguration
+com.ouroboros.businessmodel.workflow.WorkflowBusinessFactProjectionAutoConfiguration

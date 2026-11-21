@@ -1,0 +1,46 @@
+{
+  "name": "invalid-connection-target-port-out-of-range",
+  "description": "A connection targets an input port that exceeds the node's maxInputPortCount, but other required ports are connected",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "map",
+  "entryNode": "source",
+  "nodes": [
+    {
+      "name": "source",
+      "type": "const",
+      "description": "",
+      "dataType": "map",
+      "value": {
+        "ok": true
+      }
+    },
+    {
+      "name": "returnNode",
+      "type": "return",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "map"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "source",
+      "sourceOutputPort": 0,
+      "targetNode": "returnNode",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "source",
+      "sourceOutputPort": 0,
+      "targetNode": "returnNode",
+      "targetInputPort": 1
+    }
+  ]
+}
+

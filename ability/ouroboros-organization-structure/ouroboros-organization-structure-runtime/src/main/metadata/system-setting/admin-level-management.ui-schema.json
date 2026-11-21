@@ -1,0 +1,176 @@
+{
+  "name": "/system-setting/admin-level-management",
+  "schema": {
+    "type": "page",
+    "body": [
+      {
+        "type": "crud",
+        "name": "adminLevelCrud",
+        "api": {
+          "method": "get",
+          "url": "/api/admin-level"
+        },
+        "syncLocation": false,
+        "columns": [
+          {
+            "name": "code",
+            "label": "代码",
+            "type": "text"
+          },
+          {
+            "name": "name",
+            "label": "名称",
+            "type": "text"
+          },
+          {
+            "name": "scope",
+            "label": "范围",
+            "type": "mapping",
+            "map": {
+              "ORG": "组织级",
+              "DEPT": "部门级"
+            }
+          },
+          {
+            "name": "rank",
+            "label": "排序",
+            "type": "text"
+          },
+          {
+            "name": "enabled",
+            "label": "启用",
+            "type": "tpl",
+            "tpl": "${enabled == true ? '是' : '否'}"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "width": 160,
+            "buttons": [
+              {
+                "type": "button",
+                "label": "编辑",
+                "icon": "fa fa-pencil",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "编辑行政级别",
+                  "url": "/system-setting/admin-level-management/edit",
+                  "data": {
+                    "id": "${id}"
+                  }
+                }
+              },
+              {
+                "type": "button",
+                "label": "禁用",
+                "actionType": "ajax",
+                "api": {
+                  "method": "post",
+                  "url": "/api/admin-level/${id}/disable"
+                }
+              },
+              {
+                "type": "button",
+                "label": "删除",
+                "actionType": "ajax",
+                "confirmText": "删除后不可恢复，确认删除该行政级别？",
+                "api": {
+                  "method": "delete",
+                  "url": "/api/admin-level/${id}"
+                }
+              }
+            ]
+          }
+        ],
+        "headerToolbar": [
+          "bulkActions",
+          {
+            "type": "button",
+            "icon": "fa fa-refresh",
+            "actionType": "reload"
+          },
+          {
+            "type": "button",
+            "label": "新增",
+            "level": "primary",
+            "actionType": "dialog",
+            "dialog": {
+              "type": "dialog",
+              "title": "新增行政级别",
+              "body": {
+                "type": "form",
+                "api": {
+                  "method": "post",
+                  "url": "/api/admin-level"
+                },
+                "body": [
+                  {
+                    "name": "code",
+                    "type": "input-text",
+                    "label": "代码",
+                    "required": true
+                  },
+                  {
+                    "name": "name",
+                    "type": "input-text",
+                    "label": "名称",
+                    "required": true
+                  },
+                  {
+                    "name": "scope",
+                    "type": "select",
+                    "label": "范围",
+                    "required": true,
+                    "options": [
+                      {
+                        "label": "组织级",
+                        "value": "ORG"
+                      },
+                      {
+                        "label": "部门级",
+                        "value": "DEPT"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "rank",
+                    "type": "input-number",
+                    "label": "排序",
+                    "required": true,
+                    "min": 1
+                  },
+                  {
+                    "name": "enabled",
+                    "type": "switch",
+                    "label": "启用",
+                    "value": true
+                  },
+                  {
+                    "name": "description",
+                    "type": "textarea",
+                    "label": "描述"
+                  }
+                ],
+                "onEvent": {
+                  "submitSucc": {
+                    "actions": [
+                      {
+                        "actionType": "closeDialog"
+                      },
+                      {
+                        "actionType": "reload",
+                        "componentName": "adminLevelCrud"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "itemActions": []
+      }
+    ]
+  }
+}

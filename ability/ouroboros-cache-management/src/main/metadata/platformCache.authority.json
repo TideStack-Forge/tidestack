@@ -1,0 +1,18 @@
+{
+  "fullName": "systemSetting.platformCache",
+  "title": "平台缓存管理",
+  "apis": [
+    "GET /api/platform-cache/summary",
+    "GET /api/platform-cache/regions",
+    "GET /api/platform-cache/entries",
+    "DELETE /api/platform-cache/entries",
+    "DELETE /api/platform-cache/regions",
+    "DELETE /api/platform-cache"
+  ],
+  "uiViews": [
+    "/system-setting/platform-cache"
+  ],
+  "menuItems": [
+    "systemSetting.platformCache"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "name": "/dev/apps/import",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "api": {
+      "method": "post",
+      "url": "/api/app/import"
+    },
+    "body": [
+      {
+        "type": "input-file",
+        "name": "file",
+        "label": "应用文件",
+        "required": true,
+        "accept": ".zip",
+        "asBlob": true,
+        "description": "请选择ZIP格式的应用文件，如果应用名称已存在将自动添加后缀"
+      }
+    ],
+    "actions": [
+      {
+        "type": "button",
+        "label": "取消",
+        "actionType": "cancel"
+      },
+      {
+        "type": "submit",
+        "label": "导入",
+        "level": "primary"
+      }
+    ]
+  }
+}

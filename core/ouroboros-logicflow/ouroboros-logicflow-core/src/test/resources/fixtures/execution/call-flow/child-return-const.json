@@ -1,0 +1,19 @@
+{
+  "name": "child-return-const",
+  "description": "Test child flow for callFlow execution coverage",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "string",
+  "entryNode": "childConst",
+  "exitNode": "childConst",
+  "nodes": [
+    {
+      "name": "childConst",
+      "type": "const",
+      "description": "",
+      "dataType": "string",
+      "value": "child-ok"
+    }
+  ],
+  "connections": []
+}

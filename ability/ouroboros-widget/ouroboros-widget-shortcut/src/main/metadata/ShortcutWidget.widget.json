@@ -1,0 +1,231 @@
+{
+  "name": "ShortcutWidget",
+  "title": "快捷菜单",
+  "description": "定义一组快捷菜单",
+  "sizeConstraints": {
+    "min": {
+      "cols": 4,
+      "rows": 6
+    },
+    "max": {
+      "cols": 24,
+      "rows": 30
+    }
+  },
+  "configFormItems": [
+    {
+      "type": "button",
+      "label": "编辑快捷方式",
+      "level": "link",
+      "size": "sm",
+      "icon": "fa fa-edit",
+      "actionType": "dialog",
+      "dialog": {
+        "type": "dialog",
+        "title": "编辑快捷方式",
+        "size": "lg",
+        "body": {
+          "type": "form",
+          "body": [
+            {
+              "type": "combo",
+              "name": "shortcutItems",
+              "label": "快捷方式",
+              "multiple": true,
+              "addable": true,
+              "removable": true,
+              "draggable": true,
+              "items": [
+                {
+                  "type": "input-text",
+                  "name": "text",
+                  "label": "名称",
+                  "required": true
+                },
+                {
+                  "type": "ouroboros-icon-picker",
+                  "name": "icon",
+                  "label": "图标",
+                  "placeholder": "如: fa fa-home",
+                  "required": true
+                },
+                {
+                  "type": "input-text",
+                  "name": "link",
+                  "label": "链接",
+                  "required": true
+                }
+              ]
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "button",
+            "label": "取消",
+            "actionType": "close",
+            "level": "default"
+          },
+          {
+            "type": "button",
+            "label": "保存",
+            "level": "primary",
+            "actionType": "confirm",
+            "mergeData": true
+          }
+        ]
+      }
+    }
+  ],
+  "defaultSize": {
+    "cols": 6,
+    "rows": 12
+  },
+  "defaultConfig":{
+    "showHeader": true,
+    "title": "快捷菜单"
+  },
+  "defaultStyleConfig": {
+    "showBorder": true,
+    "showShadow": true,
+    "hideEditButton": false
+  },
+  "thumbSchema": {
+    "type": "flex",
+    "style": {
+      "overflowX": "auto",
+      "whiteSpace": "nowrap"
+    },
+    "direction": "row",
+    "justify": "flex-start",
+    "items": [
+      {
+        "type": "container",
+        "wrapperBody": false,
+        "style": {
+          "display": "flex",
+          "flexDirection": "column",
+          "alignItems": "center",
+          "padding": "10px 15px",
+          "minWidth": "80px",
+          "textAlign": "center"
+        },
+        "body": [
+          {
+            "type": "icon",
+            "icon": "fa fa-home",
+            "vendor": "",
+            "className": "text-xl"
+          },
+          {
+            "type": "tpl",
+            "tpl": "主页",
+            "className": "m-t-xs text-sm"
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "wrapperBody": false,
+        "style": {
+          "display": "flex",
+          "flexDirection": "column",
+          "alignItems": "center",
+          "padding": "10px 15px",
+          "minWidth": "80px",
+          "textAlign": "center"
+        },
+        "body": [
+          {
+            "type": "icon",
+            "icon": "fa fa-dashboard",
+            "vendor": "",
+            "className": "text-xl"
+          },
+          {
+            "type": "tpl",
+            "tpl": "我的工作台",
+            "className": "m-t-xs text-sm"
+          }
+        ]
+      },
+      {
+        "type": "container",
+        "wrapperBody": false,
+        "style": {
+          "display": "flex",
+          "flexDirection": "column",
+          "alignItems": "center",
+          "padding": "10px 15px",
+          "minWidth": "80px",
+          "textAlign": "center"
+        },
+        "body": [
+          {
+            "type": "icon",
+            "icon": "fa fa-user",
+            "vendor": "",
+            "className": "text-xl"
+          },
+          {
+            "type": "tpl",
+            "tpl": "个人中心",
+            "className": "m-t-xs text-sm"
+          }
+        ]
+      }
+    ]
+  },
+  "schemaTpl": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "body": {
+      "type": "each",
+      "name": "config.shortcutItems",
+      "style": {
+        "display": "flex",
+        "flexDirection": "row",
+        "alignItems": "stretch",
+        "overflow-x": "auto"
+      },
+      "items": {
+        "type": "container",
+        "wrapperBody": false,
+        "style": {
+          "display": "flex",
+          "flexDirection": "column",
+          "alignItems": "center",
+          "padding": "10px 15px",
+          "minWidth": "80px",
+          "textAlign": "center",
+          "cursor": "pointer"
+        },
+        "body": [
+          {
+            "type": "icon",
+            "icon": "${icon}",
+            "vendor": "",
+            "className": "text-xl"
+          },
+          {
+            "type": "tpl",
+            "tpl": "${text}",
+            "className": "m-t-xs text-sm"
+          }
+        ],
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "link",
+                "args": {
+                  "link": "${link}"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

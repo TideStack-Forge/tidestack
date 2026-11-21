@@ -1,0 +1,102 @@
+{
+  "name": "/system-setting/integration-management/external-auth/settings",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "initApi": "/api/sys/external-auth/settings",
+    "api": {
+      "method": "put",
+      "url": "/api/sys/external-auth/settings",
+      "data": {
+        "expectedRevision": "${expectedRevision}",
+        "changes": "${changes}"
+      }
+    },
+    "body": [
+      {
+        "type": "input-text",
+        "name": "changes.publicBaseUrl",
+        "label": "公开回调地址",
+        "placeholder": "https://platform.example.com"
+      },
+      {
+        "type": "input-text",
+        "name": "changes.bindingRateLimit.byExternalId",
+        "label": "按外部身份限制",
+        "description": "例如 5/10m"
+      },
+      {
+        "type": "input-text",
+        "name": "changes.bindingRateLimit.byUsername",
+        "label": "按平台账号限制",
+        "description": "例如 5/10m"
+      },
+      {
+        "type": "input-text",
+        "name": "changes.bindingRateLimit.bySourceIp",
+        "label": "按来源 IP 限制",
+        "description": "例如 5/10m"
+      },
+      {
+        "type": "switch",
+        "name": "changes.bindingRateLimit.sourceIpEnabled",
+        "label": "启用来源 IP 限制"
+      },
+      {
+        "type": "input-text",
+        "name": "changes.externalCall.oauth2.connectTimeout",
+        "label": "OAUTH2 连接超时",
+        "description": "ISO 8601 时长，例如 PT5S"
+      },
+      {
+        "type": "input-text",
+        "name": "changes.externalCall.oauth2.readTimeout",
+        "label": "OAUTH2 读取超时",
+        "description": "ISO 8601 时长，例如 PT5S"
+      },
+      {
+        "type": "input-text",
+        "name": "changes.externalCall.ldap.connectTimeout",
+        "label": "LDAP 连接超时",
+        "description": "ISO 8601 时长，例如 PT5S"
+      },
+      {
+        "type": "input-text",
+        "name": "changes.externalCall.ldap.readTimeout",
+        "label": "LDAP 读取超时",
+        "description": "ISO 8601 时长，例如 PT5S"
+      },
+      {
+        "type": "input-text",
+        "name": "changes.externalCall.cas.connectTimeout",
+        "label": "CAS 连接超时",
+        "description": "ISO 8601 时长，例如 PT5S"
+      },
+      {
+        "type": "input-text",
+        "name": "changes.externalCall.cas.readTimeout",
+        "label": "CAS 读取超时",
+        "description": "ISO 8601 时长，例如 PT5S"
+      },
+      {
+        "type": "input-text",
+        "name": "changes.jwksCache.ttl",
+        "label": "JWKS 缓存有效期",
+        "description": "例如 PT5M"
+      },
+      {
+        "type": "json-data-editor",
+        "name": "changes.bindingRateLimit.providers",
+        "label": "按身份源覆盖绑定限制",
+        "description": "以身份源标识为键配置原绑定限制覆盖；留空保留原值。"
+      }
+    ],
+    "actions": [
+      {
+        "type": "submit",
+        "label": "保存公共设置",
+        "level": "primary"
+      }
+    ]
+  }
+}

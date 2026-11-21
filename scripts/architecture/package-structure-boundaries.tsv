@@ -1,0 +1,10 @@
+# rule_id	scope_root	expected_prefix	owner	note
+PKG101	core/ouroboros-logicflow/ouroboros-logicflow-dev/src/main/java	com.ouroboros.logicflow.dev	PKG-1.logicflow-dev	logicflow-dev remains the first migration target for capability-dev root convergence
+PKG101	core/ouroboros-ui-model/ouroboros-ui-model-dev/src/main/java	com.ouroboros.uimodel.dev	PKG-1.ui-model-dev	ui-model-dev is the aligned control sample for capability-dev roots
+PKG102	dev-module/ouroboros-dev-app-management/src/main/java	com.ouroboros.dev.app	PKG-0.control.dev-module-aligned	app-management stays inside the aligned dev-module control set
+PKG102	ability/ouroboros-cache-management/src/main/java	com.ouroboros.cache.management	PKG-0.control.cache-management	shared cache management stays inside the ability layer
+PKG102	dev-module/ouroboros-dev-datasource/src/main/java	com.ouroboros.dev.datasource	PKG-0.control.dev-module-aligned	datasource stays inside the aligned dev-module control set
+PKG102	dev-module/ouroboros-dev-environment/src/main/java	com.ouroboros.dev.environment	PKG-0.control.dev-module-aligned	environment stays inside the aligned dev-module control set
+PKG001	ability/ouroboros-organization-structure/ouroboros-organization-structure-runtime/src/main/java		PKG-1.organization-structure-wrapper	organization-structure wrapper names are governed in the first migration wave
+PKG201	core/ouroboros-logicflow/ouroboros-logicflow-dev/src/main/java		PKG-1.logicflow-dev	logicflow-dev model buckets may not grow new transport names
+PKG201	app-module/dynamic-form/src/main/java		PKG-1.dynamic-form	dynamic-form model buckets may not grow new transport names

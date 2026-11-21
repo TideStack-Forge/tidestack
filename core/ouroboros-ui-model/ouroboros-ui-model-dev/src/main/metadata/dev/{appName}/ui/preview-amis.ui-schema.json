@@ -1,0 +1,130 @@
+{
+  "name": "/dev/{appName}/ui/preview-amis",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "initApi": {
+      "method": "get",
+      "url": "/api/dev/${appName}/all-channel/ui-schema?schemaId=${currentModel.schemaId}",
+      "responseData": {
+        "schema": "$$"
+      }
+    },
+    "body": {
+      "type": "amis-schema-preview",
+      "source": "${schema}",
+      "frontendResourceRenderContext": {
+        "mode": "dev-app-workspace",
+        "appName": "${appName}"
+      }
+    },
+    "actions": [
+      {
+        "visibleOn": "${currentModel.isChanged}",
+        "type": "button",
+        "level": "danger",
+        "label": "复原",
+        "icon": "fa fa-trash",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "confirmDialog",
+                "dialog": {
+                  "title": "系统提示",
+                  "msg": "您确认要复原"
+                }
+              },
+              {
+                "actionType": "ajax",
+                "api": {
+                  "method": "delete",
+                  "url": "/api/dev/${appName}/ui-schema/${currentModel.schemaFullName}"
+                }
+              },
+              {
+                "expression": "responseResult.responseStatus == 0",
+                "actionType": "closeDialog"
+              },
+              {
+                "actionType": "reload",
+                "componentName": "uiList"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "button",
+        "label": "编辑",
+        "icon": "fa fa-edit",
+        "level": "primary",
+        "visibleOn": "${currentModel.isChanged}",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "closeDialog"
+              },
+              {
+                "actionType": "openOrSwitchTab",
+                "args": {
+                  "title": "编辑 UI Schema「${currentModel.schemaFullName}」",
+                  "url": "/dev/${appName}/ui-schema/${currentModel.schemaFullName}",
+                  "reloadOnReceive": true
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "button",
+        "label": "克隆并编辑",
+        "icon": "fas fa-clone",
+        "level": "success",
+        "visibleOn": "${!currentModel.isChanged}",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "ajax",
+                "api": {
+                  "method": "post",
+                  "url": "/api/dev/${appName}/ui-schema",
+                  "data": {
+                    "schema": "${schema}",
+                    "name": "${currentModel.schemaFullName}",
+                    "title": "${currentModel.title}"
+                  }
+                }
+              },
+              {
+                "expression": "responseResult.responseStatus == 0",
+                "actionType": "closeDialog"
+              },
+              {
+                "expression": "responseResult.responseStatus == 0",
+                "actionType": "openTab",
+                "args": {
+                  "title": "编辑 UI Schema「${currentModel.schemaFullName}」",
+                  "url": "/dev/${appName}/ui-schema/${currentModel.schemaFullName}",
+                  "reloadOnReceive": true
+                }
+              },
+              {
+                "actionType": "reload",
+                "componentName": "uiList"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "button",
+        "actionType": "close",
+        "label": "关闭"
+      }
+    ]
+  }
+}

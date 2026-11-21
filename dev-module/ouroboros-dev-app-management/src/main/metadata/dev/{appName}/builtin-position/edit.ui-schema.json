@@ -1,0 +1,68 @@
+{
+  "name": "/dev/{appName}/builtin-position/edit",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "wrapWithPanel": false,
+    "initApi": {
+      "method": "get",
+      "url": "/api/dev/${appName}/builtin-position/${key}/init-form?lock=true&ignoreLockError=true"
+    },
+    "api": {
+      "method": "put",
+      "url": "/api/dev/${appName}/builtin-position/${key}?commit=true"
+    },
+    "onEvent": {
+      "submitSucc": {
+        "actions": [
+          {
+            "actionType": "closeDialog"
+          },
+          {
+            "actionType": "reload",
+            "componentName": "builtin-position-list"
+          }
+        ]
+      }
+    },
+    "body": [
+      {
+        "type": "input-text",
+        "name": "key",
+        "label": "岗位编码",
+        "required": true,
+        "disabled": true
+      },
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "岗位名称",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "level",
+        "label": "岗位级别"
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "描述"
+      }
+    ],
+    "actions": [
+      {
+        "type": "button",
+        "label": "关闭",
+        "actionType": "close"
+      },
+      {
+        "type": "button",
+        "label": "保存",
+        "actionType": "confirm",
+        "level": "primary",
+        "primary": true
+      }
+    ]
+  }
+}

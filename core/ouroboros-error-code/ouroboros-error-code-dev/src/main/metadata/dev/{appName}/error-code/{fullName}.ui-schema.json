@@ -1,0 +1,62 @@
+{
+  "name": "/dev/{appName}/error-code/{fullName}",
+  "schema": {
+    "type": "page",
+    "title": "编辑错误码「${fullName}」",
+    "body": [
+      {
+        "type": "form",
+        "wrapWithPanel": false,
+        "title": false,
+        "mode": "horizontal",
+        "initApi": {
+          "method": "get",
+          "url": "/api/dev/${appName}/error-code/${fullName}"
+        },
+        "api": {
+          "method": "put",
+          "url": "/api/dev/${appName}/error-code/${fullName}"
+        },
+        "body": [
+          {
+            "type": "static",
+            "name": "code",
+            "label": "错误码"
+          },
+          {
+            "type": "input-text",
+            "name": "title",
+            "label": "标题",
+            "required": true
+          },
+          {
+            "type": "input-text",
+            "name": "defaultMessageTemplate",
+            "label": "默认消息模板",
+            "required": true
+          },
+          {
+            "type": "input-text",
+            "name": "bizCode",
+            "label": "业务标识"
+          },
+          {
+            "type": "input-text",
+            "name": "category",
+            "label": "分类"
+          },
+          {
+            "type": "textarea",
+            "name": "description",
+            "label": "说明"
+          },
+          {
+            "type": "switch",
+            "name": "enabled",
+            "label": "启用"
+          }
+        ]
+      }
+    ]
+  }
+}

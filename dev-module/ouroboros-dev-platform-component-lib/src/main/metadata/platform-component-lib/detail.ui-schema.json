@@ -1,0 +1,96 @@
+{
+  "name": "/platform-component-lib/detail",
+  "schema": {
+    "type": "tabs",
+    "tabs": [
+      {
+        "title": "渲染器",
+        "body": {
+          "type": "table",
+          "source": "${renderers}",
+          "autoFillHeight": false,
+          "columns": [
+            {
+              "name": "name",
+              "label": "名称"
+            },
+            {
+              "name": "label",
+              "label": "标签"
+            },
+            {
+              "name": "description",
+              "label": "描述"
+            }
+          ]
+        }
+      },
+      {
+        "title": "表单项",
+        "body": {
+          "type": "table",
+          "source": "${formItems}",
+          "autoFillHeight": false,
+          "columns": [
+            {
+              "name": "name",
+              "label": "名称"
+            },
+            {
+              "name": "label",
+              "label": "标签"
+            },
+            {
+              "name": "description",
+              "label": "描述"
+            }
+          ]
+        }
+      },
+      {
+        "title": "选项控件",
+        "body": {
+          "type": "table",
+          "source": "${optionsControls}",
+          "autoFillHeight": false,
+          "columns": [
+            {
+              "name": "name",
+              "label": "名称"
+            },
+            {
+              "name": "label",
+              "label": "标签"
+            },
+            {
+              "name": "description",
+              "label": "描述"
+            }
+          ]
+        }
+      },
+      {
+        "title": "动作",
+        "body": {
+          "type": "table",
+          "source": "${actions}",
+          "autoFillHeight": false,
+          "columns": [
+            {
+              "name": "name",
+              "label": "名称"
+            },
+            {
+              "name": "label",
+              "label": "标签"
+            },
+            {
+              "name": "description",
+              "label": "描述"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

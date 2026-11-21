@@ -1,0 +1,76 @@
+{
+  "scenario": "lowcode/full-app-lifecycle",
+  "testType": "e2e",
+  "suite": "smoke",
+  "mode": "e2e",
+  "runner": "testing/common/runners/playwright/browser_asset_bridge.py",
+  "browserAssets": {
+    "contracts": [
+      "platform/ouroboros-develop/e2e/contracts/runtime-management.local-bootstrap.contract.md",
+      "platform/ouroboros-develop/e2e/contracts/runtime-management.smoke.contract.md",
+      "testing/integration/smoke/lowcode/full-app-lifecycle/contract.md"
+    ],
+    "sources": [
+      "platform/ouroboros-develop/e2e/README.md",
+      "scripts/dev-runtime/bootstrap-develop-browser-e2e-local.sh",
+      "scripts/dev-runtime/test-bootstrap-develop-browser-e2e-local-contract.sh"
+    ],
+    "scripts": [
+      {
+        "id": "develop-browser-bootstrap-contract",
+        "kind": "shell",
+        "command": "bash scripts/dev-runtime/test-bootstrap-develop-browser-e2e-local-contract.sh",
+        "workdir": ".",
+        "requiredPaths": [
+          "scripts/dev-runtime/test-bootstrap-develop-browser-e2e-local-contract.sh",
+          "scripts/dev-runtime/bootstrap-develop-browser-e2e-local.sh"
+        ],
+        "description": "Run the helper contract test that verifies the local develop browser bootstrap script behavior in an isolated fake environment.",
+        "caseIds": [
+          "LC-TOPO-001",
+          "LC-BOOT-001"
+        ]
+      },
+      {
+        "id": "develop-browser-bootstrap-local",
+        "kind": "shell",
+        "command": "bash scripts/dev-runtime/bootstrap-develop-browser-e2e-local.sh",
+        "workdir": ".",
+        "requiredPaths": [
+          "scripts/dev-runtime/bootstrap-develop-browser-e2e-local.sh",
+          "platform/ouroboros-develop/target/classes",
+          "tmp/playwright-it/backend/runtime.classpath",
+          "frontends/web/main-app/node_modules"
+        ],
+        "description": "Bootstrap the verified local develop browser E2E environment and export the canonical handoff variables for follow-up browser smoke execution.",
+        "caseIds": [
+          "LC-TOPO-001",
+          "LC-BOOT-001",
+          "LC-LOGIN-001"
+        ]
+      }
+    ]
+  },
+  "steps": [
+    {
+      "name": "plan-browser-assets",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/smoke/lowcode/full-app-lifecycle/e2e.yaml --mode plan"
+    },
+    {
+      "name": "run-bootstrap-contract",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/smoke/lowcode/full-app-lifecycle/e2e.yaml --mode run --script-id develop-browser-bootstrap-contract"
+    },
+    {
+      "name": "run-local-bootstrap",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/smoke/lowcode/full-app-lifecycle/e2e.yaml --mode run --script-id develop-browser-bootstrap-local"
+    }
+  ],
+  "reports": {
+    "summary": "tmp/testing-evidence/lowcode-full-app-lifecycle",
+    "evidenceDir": "tmp/testing-evidence/lowcode-full-app-lifecycle"
+  },
+  "notes": [
+    "Use fixture harness to establish topology before invoking browser automation.",
+    "The current browser bridge binds this scenario to the existing develop-platform browser smoke contracts; module-local browser execution remains the next follow-up."
+  ]
+}

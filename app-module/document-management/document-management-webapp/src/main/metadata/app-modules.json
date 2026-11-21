@@ -1,0 +1,12 @@
+[
+  {
+    "fullName": "DocumentManagement",
+    "title": "文档管理",
+    "icon": "fa fa-files-o",
+    "menu": "DocumentManagement",
+    "authorities": [
+      "DocumentManagement"
+    ],
+    "order": 50
+  }
+]

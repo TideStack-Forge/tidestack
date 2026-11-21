@@ -1,0 +1,77 @@
+{
+  "name": "/dev/{appName}/business-log-template/detail",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "static": true,
+    "wrapWithPanel": false,
+    "initApi": {
+      "method": "get",
+      "url": "/api/dev/${appName}/business-log-template/${name}"
+    },
+    "body": [
+      {
+        "label": "名称",
+        "type": "static-text",
+        "name": "name"
+      },
+      {
+        "label": "请求方法",
+        "type": "static-text",
+        "name": "httpMethod"
+      },
+      {
+        "label": "URL",
+        "type": "static-text",
+        "name": "url"
+      },
+      {
+        "label": "模块名",
+        "type": "static-text",
+        "name": "moduleName"
+      },
+      {
+        "label": "操作名",
+        "type": "static-text",
+        "name": "operation"
+      },
+      {
+        "label": "级别",
+        "type": "mapping",
+        "name": "level",
+        "map": {
+          "INFO": "一般",
+          "WARN": "警告",
+          "DANGER": "危险"
+        }
+      },
+      {
+        "label": "业务键字段",
+        "type": "static-text",
+        "name": "businessKeyName",
+        "placeholder": "-"
+      },
+      {
+        "label": "摘要模板",
+        "type": "static-text",
+        "name": "summaryTemplate",
+        "placeholder": "-"
+      },
+      {
+        "type": "input-array",
+        "name": "sensitiveFields",
+        "label": "脱敏字段",
+        "items": [
+          {
+            "type": "input-text"
+          }
+        ]
+      },
+      {
+        "name": "shouldSaveResponseBody",
+        "type": "switch",
+        "label": "保存响应体"
+      }
+    ]
+  }
+}

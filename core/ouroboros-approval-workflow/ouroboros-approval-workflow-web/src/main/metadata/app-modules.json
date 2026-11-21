@@ -1,0 +1,22 @@
+[
+  {
+    "fullName": "approvalCenter",
+    "title": "审批中心",
+    "authorities": [
+      "approvalCenter",
+      "approvalCenter.start"
+    ]
+  },
+  {
+    "fullName": "systemSetting.approvalWorkflowDefinition",
+    "title": "审批流",
+    "icon": "icon-approval-workflow",
+    "menu": "systemSetting.approvalWorkflowDefinition",
+    "authorities": [
+      "systemSetting.approvalWorkflowDefinition",
+      "systemSetting.approvalWorkflowDefinition.statistics"
+    ],
+    "order": 10,
+    "parent": "systemSetting.workflowManagement"
+  }
+]

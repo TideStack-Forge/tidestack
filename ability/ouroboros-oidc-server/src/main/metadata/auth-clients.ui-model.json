@@ -1,0 +1,5 @@
+{
+  "path": "/system-setting/auth-clients",
+  "type": "amis",
+  "title": "接入应用（OAuth2 / OIDC）"
+}

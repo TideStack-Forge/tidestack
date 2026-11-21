@@ -1,0 +1,2 @@
+com.ouroboros.security.session.client.RequestHeaderClientTypeDetector
+com.ouroboros.security.session.client.UserAgentClientTypeDetector

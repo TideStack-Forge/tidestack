@@ -1,0 +1,59 @@
+{
+  "name": "call-flow-for-each",
+  "description": "Caller flow that executes the child flow for each item in a collection input",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "array",
+  "entryNode": "entryMutex",
+  "exitNode": "callChild",
+  "nodes": [
+    {
+      "name": "entryMutex",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    },
+    {
+      "name": "callChild",
+      "type": "callFlow",
+      "description": "",
+      "flowName": "child-return-const",
+      "executeForEachItem": true,
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "array"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "entryMutex",
+      "sourceOutputPort": 0,
+      "targetNode": "callChild",
+      "targetInputPort": 0
+    }
+  ]
+}

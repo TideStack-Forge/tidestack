@@ -1,0 +1,4 @@
+interface:
+  display_name: "Publish Ouroboros"
+  short_description: "Move and push Ouroboros release branches"
+  default_prompt: "Use $publish-ouroboros to prepare the backend release branch."

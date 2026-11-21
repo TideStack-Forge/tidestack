@@ -1,0 +1,117 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>ouroboros-business-log</artifactId>
+        <groupId>com.ouroboros</groupId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ouroboros-business-log-runtime</artifactId>
+    <name>Ouroboros Business Log Runtime Spring Boot Starter</name>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+        </dependency>
+        <!-- 测试相关 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+<dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-configuration-runtime</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-data-typed-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-data-plugins</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-organization-structure-runtime</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-web-security-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-web-security-spring-adapter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-business-log-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>common-app</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>common-metadata</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-webapi-runtime</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

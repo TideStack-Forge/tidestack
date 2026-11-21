@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/business-model/create",
+  "type": "amis",
+  "title": "新建业务模型"
+}

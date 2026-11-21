@@ -1,0 +1,14 @@
+{
+  "editorId": "menu",
+  "editorName": "TideStack Menu Metadata Editor",
+  "editorNameKey": "customEditor.menu",
+  "metadataType": "menu",
+  "schemaName": "menu",
+  "viewType": "tidestack.metadataEditor.menu",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.menu",
+  "fileMatchPatterns": [
+    "*.menu.json",
+    "**/resources/META-INF/ouroboros/menu-model/**/*.json"
+  ],
+  "priority": "default"
+}

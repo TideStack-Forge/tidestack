@@ -1,0 +1,36 @@
+{
+  "name": "dingtalk.contact.department.get",
+  "title": "钉钉读取部门",
+  "type": "OpenAPI",
+  "isEnabled": true,
+  "authCredential": "dingtalk.application-token",
+  "description": "自建应用，应用 access_token；读取指定部门详情，根部门 ID 为 1；应用通讯录部门读取权限及可见范围",
+  "timeout": 10000,
+  "retry": 0,
+  "retrySafe": true,
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "dept_id": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "required": [
+      "dept_id"
+    ]
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://oapi.dingtalk.com/topapi/v2/department/get",
+    "parameters": [
+      {
+        "in": "BODY",
+        "name": "dept_id",
+        "value": "${dept_id}",
+        "required": true
+      }
+    ]
+  },
+  "group": "钉钉/通讯录"
+}

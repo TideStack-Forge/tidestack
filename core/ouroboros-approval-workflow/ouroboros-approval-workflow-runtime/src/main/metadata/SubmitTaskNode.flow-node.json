@@ -1,0 +1,50 @@
+{
+  "type": "submitTask",
+  "label": "提交审批任务",
+  "icon": "approval-submit-task",
+  "svgs": {
+    "approval-submit-task": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 3H5v18h14V3h-4M9 3h6v4H9zM8 14l3 3 5-6\"/></g></svg>"
+  },
+  "shape": "rect",
+  "description": "通过审批流运行时服务提交任务动作",
+  "group": "审批流",
+  "order": 5002,
+  "scaffold": {
+    "type": "submitTask",
+    "name": "提交工作流任务",
+    "moduleName": "",
+    "inputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "any"
+      }
+    ],
+    "outputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "any"
+      }
+    ]
+  },
+  "portRules": {
+    "input": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    },
+    "output": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    }
+  },
+  "properties": [
+    {
+      "type": "input-text",
+      "name": "moduleName",
+      "label": "业务模块"
+    }
+  ]
+}

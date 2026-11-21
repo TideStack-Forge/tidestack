@@ -1,0 +1,24 @@
+{
+  "name": "/system-setting/integration-management/enterprise-notifications",
+  "schema": {
+    "type": "page",
+    "title": "企业通知",
+    "body": {
+      "type": "service",
+      "api": "/api/sys/enterprise-notifications",
+      "body": [
+        {"type": "alert", "level": "info", "body": "企业通知复用现有多渠道通知模板。应用身份和密钥在企业连接中配置，员工收件地址在组织关联中维护。配置连接不会自动给模板增加渠道。"},
+        {"type": "each", "name": "channels", "items": {"type": "panel", "title": "${title}", "body": [
+          {"type": "tpl", "tpl": "渠道标识：${channel}"},
+          {"type": "button", "label": "发送测试给我", "visibleOn": "${canTest}", "actionType": "ajax",
+            "confirmText": "向当前账号已关联的企业成员发送一条固定测试消息，是否继续？",
+            "api": {"method": "post", "url": "/api/sys/enterprise-notifications/${channel}/test", "adaptor": "if (payload.status !== 0) return payload; const r = payload.data || {}; return {...payload, status: r.outcome === 'ACCEPTED' ? 0 : 400, msg: r.outcome === 'ACCEPTED' ? '企业平台已受理测试消息，请在客户端核对' : (r.outcome === 'UNKNOWN' ? '投递结果未知，请先核对企业客户端，避免重复发送' : '测试被阻止，请检查企业连接、成员关联及应用权限')};"}}
+        ]}},
+        {"type": "panel", "title": "使用这些渠道的现有通知模板（只读）", "visibleOn": "${canViewTemplates}", "body": {"type": "table", "source": "${templates}", "columns": [
+          {"name": "name", "label": "模板名称"}, {"name": "channel", "label": "渠道"}, {"name": "enabled", "label": "启用", "type": "status"}
+        ]}},
+        {"type": "tpl", "visibleOn": "${!canViewTemplates}", "tpl": "模板列表需要原通知模板管理权限；请在通知模板管理入口维护内容及渠道。"}
+      ]
+    }
+  }
+}

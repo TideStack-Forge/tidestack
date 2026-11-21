@@ -1,0 +1,13 @@
+{
+  "editorId": "data-init",
+  "editorName": "TideStack Data Initialization Metadata Editor",
+  "editorNameKey": "customEditor.dataInit",
+  "metadataType": "data-init",
+  "schemaName": "data-init",
+  "viewType": "tidestack.metadataEditor.dataInit",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.dataInit",
+  "fileMatchPatterns": [
+    "*.data-init.json"
+  ],
+  "priority": "default"
+}

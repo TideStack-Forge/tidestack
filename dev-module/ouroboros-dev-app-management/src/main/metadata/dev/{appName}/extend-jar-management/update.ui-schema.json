@@ -1,0 +1,43 @@
+{
+  "name": "/dev/{appName}/extend-jar-management/update",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "body": [
+      {
+        "type": "input-file",
+        "name": "packagePath",
+        "label": false,
+        "maxLength": 1,
+        "drag": true,
+        "useChunk": "auto",
+        "chunkSize": 5242880,
+        "startChunkApi": "POST:/api/dev/${appName}/extend-jar/${fileName}/start-chunk",
+        "chunkApi": "POST:/api/dev/${appName}/extend-jar/${fileName}/chunk",
+        "finishChunkApi": "POST:/api/dev/${appName}/extend-jar/${fileName}/finish-chunk",
+        "accept": ".jar",
+        "receiver": "PUT:/api/dev/${appName}/extend-jar/${fileName}",
+        "description": "上传新的包，会覆盖原有包",
+        "downloadUrl": false,
+        "onEvent": {
+          "success": {
+            "actions": [
+              {
+                "actionType": "clear",
+                "componentName": "packagePath"
+              },
+              {
+                "actionType": "reload",
+                "componentName": "extendJarList"
+              },
+              {
+                "actionType": "closeDialog"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "actions": []
+  }
+}

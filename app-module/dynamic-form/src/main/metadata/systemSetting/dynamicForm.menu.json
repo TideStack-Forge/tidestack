@@ -1,0 +1,7 @@
+{
+  "url": "/system-setting/dynamic-form",
+  "fullName": "systemSetting.dynamicForm",
+  "name": "dynamicForm",
+  "title": "动态表单管理",
+  "order": 99
+}

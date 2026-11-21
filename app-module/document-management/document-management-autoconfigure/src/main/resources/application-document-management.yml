@@ -1,0 +1,26 @@
+# 文档管理模块配置示例
+ouroboros:
+  document-management:
+    # 是否启用文档管理模块
+    enabled: true
+
+    # 存储类型: filesystem, s3, oss
+    storage-type: filesystem
+
+    # 持久化类型: typed-model, jpa
+    persistence-type: typed-model
+
+    # 是否启用 REST API
+    enable-web-api: true
+
+    # 本地文件系统存储配置
+    storage:
+      filesystem:
+        # 存储根路径
+        base-path: /var/lib/ouroboros/document-storage
+        # 路径策略: HASH（推荐）, DATE, FLAT
+        path-strategy: HASH
+        # 缓冲区大小（字节）
+        buffer-size: 8192
+        # 是否计算校验和
+        calculate-checksum: true

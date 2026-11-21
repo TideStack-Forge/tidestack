@@ -1,0 +1,26 @@
+{
+  "fullName": "systemSetting.roleManagement",
+  "title": "角色",
+  "accessControlDefine": null,
+  "apis": [
+    "POST /api/sys/role",
+    "PATCH /api/sys/role/{id}",
+    "PUT /api/sys/role/{id}",
+    "DELETE /api/sys/role/{id}",
+    "GET /api/sys/role",
+    "GET /api/sys/user",
+    "GET /api/sys/role/{id}",
+    "GET /api/sys/authority/define-tree",
+    "GET /api/sys/role/{roleId}/authority",
+    "PUT /api/sys/role/{roleId}/authority",
+    "GET /api/sys/role/{roleId}/user",
+    "PUT /api/sys/role/{roleId}/user"
+  ],
+  "uiViews": [
+    "/system-setting/role-management"
+  ],
+  "menuItems": [
+    "systemSetting.organizationAndAccess",
+    "systemSetting.roleManagement"
+  ]
+}

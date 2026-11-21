@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.ouroboros.workflow.approval.ApprovalWorkflowAutoConfiguration,\
+  com.ouroboros.workflow.approval.starter.ApprovalWorkflowQbAdapterAutoConfiguration,\
+  com.ouroboros.workflow.approval.web.ApprovalWorkflowWebAutoConfiguration,\
+  com.ouroboros.workflow.approval.dynamicform.ApprovalWorkflowDynamicFormAutoConfiguration, \
+  com.ouroboros.workflow.approval.manage.ApprovalWorkflowManageAutoConfiguration

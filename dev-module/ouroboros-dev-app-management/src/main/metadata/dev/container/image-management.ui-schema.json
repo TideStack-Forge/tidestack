@@ -1,0 +1,122 @@
+{
+  "name": "/dev/container/image-management",
+  "schema": {
+    "type": "page",
+    "body": [
+      {
+        "type": "alert",
+        "level": "info",
+        "className": "mb-4",
+        "body": [
+          {
+            "type": "tpl",
+            "tpl": "镜像拉取只会影响后续新建容器或显式重建/更新镜像的容器，不会自动更新当前已运行容器。"
+          }
+        ]
+      },
+      {
+        "type": "crud",
+        "name": "baseImageList",
+        "api": {
+          "method": "get",
+          "url": "/api/app/container/base-images"
+        },
+        "placeholder": "暂无已拉取的基座镜像，可通过按 Tag 拉取按钮发起拉取",
+        "headerToolbar": [
+          {
+            "type": "button",
+            "label": "按 Tag 拉取",
+            "level": "primary",
+            "icon": "fa fa-download",
+            "actionType": "dialog",
+            "dialog": {
+              "title": "按 Tag 拉取基座镜像",
+              "size": "sm",
+              "body": [
+                {
+                  "type": "form",
+                  "title": false,
+                  "wrapWithPanel": false,
+                  "api": {
+                    "method": "post",
+                    "url": "/api/app/container/base-images/pull",
+                    "messages": {
+                      "success": "已开始后台拉取，请稍后手动刷新查看结果"
+                    }
+                  },
+                  "body": [
+                    {
+                      "type": "input-text",
+                      "name": "tag",
+                      "label": "Tag",
+                      "required": true,
+                      "placeholder": "请输入 Tag，例如：1.0.0-beta.3",
+                      "description": "只需输入 Tag，后台会基于当前默认基座镜像自动拼接完整镜像名并发起拉取。"
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": "action",
+                      "label": "取消",
+                      "actionType": "close"
+                    },
+                    {
+                      "type": "submit",
+                      "level": "primary",
+                      "label": "确定"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "button",
+            "label": "刷新",
+            "icon": "fa fa-refresh",
+            "actionType": "reload"
+          }
+        ],
+        "columns": [
+          {
+            "name": "imageName",
+            "label": "镜像名",
+            "type": "tpl",
+            "tpl": "<span class='break-all'>${imageName}</span>"
+          },
+          {
+            "name": "tag",
+            "label": "Tag",
+            "type": "tpl",
+            "tpl": "${tag || '-'}"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "buttons": [
+              {
+                "type": "button",
+                "label": "重新拉取",
+                "level": "link",
+                "className": "text-success",
+                "icon": "fa fa-download",
+                "actionType": "ajax",
+                "confirmText": "确定要重新拉取 ${imageName} 吗？",
+                "api": {
+                  "method": "post",
+                  "url": "/api/app/container/base-images/pull",
+                  "data": {
+                    "imageName": "${imageName}"
+                  },
+                  "messages": {
+                    "success": "已开始后台拉取，请稍后手动刷新查看结果"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

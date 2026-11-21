@@ -1,0 +1,90 @@
+{
+  "name": "/dev/{appName}/rpc-model/add",
+  "schema": {
+    "type": "rpc-model-editor",
+    "id": "rpc-model-editor",
+    "mode": "add",
+    "configForm": {
+      "type": "form",
+      "id": "rpc-model-config",
+      "title": false,
+      "wrapWithPanel": false,
+      "mode": "horizontal",
+      "bubbleActionsToModal": true,
+      "actions": [
+        {
+          "type": "button",
+          "label": "关闭",
+          "disabledOn": "${__rpcEditor.busy && __rpcEditor.tab != \"test\"}",
+          "onEvent": {
+            "click": {
+              "actions": [
+                {
+                  "actionType": "rpc-close",
+                  "componentId": "rpc-model-editor"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "button",
+          "label": "运行测试",
+          "icon": "fa fa-play",
+          "visibleOn": "${__rpcEditor.tab == \"test\"}",
+          "disabledOn": "${!__rpcEditor.canTest}",
+          "tooltip": "${__rpcEditor.testDisabledReason}",
+          "onEvent": {
+            "click": {
+              "actions": [
+                {
+                  "actionType": "rpc-test",
+                  "componentId": "rpc-model-editor"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "button",
+          "label": "保存",
+          "icon": "fa fa-save",
+          "level": "success",
+          "disabledOn": "${__rpcEditor.busy || !__rpcEditor.canEdit || !__rpcEditor.dirty}",
+          "onEvent": {
+            "click": {
+              "actions": [
+                {
+                  "actionType": "rpc-save",
+                  "componentId": "rpc-model-editor"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "button",
+          "label": "提交",
+          "icon": "fa fa-code-commit",
+          "level": "primary",
+          "disabledOn": "${__rpcEditor.busy || !__rpcEditor.canSubmit}",
+          "onEvent": {
+            "click": {
+              "actions": [
+                {
+                  "actionType": "rpc-submit",
+                  "componentId": "rpc-model-editor"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "body": {
+        "type": "amis-schema",
+        "schemaId": "/dev/{appName}/rpc-model/form-items"
+      },
+      "lazyChange": false
+    }
+  }
+}

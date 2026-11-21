@@ -1,0 +1,9 @@
+{
+  "fullName": "UIDesign.CustomStyle",
+  "icon": "fas fa-paint-brush",
+  "title": "主题样式",
+  "url": "/dev/{appName}/custom-style",
+  "placement": "main",
+  "stage": "dev",
+  "order": 40
+}

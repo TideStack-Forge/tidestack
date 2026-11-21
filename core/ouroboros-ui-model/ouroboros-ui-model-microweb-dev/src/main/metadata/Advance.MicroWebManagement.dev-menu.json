@@ -1,0 +1,10 @@
+{
+  "fullName": "AdvancedFeatures.MicroWeb",
+  "url": "/dev/{appName}/micro-web",
+  "icon": "icon-micro-web",
+  "title": "微前端",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 10
+}

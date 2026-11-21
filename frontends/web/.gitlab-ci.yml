@@ -1,0 +1,91 @@
+stages:
+  - prepare
+  - publish-web
+  - publish-sdk
+
+variables:
+  NPM_INSTALL_REGISTRY: https://registry.npmmirror.com
+  ## 下面三个需要在项目的 CI/CD 变量中设置
+  NPM_TOKEN: $NPM_PUBLISH_TOKEN
+  DOCKER_PUSH_USR: $DOCKER_PUSH_USERNAME
+  DOCKER_PUSH_PWD: $DOCKER_PUSH_PASSWORD
+
+default:
+  image: docker.1ms.run/library/node:slim
+
+# 通过 Tag 触发的准备工作
+prepare-tag:
+  stage: prepare
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v?\d+\.\d+\.\d+(?:-.*)?$/
+      when: always
+  script:
+    # 从 CI_COMMIT_TAG 中获取版本号
+    - VERSION=$CI_COMMIT_TAG
+    # 如果是 v1.0.0 形式的版本号，则去掉 v 前缀
+    - if [[ $VERSION == v* ]]; then VERSION=$(echo $VERSION | cut -c2-); fi
+    - echo "VERSION=$VERSION" >> pipeline.env
+    # 根据 CI_COMMIT_TAG_MESSAGE 中是否包含 publish-sdk 或 publish sdk 设定 PUBLISH_SDK 环境变量
+    - |
+      if [[ $CI_COMMIT_TAG_MESSAGE == *publish-sdk* || $CI_COMMIT_TAG_MESSAGE == *publish sdk* ]]; then
+        echo "PUBLISH_SDK=true" >> pipeline.env
+      else
+        echo "PUBLISH_SDK=false" >> pipeline.env
+      fi
+    # 发布 ouroboros-web
+    - echo "PUBLISH_WEB=true" >> pipeline.env
+    - cat pipeline.env
+  artifacts:
+    reports:
+      dotenv: pipeline.env
+
+# 通过分支触发的准备工作（只对 release/* 分支进行发布）
+prepare-branch:
+  stage: prepare
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /^release\/v?\d+\.\d+\.\d+(?:-.*)?$/
+      when: always
+  script:
+    # 从 $CI_COMMIT_BRANCH 中获取版本号
+    - VERSION=$(echo $CI_COMMIT_BRANCH | cut -d'/' -f2)
+    # 如果是 v1.0.0 形式的版本号，则去掉 v 前缀
+    - if [[ $VERSION == v* ]]; then VERSION=$(echo $VERSION | cut -c2-); fi
+    # 如果没有 -prerelease 后缀，则加上 -prerelease
+    - if [[ $VERSION != *-prerelease ]]; then VERSION="$VERSION-prerelease"; fi
+    - echo "VERSION=$VERSION" >> pipeline.env
+    - echo "PUBLISH_SDK=false" >> pipeline.env
+    - echo "PUBLISH_WEB=true" >> pipeline.env
+    - cat pipeline.env
+  artifacts:
+    reports:
+      dotenv: pipeline.env
+
+# 发布 ouroboros-web
+publish-web:
+  stage: publish-web
+  rules:
+    - if: $PUBLISH_WEB == "true"
+      when: always
+  script:
+    - |
+      if [[ "$VERSION" == *-* ]]; then
+        tags="$VERSION"
+      else
+        major_version="${VERSION%%.*}"
+        minor_version="${VERSION#*.}"
+        minor_version="${minor_version%%.*}"
+        # 如果major_version或minor_version为空，则设置为0
+        major_version="${major_version:-0}"
+        minor_version="${minor_version:-0}"
+        tags="$VERSION,$major_version-latest,$major_version.$minor_version-latest,latest"
+      fi
+    - sh publish-ouroboros-web.sh -v $VERSION -t $tags -u $DOCKER_PUSH_USR -p $DOCKER_PUSH_PWD -m $NPM_INSTALL_REGISTRY
+
+# 发布 ouroboros-sdk
+publish-sdk:
+  stage: publish-sdk
+  rules:
+    - if: $PUBLISH_SDK == "true"
+      when: always
+  script:
+    - sh publish-ouroboros-sdk.sh -v $VERSION -m $NPM_INSTALL_REGISTRY

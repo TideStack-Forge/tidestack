@@ -1,0 +1,76 @@
+{
+  "name": "/system-setting/admin-level-management/edit",
+  "schema": {
+    "type": "form",
+    "mode": "horizontal",
+    "wrapWithPanel": false,
+    "api": {
+      "method": "put",
+      "url": "/api/admin-level/${id}"
+    },
+    "initApi": {
+      "method": "get",
+      "url": "/api/admin-level/${id}"
+    },
+    "body": [
+      {
+        "name": "code",
+        "type": "input-text",
+        "label": "代码",
+        "disabled": true
+      },
+      {
+        "name": "name",
+        "type": "input-text",
+        "label": "名称",
+        "required": true
+      },
+      {
+        "name": "scope",
+        "type": "select",
+        "label": "范围",
+        "disabled": true,
+        "options": [
+          {
+            "label": "组织级",
+            "value": "ORG"
+          },
+          {
+            "label": "部门级",
+            "value": "DEPT"
+          }
+        ]
+      },
+      {
+        "name": "rank",
+        "type": "input-number",
+        "label": "排序",
+        "required": true,
+        "min": 1
+      },
+      {
+        "name": "enabled",
+        "type": "switch",
+        "label": "启用"
+      },
+      {
+        "name": "description",
+        "type": "textarea",
+        "label": "描述"
+      }
+    ],
+    "onEvent": {
+      "submitSucc": {
+        "actions": [
+          {
+            "actionType": "closeDialog"
+          },
+          {
+            "actionType": "reload",
+            "componentName": "adminLevelCrud"
+          }
+        ]
+      }
+    }
+  }
+}

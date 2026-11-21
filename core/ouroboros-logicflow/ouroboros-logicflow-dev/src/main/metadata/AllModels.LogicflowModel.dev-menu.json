@@ -1,0 +1,10 @@
+{
+  "fullName": "BusinessLogic.LogicflowModel",
+  "url": "/dev/{appName}/logicflow-model",
+  "icon": "icon-logicflow",
+  "title": "逻辑流",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 20
+}

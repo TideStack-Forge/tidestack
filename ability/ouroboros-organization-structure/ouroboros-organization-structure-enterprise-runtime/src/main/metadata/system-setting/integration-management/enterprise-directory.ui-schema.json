@@ -1,0 +1,557 @@
+{
+  "name": "/system-setting/integration-management/enterprise-directory",
+  "schema": {
+    "type": "service",
+    "api": "/api/sys/enterprise-directory/management-state",
+    "body": [
+      {
+        "type": "alert",
+        "level": "info",
+        "body": "组织关联与第三方登录绑定相互独立。默认只关联；启用同步后，由一个主通讯录来源维护选定范围的姓名、部门和任职，手机号、邮箱需显式开启。"
+      },
+      {
+        "type": "tabs",
+        "tabs": [
+          {
+            "title": "读取与关联",
+            "body": [
+              {
+                "type": "form",
+                "title": "读取并关联企业目录",
+                "api": {
+                  "method": "get",
+                  "url": "/api/sys/enterprise-directory/snapshot?connectionId=${connectionId}"
+                },
+                "body": [
+                  {
+                    "type": "select",
+                    "name": "connectionId",
+                    "label": "企业连接",
+                    "required": true,
+                    "source": "/api/sys/enterprise-directory/connections"
+                  },
+                  {
+                    "type": "table",
+                    "title": "外部部门",
+                    "source": "${snapshot.departments}",
+                    "columns": [
+                      {
+                        "name": "externalId",
+                        "label": "部门标识"
+                      },
+                      {
+                        "name": "name",
+                        "label": "名称"
+                      },
+                      {
+                        "name": "parentExternalId",
+                        "label": "上级部门"
+                      },
+                      {
+                        "type": "operation",
+                        "buttons": [
+                          {
+                            "type": "button",
+                            "label": "关联本地部门",
+                            "visibleOn": "${canBind}",
+                            "actionType": "dialog",
+                            "dialog": {
+                              "title": "关联已有对象",
+                              "body": {
+                                "type": "form",
+                                "api": {
+                                  "method": "post",
+                                  "url": "/api/sys/enterprise-directory/bindings",
+                                  "data": {
+                                    "connectionId": "${connectionId}",
+                                    "objectType": "DEPARTMENT",
+                                    "externalId": "${externalId}",
+                                    "localId": "${localId}"
+                                  }
+                                },
+                                "body": [
+                                  {
+                                    "type": "alert",
+                                    "level": "info",
+                                    "body": "仅建立组织关联，不创建登录绑定，不改变本地资料或账号权限。"
+                                  },
+                                  {
+                                    "type": "select",
+                                    "name": "localId",
+                                    "label": "本地对象",
+                                    "required": true,
+                                    "searchable": true,
+                                    "source": "/api/sys/enterprise-directory/local-options?objectType=DEPARTMENT"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "table",
+                    "title": "外部成员",
+                    "source": "${snapshot.members}",
+                    "columns": [
+                      {
+                        "name": "externalId",
+                        "label": "成员标识"
+                      },
+                      {
+                        "name": "name",
+                        "label": "姓名"
+                      },
+                      {
+                        "name": "active",
+                        "label": "有效",
+                        "type": "status"
+                      },
+                      {
+                        "type": "operation",
+                        "buttons": [
+                          {
+                            "type": "button",
+                            "label": "关联本地员工",
+                            "visibleOn": "${canBind}",
+                            "actionType": "dialog",
+                            "dialog": {
+                              "title": "关联已有对象",
+                              "body": {
+                                "type": "form",
+                                "api": {
+                                  "method": "post",
+                                  "url": "/api/sys/enterprise-directory/bindings",
+                                  "data": {
+                                    "connectionId": "${connectionId}",
+                                    "objectType": "MEMBER",
+                                    "externalId": "${externalId}",
+                                    "localId": "${localId}"
+                                  }
+                                },
+                                "body": [
+                                  {
+                                    "type": "alert",
+                                    "level": "info",
+                                    "body": "仅建立组织关联，不创建登录绑定，不改变本地资料或账号权限。"
+                                  },
+                                  {
+                                    "type": "select",
+                                    "name": "localId",
+                                    "label": "本地对象",
+                                    "required": true,
+                                    "searchable": true,
+                                    "source": "/api/sys/enterprise-directory/local-options?objectType=MEMBER"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "actions": [
+                  {
+                    "type": "submit",
+                    "label": "读取企业目录",
+                    "level": "primary"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "已有组织关联",
+            "body": [
+              {
+                "type": "crud",
+                "name": "directory-bindings",
+                "api": "/api/sys/enterprise-directory/bindings?connectionId=${connectionId}",
+                "loadDataOnce": true,
+                "filter": {
+                  "body": [
+                    {
+                      "type": "select",
+                      "name": "connectionId",
+                      "label": "企业连接",
+                      "required": true,
+                      "source": "/api/sys/enterprise-directory/connections"
+                    }
+                  ]
+                },
+                "columns": [
+                  {
+                    "name": "objectType",
+                    "label": "对象类型"
+                  },
+                  {
+                    "name": "externalId",
+                    "label": "外部标识"
+                  },
+                  {
+                    "name": "localId",
+                    "label": "本地对象"
+                  },
+                  {
+                    "name": "active",
+                    "label": "关系有效",
+                    "type": "status"
+                  },
+                  {
+                    "name": "scopeId",
+                    "label": "同步来源范围"
+                  },
+                  {
+                    "name": "managedFields",
+                    "label": "来源维护字段"
+                  },
+                  {
+                    "type": "operation",
+                    "buttons": [
+                      {
+                        "type": "button",
+                        "label": "解绑",
+                        "actionType": "ajax",
+                        "visibleOn": "${canBind && externalRouteKey}",
+                        "confirmText": "解绑将终止此渠道关联及本来源任职，保留本地对象。旧通知计划会被阻塞；登录绑定需在用户管理中另行核对和解绑。确认由管理员负责后续处理？",
+                        "api": {
+                          "method": "post",
+                          "url": "/api/sys/enterprise-directory/bindings/${id}/unbind",
+                          "data": {
+                            "expectedVersion": "${version}",
+                            "acknowledgeImpact": true
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "主来源同步",
+            "body": [
+              {
+                "type": "crud",
+                "api": "/api/sys/enterprise-directory/scopes",
+                "loadDataOnce": true,
+                "headerToolbar": [
+                  {
+                    "type": "button",
+                    "label": "设置主来源",
+                    "visibleOn": "${canSynchronize}",
+                    "actionType": "dialog",
+                    "dialog": {
+                      "title": "主通讯录来源",
+                      "body": {
+                        "type": "form",
+                        "api": {
+                          "method": "put",
+                          "url": "/api/sys/enterprise-directory/scopes",
+                          "data": {
+                            "id": "${id}",
+                            "connectionId": "${connectionId}",
+                            "externalRootId": "${externalRootId}",
+                            "enabled": "${enabled}",
+                            "syncMobile": "${syncMobile}",
+                            "syncEmail": "${syncEmail}",
+                            "expectedVersion": "${version}",
+                            "acknowledgeDisable": "${acknowledgeDisable}"
+                          }
+                        },
+                        "body": [
+                          {
+                            "type": "select",
+                            "name": "connectionId",
+                            "label": "企业连接",
+                            "required": true,
+                            "source": "/api/sys/enterprise-directory/connections"
+                          },
+                          {
+                            "type": "select",
+                            "name": "id",
+                            "label": "本地公司",
+                            "source": "/api/sys/enterprise-directory/local-options?objectType=COMPANY",
+                            "required": true,
+                            "disabledOn": "${version}"
+                          },
+                          {
+                            "type": "input-text",
+                            "name": "externalRootId",
+                            "label": "外部根部门标识",
+                            "required": true,
+                            "description": "从上方读取的企业目录选择范围；该根部门下的目录映射到所选本地公司。"
+                          },
+                          {
+                            "type": "switch",
+                            "name": "enabled",
+                            "label": "启用主来源同步",
+                            "value": true
+                          },
+                          {
+                            "type": "switch",
+                            "name": "syncMobile",
+                            "label": "同步手机号",
+                            "value": false
+                          },
+                          {
+                            "type": "switch",
+                            "name": "syncEmail",
+                            "label": "同步邮箱",
+                            "value": false
+                          },
+                          {
+                            "type": "alert",
+                            "level": "warning",
+                            "visibleOn": "${!enabled}",
+                            "body": "停用只停止后续同步并释放资料维护权，保留已导入资料和关联。请自行处理后续业务。"
+                          },
+                          {
+                            "type": "checkbox",
+                            "name": "acknowledgeDisable",
+                            "option": "已了解停用影响",
+                            "visibleOn": "${!enabled}",
+                            "requiredOn": "${!enabled}"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "columns": [
+                  {
+                    "name": "id",
+                    "label": "本地公司范围"
+                  },
+                  {
+                    "name": "connectionId",
+                    "label": "主来源连接"
+                  },
+                  {
+                    "name": "externalRootId",
+                    "label": "外部范围"
+                  },
+                  {
+                    "name": "enabled",
+                    "label": "启用",
+                    "type": "status"
+                  },
+                  {
+                    "name": "version",
+                    "label": "版本"
+                  },
+                  {
+                    "type": "operation",
+                    "buttons": [
+                      {
+                        "type": "button",
+                        "label": "设置",
+                        "visibleOn": "${canSynchronize}",
+                        "actionType": "dialog",
+                        "dialog": {
+                          "title": "主通讯录来源",
+                          "body": {
+                            "type": "form",
+                            "api": {
+                              "method": "put",
+                              "url": "/api/sys/enterprise-directory/scopes",
+                              "data": {
+                                "id": "${id}",
+                                "connectionId": "${connectionId}",
+                                "externalRootId": "${externalRootId}",
+                                "enabled": "${enabled}",
+                                "syncMobile": "${syncMobile}",
+                                "syncEmail": "${syncEmail}",
+                                "expectedVersion": "${version}",
+                                "acknowledgeDisable": "${acknowledgeDisable}"
+                              }
+                            },
+                            "body": [
+                              {
+                                "type": "select",
+                                "name": "connectionId",
+                                "label": "企业连接",
+                                "required": true,
+                                "source": "/api/sys/enterprise-directory/connections"
+                              },
+                              {
+                                "type": "select",
+                                "name": "id",
+                                "label": "本地公司",
+                                "source": "/api/sys/enterprise-directory/local-options?objectType=COMPANY",
+                                "required": true,
+                                "disabledOn": "${version}"
+                              },
+                              {
+                                "type": "input-text",
+                                "name": "externalRootId",
+                                "label": "外部根部门标识",
+                                "required": true,
+                                "description": "从上方读取的企业目录选择范围；该根部门下的目录映射到所选本地公司。"
+                              },
+                              {
+                                "type": "switch",
+                                "name": "enabled",
+                                "label": "启用主来源同步",
+                                "value": true
+                              },
+                              {
+                                "type": "switch",
+                                "name": "syncMobile",
+                                "label": "同步手机号",
+                                "value": false
+                              },
+                              {
+                                "type": "switch",
+                                "name": "syncEmail",
+                                "label": "同步邮箱",
+                                "value": false
+                              },
+                              {
+                                "type": "alert",
+                                "level": "warning",
+                                "visibleOn": "${!enabled}",
+                                "body": "停用只停止后续同步并释放资料维护权，保留已导入资料和关联。请自行处理后续业务。"
+                              },
+                              {
+                                "type": "checkbox",
+                                "name": "acknowledgeDisable",
+                                "option": "已了解停用影响",
+                                "visibleOn": "${!enabled}",
+                                "requiredOn": "${!enabled}"
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "type": "button",
+                        "label": "预览同步",
+                        "visibleOn": "${canSynchronize && enabled}",
+                        "actionType": "dialog",
+                        "dialog": {
+                          "title": "确认目录变更",
+                          "size": "lg",
+                          "body": {
+                            "type": "service",
+                            "api": {
+                              "method": "post",
+                              "url": "/api/sys/enterprise-directory/scopes/${id}/preview"
+                            },
+                            "body": [
+                              {
+                                "type": "alert",
+                                "level": "warning",
+                                "body": "同名候选不会自动合并。需要绑定已有对象时请关闭预览，先建立关联后重新预览。未看到的成员仅保留为缺失待核对，不自动删除。"
+                              },
+                              {
+                                "type": "table",
+                                "source": "${changes}",
+                                "columns": [
+                                  {
+                                    "name": "objectType",
+                                    "label": "类型"
+                                  },
+                                  {
+                                    "name": "externalId",
+                                    "label": "外部标识"
+                                  },
+                                  {
+                                    "name": "name",
+                                    "label": "名称"
+                                  },
+                                  {
+                                    "name": "action",
+                                    "label": "计划操作"
+                                  },
+                                  {
+                                    "name": "candidates",
+                                    "label": "建议绑定（需人工选择）",
+                                    "type": "json"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "tpl",
+                                "tpl": "缺失待核对：${missingPendingReview | json}"
+                              },
+                              {
+                                "type": "form",
+                                "visibleOn": "${complete}",
+                                "api": {
+                                  "method": "post",
+                                  "url": "/api/sys/enterprise-directory/runs/${runId}/apply",
+                                  "data": {
+                                    "confirmCreation": "${confirmCreation}",
+                                    "primaryDepartmentChoices": "${primaryDepartmentChoices}"
+                                  }
+                                },
+                                "body": [
+                                  {
+                                    "type": "input-table",
+                                    "name": "primaryDepartmentChoices",
+                                    "label": "未明确主部门的成员（必须人工选择）",
+                                    "addable": false,
+                                    "removable": false,
+                                    "needConfirm": false,
+                                    "columns": [
+                                      {
+                                        "name": "externalId",
+                                        "label": "成员标识",
+                                        "type": "static"
+                                      },
+                                      {
+                                        "name": "name",
+                                        "label": "姓名",
+                                        "type": "static"
+                                      },
+                                      {
+                                        "name": "primaryDepartmentId",
+                                        "label": "确认主部门",
+                                        "type": "select",
+                                        "required": true,
+                                        "source": "${departmentOptions}"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "checkbox",
+                                    "name": "confirmCreation",
+                                    "required": true,
+                                    "option": "已核对新增、候选绑定和任职变化，确认应用此次预览"
+                                  }
+                                ],
+                                "actions": [
+                                  {
+                                    "type": "submit",
+                                    "level": "primary",
+                                    "label": "应用本次同步"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "alert",
+                                "level": "danger",
+                                "visibleOn": "${!complete}",
+                                "body": "读取不完整，本次预览不能应用。请核对通讯录权限和外部授权范围。"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

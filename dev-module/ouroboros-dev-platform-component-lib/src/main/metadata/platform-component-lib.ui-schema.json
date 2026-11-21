@@ -1,0 +1,174 @@
+{
+  "name": "/platform-component-lib",
+  "schema": {
+    "type": "page",
+    "title": "平台组件库",
+    "body": [
+      {
+        "type": "crud",
+        "id": "platformComponentLibList",
+        "syncLocation": false,
+        "api": {
+          "method": "get",
+          "url": "/api/platform-component-lib"
+        },
+        "columns": [
+          {
+            "type": "text",
+            "label": "组件库名称",
+            "name": "name",
+            "inline": true,
+            "placeholder": "-"
+          },
+          {
+            "type": "text",
+            "label": "版本",
+            "name": "version",
+            "inline": true,
+            "placeholder": "-"
+          },
+          {
+            "type": "text",
+            "label": "描述",
+            "name": "description",
+            "inline": true,
+            "placeholder": "-"
+          },
+          {
+            "type": "text",
+            "label": "作者",
+            "name": "author",
+            "inline": true,
+            "placeholder": "-"
+          },
+          {
+            "type": "text",
+            "label": "公共路径",
+            "name": "publicPath",
+            "inline": true,
+            "placeholder": "-"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "width": 260,
+            "buttons": [
+              {
+                "type": "button",
+                "label": "查看组件",
+                "actionType": "dialog",
+                "level": "link",
+                "dialog": {
+                  "type": "dialog",
+                  "size": "lg",
+                  "title": "组件库详情 - ${name}",
+                  "url": "/platform-component-lib/detail"
+                }
+              },
+              {
+                "type": "button",
+                "label": "查看应用",
+                "actionType": "dialog",
+                "level": "link",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "使用此组件库的应用",
+                  "body": {
+                    "type": "service",
+                    "api": {
+                      "method": "get",
+                      "url": "/api/platform-component-lib/${name}/related-apps"
+                    },
+                    "body": {
+                      "type": "table",
+                      "source": "${items}",
+                      "autoFillHeight": false,
+                      "columns": [
+                        {
+                          "name": "name",
+                          "label": "应用名称"
+                        },
+                        {
+                          "name": "title",
+                          "label": "应用标题"
+                        }
+                      ],
+                      "placeholder": "暂无应用使用此组件库"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "button",
+                "label": "卸载",
+                "actionType": "ajax",
+                "level": "link",
+                "className": "text-danger",
+                "confirmText": "确认要卸载组件库 ${name} 吗？",
+                "api": {
+                  "method": "delete",
+                  "url": "/api/platform-component-lib/${name}"
+                }
+              }
+            ],
+            "placeholder": "-"
+          }
+        ],
+        "perPageAvailable": [
+          10,
+          20,
+          50
+        ],
+        "headerToolbar": [
+          "reload",
+          {
+            "type": "button",
+            "label": "上传组件库",
+            "actionType": "dialog",
+            "level": "primary",
+            "align": "right",
+            "dialog": {
+              "type": "dialog",
+              "title": "上传组件库包",
+              "size": "lg",
+              "url": "/platform-component-lib/upload"
+            }
+          },
+          {
+            "type": "button",
+            "label": "生成项目",
+            "actionType": "dialog",
+            "level": "enhance",
+            "align": "right",
+            "dialog": {
+              "type": "dialog",
+              "title": "生成平台组件库项目",
+              "size": "lg",
+              "body": {
+                "type": "ui-schema",
+                "source": {
+                  "method": "get",
+                  "url": "/api/project-generation-form",
+                  "data": {
+                    "scope": "PLATFORM_COMPONENT_LIBRARY"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "footerToolbar": [
+          "statistics",
+          "switch-per-page",
+          "pagination"
+        ],
+        "alwaysShowPagination": true,
+        "mode": "table"
+      }
+    ],
+    "asideResizor": false,
+    "pullRefresh": {
+      "disabled": true
+    }
+  }
+}

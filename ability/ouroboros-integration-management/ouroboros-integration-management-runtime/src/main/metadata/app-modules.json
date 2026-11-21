@@ -1,0 +1,15 @@
+[
+  {
+    "fullName": "systemSetting.integrationManagement",
+    "title": "集成管理",
+    "parent": "systemSetting.basicConfiguration",
+    "menu": "systemSetting.integrationManagement",
+    "order": 40
+  },
+  {
+    "fullName": "systemSetting.integrationManagement.connections",
+    "title": "外部连接",
+    "parent": "systemSetting.integrationManagement",
+    "order": 10
+  }
+]

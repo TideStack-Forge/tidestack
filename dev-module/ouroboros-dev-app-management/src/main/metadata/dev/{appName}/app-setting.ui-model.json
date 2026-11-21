@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/app-setting",
+  "type": "amis",
+  "title": "应用配置"
+}

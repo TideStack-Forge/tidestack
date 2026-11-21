@@ -1,0 +1,9 @@
+{
+  "fullName": "AdvancedFeatures.BackendExtension",
+  "url": "/dev/{appName}/extend-jar-management",
+  "icon": "fa-brands fa-java",
+  "title": "后端扩展包",
+  "placement": "main",
+  "stage": "dev",
+  "order": 20
+}

@@ -1,0 +1,40 @@
+{
+  "name": "多组织架构",
+  "label": "组织架构（多选）",
+  "order": 340,
+  "dataType": {
+    "type": "Organizations",
+    "size": "${size}"
+  },
+  "ui": {
+    "input": {
+      "type": "organization-picker",
+      "multiple": true,
+      "showCompany": true,
+      "pickCompany": "${company}",
+      "showDepartment": "${department}",
+      "pickDepartment": "${department}"
+    }
+  },
+  "validations": {},
+  "paramsUiSchema": [
+    {
+      "type": "input-number",
+      "name": "size",
+      "label": "长度",
+      "value": 256
+    },
+    {
+      "type": "switch",
+      "name": "department",
+      "label": "部门",
+      "value": true
+    },
+    {
+      "type": "switch",
+      "name": "company",
+      "label": "公司",
+      "value": true
+    }
+  ]
+}

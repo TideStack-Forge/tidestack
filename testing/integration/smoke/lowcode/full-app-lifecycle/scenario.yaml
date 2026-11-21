@@ -1,0 +1,50 @@
+{
+  "id": "lowcode/full-app-lifecycle",
+  "title": "Low-Code Full App Lifecycle",
+  "domain": "lowcode",
+  "testType": "integration",
+  "suite": "smoke",
+  "risk": "p0",
+  "modes": [
+    "harness",
+    "e2e"
+  ],
+  "fixtures": {
+    "services": [],
+    "runtimes": [
+      "develop",
+      "mothership"
+    ],
+    "frontends": [
+      "develop-shell",
+      "runtime-shell"
+    ],
+    "data": [
+      "app-metadata-root"
+    ],
+    "identities": [
+      "admin"
+    ]
+  },
+  "entrypoints": {
+    "backendBaseUrlEnv": "OB_TEST_BASE_URL",
+    "appBackendBaseUrlEnv": "OB_TEST_APP_BASE_URL",
+    "frontendBaseUrlEnv": "OB_TEST_FRONTEND_BASE_URL",
+    "runtimeFrontendBaseUrlEnv": "OB_TEST_RUNTIME_FRONTEND_BASE_URL"
+  },
+  "caseTable": "cases.md",
+  "artifacts": {
+    "contract": "contract.md",
+    "harness": "harness.playbook.md",
+    "e2e": "testing/e2e/smoke/lowcode/full-app-lifecycle/e2e.yaml"
+  },
+  "reporting": {
+    "summaryFormat": "markdown",
+    "evidenceRoot": "tmp/testing-evidence/lowcode-full-app-lifecycle"
+  },
+  "exclusions": [],
+  "notes": [
+    "This scenario links develop-side modeling, runtime boot, generated app login, and CRUD/query verification in one contract.",
+    "Only the deterministic happy path should move into browser E2E first; topology diagnosis remains in harness."
+  ]
+}

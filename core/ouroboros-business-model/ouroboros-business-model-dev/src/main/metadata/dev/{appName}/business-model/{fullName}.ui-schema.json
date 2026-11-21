@@ -1,0 +1,324 @@
+{
+  "name": "/dev/{appName}/business-model/{fullName}",
+  "schema": {
+    "type": "page",
+    "title": "编辑业务模型「${title}」",
+    "initApi": {
+      "method": "get",
+      "url": "/api/dev/${appName}/business-model/${fullName}?includeValidationSnapshot=true",
+      "responseData": {
+        "&": "$businessModel",
+        "appName": "$appName",
+        "validationSnapshot": "$validationSnapshot"
+      }
+    },
+    "toolbar": [
+      {
+        "type": "service",
+        "name": "edit-business-model-form-status",
+        "data": {
+          "dirty": false,
+          "submitting": false
+        },
+        "body": [
+          {
+            "type": "button",
+            "label": "取消",
+            "size": "lg",
+            "className": "ml-1",
+            "onEvent": {
+              "click": {
+                "actions": [
+                  {
+                    "actionType": "confirmDialog",
+                    "args": {
+                      "title": "确认",
+                      "msg": "确定要取消编辑吗？未保存的数据将会丢失！"
+                    },
+                    "expression": "${dirty}"
+                  },
+                  {
+                    "actionType": "closeCurrentTab"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "button",
+            "actionType": "dialog",
+            "label": "查看投射模型",
+            "size": "lg",
+            "icon": "fa fa-eye",
+            "className": "ml-1",
+            "disabledOn": "${dirty}",
+            "disabledTip": "请先保存",
+            "dialog": {
+              "title": "查看投射模型",
+              "size": "lg",
+              "id": "showModelDetailDialog",
+              "url": "/dev/${appName}/business-model/model-bundle/detail",
+              "closeOnEsc": true,
+              "closeOnOutside": true,
+              "actions": [
+                {
+                  "type": "button",
+                  "label": "关闭",
+                  "actionType": "close"
+                }
+              ]
+            }
+          },
+          {
+            "type": "button",
+            "label": "保存",
+            "level": "light",
+            "size": "lg",
+            "icon": "fa fa-save",
+            "className": "ml-1",
+            "hotKey": "ctrl+s,command+s",
+            "disabledOn": "${!dirty}",
+            "disabledTip": "没有修改",
+            "onEvent": {
+              "click": {
+                "actions": [
+                  {
+                    "actionType": "validate",
+                    "componentName": "edit-business-model-form"
+                  },
+                  {
+                    "actionType": "setValue",
+                    "componentName": "edit-business-model-form-status",
+                    "args": {
+                      "value": {
+                        "submitting": true
+                      }
+                    }
+                  },
+                  {
+                    "actionType": "submit",
+                    "componentName": "edit-business-model-form",
+                    "expression": "!validateResult.error"
+                  },
+                  {
+                    "actionType": "setValue",
+                    "componentName": "edit-business-model-form-status",
+                    "args": {
+                      "value": {
+                        "submitting": false
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "button",
+            "label": "保存并提交",
+            "size": "lg",
+            "level": "primary",
+            "icon": "fa fa-check",
+            "className": "ml-1",
+            "disabledOn": "${submitting}",
+            "onEvent": {
+              "click": {
+                "actions": [
+                  {
+                    "actionType": "validate",
+                    "componentName": "edit-business-model-form"
+                  },
+                  {
+                    "actionType": "setValue",
+                    "componentName": "edit-business-model-form-status",
+                    "args": {
+                      "value": {
+                        "submitting": true
+                      }
+                    }
+                  },
+                  {
+                    "actionType": "submit",
+                    "componentName": "edit-business-model-form",
+                    "expression": "!validateResult.error",
+                    "outputVar": "submitResponse"
+                  },
+                  {
+                    "actionType": "setValue",
+                    "componentName": "edit-business-model-form-status",
+                    "args": {
+                      "value": {
+                        "submitting": false
+                      }
+                    }
+                  },
+                  {
+                    "actionType": "dialog",
+                    "expression": "!submitResponse.error",
+                    "args": {
+                      "dialog": {
+                        "title": "请输入修改说明",
+                        "url": "/dev/${appName}/business-model/commit"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "style": {
+      "overflow-y": "hidden"
+    },
+    "body": [
+      {
+        "type": "form",
+        "id": "edit-business-model-form",
+        "api": {
+          "method": "put",
+          "url": "/api/dev/${appName}/business-model/${fullName}?includeValidationSnapshot=true",
+          "requestAdaptor": "api.data = {...api.data}; delete api.data.validationSnapshot; delete api.data.validationState; delete api.data.validationSummary; delete api.data.validationErrors; delete api.data.validationDiagnostics; delete api.data.lastValidatedTime; return api;"
+        },
+        "panelClassName": "h-full flex flex-col",
+        "bodyClassName": "flex-grow shadow-none",
+        "className": "h-full",
+        "mode": "horizontal",
+        "reload": false,
+        "title": false,
+        "wrapWithPanel": false,
+        "data": {
+          "appName": "${appName}"
+        },
+        "body": [
+          {
+            "type": "alert",
+            "level": "warning",
+            "showIcon": true,
+            "className": "mb-3",
+            "visibleOn": "${validationSnapshot && ((validationSnapshot.validationDiagnostics && validationSnapshot.validationDiagnostics.length) || (validationSnapshot.validationErrors && validationSnapshot.validationErrors.length) || validationSnapshot.validationSummary)}",
+            "body": "${validationSnapshot.validationSummary || '当前业务模型存在后端校验错误'}"
+          },
+          {
+            "type": "each",
+            "name": "validationSnapshot.validationErrors",
+            "visibleOn": "${validationSnapshot && validationSnapshot.validationErrors && validationSnapshot.validationErrors.length}",
+            "items": {
+              "type": "container",
+              "className": "border rounded-sm p-3 mb-2 bg-white",
+              "body": [
+                {
+                  "type": "tpl",
+                  "tpl": "${item}"
+                }
+              ]
+            }
+          },
+          {
+            "type": "amis-schema",
+            "schemaId": "/dev/{appName}/business-model/editor",
+            "data": {
+              "appName": "${appName}",
+              "fullName": "${fullName}",
+              "modelType": "${modelType}"
+            }
+          }
+        ],
+        "actions": [],
+        "onEvent": {
+          "change": {
+            "actions": [
+              {
+                "actionType": "setValue",
+                "componentName": "edit-business-model-form-status",
+                "args": {
+                  "value": {
+                    "dirty": true
+                  }
+                }
+              },
+              {
+                "actionType": "debounce",
+                "args": {
+                  "wait": 500
+                }
+              },
+              {
+                "actionType": "broadcast",
+                "args": {
+                  "eventName": "businessModelChanged"
+                },
+                "data": {
+                  "changedData": "${event.data}"
+                }
+              }
+            ]
+          },
+          "submitSucc": {
+            "actions": [
+              {
+                "actionType": "setValue",
+                "componentName": "edit-business-model-form",
+                "args": {
+                  "value": {
+                    "&": "${result.data.businessModel}",
+                    "appName": "${result.data.appName}",
+                    "validationSnapshot": "${result.data.validationSnapshot}"
+                  }
+                }
+              },
+              {
+                "actionType": "toast",
+                "expression": "${(result.data.validationSnapshot.validationDiagnostics && result.data.validationSnapshot.validationDiagnostics.length) || (result.data.validationSnapshot.validationErrors && result.data.validationSnapshot.validationErrors.length) || result.data.validationSnapshot.validationSummary}",
+                "args": {
+                  "msgType": "warning",
+                  "msg": "${result.data.validationSnapshot.validationSummary ? '已保存，但存在后端校验错误：' + result.data.validationSnapshot.validationSummary : '已保存，但存在后端校验错误'}"
+                }
+              },
+              {
+                "actionType": "toast",
+                "expression": "${!((result.data.validationSnapshot.validationDiagnostics && result.data.validationSnapshot.validationDiagnostics.length) || (result.data.validationSnapshot.validationErrors && result.data.validationSnapshot.validationErrors.length) || result.data.validationSnapshot.validationSummary)}",
+                "args": {
+                  "msgType": "success",
+                  "msg": "保存成功"
+                }
+              },
+              {
+                "actionType": "sendToOpenerTab",
+                "args": {
+                  "msg": "${result.data.businessModel}"
+                }
+              },
+              {
+                "actionType": "updateTabTitle",
+                "args": {
+                  "title": "编辑业务模型「${result.data.businessModel.title}」"
+                }
+              },
+              {
+                "actionType": "setValue",
+                "componentName": "edit-business-model-form-status",
+                "args": {
+                  "value": {
+                    "dirty": false,
+                    "submitting": false
+                  }
+                }
+              },
+              {
+                "actionType": "broadcast",
+                "args": {
+                  "eventName": "businessModelSaved"
+                },
+                "data": {
+                  "savedData": "${result.data.businessModel}"
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

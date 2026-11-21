@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/business-log-template/add",
+  "type": "amis",
+  "title": "新增业务日志模板"
+}

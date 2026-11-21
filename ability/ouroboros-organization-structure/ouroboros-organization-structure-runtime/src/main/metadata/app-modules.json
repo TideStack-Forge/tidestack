@@ -1,0 +1,33 @@
+[
+  {
+    "fullName": "systemSetting.organizationManagement",
+    "title": "组织架构",
+    "menu": "systemSetting.organizationManagement",
+    "authorities": [
+      "systemSetting.organizationManagement"
+    ],
+    "order": 10,
+    "parent": "systemSetting.organizationAndAccess"
+  },
+  {
+    "fullName": "systemSetting.adminLevelManagement",
+    "title": "行政级别",
+    "menu": "systemSetting.adminLevelManagement",
+    "authorities": [
+      "systemSetting.adminLevelManagement"
+    ],
+    "order": 40,
+    "parent": "systemSetting.organizationAndAccess"
+  },
+  {
+    "fullName": "systemSetting.userManagement",
+    "title": "用户管理",
+    "menu": "systemSetting.userManagement",
+    "authorities": [
+      "systemSetting.userManagement",
+      "systemSetting.userManagement.profile"
+    ],
+    "order": 20,
+    "parent": "systemSetting.organizationAndAccess"
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "fullName": "systemSetting.integrationManagement.connections.directory.bind",
+  "title": "绑定和解绑企业组织",
+  "delegable": false,
+  "apis": [
+    "POST /api/sys/enterprise-directory/bindings",
+    "POST /api/sys/enterprise-directory/bindings/{id}/unbind"
+  ],
+  "uiViews": [
+    "/system-setting/integration-management"
+  ],
+  "menuItems": [
+    "systemSetting.integrationManagement"
+  ]
+}

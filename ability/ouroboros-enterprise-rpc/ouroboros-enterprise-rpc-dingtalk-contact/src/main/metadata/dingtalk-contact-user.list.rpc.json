@@ -1,0 +1,59 @@
+{
+  "name": "dingtalk.contact.user.list",
+  "title": "钉钉读取部门成员",
+  "type": "OpenAPI",
+  "isEnabled": true,
+  "authCredential": "dingtalk.application-token",
+  "description": "自建应用；必须处理 result.has_more/next_cursor，不能把首个分页当完整目录；应用通讯录成员读取权限及可见范围",
+  "timeout": 10000,
+  "retry": 0,
+  "retrySafe": true,
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "dept_id": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "cursor": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "size": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100
+      }
+    },
+    "required": [
+      "dept_id",
+      "cursor",
+      "size"
+    ]
+  },
+  "request": {
+    "method": "POST",
+    "url": "https://oapi.dingtalk.com/topapi/v2/user/list",
+    "parameters": [
+      {
+        "in": "BODY",
+        "name": "dept_id",
+        "value": "${dept_id}",
+        "required": true
+      },
+      {
+        "in": "BODY",
+        "name": "cursor",
+        "value": "${cursor}",
+        "required": true
+      },
+      {
+        "in": "BODY",
+        "name": "size",
+        "value": "${size}",
+        "required": true
+      }
+    ]
+  },
+  "group": "钉钉/通讯录"
+}

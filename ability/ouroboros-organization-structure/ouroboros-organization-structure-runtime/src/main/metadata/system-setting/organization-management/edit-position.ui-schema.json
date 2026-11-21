@@ -1,0 +1,39 @@
+{
+  "name": "/system-setting/organization-management/edit-position",
+  "schema": {
+    "type": "form",
+    "title": "",
+    "mode": "horizontal",
+    "initApi": {
+      "url": "/api/organization/positions/${id}",
+      "method": "get"
+    },
+    "api": {
+      "url": "/api/organization/positions/${id}",
+      "method": "put"
+    },
+    "body": [
+      {
+        "name": "headcount",
+        "type": "input-number",
+        "label": "编制人数",
+        "placeholder": "请输入编制人数",
+        "min": 1
+      }
+    ],
+    "onEvent": {
+      "submitSucc": {
+        "actions": [
+          {
+            "actionType": "closeDialog"
+          },
+          {
+            "actionType": "reload",
+            "componentName": "organizationTree"
+          }
+        ]
+      }
+    },
+    "wrapWithPanel": false
+  }
+}

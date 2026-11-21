@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  {{CSP_META}}
+  <link rel="stylesheet" href="{{AMIS_SDK_CSS_URI}}" />
+  {{AMIS_EDITOR_CSS_LINK}}
+  {{EDITOR_BUNDLE_CSS_LINKS}}
+  <link id="metadata-amis-theme-cxd" rel="stylesheet" href="{{AMIS_THEME_CSS_URI}}" />
+  <link id="metadata-amis-theme-dark" rel="stylesheet" href="{{AMIS_DARK_THEME_CSS_URI}}" disabled />
+  <style>
+    html, body { width: 100%; height: 100%; margin: 0; padding: 0; box-sizing: border-box; }
+    body { overflow: hidden; font-family: var(--vscode-font-family, -apple-system, BlinkMacSystemFont, sans-serif); color: var(--vscode-foreground, #1f2328); background: var(--vscode-editor-background, #ffffff); }
+    body.metadata-theme-light { color-scheme: light; }
+    body.metadata-theme-dark { color: var(--vscode-foreground, #f0f0f0); background: var(--vscode-editor-background, #0e0e10); color-scheme: dark; }
+    main { width: 100%; height: 100%; margin: 0; padding: 0; display: flex; flex-direction: column; box-sizing: border-box; }
+    #metadata-import-toolbar { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--vscode-panel-border, #d0d7de); background: var(--vscode-editor-background, #ffffff); box-sizing: border-box; }
+    #metadata-import-toolbar[hidden] { display: none; }
+    body.metadata-theme-dark #metadata-import-toolbar { border-bottom-color: var(--vscode-panel-border, #2c2c2e); background: var(--vscode-editor-background, #0e0e10); }
+    #metadata-import-button { appearance: none; height: 28px; padding: 0 10px; color: var(--vscode-button-foreground, #ffffff); background: var(--vscode-button-background, #0969da); border: 1px solid var(--vscode-button-border, transparent); border-radius: 4px; box-sizing: border-box; font: inherit; font-size: 12px; line-height: 26px; cursor: pointer; }
+    #metadata-import-button:hover { background: var(--vscode-button-hoverBackground, #0757b8); }
+    #metadata-import-button:disabled { opacity: 0.6; cursor: not-allowed; }
+    #metadata-import-hint { flex: 1 1 auto; min-width: 0; color: var(--vscode-descriptionForeground, #6e7781); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #metadata-import-status { flex: 0 1 auto; min-width: 0; color: var(--vscode-descriptionForeground, #6e7781); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #metadata-import-file { display: none; }
+    #metadata-amis-root { flex: 1 1 auto; width: 100%; max-width: 100%; height: auto; min-height: 0; min-width: 0; overflow: auto; box-sizing: border-box; background: var(--vscode-editor-background, #ffffff); }
+    body.metadata-theme-dark #metadata-amis-root { background: var(--vscode-editor-background, #0e0e10); }
+    #metadata-amis-root .amis-scope,
+    #metadata-amis-root .amis-routes-wrapper { width: 100%; min-height: 100%; box-sizing: border-box; }
+    #metadata-amis-root .cxd-Panel,
+    #metadata-amis-root .dark-Panel,
+    #metadata-amis-root .cxd-Panel-body,
+    #metadata-amis-root .dark-Panel-body { width: 100%; box-sizing: border-box; }
+    #metadata-amis-root > .amis-scope > .cxd-Panel,
+    #metadata-amis-root > .amis-scope > .dark-Panel,
+    #metadata-amis-root > .amis-routes-wrapper > .cxd-Panel,
+    #metadata-amis-root > .amis-routes-wrapper > .dark-Panel,
+    #metadata-amis-root > .amis-scope > .cxd-Panel > .cxd-Panel-body,
+    #metadata-amis-root > .amis-scope > .dark-Panel > .dark-Panel-body,
+    #metadata-amis-root > .amis-routes-wrapper > .cxd-Panel > .cxd-Panel-body,
+    #metadata-amis-root > .amis-routes-wrapper > .dark-Panel > .dark-Panel-body { min-height: 100%; }
+    #metadata-amis-root > .amis-scope > .cxd-Panel,
+    #metadata-amis-root > .amis-scope > .dark-Panel,
+    #metadata-amis-root > .amis-routes-wrapper > .cxd-Panel,
+    #metadata-amis-root > .amis-routes-wrapper > .dark-Panel { margin: 0; border: 0; box-shadow: none; }
+    #metadata-amis-root > .amis-scope > .cxd-Panel > .cxd-Panel-body,
+    #metadata-amis-root > .amis-scope > .dark-Panel > .dark-Panel-body,
+    #metadata-amis-root > .amis-routes-wrapper > .cxd-Panel > .cxd-Panel-body,
+    #metadata-amis-root > .amis-routes-wrapper > .dark-Panel > .dark-Panel-body { padding: 0; }
+    #metadata-amis-root > .amis-scope > .cxd-Panel > .cxd-Panel-heading,
+    #metadata-amis-root > .amis-routes-wrapper > .cxd-Panel > .cxd-Panel-heading { border-bottom: 1px solid var(--vscode-panel-border, #d0d7de); }
+    #metadata-amis-root > .amis-scope > .dark-Panel > .dark-Panel-heading,
+    #metadata-amis-root > .amis-routes-wrapper > .dark-Panel > .dark-Panel-heading { border-bottom: 1px solid var(--vscode-panel-border, #2c2c2e); }
+    #metadata-amis-root .cxd-Form,
+    #metadata-amis-root .dark-Form { width: 100%; min-height: 100%; box-sizing: border-box; padding: 12px; }
+    #metadata-amis-root .cxd-Form-item,
+    #metadata-amis-root .dark-Form-item { max-width: none; }
+    #metadata-amis-root .cxd-Form-item--horizontal:has(> .cxd-Form-value > .cxd-Form-group--hor) > .cxd-Form-label,
+    #metadata-amis-root .dark-Form-item--horizontal:has(> .dark-Form-value > .dark-Form-group--hor) > .dark-Form-label { display: none; width: 0; margin: 0; padding: 0; }
+    #metadata-amis-root .cxd-Form-item--horizontal:has(> .cxd-Form-value > .cxd-Form-group--hor) > .cxd-Form-value,
+    #metadata-amis-root .dark-Form-item--horizontal:has(> .dark-Form-value > .dark-Form-group--hor) > .dark-Form-value { flex-basis: auto; flex-grow: 1; width: 100%; max-width: 100%; min-width: 0; }
+    #metadata-amis-root .cxd-Form-group--hor > .cxd-Form-groupColumn:first-child > .cxd-Form-item--horizontal > .cxd-Form-label.cxd-Form-itemColumn--4,
+    #metadata-amis-root .dark-Form-group--hor > .dark-Form-groupColumn:first-child > .dark-Form-item--horizontal > .dark-Form-label.dark-Form-itemColumn--4 { flex: 0 0 25%; width: 25%; max-width: 25%; }
+    #metadata-amis-root fieldset { min-inline-size: unset; margin-bottom: var(--space-md, 1rem); }
+    #metadata-amis-root fieldset.cxd-Collapse,
+    #metadata-amis-root fieldset.dark-Collapse { margin-bottom: var(--space-md, 1rem); }
+    #metadata-amis-root fieldset.cxd-Collapse > legend .cxd-TplField,
+    #metadata-amis-root fieldset.dark-Collapse > legend .dark-TplField { color: var(--color-text, var(--vscode-foreground, #151b26)); font-size: var(--font-size-lg, 16px); font-weight: var(--font-weight-semibold, 600); line-height: var(--line-height-normal, normal); }
+    #metadata-amis-root .cxd-Form > fieldset,
+    #metadata-amis-root .dark-Form > fieldset { margin-top: var(--space-xl, 2rem); }
+    #metadata-amis-root .cxd-Form > fieldset:first-child,
+    #metadata-amis-root .dark-Form > fieldset:first-child { margin-top: var(--space-md, 1rem); }
+    #metadata-amis-root .metadata-ide-fallback-text-control { width: 100%; max-width: 100%; }
+    #metadata-amis-root .metadata-ide-fallback-text-input { box-sizing: border-box; min-height: var(--Form-input-height); align-items: baseline; }
+    #metadata-amis-root .metadata-ide-fallback-text-input input { min-width: 0; font: inherit; }
+    #metadata-amis-root .cxd-IconPickerControl.is-focused .cxd-TextControl-input,
+    #metadata-amis-root .dark-IconPickerControl.is-focused .dark-TextControl-input { border-color: var(--Form-input-onFocused-borderColor); box-shadow: var(--Form-input-boxShadow); background: var(--Form-input-onFocused-bg); transition: all var(--animation-duration); }
+    #metadata-amis-root .cxd-IconPickerControl.is-disabled .cxd-TextControl-input,
+    #metadata-amis-root .dark-IconPickerControl.is-disabled .dark-TextControl-input { color: var(--text--muted-color); background: var(--Form-input-onDisabled-bg); border-color: var(--Form-input-onDisabled-borderColor); }
+    #metadata-amis-root .iconPickerControl-input { position: relative; }
+    #metadata-amis-root .iconPickerControl-input .IconPickerControl-clear { position: absolute; top: 15%; right: 10px; }
+    #metadata-amis-root .cxd-InputBox-clear,
+    #metadata-amis-root .dark-InputBox-clear { visibility: visible; }
+    #metadata-amis-root .icon-picker-control { position: absolute; top: 100%; left: 0; z-index: 10; width: 100%; max-height: 350px; display: flex; flex-direction: column; overflow-y: auto; box-sizing: border-box; color: var(--Form-select-menu-color, inherit); background: var(--Form-select-menu-bg, #ffffff); border: var(--Form-input-borderWidth, 1px) solid var(--Form-input-onFocused-borderColor, #2468f2); }
+    #metadata-amis-root .icon-picker-control i:before { display: block; width: 100%; height: 100%; line-height: 1.25rem; text-align: center; }
+    #metadata-amis-root .tab-header { display: flex; align-items: baseline; justify-content: space-between; padding: 15px 10px 0; border-bottom: var(--Tabs--line-border-width, 1px) var(--Tabs--line-border-style, solid) var(--Tabs--line-border-color, #d0d7de); }
+    #metadata-amis-root .tab-header .defaultTab { position: relative; padding-bottom: 10px; color: #151b26; border-bottom: none; cursor: pointer; }
+    body.metadata-theme-dark #metadata-amis-root .tab-header .defaultTab { color: var(--Tabs--line-color, var(--vscode-foreground, #f0f0f0)); }
+    #metadata-amis-root .tab-header .selectedTab { color: var(--Tabs--line-active-color, #2468f2); border-bottom: 2px solid var(--Tabs--line-active-color, #2468f2); }
+    #metadata-amis-root .icon-content { padding: 10px; overflow-y: scroll; }
+    #metadata-amis-root .icon-content .icon-item { display: inline-block; margin: 5px; cursor: pointer; }
+    #metadata-amis-root .icon-content .icon-item:hover,
+    #metadata-amis-root .icon-content .active { color: var(--Tabs--line-active-color, #2468f2); }
+    #metadata-amis-root .icon-content .active,
+    #metadata-amis-root .icon-content .categories-title { font-weight: bold; }
+    #metadata-amis-root .icon-content .categories-title { margin-bottom: 5px; }
+    #metadata-amis-root .cxd-Tabs--simple > .cxd-Tabs-linksContainer-wrapper > .cxd-Tabs-linksContainer > .cxd-Tabs-linksContainer-main > .cxd-Tabs-links > li.px-0,
+    #metadata-amis-root .dark-Tabs--simple > .dark-Tabs-linksContainer-wrapper > .dark-Tabs-linksContainer > .dark-Tabs-linksContainer-main > .dark-Tabs-links > li.px-0 { padding: var(--Tabs--simple-split-size); }
+    #metadata-amis-root .metadata-embedded-logicflow-editor,
+    #metadata-amis-root .metadata-embedded-approval-workflow-editor,
+    #metadata-amis-root .metadata-embedded-logicflow-editor .logic-flow-editor__wrapper,
+    #metadata-amis-root .metadata-embedded-approval-workflow-editor .workflow-editor-host { width: 100%; height: calc(100vh - 24px); min-height: 560px; box-sizing: border-box; }
+    #metadata-amis-root.metadata-amis-editor-active { overflow: hidden; background: #ffffff; color: #151b26; color-scheme: light; }
+    #metadata-amis-root .metadata-ui-schema-editor-shell { width: 100%; height: 100%; min-width: 0; min-height: 0; display: flex; flex-direction: column; background: #ffffff; color: #151b26; box-sizing: border-box; }
+    #metadata-amis-root .metadata-ui-schema-wrapper-header { flex: 0 0 auto; height: 34px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 12px; border-bottom: 1px solid #e6e8ee; background: #ffffff; box-sizing: border-box; }
+    #metadata-amis-root .metadata-ui-schema-wrapper-title { color: #3c4350; font-size: 13px; font-weight: 600; line-height: 1; }
+    #metadata-amis-root .metadata-ui-schema-wrapper-toggle { appearance: none; height: 24px; padding: 0 8px; color: #4f5b6b; background: transparent; border: 1px solid #d8dce5; border-radius: 4px; box-sizing: border-box; font: inherit; font-size: 12px; line-height: 22px; cursor: pointer; }
+    #metadata-amis-root .metadata-ui-schema-wrapper-toggle:hover { color: #151b26; border-color: #b8beca; background: #f6f7f9; }
+    #metadata-amis-root .metadata-ui-schema-wrapper-fields { flex: 0 0 auto; display: grid; grid-template-columns: minmax(180px, 1fr) minmax(180px, 1fr) minmax(220px, 1.4fr); gap: 10px; padding: 10px 12px; border-bottom: 1px solid #e6e8ee; background: #ffffff; box-sizing: border-box; }
+    #metadata-amis-root .metadata-ui-schema-wrapper-fields.is-collapsed { display: none; }
+    #metadata-amis-root .metadata-ui-schema-wrapper-field { min-width: 0; display: flex; flex-direction: column; gap: 4px; color: #5c6470; font-size: 12px; line-height: 1.3; }
+    #metadata-amis-root .metadata-ui-schema-wrapper-label { display: inline-flex; align-items: center; gap: 4px; min-width: 0; }
+    #metadata-amis-root .metadata-ui-schema-wrapper-label-remark { flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; color: #6b7280; border: 1px solid #c8cdd6; border-radius: 50%; font-size: 10px; line-height: 1; cursor: help; }
+    #metadata-amis-root .metadata-ui-schema-wrapper-label-remark:hover { color: #2468f2; border-color: #2468f2; background: #eef4ff; }
+    #metadata-amis-root .metadata-ui-schema-wrapper-input { width: 100%; min-width: 0; height: 30px; padding: 4px 8px; color: #151b26; background: #ffffff; border: 1px solid #d8dce5; border-radius: 4px; box-sizing: border-box; font: inherit; resize: vertical; }
+    #metadata-amis-root textarea.metadata-ui-schema-wrapper-input { min-height: 30px; max-height: 72px; }
+    #metadata-amis-root .metadata-ui-schema-editor-canvas { flex: 1 1 auto; min-width: 0; min-height: 0; height: 100%; }
+    @media (max-width: 760px) {
+      #metadata-amis-root .metadata-ui-schema-wrapper-fields { grid-template-columns: 1fr; }
+    }
+    #metadata-amis-root .ae-Editor.ouroboros-amis-editor,
+    #metadata-amis-root .ae-Editor.ouroboros-amis-editor .ae-Editor-inner,
+    #metadata-amis-root .ae-Editor.ouroboros-amis-editor .ae-Main { min-width: 0; min-height: 0; height: 100%; background: #ffffff; color: #151b26; color-scheme: light; }
+    body.metadata-theme-light .cxd-Modal,
+    body.metadata-theme-light .cxd-Modal-content,
+    body.metadata-theme-light .cxd-Modal-body,
+    body.metadata-theme-light .cxd-PopOver,
+    body.metadata-theme-light .cxd-PopUp,
+    body.metadata-theme-light .cxd-ContextMenu-menu,
+    body.metadata-amis-editor-light,
+    body.metadata-amis-editor-light .cxd-Modal,
+    body.metadata-amis-editor-light .cxd-Modal-content,
+    body.metadata-amis-editor-light .cxd-Modal-body,
+    body.metadata-amis-editor-light .cxd-PopOver,
+    body.metadata-amis-editor-light .cxd-PopUp,
+    body.metadata-amis-editor-light .cxd-ContextMenu-menu { color-scheme: light; scrollbar-color: #c7cbd3 transparent; }
+    body.metadata-theme-light .cxd-Modal,
+    body.metadata-amis-editor-light .cxd-Modal { overflow-y: auto; padding: 24px 0; box-sizing: border-box; }
+    body.metadata-theme-light .cxd-Modal-content,
+    body.metadata-theme-light .cxd-Modal-body,
+    body.metadata-amis-editor-light .cxd-Modal-content,
+    body.metadata-amis-editor-light .cxd-Modal-body { max-height: none; overflow: visible; }
+    body.metadata-theme-light .cxd-PopOver,
+    body.metadata-theme-light .cxd-PopUp,
+    body.metadata-amis-editor-light .cxd-PopOver,
+    body.metadata-amis-editor-light .cxd-PopUp { max-height: calc(100vh - 24px); overflow: auto; }
+    body.metadata-theme-light .cxd-Modal::-webkit-scrollbar,
+    body.metadata-theme-light .cxd-PopOver::-webkit-scrollbar,
+    body.metadata-theme-light .cxd-PopUp::-webkit-scrollbar,
+    body.metadata-theme-light .cxd-ContextMenu-menu::-webkit-scrollbar,
+    body.metadata-amis-editor-light::-webkit-scrollbar,
+    body.metadata-amis-editor-light .cxd-Modal::-webkit-scrollbar,
+    body.metadata-amis-editor-light .cxd-PopOver::-webkit-scrollbar,
+    body.metadata-amis-editor-light .cxd-PopUp::-webkit-scrollbar,
+    body.metadata-amis-editor-light .cxd-ContextMenu-menu::-webkit-scrollbar { width: 10px; height: 10px; }
+    body.metadata-theme-light .cxd-Modal::-webkit-scrollbar-thumb,
+    body.metadata-theme-light .cxd-PopOver::-webkit-scrollbar-thumb,
+    body.metadata-theme-light .cxd-PopUp::-webkit-scrollbar-thumb,
+    body.metadata-theme-light .cxd-ContextMenu-menu::-webkit-scrollbar-thumb,
+    body.metadata-amis-editor-light::-webkit-scrollbar-thumb,
+    body.metadata-amis-editor-light .cxd-Modal::-webkit-scrollbar-thumb,
+    body.metadata-amis-editor-light .cxd-PopOver::-webkit-scrollbar-thumb,
+    body.metadata-amis-editor-light .cxd-PopUp::-webkit-scrollbar-thumb,
+    body.metadata-amis-editor-light .cxd-ContextMenu-menu::-webkit-scrollbar-thumb { background: #c7cbd3; border: 2px solid transparent; border-radius: 8px; background-clip: content-box; }
+    #metadata-diagnostics { position: absolute; right: 16px; bottom: 16px; z-index: 20; }
+    #metadata-diagnostics[hidden] { display: none; }
+    .metadata-diagnostics-indicator { width: 28px; height: 28px; padding: 0; border-radius: 50%; border: 1px solid var(--vscode-inputValidation-errorBorder, #d1242f); color: var(--vscode-errorForeground, #d1242f); background: var(--vscode-inputValidation-errorBackground, #fff1f0); box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18); font-size: 18px; font-weight: 700; line-height: 26px; text-align: center; cursor: pointer; }
+    .metadata-diagnostics-indicator:hover { background: var(--vscode-inputValidation-errorBackground, #ffecea); }
+    .metadata-diagnostics-popover { position: absolute; right: 0; bottom: 36px; display: none; width: min(520px, calc(100vw - 32px)); max-height: min(45vh, 360px); overflow: hidden; color: var(--vscode-editorForeground, #24292f); background: var(--vscode-editorWidget-background, var(--vscode-editor-background, #ffffff)); border: 1px solid var(--vscode-inputValidation-errorBorder, #d1242f); border-radius: 6px; box-shadow: 0 14px 36px rgba(15, 23, 42, 0.24); box-sizing: border-box; }
+    #metadata-diagnostics:hover .metadata-diagnostics-popover,
+    #metadata-diagnostics.is-pinned .metadata-diagnostics-popover { display: block; }
+    .metadata-diagnostics-popover-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 10px; color: var(--vscode-errorForeground, #d1242f); background: var(--vscode-inputValidation-errorBackground, #fff1f0); border-bottom: 1px solid var(--vscode-inputValidation-errorBorder, #d1242f); font-size: 12px; font-weight: 600; }
+    .metadata-diagnostics-close { width: 22px; height: 22px; padding: 0; border: 0; border-radius: 4px; color: inherit; background: transparent; font-size: 14px; line-height: 22px; cursor: pointer; }
+    .metadata-diagnostics-close:hover { background: rgba(209, 36, 47, 0.12); }
+    #metadata-diagnostics:not(.is-pinned) .metadata-diagnostics-close { display: none; }
+    #metadata-diagnostics-message { max-height: calc(min(45vh, 360px) - 40px); overflow: auto; white-space: pre-wrap; margin: 0; padding: 10px 12px; font: 12px/1.45 var(--vscode-editor-font-family, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace); box-sizing: border-box; }
+  </style>
+</head>
+<body class="amis-scope">
+  <svg id="__SVG_SPRITE_NODE__" aria-hidden="true" focusable="false" style="display:none"></svg>
+  <main>
+    <div id="metadata-import-toolbar" hidden>
+      <button id="metadata-import-button" type="button">导入 Excel/CSV</button>
+      <span id="metadata-import-hint"></span>
+      <span id="metadata-import-status" aria-live="polite"></span>
+      <input id="metadata-import-file" type="file" accept=".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" />
+    </div>
+    <div id="metadata-amis-root"></div>
+    <div id="metadata-diagnostics" hidden>
+      <button id="metadata-diagnostics-indicator" class="metadata-diagnostics-indicator" type="button" aria-label="查看错误信息" aria-expanded="false">!</button>
+      <section id="metadata-diagnostics-popover" class="metadata-diagnostics-popover" role="status" aria-live="polite">
+        <div class="metadata-diagnostics-popover-header">
+          <span>编辑器错误</span>
+          <button id="metadata-diagnostics-close" class="metadata-diagnostics-close" type="button" aria-label="关闭错误信息" hidden>x</button>
+        </div>
+        <pre id="metadata-diagnostics-message"></pre>
+      </section>
+    </div>
+  </main>
+  <script{{NONCE_ATTRIBUTE}} src="{{AMIS_SDK_SCRIPT_URI}}"></script>
+  {{REACT_GLOBALS_SCRIPT_TAG}}
+  {{EDITOR_INTEGRATION_SCRIPT_TAG}}
+  {{XLSX_RUNTIME_SCRIPT_TAG}}
+  <script{{NONCE_ATTRIBUTE}} src="{{RUNTIME_SCRIPT_URI}}"></script>
+  {{AMIS_EDITOR_RUNTIME_SCRIPT_TAG}}
+  {{EDITOR_BUNDLE_SCRIPT_TAGS}}
+  {{HOST_RUNTIME_SCRIPT_TAG}}
+  <script{{NONCE_ATTRIBUTE}}>
+{{HOST_SCRIPT}}
+    const runtime = window.OuroborosMetadataEditorRuntime;
+    const host = window.OuroborosMetadataEditorHost;
+    if (!runtime || !host) {
+      const target = document.getElementById('metadata-amis-root') || document.body;
+      target.textContent = 'Metadata editor runtime failed to load.';
+      throw new Error('Ouroboros metadata editor runtime or host failed to load');
+    }
+    Promise.resolve(typeof host.initialize === 'function' ? host.initialize() : host.initialState)
+      .then(initialState => {
+        const editorApp = runtime.mount({
+          initialState,
+          theme: host.theme,
+          locale: host.locale || 'zh-CN',
+          amisEditorDragFallback: host.amisEditorDragFallback,
+          transport: host.transport || {}
+        });
+        window.OuroborosMetadataEditorApp = editorApp;
+        if (typeof host.connect === 'function') {
+          host.connect(editorApp);
+        }
+      })
+      .catch(error => {
+        const target = document.getElementById('metadata-amis-root') || document.body;
+        target.textContent = error && error.message ? error.message : String(error);
+      });
+  </script>
+</body>
+</html>

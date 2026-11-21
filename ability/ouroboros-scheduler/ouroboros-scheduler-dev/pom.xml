@@ -1,0 +1,25 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>ouroboros-scheduler</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>ouroboros-scheduler-dev</artifactId>
+    <name>ouroboros-scheduler-dev</name>
+    <dependencies>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-scheduler-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-dev-model-manage-webapi-scaffold</artifactId>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,8 @@
+{
+  "fullName": "UIDesign",
+  "icon": "fas fa-palette",
+  "title": "界面设计",
+  "placement": "main",
+  "stage": "dev",
+  "order": 40
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "key": "notification.email.protocol",
+    "label": "邮件通知协议",
+    "groupPath": "notification.email",
+    "order": 10,
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string",
+    "defaultValue": "smtp",
+    "options": [
+      "smtp"
+    ],
+    "restoreDefaultRemovesOverride": true
+  },
+  {
+    "key": "notification.email.host",
+    "label": "邮件通知主机",
+    "groupPath": "notification.email",
+    "order": 20,
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string",
+    "restoreDefaultRemovesOverride": true
+  },
+  {
+    "key": "notification.email.port",
+    "label": "邮件通知端口",
+    "groupPath": "notification.email",
+    "order": 30,
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "int",
+    "restoreDefaultRemovesOverride": true
+  },
+  {
+    "key": "notification.email.username",
+    "label": "邮件通知用户名",
+    "groupPath": "notification.email",
+    "order": 40,
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string",
+    "restoreDefaultRemovesOverride": true
+  },
+  {
+    "key": "notification.email.authorizationCode",
+    "label": "邮件通知授权码",
+    "groupPath": "notification.email",
+    "order": 50,
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string",
+    "managementAccessPolicyRequired": true,
+    "editorSchema": {
+      "type": "input-password",
+      "placeholder": "留空保留已配置凭据；填写表示替换",
+      "autoComplete": "new-password"
+    },
+    "restoreDefaultRemovesOverride": true
+  }
+]

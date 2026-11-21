@@ -1,0 +1,26 @@
+{
+  "scenario": "lowcode/business-model-actions-events",
+  "testType": "e2e",
+  "suite": "regression",
+  "mode": "e2e",
+  "runner": "testing/common/runners/playwright/browser_asset_bridge.py",
+  "browserAssets": {
+    "contracts": ["testing/integration/feature/lowcode/business-model-actions-events/contract.md"],
+    "sources": ["testing/integration/feature/lowcode/business-model-actions-events/cases.md"],
+    "scripts": [{
+      "id": "business-behavior-journey",
+      "kind": "shell",
+      "command": "bash testing/integration/feature/lowcode/business-model-actions-events/run.sh",
+      "workdir": ".",
+      "requiredPaths": ["frontends/web/ouroboros-sdk/node_modules/typescript", "testing/integration/feature/lowcode/business-model-actions-events/verify-generated-client.mjs"],
+      "description": "Run in-process MVC/JDBC Action and Event journeys, related regressions and generated Java/TypeScript client checks.",
+      "caseIds": ["BAE-001", "BAE-002", "BAE-003", "BAE-004", "BAE-005", "BAE-006", "BAE-007", "BAE-008", "BAE-009", "BAE-010", "BAE-011", "BAE-012", "BAE-013", "BAE-018", "BAE-019"]
+    }]
+  },
+  "steps": [{
+    "name": "business-behavior-journey",
+    "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/lowcode/business-model-actions-events/e2e.yaml --mode run --script-id business-behavior-journey"
+  }],
+  "reports": {"summary": "tmp/testing-evidence/business-model-actions-events", "evidenceDir": "tmp/testing-evidence/business-model-actions-events"},
+  "notes": ["Self-contained in-process MVC, H2 and compiled SDK validation; does not claim browser or deployed-environment coverage."]
+}

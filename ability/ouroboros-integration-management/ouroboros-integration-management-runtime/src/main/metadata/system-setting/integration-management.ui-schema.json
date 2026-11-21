@@ -1,0 +1,31 @@
+{
+  "name": "/system-setting/integration-management",
+  "schema": {
+    "type": "page",
+    "title": "集成管理",
+    "body": [
+      {
+        "type": "panel",
+        "title": "外部连接",
+        "body": {
+          "type": "service",
+          "schemaApi": {
+            "method": "get",
+            "url": "/api/sys/integration-management/sections/connections"
+          }
+        }
+      },
+      {
+        "type": "panel",
+        "title": "应用接入",
+        "body": {
+          "type": "service",
+          "schemaApi": {
+            "method": "get",
+            "url": "/api/sys/integration-management/sections/applications"
+          }
+        }
+      }
+    ]
+  }
+}

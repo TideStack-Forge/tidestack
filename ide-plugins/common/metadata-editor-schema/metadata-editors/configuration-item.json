@@ -1,0 +1,13 @@
+{
+  "editorId": "configuration-item",
+  "editorName": "TideStack Configuration Item Metadata Editor",
+  "editorNameKey": "customEditor.configurationItem",
+  "metadataType": "configuration-item",
+  "schemaName": "configuration-item",
+  "viewType": "tidestack.metadataEditor.configurationItem",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.configurationItem",
+  "fileMatchPatterns": [
+    "*.config.json"
+  ],
+  "priority": "default"
+}

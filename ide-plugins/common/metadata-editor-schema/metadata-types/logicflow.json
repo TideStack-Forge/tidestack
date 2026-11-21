@@ -1,0 +1,64 @@
+{
+  "type": "logicflow",
+  "fileSuffix": ".logicflow.json",
+  "displayName": "逻辑流模型",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.logicflow.json",
+    "logic-flow/**/*.logicflow.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/metadata",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.logicflow.json",
+    "fields": [
+      {
+        "name": "name",
+        "label": "流程名",
+        "documentPath": [
+          "name"
+        ],
+        "required": true,
+        "defaultFromPath": "dot-name"
+      },
+      {
+        "name": "description",
+        "label": "描述",
+        "documentPath": [
+          "description"
+        ]
+      }
+    ],
+    "document": {
+      "name": "example",
+      "description": "示例逻辑流模型",
+      "entryNode": "",
+      "exitNode": "",
+      "errorEntryNode": "",
+      "inputDataType": "any",
+      "outputDataType": "any",
+      "nodes": [],
+      "connections": [],
+      "nodePositions": {},
+      "isEnabled": false
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": false,
+    "actions": [],
+    "wrapWithPanel": false,
+    "metadataRootField": "__metadataDocument",
+    "body": [
+      {
+        "type": "logic-flow-editor",
+        "name": "__metadataDocument",
+        "label": false,
+        "nodeDefineApi": "ide://editor-integrations/logicflow/node-defines",
+        "className": "metadata-embedded-logicflow-editor"
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/logicflow.schema.json"
+}

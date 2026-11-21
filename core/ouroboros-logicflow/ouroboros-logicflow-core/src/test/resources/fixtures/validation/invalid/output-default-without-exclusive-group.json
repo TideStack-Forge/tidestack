@@ -1,0 +1,36 @@
+{
+  "name": "output-default-without-exclusive-group",
+  "entryNode": "entry",
+  "exitNode": "exit",
+  "nodes": [
+    {
+      "name": "entry",
+      "type": "metadataSelectiveTestNode",
+      "outputPorts": [
+        {
+          "name": "branchA",
+          "dataType": "string",
+          "defaultBranch": true
+        }
+      ]
+    },
+    {
+      "name": "exit",
+      "type": "mutex",
+      "inputPorts": [
+        {
+          "name": "input",
+          "dataType": "any"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "entry",
+      "sourceOutputPort": 0,
+      "targetNode": "exit",
+      "targetInputPort": 0
+    }
+  ]
+}

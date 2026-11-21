@@ -1,0 +1,12 @@
+[
+  {
+    "fullName": "systemSetting.rpcRuntimeManagement",
+    "title": "RPC 运行管理",
+    "menu": "systemSetting.rpcRuntimeManagement",
+    "authorities": [
+      "systemSetting.rpcRuntimeManagement"
+    ],
+    "order": 10,
+    "parent": "systemSetting.operationsManagement"
+  }
+]

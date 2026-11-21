@@ -1,0 +1,116 @@
+{
+  "name": "/system-setting/user-management",
+  "schema": {
+    "type": "page",
+    "body": [
+      {
+        "type": "crud",
+        "name": "user-list",
+        "headerToolbar": [
+          {
+            "type": "reload",
+            "label": "刷新",
+            "icon": "fa fa-refresh"
+          },
+          {
+            "type": "button",
+            "actionType": "dialog",
+            "label": "新增",
+            "icon": "fa fa-plus pull-left",
+            "align": "right",
+            "level": "primary",
+            "dialog": {
+              "type": "dialog",
+              "title": "新增用户",
+              "url": "/system-setting/user-management/add",
+              "showCloseButton": true,
+              "showErrorMsg": true,
+              "showLoading": true
+            }
+          }
+        ],
+        "syncLocation": false,
+        "api": {
+          "method": "get",
+          "url": "/api/sys/user"
+        },
+        "columns": [
+          {
+            "type": "text",
+            "label": "账号",
+            "name": "userIdentity"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "width": 200,
+            "buttons": [
+              {
+                "type": "button",
+                "actionType": "dialog",
+                "dialog": {
+                  "title": "用户详情",
+                  "url": "/system-setting/user-management/detail",
+                  "type": "dialog"
+                },
+                "icon": "fa fa-eye",
+                "tooltip": "详情"
+              },
+              {
+                "type": "button",
+                "label": "资料",
+                "actionType": "url",
+                "url": "/system-setting/user-management/profile?userIdentity=${userIdentity}"
+              },
+              {
+                "type": "button",
+                "icon": "fa fa-pencil",
+                "actionType": "drawer",
+                "drawer": {
+                  "type": "drawer",
+                  "title": "编辑角色",
+                  "url": "/system-setting/user-management/edit"
+                },
+                "tooltip": "编辑角色"
+              },
+              {
+                "type": "button",
+                "actionType": "ajax",
+                "confirmText": "确认要删除${userIdentity}账号吗？",
+                "api": "delete:/api/sys/user/${userIdentity}",
+                "icon": "fa fa-times text-danger",
+                "tooltip": "删除"
+              },
+              {
+                "type": "button",
+                "actionType": "ajax",
+                "confirmText": "确认要重置${userIdentity}账号密码吗？",
+                "api": "post:/api/sys/user/${userIdentity}/reset-password",
+                "icon": "fa-solid fa-key",
+                "tooltip": "重置密码",
+                "messages": {
+                  "success": "操作成功"
+                }
+              }
+            ]
+          }
+        ],
+        "perPageAvailable": [
+          10
+        ],
+        "filter": {
+          "title": "查询条件",
+          "body": [
+            {
+              "name": "userIdentity",
+              "label": "账号",
+              "type": "input-text",
+              "clearable": true,
+              "placeholder": ""
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

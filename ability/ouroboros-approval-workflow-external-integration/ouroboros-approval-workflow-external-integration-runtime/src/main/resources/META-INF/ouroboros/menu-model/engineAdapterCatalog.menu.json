@@ -1,0 +1,7 @@
+{
+  "url": "/approval-workflow/engine-adapter-catalog",
+  "fullName": "systemSetting.engineAdapterCatalog",
+  "title": "引擎适配器目录",
+  "icon": "icon-approval-workflow",
+  "order": 101
+}

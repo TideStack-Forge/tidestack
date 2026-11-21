@@ -1,0 +1,10 @@
+# 清空与基座重复的配置
+spring:
+  application:
+    name: ouroboros-develop
+
+ouroboros:
+  platform:
+    cache:
+      token:
+        secret: ${OUROBOROS_PLATFORM_CACHE_TOKEN_SECRET:ouroboros-develop-platform-cache-token}

@@ -1,0 +1,181 @@
+{
+  "name": "/system-setting/role-management",
+  "schema": {
+    "type": "page",
+    "body": [
+      {
+        "type": "crud",
+        "id": "role-list",
+        "name": "role-list",
+        "syncLocation": false,
+        "api": {
+          "method": "get",
+          "url": "/api/sys/role"
+        },
+        "quickSaveItemApi": {
+          "url": "/api/sys/role/${id}",
+          "method": "put",
+          "data": {
+            "id": "${id}",
+            "name": "${name}"
+          }
+        },
+        "headerToolbar": [
+          {
+            "label": "刷新",
+            "icon": "fa fa-refresh",
+            "type": "reload"
+          },
+          {
+            "type": "button",
+            "label": "新增",
+            "icon": "fa fa-plus pull-left",
+            "align": "right",
+            "level": "primary",
+            "actionType": "dialog",
+            "dialog": {
+              "type": "dialog",
+              "title": "新增角色",
+              "schemaId": "/system-setting/role-management/add",
+              "showCloseButton": true,
+              "showErrorMsg": true,
+              "showLoading": true,
+              "closeOnEsc": false,
+              "dataMapSwitch": false
+            }
+          }
+        ],
+        "columns": [
+          {
+            "name": "isBuiltinRole",
+            "label": "角色类型",
+            "type": "mapping",
+            "map": {
+              "true": "内置角色",
+              "false": "普通角色"
+            }
+          },
+          {
+            "name": "name",
+            "label": "角色名称",
+            "type": "text",
+            "quickEdit": {
+              "saveImmediately": true
+            },
+            "quickEditEnabledOn": "${canRename}"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "width": 160,
+            "buttons": [
+              {
+                "type": "button",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "角色详情",
+                  "url": "/system-setting/role-management/detail"
+                },
+                "icon": "fa fa-eye",
+                "visible": false
+              },
+              {
+                "type": "button",
+                "actionType": "drawer",
+                "icon": "fa fa-pencil",
+                "tooltip": "编辑角色权限",
+                "drawer": {
+                  "type": "drawer",
+                  "title": "编辑${name}权限",
+                  "size": "lg",
+                  "url": "/system-setting/role-management/edit",
+                  "data": {
+                    "id": "${id}",
+                    "isControlled": "${isControlled}",
+                    "canEditAuthorities": "${canEditAuthorities}",
+                    "canDelete": "${canDelete}",
+                    "canRename": "${canRename}",
+                    "canManageUsers": "${canManageUsers}"
+                  },
+                  "showCloseButton": true,
+                  "showErrorMsg": true,
+                  "showLoading": true,
+                  "closeOnEsc": false,
+                  "dataMapSwitch": false,
+                  "resizable": true
+                },
+                "visibleOn": "${ canEditAuthorities }"
+              },
+              {
+                "type": "button",
+                "actionType": "drawer",
+                "icon": "fa fa-eye",
+                "tooltip": "查看角色权限",
+                "drawer": {
+                  "type": "drawer",
+                  "title": "查看${name}权限",
+                  "size": "lg",
+                  "url": "/system-setting/role-management/view",
+                  "data": {
+                    "id": "${id}",
+                    "name": "${name}",
+                    "isControlled": "${isControlled}",
+                    "canEditAuthorities": "${canEditAuthorities}",
+                    "canDelete": "${canDelete}",
+                    "canRename": "${canRename}",
+                    "canManageUsers": "${canManageUsers}"
+                  },
+                  "showCloseButton": true,
+                  "showErrorMsg": true,
+                  "showLoading": true,
+                  "closeOnEsc": false,
+                  "dataMapSwitch": false,
+                  "resizable": true
+                },
+                "hiddenOn": "${ canEditAuthorities }"
+              },
+              {
+                "type": "button",
+                "actionType": "drawer",
+                "icon": "fa fa-users",
+                "size": "md",
+                "tooltip": "选择角色用户",
+                "drawer": {
+                  "type": "drawer",
+                  "title": "选择角色用户(${name})",
+                  "url": "/system-setting/role-management/select-role-users",
+                  "data": {
+                    "id": "${id}",
+                    "name": "${name}",
+                    "canManageUsers": "${canManageUsers}"
+                  },
+                  "showCloseButton": true,
+                  "showErrorMsg": true,
+                  "showLoading": true,
+                  "closeOnEsc": false,
+                  "resizable": true
+                },
+                "visibleOn": "${ canManageUsers }"
+              },
+              {
+                "type": "button",
+                "actionType": "ajax",
+                "icon": "fa fa-times text-danger",
+                "confirmText": "确认要删除？",
+                "api": "delete:/api/sys/role/${id}",
+                "visibleOn": "${ canDelete }"
+              }
+            ]
+          }
+        ],
+        "perPageAvailable": [
+          10,
+          20,
+          50,
+          100
+        ]
+      }
+    ]
+  }
+}

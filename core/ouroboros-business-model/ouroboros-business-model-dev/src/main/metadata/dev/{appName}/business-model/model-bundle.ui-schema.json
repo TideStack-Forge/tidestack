@@ -1,0 +1,911 @@
+{
+  "name": "/dev/{appName}/business-model/model-bundle",
+  "schema": {
+    "type": "service",
+    "api": {
+      "method": "get",
+      "url": "/api/dev/${appName}/business-model/${fullName}/model-bundle"
+    },
+    "body": [
+      {
+        "type": "fieldSet",
+        "title": "数据模型",
+        "collapsable": true,
+        "body": [
+          {
+            "type": "table",
+            "source": "${ DataModelMeta }",
+            "affixHeader": false,
+            "columns": [
+              {
+                "name": "name",
+                "label": "模型名"
+              },
+              {
+                "name": "model.label",
+                "label": "显示名"
+              },
+              {
+                "name": "model.description",
+                "label": "描述"
+              },
+              {
+                "type": "tpl",
+                "label": "字段数量",
+                "tpl": "${ model.fields.length }"
+              },
+              {
+                "name": "model.migrationStrategy",
+                "label": "迁移策略"
+              },
+              {
+                "type": "tpl",
+                "name": "primaryKeys",
+                "label": "主键",
+                "tpl": "${ JOIN(model.primaryKeys, ',') }"
+              },
+              {
+                "name": "model.primaryKeyGenerator",
+                "label": "主键生成器"
+              },
+              {
+                "type": "container",
+                "label": "字段列表",
+                "breakpoint": "*",
+                "body": {
+                  "type": "table",
+                  "source": "${model.fields}",
+                  "affixHeader": false,
+                  "columns": [
+                    {
+                      "name": "name",
+                      "label": "名称"
+                    },
+                    {
+                      "name": "label",
+                      "label": "显示名"
+                    },
+                    {
+                      "name": "type",
+                      "label": "类型"
+                    },
+                    {
+                      "name": "isNullable",
+                      "label": "可为NULL"
+                    },
+                    {
+                      "name": "defaultValue",
+                      "label": "默认值"
+                    },
+                    {
+                      "name": "description",
+                      "label": "描述"
+                    }
+                  ],
+                  "itemAction": {
+                    "type": "action",
+                    "actionType": "dialog",
+                    "dialog": {
+                      "type": "dialog",
+                      "title": "字段详情",
+                      "body": {
+                        "type": "json",
+                        "source": "${ fieldDetail }"
+                      },
+                      "actions": [
+                        {
+                          "type": "button",
+                          "actionType": "close",
+                          "label": "关闭"
+                        }
+                      ],
+                      "closeOnEsc": true,
+                      "closeOnOutside": true,
+                      "data": {
+                        "fieldDetail": "${ model.fields[index] }"
+                      }
+                    }
+                  },
+                  "columnsTogglable": false
+                }
+              }
+            ],
+            "itemAction": {
+              "type": "action",
+              "actionType": "dialog",
+              "dialog": {
+                "type": "dialog",
+                "title": {
+                  "type": "container",
+                  "bodyClassName": "flex content-center",
+                  "body": [
+                    "<b>模型详情</b>",
+                    {
+                      "type": "form",
+                      "wrapWithPanel": false,
+                      "body": {
+                        "type": "switch",
+                        "name": "modelDetailShowMode",
+                        "onText": "JSON",
+                        "offText": "JSON树",
+                        "style": {
+                          "marginLeft": "10px",
+                          "marginTop": "-8px"
+                        },
+                        "onEvent": {
+                          "change": {
+                            "actions": [
+                              {
+                                "actionType": "show",
+                                "componentName": "modelDetailEditor",
+                                "expression": "value"
+                              },
+                              {
+                                "actionType": "hidden",
+                                "componentName": "modelDetailJson",
+                                "expression": "value"
+                              },
+                              {
+                                "actionType": "hidden",
+                                "componentName": "modelDetailEditor",
+                                "expression": "!value"
+                              },
+                              {
+                                "actionType": "show",
+                                "componentName": "modelDetailJson",
+                                "expression": "!value"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "url": "/dev/${appName}/business-model/model-bundle/data-model-detail",
+                "actions": [
+                  {
+                    "type": "button",
+                    "actionType": "close",
+                    "label": "关闭"
+                  }
+                ],
+                "closeOnEsc": true,
+                "closeOnOutside": true
+              }
+            },
+            "columnsTogglable": false,
+            "footable": true
+          }
+        ]
+      },
+      {
+        "type": "fieldSet",
+        "title": "逻辑流",
+        "collapsable": true,
+        "body": [
+          {
+            "type": "table",
+            "source": "${ FlowModelMeta }",
+            "affixHeader": false,
+            "columns": [
+              {
+                "name": "name",
+                "label": "名称"
+              },
+              {
+                "name": "model.description",
+                "label": "描述"
+              },
+              {
+                "name": "model.isEnabled",
+                "label": "是否启用"
+              },
+              {
+                "name": "model.entryNode",
+                "label": "入口节点"
+              },
+              {
+                "name": "model.exitNode",
+                "label": "出口节点"
+              },
+              {
+                "type": "tpl",
+                "label": "节点数量",
+                "tpl": "${ model.nodes.length }"
+              },
+              {
+                "type": "tpl",
+                "label": "连线数量",
+                "tpl": "${ model.connections.length }"
+              },
+              {
+                "type": "container",
+                "label": "节点",
+                "breakpoint": "*",
+                "body": {
+                  "type": "table",
+                  "source": "${ model.nodes }",
+                  "columnsTogglable": false,
+                  "headerToolbar": [],
+                  "columns": [
+                    {
+                      "name": "name",
+                      "label": "名称"
+                    },
+                    {
+                      "name": "type",
+                      "label": "类型"
+                    },
+                    {
+                      "name": "label",
+                      "label": "标签"
+                    },
+                    {
+                      "name": "description",
+                      "label": "描述"
+                    },
+                    {
+                      "name": "isAsync",
+                      "label": "是否异步"
+                    },
+                    {
+                      "name": "isEnabled",
+                      "label": "是否启用"
+                    }
+                  ],
+                  "itemAction": {
+                    "type": "action",
+                    "actionType": "dialog",
+                    "dialog": {
+                      "type": "dialog",
+                      "title": "节点详情",
+                      "body": [
+                        {
+                          "type": "json",
+                          "source": "${ nodeDetail }"
+                        }
+                      ],
+                      "actions": [
+                        {
+                          "type": "button",
+                          "actionType": "close",
+                          "label": "关闭"
+                        }
+                      ],
+                      "closeOnEsc": true,
+                      "closeOnOutside": true,
+                      "data": {
+                        "nodeDetail": "${ model.nodes[index] }"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "container",
+                "label": "连线",
+                "breakpoint": "*",
+                "body": {
+                  "type": "table",
+                  "columnsTogglable": false,
+                  "source": "${ model.connections }",
+                  "headerToolbar": [],
+                  "columns": [
+                    {
+                      "name": "sourceNode",
+                      "label": "源节点"
+                    },
+                    {
+                      "name": "sourceOutputPort",
+                      "label": "源输出端口"
+                    },
+                    {
+                      "name": "targetNode",
+                      "label": "目标节点"
+                    },
+                    {
+                      "name": "targetInputPort",
+                      "label": "目标输入端口"
+                    },
+                    {
+                      "name": "name",
+                      "label": "名称"
+                    },
+                    {
+                      "name": "description",
+                      "label": "描述"
+                    }
+                  ],
+                  "itemAction": {
+                    "type": "action",
+                    "actionType": "dialog",
+                    "dialog": {
+                      "type": "dialog",
+                      "title": "连线详情",
+                      "body": [
+                        {
+                          "type": "json",
+                          "source": "${ nodeConnection }"
+                        }
+                      ],
+                      "actions": [
+                        {
+                          "type": "button",
+                          "actionType": "close",
+                          "label": "关闭"
+                        }
+                      ],
+                      "closeOnEsc": true,
+                      "closeOnOutside": true,
+                      "data": {
+                        "nodeConnection": "${ model.connections[index] }"
+                      }
+                    }
+                  }
+                }
+              }
+            ],
+            "itemAction": {
+              "type": "action",
+              "actionType": "dialog",
+              "dialog": {
+                "type": "dialog",
+                "title": {
+                  "type": "container",
+                  "bodyClassName": "flex content-center",
+                  "body": [
+                    "<b>查看逻辑流 ${ model.name }</b>",
+                    {
+                      "type": "form",
+                      "wrapWithPanel": false,
+                      "body": {
+                        "type": "switch",
+                        "name": "modelDetailShowMode",
+                        "onText": "Json",
+                        "offText": "逻辑流图",
+                        "style": {
+                          "marginLeft": "10px",
+                          "marginTop": "-8px"
+                        },
+                        "onEvent": {
+                          "change": {
+                            "actions": [
+                              {
+                                "actionType": "show",
+                                "componentId": "modelDetailEditor",
+                                "expression": "!value"
+                              },
+                              {
+                                "actionType": "hidden",
+                                "componentId": "modelDetailJson",
+                                "expression": "!value"
+                              },
+                              {
+                                "actionType": "hidden",
+                                "componentId": "modelDetailEditor",
+                                "expression": "value"
+                              },
+                              {
+                                "actionType": "show",
+                                "componentId": "modelDetailJson",
+                                "expression": "value"
+                              }
+                            ]
+                          }
+                        },
+                        "value": false
+                      }
+                    }
+                  ]
+                },
+                "url": "/dev/${appName}/business-model/model-bundle/flow-model-detail",
+                "size": "full",
+                "actions": [
+                  {
+                    "type": "button",
+                    "actionType": "close",
+                    "label": "关闭"
+                  }
+                ],
+                "closeOnEsc": true,
+                "closeOnOutside": true
+              }
+            },
+            "columnsTogglable": false,
+            "footable": true
+          }
+        ]
+      },
+      {
+        "type": "fieldSet",
+        "title": "WebAPI模型",
+        "collapsable": true,
+        "body": [
+          {
+            "type": "table",
+            "source": "${ WebAPIModel }",
+            "affixHeader": false,
+            "columns": [
+              {
+                "name": "model.method",
+                "label": "方法"
+              },
+              {
+                "name": "model.path",
+                "label": "路径"
+              },
+              {
+                "name": "model.scope",
+                "label": "作用域"
+              },
+              {
+                "name": "model.adapterType",
+                "label": "适配器类型"
+              },
+              {
+                "name": "model.logicFlow",
+                "label": "逻辑流"
+              }
+            ],
+            "itemAction": {
+              "type": "action",
+              "actionType": "dialog",
+              "dialog": {
+                "type": "dialog",
+                "title": {
+                  "type": "container",
+                  "bodyClassName": "flex content-center",
+                  "body": [
+                    "<b>模型详情</b>",
+                    {
+                      "type": "form",
+                      "wrapWithPanel": false,
+                      "body": {
+                        "type": "switch",
+                        "name": "modelDetailShowMode",
+                        "onText": "JSON",
+                        "offText": "JSON树",
+                        "style": {
+                          "marginLeft": "10px",
+                          "marginTop": "-8px"
+                        },
+                        "onEvent": {
+                          "change": {
+                            "actions": [
+                              {
+                                "actionType": "show",
+                                "componentName": "modelDetailEditor",
+                                "expression": "value"
+                              },
+                              {
+                                "actionType": "hidden",
+                                "componentName": "modelDetailJson",
+                                "expression": "value"
+                              },
+                              {
+                                "actionType": "hidden",
+                                "componentName": "modelDetailEditor",
+                                "expression": "!value"
+                              },
+                              {
+                                "actionType": "show",
+                                "componentName": "modelDetailJson",
+                                "expression": "!value"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "url": "/dev/${appName}/business-model/model-bundle/webapi-model-detail",
+                "actions": [
+                  {
+                    "type": "button",
+                    "actionType": "close",
+                    "label": "关闭"
+                  }
+                ],
+                "closeOnEsc": true,
+                "closeOnOutside": true
+              }
+            },
+            "columnsTogglable": false
+          }
+        ]
+      },
+      {
+        "type": "fieldSet",
+        "title": "前端模型",
+        "collapsable": true,
+        "body": [
+          {
+            "type": "table",
+            "title": "UI模型",
+            "source": "${ UIModel }",
+            "affixHeader": false,
+            "columns": [
+              {
+                "name": "model.title",
+                "label": "标题"
+              },
+              {
+                "name": "model.type",
+                "label": "类型"
+              },
+              {
+                "name": "model.path",
+                "label": "路径"
+              }
+            ],
+            "itemAction": {
+              "type": "action",
+              "actionType": "dialog",
+              "dialog": {
+                "type": "dialog",
+                "title": {
+                  "type": "container",
+                  "bodyClassName": "flex content-center",
+                  "body": [
+                    "<b>模型详情</b>",
+                    {
+                      "type": "form",
+                      "wrapWithPanel": false,
+                      "body": {
+                        "type": "switch",
+                        "name": "modelDetailShowMode",
+                        "onText": "JSON",
+                        "offText": "JSON树",
+                        "style": {
+                          "marginLeft": "10px",
+                          "marginTop": "-8px"
+                        },
+                        "onEvent": {
+                          "change": {
+                            "actions": [
+                              {
+                                "actionType": "show",
+                                "componentName": "modelDetailEditor",
+                                "expression": "value"
+                              },
+                              {
+                                "actionType": "hidden",
+                                "componentName": "modelDetailJson",
+                                "expression": "value"
+                              },
+                              {
+                                "actionType": "hidden",
+                                "componentName": "modelDetailEditor",
+                                "expression": "!value"
+                              },
+                              {
+                                "actionType": "show",
+                                "componentName": "modelDetailJson",
+                                "expression": "!value"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "url": "/dev/${appName}/business-model/model-bundle/ui-model-detail",
+                "actions": [
+                  {
+                    "type": "button",
+                    "actionType": "close",
+                    "label": "关闭"
+                  }
+                ],
+                "closeOnEsc": true,
+                "closeOnOutside": true
+              }
+            },
+            "columnsTogglable": false
+          },
+          {
+            "type": "table",
+            "title": "UI Schema",
+            "source": "${ SchemaNode }",
+            "affixHeader": false,
+            "columns": [
+              {
+                "name": "name",
+                "label": "名称"
+              },
+              {
+                "name": "model.type",
+                "label": "Schema类型"
+              }
+            ],
+            "itemAction": {
+              "type": "action",
+              "actionType": "dialog",
+              "dialog": {
+                "type": "dialog",
+                "title": {
+                  "type": "container",
+                  "bodyClassName": "flex content-center",
+                  "body": [
+                    "<b>查看UI Schema ${ name }</b>",
+                    {
+                      "type": "form",
+                      "wrapWithPanel": false,
+                      "body": {
+                        "type": "switch",
+                        "onText": "JSON",
+                        "offText": "预览",
+                        "name": "schemaShowMode",
+                        "style": {
+                          "marginLeft": "10px",
+                          "marginTop": "-8px"
+                        },
+                        "onEvent": {
+                          "change": {
+                            "actions": [
+                              {
+                                "actionType": "parallel",
+                                "expression": "!value",
+                                "children": [
+                                  {
+                                    "actionType": "hidden",
+                                    "componentName": "modelDetailEditor"
+                                  },
+                                  {
+                                    "actionType": "show",
+                                    "componentName": "modelDetailPreview"
+                                  }
+                                ]
+                              },
+                              {
+                                "actionType": "parallel",
+                                "expression": "value",
+                                "children": [
+                                  {
+                                    "actionType": "hidden",
+                                    "componentName": "modelDetailPreview"
+                                  },
+                                  {
+                                    "actionType": "show",
+                                    "componentName": "modelDetailEditor"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "url": "/dev/${appName}/business-model/model-bundle/schema-detail",
+                "actions": [
+                  {
+                    "type": "button",
+                    "actionType": "close",
+                    "label": "关闭"
+                  }
+                ],
+                "closeOnEsc": true,
+                "size": "full",
+                "closeOnOutside": true
+              }
+            },
+            "columnsTogglable": false
+          }
+        ]
+      },
+      {
+        "type": "fieldSet",
+        "title": "权限模型",
+        "collapsable": true,
+        "body": [
+          {
+            "type": "table",
+            "source": "${ Authority }",
+            "affixHeader": false,
+            "columns": [
+              {
+                "name": "name",
+                "label": "名称"
+              },
+              {
+                "name": "model.title",
+                "label": "标题"
+              },
+              {
+                "type": "tpl",
+                "label": "API",
+                "tpl": "${ model.apis.length }"
+              },
+              {
+                "type": "tpl",
+                "label": "UI",
+                "tpl": "${ model.uiViews.length }"
+              },
+              {
+                "type": "tpl",
+                "label": "菜单",
+                "tpl": "${ model.menuItems.length }"
+              }
+            ],
+            "itemAction": {
+              "type": "action",
+              "actionType": "dialog",
+              "dialog": {
+                "type": "dialog",
+                "title": {
+                  "type": "container",
+                  "bodyClassName": "flex content-center",
+                  "body": [
+                    "<b>模型详情</b>",
+                    {
+                      "type": "form",
+                      "wrapWithPanel": false,
+                      "body": {
+                        "type": "switch",
+                        "name": "modelDetailShowMode",
+                        "onText": "JSON",
+                        "offText": "JSON树",
+                        "style": {
+                          "marginLeft": "10px",
+                          "marginTop": "-8px"
+                        },
+                        "onEvent": {
+                          "change": {
+                            "actions": [
+                              {
+                                "actionType": "show",
+                                "componentName": "modelDetailEditor",
+                                "expression": "value"
+                              },
+                              {
+                                "actionType": "hidden",
+                                "componentName": "modelDetailJson",
+                                "expression": "value"
+                              },
+                              {
+                                "actionType": "hidden",
+                                "componentName": "modelDetailEditor",
+                                "expression": "!value"
+                              },
+                              {
+                                "actionType": "show",
+                                "componentName": "modelDetailJson",
+                                "expression": "!value"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "url": "/dev/${appName}/business-model/model-bundle/authority-detail",
+                "actions": [
+                  {
+                    "type": "button",
+                    "actionType": "close",
+                    "label": "关闭"
+                  }
+                ],
+                "closeOnEsc": true,
+                "closeOnOutside": true
+              }
+            },
+            "columnsTogglable": false
+          }
+        ]
+      },
+      {
+        "type": "fieldSet",
+        "title": "菜单模型",
+        "collapsable": true,
+        "body": [
+          {
+            "type": "table",
+            "source": "${ MenuModel }",
+            "affixHeader": false,
+            "columns": [
+              {
+                "type": "icon",
+                "name": "model.icon",
+                "vendor": "",
+                "label": "图标",
+                "icon": "${ model.icon }"
+              },
+              {
+                "name": "model.title",
+                "label": "标题"
+              },
+              {
+                "name": "name",
+                "label": "名称"
+              },
+              {
+                "name": "model.url",
+                "label": "地址"
+              },
+              {
+                "name": "model.showMode",
+                "label": "显示模式"
+              },
+              {
+                "name": "model.order",
+                "label": "排序"
+              }
+            ],
+            "itemAction": {
+              "type": "action",
+              "actionType": "dialog",
+              "dialog": {
+                "type": "dialog",
+                "title": {
+                  "type": "container",
+                  "bodyClassName": "flex content-center",
+                  "body": [
+                    "<b>模型详情</b>",
+                    {
+                      "type": "form",
+                      "wrapWithPanel": false,
+                      "body": {
+                        "type": "switch",
+                        "name": "modelDetailShowMode",
+                        "onText": "JSON",
+                        "offText": "JSON树",
+                        "style": {
+                          "marginLeft": "10px",
+                          "marginTop": "-8px"
+                        },
+                        "onEvent": {
+                          "change": {
+                            "actions": [
+                              {
+                                "actionType": "show",
+                                "componentName": "modelDetailEditor",
+                                "expression": "value"
+                              },
+                              {
+                                "actionType": "hidden",
+                                "componentName": "modelDetailJson",
+                                "expression": "value"
+                              },
+                              {
+                                "actionType": "hidden",
+                                "componentName": "modelDetailEditor",
+                                "expression": "!value"
+                              },
+                              {
+                                "actionType": "show",
+                                "componentName": "modelDetailJson",
+                                "expression": "!value"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "url": "/dev/${appName}/business-model/model-bundle/menu-model-detail",
+                "actions": [
+                  {
+                    "type": "button",
+                    "actionType": "close",
+                    "label": "关闭"
+                  }
+                ],
+                "closeOnEsc": true,
+                "closeOnOutside": true
+              }
+            },
+            "columnsTogglable": false
+          }
+        ]
+      }
+    ]
+  }
+}

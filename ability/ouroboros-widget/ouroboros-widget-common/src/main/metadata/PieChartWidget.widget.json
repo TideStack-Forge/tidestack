@@ -1,0 +1,208 @@
+{
+  "name": "PieChartWidget",
+  "title": "饼图",
+  "description": "饼图小组件,展示数据占比关系",
+  "category": "图表",
+  "allowHeader": true,
+  "sizeConstraints": {
+    "min": {
+      "cols": 6,
+      "rows": 8
+    },
+    "max": {
+      "cols": 24,
+      "rows": 30
+    }
+  },
+  "defaultSize": {
+    "cols": 10,
+    "rows": 12
+  },
+  "defaultConfig": {
+    "api": "",
+    "intervalTime": 0,
+    "chartTitle": {
+      "text": "饼图",
+      "left": "center"
+    },
+    "series": [
+      {
+        "type": "pie",
+        "radius": "60%",
+        "data": "${items}",
+        "label": {
+          "show": true
+        },
+        "emphasis": {
+          "itemStyle": {
+            "shadowBlur": 10,
+            "shadowOffsetX": 0,
+            "shadowColor": "rgba(0, 0, 0, 0.5)"
+          }
+        }
+      }
+    ],
+    "tooltip": {
+      "trigger": "item",
+      "formatter": "{b}: {c} ({d}%)"
+    },
+    "legend": {
+      "orient": "vertical",
+      "left": "left"
+    }
+  },
+  "defaultStyleConfig": {
+    "showBorder": true,
+    "showShadow": true
+  },
+  "configFormItems": [
+    {
+      "type": "fieldSet",
+      "title": "数据源配置",
+      "body": [
+        {
+          "type": "ae-apiControl",
+          "name": "api",
+          "label": "数据接口",
+          "required": true,
+          "description": "接口返回对象数组，每个对象包含 name 和 value 字段"
+        },
+        {
+          "type": "input-number",
+          "name": "intervalTime",
+          "label": "刷新间隔",
+          "value": 0,
+          "min": 0,
+          "description": "单位为毫秒，0 表示不自动刷新"
+        }
+      ]
+    },
+    {
+      "type": "fieldSet",
+      "title": "图表配置",
+      "body": [
+        {
+          "type": "input-text",
+          "name": "chartTitle.text",
+          "label": "图表标题",
+          "placeholder": "请输入图表标题"
+        },
+        {
+          "type": "select",
+          "name": "chartTitle.left",
+          "label": "标题位置",
+          "value": "center",
+          "options": [
+            {"label": "左对齐", "value": "left"},
+            {"label": "居中", "value": "center"},
+            {"label": "右对齐", "value": "right"}
+          ]
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "switch",
+          "name": "legend.show",
+          "label": "显示图例",
+          "value": true
+        },
+        {
+          "type": "select",
+          "name": "legend.orient",
+          "label": "图例方向",
+          "value": "vertical",
+          "options": [
+            {"label": "垂直", "value": "vertical"},
+            {"label": "水平", "value": "horizontal"}
+          ],
+          "visibleOn": "this.legend && this.legend.show !== false"
+        },
+        {
+          "type": "select",
+          "name": "legend.left",
+          "label": "图例位置",
+          "value": "left",
+          "options": [
+            {"label": "左", "value": "left"},
+            {"label": "中", "value": "center"},
+            {"label": "右", "value": "right"}
+          ],
+          "visibleOn": "this.legend && this.legend.show !== false"
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "input-text",
+          "name": "series[0].data",
+          "label": "饼图数据",
+          "value": "${items}",
+          "placeholder": "如: ${items}",
+          "description": "支持数据映射表达式，数据需包含 name 和 value 字段"
+        },
+        {
+          "type": "input-text",
+          "name": "series[0].radius",
+          "label": "饼图半径",
+          "value": "60%",
+          "placeholder": "如: 60% 或 100",
+          "description": "可以是百分比或像素值"
+        },
+        {
+          "type": "switch",
+          "name": "series[0].label.show",
+          "label": "显示标签",
+          "value": true,
+          "description": "是否在饼图扇区上显示标签"
+        }
+      ]
+    }
+  ],
+  "thumbSchema": {
+    "type": "chart",
+    "config": {
+      "tooltip": {
+        "trigger": "item",
+        "formatter": "{b}: {c} ({d}%)"
+      },
+      "legend": {
+        "orient": "vertical",
+        "left": "left",
+        "top": "middle"
+      },
+      "series": [
+        {
+          "type": "pie",
+          "radius": "60%",
+          "center": ["60%", "50%"],
+          "data": [
+            {"value": 335, "name": "类别A"},
+            {"value": 234, "name": "类别B"},
+            {"value": 154, "name": "类别C"}
+          ]
+        }
+      ]
+    }
+  },
+  "schemaTpl": {
+    "type": "chart",
+    "api": "#{api}",
+    "interval": "#{intervalTime}",
+    "config": {
+      "title": "#{chartTitle}",
+      "series": "#{series}",
+      "tooltip": "#{tooltip}",
+      "legend": "#{legend}"
+    }
+  },
+  "exampleData": {
+    "items": [
+      {"name": "类别A", "value": 335},
+      {"name": "类别B", "value": 234},
+      {"name": "类别C", "value": 154},
+      {"name": "类别D", "value": 135},
+      {"name": "类别E", "value": 100}
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "fullName": "systemSetting.integrationManagement.applications.authServer.settings",
+  "title": "授权服务器设置",
+  "delegable": false,
+  "uiViews": [
+    "/system-setting/integration-management",
+    "/system-setting/auth-clients"
+  ],
+  "menuItems": [
+    "systemSetting.integrationManagement"
+  ],
+  "apis": [
+    "GET /api/sys/integration-management/sections/{section}",
+    "GET /api/sys/auth-clients/settings",
+    "PUT /api/sys/auth-clients/settings"
+  ]
+}

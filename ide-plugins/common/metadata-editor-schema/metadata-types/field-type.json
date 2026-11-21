@@ -1,0 +1,101 @@
+{
+  "type": "field-type",
+  "fileSuffix": ".field-type.json",
+  "displayName": "字段类型",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.field-type.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/metadata",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.field-type.json",
+    "fields": [
+      {
+        "name": "name",
+        "label": "名称",
+        "documentPath": [
+          "name"
+        ],
+        "required": true,
+        "defaultFromPath": "camel-name"
+      },
+      {
+        "name": "label",
+        "label": "标签",
+        "documentPath": [
+          "label"
+        ],
+        "required": true,
+        "defaultFromPath": "title"
+      },
+      {
+        "name": "description",
+        "label": "描述",
+        "documentPath": [
+          "description"
+        ]
+      }
+    ],
+    "document": {
+      "name": "example",
+      "label": "示例字段类型",
+      "description": "示例字段类型",
+      "order": 0,
+      "dataType": {
+        "type": "String"
+      },
+      "ui": {
+        "input": {
+          "type": "input-text"
+        },
+        "display": {
+          "type": "static-text"
+        }
+      },
+      "paramsUiSchema": []
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "字段类型",
+    "actions": [],
+    "body": [
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "名称",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "label",
+        "label": "标签",
+        "required": true
+      },
+      {
+        "type": "input-number",
+        "name": "order",
+        "label": "排序"
+      },
+      {
+        "type": "switch",
+        "name": "isPrimaryKeyType",
+        "label": "主键类型"
+      },
+      {
+        "type": "input-text",
+        "name": "primaryKeyGenerator",
+        "label": "主键生成器"
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "描述",
+        "minRows": 3
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/field-type.schema.json"
+}

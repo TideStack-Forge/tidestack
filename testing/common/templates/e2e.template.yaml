@@ -1,0 +1,17 @@
+scenario: domain/example-scenario
+mode: e2e
+fixtures:
+  - services/example-fixture
+environment:
+  vars: {}
+steps:
+  - name: boot-fixtures
+    run: ""
+  - name: run-tests
+    run: ""
+  - name: collect-evidence
+    run: ""
+reports:
+  junit: ""
+  summary: ""
+  evidenceDir: ""

@@ -1,0 +1,22 @@
+{
+  "name": "/document-management/transfer-ownership",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "api": {
+      "method": "post",
+      "url": "/api/document-libraries/admin/${id}/transfer-ownership",
+      "messages": {
+        "success": "所有权转移成功"
+      }
+    },
+    "body": [
+      {
+        "type": "user-picker",
+        "name": "newOwnerId",
+        "label": "新所有者",
+        "required": true
+      }
+    ]
+  }
+}

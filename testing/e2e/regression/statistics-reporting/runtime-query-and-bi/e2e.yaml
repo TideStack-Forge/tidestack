@@ -1,0 +1,310 @@
+{
+  "scenario": "statistics-reporting/runtime-query-and-bi",
+  "testType": "e2e",
+  "suite": "regression",
+  "mode": "e2e",
+  "runner": "testing/common/runners/playwright/browser_asset_bridge.py",
+  "defaultMode": "plan",
+  "integrationScenario": {
+    "scenario": "testing/integration/regression/statistics-reporting/runtime-query-and-bi/scenario.yaml",
+    "contract": "testing/integration/regression/statistics-reporting/runtime-query-and-bi/contract.md",
+    "cases": "testing/integration/regression/statistics-reporting/runtime-query-and-bi/cases.md"
+  },
+  "fixtures": [
+    "runtimes/develop",
+    "runtimes/mothership",
+    "frontends/develop-shell",
+    "frontends/runtime-shell",
+    "data/app-metadata-root",
+    "data/statistics-reporting-runtime-seed",
+    "identities/admin",
+    "identities/permission-boundary-user"
+  ],
+  "fixtureMappings": {
+    "topology": [
+      "runtimes/develop",
+      "runtimes/mothership",
+      "frontends/develop-shell",
+      "frontends/runtime-shell"
+    ],
+    "dataSeed": [
+      "data/app-metadata-root",
+      "data/statistics-reporting-runtime-seed"
+    ],
+    "actors": [
+      "identities/admin",
+      "identities/permission-boundary-user"
+    ]
+  },
+  "environment": {
+    "requiredEnv": [
+      "OB_TEST_BASE_URL",
+      "OB_TEST_APP_BASE_URL",
+      "OB_TEST_FRONTEND_BASE_URL",
+      "OB_TEST_RUNTIME_FRONTEND_BASE_URL",
+      "OB_TEST_APP_ROOT"
+    ],
+    "requiredEnvDetails": [
+      {
+        "name": "OB_TEST_BASE_URL",
+        "description": "Develop backend base URL used by the runtime seed fixture and backend health checks",
+        "example": "http://localhost:80"
+      },
+      {
+        "name": "OB_TEST_APP_BASE_URL",
+        "description": "App runtime / mothership base URL when the app runtime is addressed separately",
+        "example": "http://localhost:80"
+      },
+      {
+        "name": "OB_TEST_FRONTEND_BASE_URL",
+        "description": "Develop shell base URL used by the root Playwright config and shell fixture",
+        "example": "http://localhost:80"
+      },
+      {
+        "name": "OB_TEST_RUNTIME_FRONTEND_BASE_URL",
+        "description": "Runtime shell base URL required by the statistics-reporting page helper",
+        "example": "http://localhost:80"
+      },
+      {
+        "name": "OB_TEST_APP_ROOT",
+        "description": "Absolute path to the app metadata root containing business-model and ui-schema",
+        "example": "/abs/path/to/app-metadata-repo"
+      }
+    ]
+  },
+  "prerequisites": [
+    "Backend, develop shell, and runtime shell are already reachable at the required OB_TEST_* base URLs.",
+    "Root Playwright dependencies are installed and Chromium is available.",
+    "jq, curl, python3, node, and npm are available on PATH.",
+    "OB_TEST_APP_ROOT resolves to an application metadata root that contains business-model and ui-schema.",
+    "RBAC-denial coverage also requires OB_TEST_RESTRICTED_ACCOUNT and OB_TEST_RESTRICTED_PASSWORD for the permission-boundary actor fixture.",
+    "tmp/testing-evidence/ is writable so the runner can emit reports and fixture evidence."
+  ],
+  "browserAssets": {
+    "projectRoot": ".",
+    "contracts": [
+      "testing/integration/regression/statistics-reporting/runtime-query-and-bi/contract.md",
+      "testing/integration/regression/statistics-reporting/runtime-query-and-bi/cases.md"
+    ],
+    "sources": [
+      "testing/integration/regression/statistics-reporting/runtime-query-and-bi/scenario.yaml",
+      "testing/common/fixtures/data/statistics-reporting-runtime-seed/fixture.yaml",
+      "testing/common/fixtures/data/statistics-reporting-runtime-seed/seed-spec.json",
+      "testing/e2e/regression/statistics-reporting/runtime-query-and-bi/scripts/support.ts",
+      "testing/e2e/regression/statistics-reporting/runtime-query-and-bi/scripts/chart-runtime.spec.ts",
+      "testing/e2e/regression/statistics-reporting/runtime-query-and-bi/scripts/dashboard-runtime.spec.ts",
+      "testing/e2e/regression/statistics-reporting/runtime-query-and-bi/scripts/dashboard-rbac.spec.ts",
+      "package.json",
+      "package-lock.json",
+      "frontends/web/main-app/tests/integration/statistics-reporting/statistics-reporting-composite-editor.spec.js",
+      "frontends/web/main-app/playwright.statistics-reporting-runtime.config.js"
+    ],
+    "scripts": [
+      {
+        "id": "statistics-reporting-install-root-playwright",
+        "kind": "shell",
+        "command": "npm ci --no-audit --no-fund && npx playwright install chromium",
+        "workdir": ".",
+        "requiredPaths": [
+          "package.json",
+          "package-lock.json",
+          "playwright.config.ts"
+        ],
+        "description": "Install root Playwright dependencies for repository-level statistics-reporting E2E assets.",
+        "caseIds": []
+      },
+      {
+        "id": "statistics-reporting-fixture-reset",
+        "kind": "shell",
+        "command": "python3 testing/common/runners/harness/fixture_harness.py --scenario testing/integration/regression/statistics-reporting/runtime-query-and-bi/scenario.yaml --action reset --mode run --skip-preflight",
+        "workdir": ".",
+        "requiredPaths": [
+          "testing/integration/regression/statistics-reporting/runtime-query-and-bi/scenario.yaml",
+          "testing/common/fixtures/data/statistics-reporting-runtime-seed/prepare.sh"
+        ],
+        "description": "Reset any previously seeded statistics-reporting definitions to a clean state.",
+        "caseIds": []
+      },
+      {
+        "id": "statistics-reporting-fixture-up",
+        "kind": "shell",
+        "command": "python3 testing/common/runners/harness/fixture_harness.py --scenario testing/integration/regression/statistics-reporting/runtime-query-and-bi/scenario.yaml --action up --mode run --skip-preflight",
+        "workdir": ".",
+        "requiredPaths": [
+          "testing/integration/regression/statistics-reporting/runtime-query-and-bi/scenario.yaml",
+          "testing/common/fixtures/data/statistics-reporting-runtime-seed/prepare.sh"
+        ],
+        "description": "Seed the statistics-reporting Dataset, Charts, and Dashboard business model via dev APIs.",
+        "caseIds": [
+          "SRT-TOPO-001"
+        ]
+      },
+      {
+        "id": "statistics-reporting-restricted-fixture-up",
+        "kind": "shell",
+        "command": "OB_TEST_SRT_SEED_SPEC_FILE=seed-spec-restricted.json python3 testing/common/runners/harness/fixture_harness.py --scenario testing/integration/regression/statistics-reporting/runtime-query-and-bi/scenario.yaml --action up --mode run --skip-preflight",
+        "workdir": ".",
+        "requiredPaths": [
+          "testing/integration/regression/statistics-reporting/runtime-query-and-bi/scenario.yaml",
+          "testing/common/fixtures/data/statistics-reporting-runtime-seed/prepare.sh",
+          "testing/common/fixtures/data/statistics-reporting-runtime-seed/seed-spec-restricted.json"
+        ],
+        "description": "Seed the restricted statistics-reporting definition set for RBAC negative-path proof.",
+        "caseIds": [
+          "SRT-RBAC-001",
+          "SRT-RBAC-002",
+          "SRT-RBAC-003"
+        ]
+      },
+      {
+        "id": "statistics-reporting-fixture-check",
+        "kind": "shell",
+        "command": "python3 testing/common/runners/harness/fixture_harness.py --scenario testing/integration/regression/statistics-reporting/runtime-query-and-bi/scenario.yaml --action check --mode run --skip-preflight",
+        "workdir": ".",
+        "requiredPaths": [
+          "testing/integration/regression/statistics-reporting/runtime-query-and-bi/scenario.yaml",
+          "testing/common/fixtures/data/statistics-reporting-runtime-seed/prepare.sh"
+        ],
+        "description": "Verify the seeded statistics-reporting definitions and runtime execution results.",
+        "caseIds": [
+          "SRT-TOPO-001"
+        ]
+      },
+      {
+        "id": "statistics-reporting-restricted-fixture-check",
+        "kind": "shell",
+        "command": "OB_TEST_SRT_SEED_SPEC_FILE=seed-spec-restricted.json python3 testing/common/runners/harness/fixture_harness.py --scenario testing/integration/regression/statistics-reporting/runtime-query-and-bi/scenario.yaml --action check --mode run --skip-preflight",
+        "workdir": ".",
+        "requiredPaths": [
+          "testing/integration/regression/statistics-reporting/runtime-query-and-bi/scenario.yaml",
+          "testing/common/fixtures/data/statistics-reporting-runtime-seed/prepare.sh",
+          "testing/common/fixtures/data/statistics-reporting-runtime-seed/seed-spec-restricted.json"
+        ],
+        "description": "Verify the restricted statistics-reporting definition set and RBAC-capable runtime execution results.",
+        "caseIds": [
+          "SRT-RBAC-001",
+          "SRT-RBAC-002",
+          "SRT-RBAC-003"
+        ]
+      },
+      {
+        "id": "statistics-reporting-runtime-chart",
+        "kind": "npm",
+        "script": "test:e2e:statistics-reporting:chart",
+        "requiredPaths": [
+          "playwright.config.ts",
+          "testing/e2e/regression/statistics-reporting/runtime-query-and-bi/scripts/support.ts",
+          "testing/e2e/regression/statistics-reporting/runtime-query-and-bi/scripts/chart-runtime.spec.ts"
+        ],
+        "requiresNodeModules": true,
+        "description": "Run the Chart runtime API and rendering contract.",
+        "caseIds": [
+          "SRT-CHART-001",
+          "SRT-CHART-002",
+          "SRT-CHART-003"
+        ]
+      },
+      {
+        "id": "statistics-reporting-runtime-dashboard",
+        "kind": "npm",
+        "script": "test:e2e:statistics-reporting:dashboard",
+        "requiredPaths": [
+          "playwright.config.ts",
+          "testing/e2e/regression/statistics-reporting/runtime-query-and-bi/scripts/support.ts",
+          "testing/e2e/regression/statistics-reporting/runtime-query-and-bi/scripts/dashboard-runtime.spec.ts"
+        ],
+        "requiresNodeModules": true,
+        "description": "Run the Dashboard business model runtime page browser contract.",
+        "caseIds": [
+          "SRT-DASHBOARD-001",
+          "SRT-DASHBOARD-002"
+        ]
+      },
+      {
+        "id": "statistics-reporting-runtime-rbac",
+        "kind": "npm",
+        "script": "test:e2e:statistics-reporting:rbac",
+        "requiredPaths": [
+          "playwright.config.ts",
+          "testing/e2e/regression/statistics-reporting/runtime-query-and-bi/scripts/support.ts",
+          "testing/e2e/regression/statistics-reporting/runtime-query-and-bi/scripts/dashboard-rbac.spec.ts"
+        ],
+        "requiresNodeModules": true,
+        "description": "Run statistics-reporting runtime role and identity-scope contracts.",
+        "caseIds": [
+          "SRT-RBAC-001",
+          "SRT-RBAC-002",
+          "SRT-RBAC-003"
+        ]
+      },
+      {
+        "id": "statistics-reporting-composite-editor",
+        "kind": "shell",
+        "command": "npx playwright test tests/integration/statistics-reporting/statistics-reporting-composite-editor.spec.js --config=playwright.statistics-reporting-runtime.config.js --workers=1",
+        "workdir": "frontends/web/main-app",
+        "requiredPaths": [
+          "frontends/web/main-app/package.json",
+          "frontends/web/main-app/tests/integration/statistics-reporting/statistics-reporting-composite-editor.spec.js"
+        ],
+        "description": "验证正式综合查询编辑器的保存、映射、预览与恢复。HTTP 边界使用合同夹具。",
+        "caseIds": [
+          "SRT-CV-UI-001",
+          "SRT-CV-UI-002",
+          "SRT-CV-UI-003"
+        ]
+      }
+    ]
+  },
+  "steps": [
+    {
+      "name": "plan-browser-assets",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/statistics-reporting/runtime-query-and-bi/e2e.yaml --mode plan"
+    },
+    {
+      "name": "install-root-playwright",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/statistics-reporting/runtime-query-and-bi/e2e.yaml --mode run --script-id statistics-reporting-install-root-playwright"
+    },
+    {
+      "name": "reset-statistics-fixtures",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/statistics-reporting/runtime-query-and-bi/e2e.yaml --mode run --script-id statistics-reporting-fixture-reset"
+    },
+    {
+      "name": "seed-statistics-fixtures",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/statistics-reporting/runtime-query-and-bi/e2e.yaml --mode run --script-id statistics-reporting-fixture-up"
+    },
+    {
+      "name": "check-statistics-fixtures",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/statistics-reporting/runtime-query-and-bi/e2e.yaml --mode run --script-id statistics-reporting-fixture-check"
+    },
+    {
+      "name": "run-chart-runtime-page",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/statistics-reporting/runtime-query-and-bi/e2e.yaml --mode run --script-id statistics-reporting-runtime-chart"
+    },
+    {
+      "name": "run-dashboard-runtime-page",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/statistics-reporting/runtime-query-and-bi/e2e.yaml --mode run --script-id statistics-reporting-runtime-dashboard"
+    },
+    {
+      "name": "seed-statistics-restricted-fixtures",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/statistics-reporting/runtime-query-and-bi/e2e.yaml --mode run --script-id statistics-reporting-restricted-fixture-up"
+    },
+    {
+      "name": "check-statistics-restricted-fixtures",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/statistics-reporting/runtime-query-and-bi/e2e.yaml --mode run --script-id statistics-reporting-restricted-fixture-check"
+    },
+    {
+      "name": "run-statistics-runtime-rbac",
+      "run": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/statistics-reporting/runtime-query-and-bi/e2e.yaml --mode run --script-id statistics-reporting-runtime-rbac"
+    }
+  ],
+  "reports": {
+    "summary": "tmp/testing-evidence/statistics-reporting-runtime-query-and-bi",
+    "evidenceDir": "tmp/testing-evidence/statistics-reporting-runtime-query-and-bi"
+  },
+  "notes": [
+    "This manifest encodes the final-user runtime contract for Dataset-backed Charts and Dashboard business models.",
+    "Chart specs verify backend-built ECharts options; Dashboard coverage verifies structure-only responses and independent Chart widget requests.",
+    "The permission-boundary actor proves Chart execution requiredRoles denial; the deterministic scoped reader separately proves exportRoles denial and currentUser scope binding.",
+    "Fixture check probes live Chart execute/export and Dashboard structure payloads after seed materialization; dev model events refresh runtime definitions and projected business-model routes without restarting the backend."
+  ]
+}

@@ -1,0 +1,5 @@
+com.ouroboros.logicflow.support.TestSinkNodeBuilder
+com.ouroboros.logicflow.support.MetadataSelectiveTestNodeBuilder
+com.ouroboros.logicflow.support.MetadataParallelTestNodeBuilder
+com.ouroboros.logicflow.support.BrokenSelectiveTestNodeBuilder
+com.ouroboros.logicflow.support.MultiInputTestNodeBuilder

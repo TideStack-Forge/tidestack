@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/webapi/request-mapping-detail",
+  "type": "amis",
+  "title": "requestMapping请求详情"
+}

@@ -1,0 +1,4 @@
+com.ouroboros.app.datamodel.plugin.AccessControlDataModelPlugin$Builder
+com.ouroboros.app.datamodel.plugin.CompanySetterDataModelPlugin$Builder
+com.ouroboros.app.datamodel.plugin.DepartmentSetterDataModelPlugin$Builder
+com.ouroboros.app.datamodel.plugin.EmployeeSetterDataModelPlugin$Builder

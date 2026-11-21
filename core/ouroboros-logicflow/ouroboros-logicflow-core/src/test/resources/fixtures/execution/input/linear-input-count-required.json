@@ -1,0 +1,57 @@
+{
+  "name": "linear-input-count-required",
+  "description": "First-layer node requires one runtime input",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "entryMutex",
+  "exitNode": "exitMutex",
+  "nodes": [
+    {
+      "name": "entryMutex",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    },
+    {
+      "name": "exitMutex",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "entryMutex",
+      "sourceOutputPort": 0,
+      "targetNode": "exitMutex",
+      "targetInputPort": 0
+    }
+  ]
+}

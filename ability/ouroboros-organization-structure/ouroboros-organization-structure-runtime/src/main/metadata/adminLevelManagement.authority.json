@@ -1,0 +1,19 @@
+{
+  "fullName": "systemSetting.adminLevelManagement",
+  "title": "行政级别管理",
+  "apis": [
+    "GET /api/admin-level",
+    "GET /api/admin-level/{id}",
+    "POST /api/admin-level",
+    "PUT /api/admin-level/{id}",
+    "POST /api/admin-level/{id}/disable",
+    "DELETE /api/admin-level/{id}"
+  ],
+  "uiViews": [
+    "/system-setting/admin-level-management",
+    "/system-setting/admin-level-management/edit"
+  ],
+  "menuItems": [
+    "systemSetting.adminLevelManagement"
+  ]
+}

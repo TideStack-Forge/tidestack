@@ -1,0 +1,43 @@
+{
+  "name": "/auth/oidc-consent",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": true,
+    "body": [
+      {
+        "type": "checkbox",
+        "name": "identity_approved",
+        "label": false,
+        "value": false,
+        "visibleOn": "${!!identity}",
+        "option": "同意向该应用提供上述身份信息"
+      },
+      {
+        "type": "checkbox",
+        "name": "business_approved",
+        "label": false,
+        "value": false,
+        "visibleOn": "${!!business}",
+        "option": "同意上述全部业务功能"
+      },
+      {
+        "type": "checkbox",
+        "name": "offline_approved",
+        "label": false,
+        "description": "平台退出、会话到期或撤销后停止。",
+        "value": false,
+        "visibleOn": "${!!offlineAccess}",
+        "option": "允许离开当前页面后继续访问"
+      }
+    ],
+    "actions": [
+      {
+        "type": "submit",
+        "label": "继续",
+        "level": "primary",
+        "disabledOn": "${submitting}"
+      }
+    ],
+    "title": ""
+  }
+}

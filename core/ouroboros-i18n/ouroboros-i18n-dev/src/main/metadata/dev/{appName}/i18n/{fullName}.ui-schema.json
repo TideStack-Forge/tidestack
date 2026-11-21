@@ -1,0 +1,115 @@
+{
+  "name": "/dev/{appName}/i18n/{fullName}",
+  "schema": {
+    "type": "page",
+    "title": "编辑语言文件「${fullName}」",
+    "toolbar": [
+      {
+        "type": "button",
+        "label": "返回列表",
+        "actionType": "link",
+        "link": "/dev/${appName}/i18n?page=1"
+      },
+      {
+        "type": "button",
+        "label": "保存",
+        "level": "primary",
+        "hotKey": "ctrl+s,command+s",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "validate",
+                "componentName": "edit-i18n-form",
+                "outputVar": "validateResult"
+              },
+              {
+                "actionType": "submit",
+                "componentName": "edit-i18n-form",
+                "expression": "!validateResult.error",
+                "outputVar": "submitResult"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "body": [
+      {
+        "type": "form",
+        "id": "edit-i18n-form",
+        "name": "edit-i18n-form",
+        "wrapWithPanel": false,
+        "title": false,
+        "mode": "horizontal",
+        "initApi": {
+          "method": "get",
+          "url": "/api/dev/${appName}/i18n/${fullName}"
+        },
+        "api": {
+          "method": "put",
+          "url": "/api/dev/${appName}/i18n/${fullName}",
+          "data": {
+            "locale": "${fullName}",
+            "&": "$$"
+          },
+          "messages": {
+            "success": "语言文件保存成功"
+          }
+        },
+        "body": [
+          {
+            "type": "static",
+            "name": "locale",
+            "label": "语言代码"
+          },
+          {
+            "type": "input-text",
+            "name": "name",
+            "label": "语言名称",
+            "required": true
+          },
+          {
+            "type": "input-text",
+            "name": "version",
+            "label": "版本"
+          },
+          {
+            "type": "select",
+            "name": "direction",
+            "label": "文本方向",
+            "options": [
+              {
+                "label": "LTR",
+                "value": "LTR"
+              },
+              {
+                "label": "RTL",
+                "value": "RTL"
+              }
+            ]
+          },
+          {
+            "type": "switch",
+            "name": "enabled",
+            "label": "启用"
+          },
+          {
+            "type": "switch",
+            "name": "isDefault",
+            "label": "默认语言"
+          },
+          {
+            "type": "json-editor",
+            "name": "messages",
+            "label": "文案内容",
+            "pipeIn": "if (typeof value === 'object') return JSON.stringify(value, null, 2); return value || '{}';",
+            "pipeOut": "try {const v = JSON.parse(value || '{}'); if (typeof v === 'object' && !Array.isArray(v)) return v;} catch(e) {} return value;",
+            "validate": "try {const v = JSON.parse(value || '{}'); if (typeof v !== 'object' || Array.isArray(v)) return '文案内容必须为 JSON 对象';} catch(e) {return '文案内容必须为合法 JSON';}"
+          }
+        ],
+        "actions": []
+      }
+    ]
+  }
+}

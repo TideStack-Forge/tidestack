@@ -1,0 +1,218 @@
+{
+  "name": "/dev/{appName}/webapi/change-handler-type",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "initApi": {
+      "method": "get",
+      "url": "/api/dev/${appName}/all-channel/webapi?method=${method}&path=${path}"
+    },
+    "body": [
+      {
+        "type": "input-group",
+        "name": "input-group",
+        "body": [
+          {
+            "name": "method",
+            "type": "select",
+            "required": true,
+            "selectFirst": true,
+            "options": [
+              "POST",
+              "GET",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          },
+          {
+            "name": "path",
+            "type": "input-text",
+            "required": true,
+            "placeholder": "路径"
+          }
+        ]
+      },
+      {
+        "type": "list-select",
+        "name": "scope",
+        "label": "范围",
+        "clearable": true,
+        "required": true,
+        "selectFirst ": true,
+        "options": [
+          {
+            "label": "内部",
+            "value": "internal"
+          },
+          {
+            "label": "开放",
+            "value": "open"
+          },
+          {
+            "label": "公开",
+            "value": "public"
+          }
+        ]
+      },
+      {
+        "type": "list-select",
+        "name": "handlerType",
+        "label": "处理器类型",
+        "clearable": true,
+        "required": true,
+        "options": [
+          {
+            "label": "业务 Action",
+            "value": "BusinessAction"
+          },
+          {
+            "label": "逻辑流",
+            "value": "LogicFlow"
+          },
+          {
+            "label": "RequestMapping",
+            "value": "RequestMapping"
+          },
+          {
+            "label": "RouterFunction",
+            "value": "RouterFunction",
+            "disabled": true
+          }
+        ]
+      },
+      {
+        "type": "fieldSet",
+        "bodyClassName": "mb-8",
+        "title": "逻辑流基本配置",
+        "collapsable": true,
+        "visibleOn": "${handlerType === 'LogicFlow'}",
+        "body": [
+          {
+            "name": "logicFlow",
+            "type": "select",
+            "visibleOn": "${handlerType === 'LogicFlow'}",
+            "clearValueOnHidden": true,
+            "searchable": true,
+            "source": "/api/dev/${appName}/metadata/logic-flow",
+            "label": "逻辑流名称"
+          }
+        ]
+      },
+      {
+        "type": "fieldSet",
+        "title": "业务 Action 配置",
+        "visibleOn": "${handlerType === 'BusinessAction'}",
+        "body": [
+          {
+            "name": "businessModel",
+            "type": "input-text",
+            "visibleOn": "${handlerType === 'BusinessAction'}",
+            "clearValueOnHidden": true,
+            "label": "业务模型全名",
+            "required": true
+          },
+          {
+            "name": "action",
+            "type": "input-text",
+            "visibleOn": "${handlerType === 'BusinessAction'}",
+            "clearValueOnHidden": true,
+            "label": "Action 名称",
+            "required": true
+          },
+          {
+            "name": "actionInputMapping",
+            "type": "json-editor",
+            "visibleOn": "${handlerType === 'BusinessAction'}",
+            "clearValueOnHidden": true,
+            "label": "业务输入映射",
+            "value": {},
+            "required": true
+          }
+        ]
+      },
+      {
+        "type": "fieldSet",
+        "bodyClassName": "mb-8",
+        "title": "RequestMapping基本配置",
+        "collapsable": true,
+        "visibleOn": "${handlerType === 'RequestMapping'}",
+        "body": [
+          {
+            "name": "className",
+            "type": "input-text",
+            "visibleOn": "${handlerType === 'RequestMapping'}",
+            "clearValueOnHidden": true,
+            "label": "完整类名"
+          },
+          {
+            "name": "methodName",
+            "type": "input-text",
+            "visibleOn": "${handlerType === 'RequestMapping'}",
+            "clearValueOnHidden": true,
+            "label": "方法名"
+          }
+        ]
+      },
+      {
+        "name": "summary",
+        "type": "textarea",
+        "label": "描述"
+      }
+    ],
+    "actions": [
+      {
+        "type": "button",
+        "actionType": "close",
+        "label": "取消"
+      },
+      {
+        "type": "button",
+        "label": "确认",
+        "level": "primary",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "ajax",
+                "api": {
+                  "method": "post",
+                  "url": "/api/dev/${appName}/webapi",
+                  "data": {
+                    "&": "$$",
+                    "path": "${path}",
+                    "method": "${method}",
+                    "fullName": "${fullName}"
+                  },
+                  "sendOn": "${!isChanged}"
+                }
+              },
+              {
+                "actionType": "ajax",
+                "api": {
+                  "method": "put",
+                  "url": "/api/dev/${appName}/webapi/${fullName}",
+                  "data": {
+                    "&": "$$",
+                    "path": "${path}",
+                    "method": "${method}",
+                    "fullName": "${fullName}"
+                  },
+                  "sendOn": "${isChanged}"
+                }
+              },
+              {
+                "expression": "responseResult.responseStatus == 0",
+                "actionType": "closeDialog"
+              },
+              {
+                "actionType": "reload",
+                "componentName": "webapiList"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,372 @@
+{
+  "name": "/dev/container/debug-key-dialog",
+  "schema": {
+    "type": "page",
+    "body": [
+      {
+        "type": "tpl",
+        "className": "mb-3 text-muted",
+        "tpl": "<span>当前应用：${appName}</span>"
+      },
+      {
+        "type": "service",
+        "id": "devKeyService",
+        "name": "devKeyService",
+        "initFetchOn": "${appName}",
+        "visibleOn": "${appName}",
+        "api": {
+          "method": "get",
+          "url": "/api/dev/${appName}/dev-keys"
+        },
+        "body": [
+          {
+            "type": "alert",
+            "level": "info",
+            "showCloseButton": false,
+            "body": "开发密钥（Dev Key）用于 IDE 插件连接到开发平台。密钥具有时效性，过期后需要重新生成，请妥善保管。"
+          },
+          {
+            "type": "panel",
+            "title": "当前 Dev Key 状态",
+            "visibleOn": "${devKey}",
+            "body": [
+              {
+                "type": "grid",
+                "columns": [
+                  {
+                    "md": 12,
+                    "body": {
+                      "type": "static",
+                      "name": "devKey",
+                      "label": "Dev Key",
+                      "copyable": false
+                    }
+                  },
+                  {
+                    "md": 6,
+                    "body": {
+                      "type": "static",
+                      "name": "createdAt",
+                      "label": "创建时间"
+                    }
+                  },
+                  {
+                    "md": 6,
+                    "body": {
+                      "type": "static",
+                      "name": "expiresAt",
+                      "label": "过期时间"
+                    }
+                  },
+                  {
+                    "md": 12,
+                    "body": {
+                      "type": "static",
+                      "name": "description",
+                      "label": "描述",
+                      "visibleOn": "${description}"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "grid",
+                "className": "mt-4",
+                "columns": [
+                  {
+                    "md": 3,
+                    "body": {
+                      "type": "button",
+                      "label": "复制 Dev Key",
+                      "level": "primary",
+                      "onEvent": {
+                        "click": {
+                          "actions": [
+                            {
+                              "actionType": "ajax",
+                              "api": {
+                                "method": "get",
+                                "url": "/api/dev/${appName}/dev-keys/plugin-config",
+                                "responseData": {
+                                  "devKeyForCopy": "${devKey}"
+                                }
+                              },
+                              "outputVar": "keyData"
+                            },
+                            {
+                              "actionType": "copy",
+                              "args": {
+                                "content": "${keyData.devKeyForCopy}"
+                              }
+                            },
+                            {
+                              "actionType": "toast",
+                              "args": {
+                                "msgType": "success",
+                                "msg": "Dev Key 已复制到剪贴板"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "md": 3,
+                    "body": {
+                      "type": "button",
+                      "label": "下载 IDE 配置",
+                      "level": "default",
+                      "onEvent": {
+                        "click": {
+                          "actions": [
+                            {
+                              "actionType": "download",
+                              "api": {
+                                "method": "get",
+                                "url": "/api/dev/${appName}/dev-keys/plugin-config/download"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "md": 3,
+                    "body": {
+                      "type": "button",
+                      "label": "轮换 Dev Key",
+                      "level": "warning",
+                      "confirmText": "轮换 Dev Key 后，旧密钥将立即失效，所有使用旧密钥的 IDE 插件需要重新配置。确定要轮换吗？",
+                      "onEvent": {
+                        "click": {
+                          "actions": [
+                            {
+                              "actionType": "dialog",
+                              "dialog": {
+                                "type": "dialog",
+                                "title": "轮换 Dev Key",
+                                "body": [
+                                  {
+                                    "type": "form",
+                                    "wrapWithPanel": false,
+                                    "api": {
+                                      "method": "put",
+                                      "url": "/api/dev/${appName}/dev-keys",
+                                      "data": {
+                                        "description": "${description}",
+                                        "expiryDays": "${expiryDays}"
+                                      }
+                                    },
+                                    "body": [
+                                      {
+                                        "type": "input-text",
+                                        "name": "description",
+                                        "label": "描述",
+                                        "placeholder": "可选，说明本次密钥用途"
+                                      },
+                                      {
+                                        "type": "input-number",
+                                        "name": "expiryDays",
+                                        "label": "有效期（天）",
+                                        "value": 90,
+                                        "min": 1,
+                                        "max": 365,
+                                        "required": true
+                                      }
+                                    ],
+                                    "actions": [
+                                      {
+                                        "type": "button",
+                                        "label": "取消",
+                                        "actionType": "cancel"
+                                      },
+                                      {
+                                        "type": "submit",
+                                        "label": "轮换",
+                                        "level": "warning"
+                                      }
+                                    ],
+                                    "onEvent": {
+                                      "submitSucc": {
+                                        "actions": [
+                                          {
+                                            "actionType": "ajax",
+                                            "api": {
+                                              "method": "get",
+                                              "url": "/api/dev/${appName}/dev-keys/plugin-config",
+                                              "responseData": {
+                                                "devKeyForCopy": "${devKey}"
+                                              }
+                                            },
+                                            "outputVar": "rotatedKeyData"
+                                          },
+                                          {
+                                            "actionType": "copy",
+                                            "args": {
+                                              "content": "${rotatedKeyData.devKeyForCopy}"
+                                            }
+                                          },
+                                          {
+                                            "actionType": "toast",
+                                            "args": {
+                                              "msgType": "success",
+                                              "msg": "Dev Key 已轮换并复制到剪贴板"
+                                            }
+                                          },
+                                          {
+                                            "actionType": "closeDialog"
+                                          },
+                                          {
+                                            "actionType": "reload",
+                                            "componentName": "devKeyService"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "md": 3,
+                    "body": {
+                      "type": "button",
+                      "label": "删除 Dev Key",
+                      "level": "danger",
+                      "confirmText": "删除 Dev Key 后，所有使用该密钥的 IDE 插件将无法连接。确定要删除吗？",
+                      "onEvent": {
+                        "click": {
+                          "actions": [
+                            {
+                              "actionType": "ajax",
+                              "api": {
+                                "method": "delete",
+                                "url": "/api/dev/${appName}/dev-keys"
+                              }
+                            },
+                            {
+                              "actionType": "toast",
+                              "args": {
+                                "msgType": "success",
+                                "msg": "Dev Key 已删除"
+                              }
+                            },
+                            {
+                              "actionType": "reload",
+                              "componentName": "devKeyService"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "panel",
+            "title": "生成新 Dev Key",
+            "visibleOn": "${!devKey}",
+            "body": [
+              {
+                "type": "tpl",
+                "className": "text-muted mb-4",
+                "tpl": "当前应用没有开发密钥。生成后会自动复制 Dev Key，也可以下载 IDE 配置文件导入插件。"
+              },
+              {
+                "type": "form",
+                "wrapWithPanel": false,
+                "api": {
+                  "method": "post",
+                  "url": "/api/dev/${appName}/dev-keys",
+                  "data": {
+                    "description": "${description}",
+                    "expiryDays": "${expiryDays}"
+                  }
+                },
+                "body": [
+                  {
+                    "type": "input-text",
+                    "name": "description",
+                    "label": "描述",
+                    "placeholder": "可选，说明本次密钥用途"
+                  },
+                  {
+                    "type": "input-number",
+                    "name": "expiryDays",
+                    "label": "有效期（天）",
+                    "value": 90,
+                    "min": 1,
+                    "max": 365,
+                    "required": true
+                  }
+                ],
+                "actions": [
+                  {
+                    "type": "submit",
+                    "label": "生成并复制 Dev Key",
+                    "level": "primary"
+                  }
+                ],
+                "onEvent": {
+                  "submitSucc": {
+                    "actions": [
+                      {
+                        "actionType": "ajax",
+                        "api": {
+                          "method": "get",
+                          "url": "/api/dev/${appName}/dev-keys/plugin-config",
+                          "responseData": {
+                            "devKeyForCopy": "${devKey}"
+                          }
+                        },
+                        "outputVar": "generatedKeyData"
+                      },
+                      {
+                        "actionType": "copy",
+                        "args": {
+                          "content": "${generatedKeyData.devKeyForCopy}"
+                        }
+                      },
+                      {
+                        "actionType": "toast",
+                        "args": {
+                          "msgType": "success",
+                          "msg": "Dev Key 已生成并复制到剪贴板"
+                        }
+                      },
+                      {
+                        "actionType": "reload",
+                        "componentName": "devKeyService"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "tpl",
+            "className": "text-muted mt-4",
+            "tpl": "<small>提示：生成或轮换 Dev Key 后会自动复制；也可以点击【下载 IDE 配置】获取 IDE 插件配置文件，或点击【复制 Dev Key】手动配置插件。</small>"
+          }
+        ]
+      },
+      {
+        "type": "alert",
+        "level": "info",
+        "visibleOn": "${!appName}",
+        "showCloseButton": false,
+        "body": "请选择应用后管理对应的 Dev Key。"
+      }
+    ]
+  }
+}

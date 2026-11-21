@@ -1,0 +1,112 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>ouroboros-menu-model</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ouroboros-menu-model-runtime</artifactId>
+    <packaging>jar</packaging>
+    <name>ouroboros-menu-model-runtime</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-menu-model-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-web-security-annotation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-web-security-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-web-security-rbac-manage</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>common-all</artifactId>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>common-metadata</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-webapi-runtime</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <!-- 防止在IDEA中build失败-->
+        <profile>
+            <id>intellij-idea-only</id>
+            <activation>
+                <property>
+                    <name>idea.maven.embedder.version</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <release>21</release>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <!-- JDK21 -->
+        <profile>
+            <id>jdk21</id>
+            <properties>
+                <maven.compiler.source>21</maven.compiler.source>
+                <maven.compiler.target>21</maven.compiler.target>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <release>21</release>
+                            <source>21</source>
+                            <target>21</target>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

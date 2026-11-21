@@ -1,0 +1,39 @@
+{
+  "name": "/document-management/rename-directory",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "api": {
+      "method": "put",
+      "url": "/api/document-libraries/${libraryId}/directories/${id}/rename",
+      "messages": {
+        "success": "目录重命名成功"
+      }
+    },
+    "body": [
+      {
+        "type": "input-text",
+        "name": "newName",
+        "label": "新目录名称",
+        "required": true
+      }
+    ],
+    "onEvent": {
+      "submitSucc": {
+        "actions": [
+          {
+            "actionType": "broadcast",
+            "args": {
+              "eventName": "directoryChange"
+            },
+            "data": {
+              "type": "DIRECTORY",
+              "libraryId": "${libraryId}",
+              "directoryId": "${id}"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "fullName": "systemSetting.userManagement",
+  "title": "用户管理",
+  "apis": [
+    "POST /api/sys/user",
+    "DELETE /api/sys/user/{userIdentity}",
+    "PUT /api/sys/user/{userIdentity}/role",
+    "POST /api/sys/user/{userIdentity}/reset-password",
+    "GET api/user",
+    "GET /api/sys/role",
+    "GET /api/sys/user/{userIdentity}",
+    "GET /api/sys/user/{userIdentity}/role",
+    "GET /api/admin/users/{userIdentity}/bindings",
+    "DELETE /api/admin/users/{userIdentity}/bindings/{id}"
+  ],
+  "uiViews": [
+    "/system-setting/user-management"
+  ],
+  "menuItems": [
+    "systemSetting.userManagement"
+  ]
+}

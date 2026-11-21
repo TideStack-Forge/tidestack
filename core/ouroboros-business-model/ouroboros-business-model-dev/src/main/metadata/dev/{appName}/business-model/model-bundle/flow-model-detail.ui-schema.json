@@ -1,0 +1,74 @@
+{
+  "name": "/dev/{appName}/business-model/model-bundle/flow-model-detail",
+  "schema": {
+    "type": "service",
+    "body": [
+      {
+        "id": "modelDetailJson",
+        "type": "editor",
+        "label": false,
+        "language": "json",
+        "disabled": true,
+        "name": "model",
+        "className": "h-full relative overflow-y-hidden",
+        "inputClassName": "h-full max-h-full",
+        "options": {
+          "minimap": {
+            "enabled": true
+          }
+        },
+        "visible": false
+      },
+      {
+        "type": "logic-flow-editor",
+        "name": "model",
+        "id": "modelDetailEditor",
+        "label": false,
+        "static": true,
+        "className": "h-full",
+        "nodeDefineApi": "/api/dev/${appName}/logicflow/node-define"
+      },
+      {
+        "type": "button-toolbar",
+        "className": "mt-3 text-right",
+        "buttons": [
+          {
+            "type": "button",
+            "label": "${isCloned ? '打开编辑器' : '克隆并编辑'}",
+            "icon": "fa fa-edit",
+            "level": "primary",
+            "disabledOn": "${!editUrl}",
+            "onEvent": {
+              "click": {
+                "actions": [
+                  {
+                    "actionType": "ajax",
+                    "expression": "${!isCloned}",
+                    "api": {
+                      "method": "post",
+                      "url": "/api/dev/${appName}/business-model/${fullName}/clone-logicflow-model?name=${name}"
+                    }
+                  },
+                  {
+                    "actionType": "openTab",
+                    "args": {
+                      "title": "编辑「${editName}」",
+                      "url": "${editUrl}"
+                    }
+                  },
+                  {
+                    "actionType": "closeDialog"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "api": {
+      "method": "get",
+      "url": "/api/dev/${appName}/business-model/${fullName}/projection-target?kind=logicflow&name=${name}"
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "name": "feishu.contact.department.get",
+  "title": "飞书读取部门详情",
+  "type": "OpenAPI",
+  "isEnabled": true,
+  "authCredential": "feishu.application-token",
+  "description": "自建应用 tenant_access_token；根部门 ID 为 0，需全部成员可见范围；departmentId 为 URL 变量；contact:department.base:readonly 或相应通讯录读取权限",
+  "timeout": 10000,
+  "retry": 0,
+  "retrySafe": true,
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "department_id_type": {
+        "type": "string",
+        "enum": [
+          "department_id",
+          "open_department_id"
+        ],
+        "minLength": 1
+      },
+      "departmentId": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_@.\\-]{0,63}$",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "department_id_type",
+      "departmentId"
+    ]
+  },
+  "request": {
+    "method": "GET",
+    "url": "https://open.feishu.cn/open-apis/contact/v3/departments/${departmentId}",
+    "parameters": [
+      {
+        "in": "QUERY",
+        "name": "department_id_type",
+        "value": "${department_id_type}",
+        "required": true
+      }
+    ]
+  },
+  "group": "飞书/通讯录"
+}

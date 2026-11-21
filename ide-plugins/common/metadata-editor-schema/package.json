@@ -1,0 +1,13 @@
+{
+  "name": "@tidestack/metadata-editor-schema",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "devDependencies": {
+    "ajv": "8.18.0",
+    "esbuild": "0.25.12"
+  }
+}

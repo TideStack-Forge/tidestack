@@ -1,0 +1,86 @@
+{
+  "name": "/approval-workflow/engine-mapping-manage",
+  "schema": {
+    "type": "page",
+    "title": "流程映射管理",
+    "body": {
+      "type": "crud",
+      "api": "/api/approval-workflow/engine-mappings",
+      "columns": [
+        {"name": "flowKey", "label": "流程标识"},
+        {"name": "connectionId", "label": "连接"},
+        {"name": "authority", "label": "流程真相源"},
+        {"name": "integrationMode", "label": "接入模式"},
+        {"name": "status", "label": "状态"},
+        {"name": "version", "label": "版本"},
+        {
+          "name": "actions",
+          "label": "操作",
+          "type": "operation",
+          "buttons": [
+            {"label": "校验", "type": "button", "actionType": "ajax", "api": "post:/api/approval-workflow/engine-mappings/${id}/validate"},
+            {"label": "激活", "type": "button", "actionType": "ajax", "api": "post:/api/approval-workflow/engine-mappings/${id}/activate", "confirmText": "激活后新流程将走外部引擎，确认激活？"},
+            {"label": "暂停", "type": "button", "actionType": "ajax", "api": "post:/api/approval-workflow/engine-mappings/${id}/pause"},
+            {"label": "下线", "type": "button", "actionType": "ajax", "api": "post:/api/approval-workflow/engine-mappings/${id}/retire"},
+            {
+              "label": "编辑",
+              "type": "button",
+              "actionType": "dialog",
+              "dialog": {
+                "title": "编辑映射（ACTIVE/PAUSED 将生成新草稿）",
+                "body": {
+                  "type": "form",
+                  "api": "put:/api/approval-workflow/engine-mappings/${id}",
+                  "controls": [
+                    {"type": "input-text", "name": "flowKey", "label": "流程标识", "required": true},
+                    {"type": "select", "name": "connectionId", "label": "连接", "required": true, "source": "/api/approval-workflow/engine-adapters/connections", "labelField": "connectionId", "valueField": "connectionId"},
+                    {"type": "input-text", "name": "externalDefinitionId", "label": "外部流程定义 ID（钉钉 processCode）", "required": true},
+                    {"type": "input-text", "name": "externalDefinitionVersion", "label": "外部定义版本（可空）"},
+                    {"type": "input-text", "name": "externalDefinitionSchemaHash", "label": "Schema 摘要（可空）"},
+                    {"type": "select", "name": "authority", "label": "流程真相源", "options": [{"label": "外部引擎 EXTERNAL_ENGINE", "value": "EXTERNAL_ENGINE"}, {"label": "内置引擎 OUROBOROS（镜像）", "value": "OUROBOROS"}]},
+                    {"type": "static", "name": "integrationMode", "label": "接入模式", "description": "由适配器端口能力派生，不可编辑"},
+                    {"type": "textarea", "name": "resultBindingJson", "label": "业务绑定规则 JSON", "language": "json", "minRows": 4, "description": "仅填写业务字段映射，不要放凭据或 token。"},
+                    {"type": "textarea", "name": "startOptionsJson", "label": "发起参数声明 JSON", "language": "json", "minRows": 4, "description": "声明表单字段和发起约束；仅支持 JSON 对象。"},
+                    {"type": "textarea", "name": "actionMappingsJson", "label": "动作映射 JSON", "language": "json", "minRows": 4, "description": "RESULT_ONLY 不填写；不得放凭据或 token。"},
+                    {"type": "textarea", "name": "resultMappingsJson", "label": "结果映射 JSON", "language": "json", "minRows": 4, "description": "覆盖 RUNNING、APPROVED、REJECTED、CANCELED、ERROR。"},
+                    {"type": "textarea", "name": "callbackJson", "label": "回调配置 JSON", "language": "json", "minRows": 4, "description": "仅填写回调 profile 和事件字段映射，不要放 secret。"},
+                    {"type": "alert", "level": "warning", "body": "authority=OUROBOROS（镜像）时本地内置引擎仍负责执行，钉钉仅作为待办中心。", "visibleOn": "${authority == 'OUROBOROS'}"}
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "headerToolbar": [
+        {
+          "label": "新建映射",
+          "type": "button",
+          "actionType": "dialog",
+          "dialog": {
+            "title": "新建映射（草稿）",
+            "body": {
+              "type": "form",
+              "api": "post:/api/approval-workflow/engine-mappings",
+              "controls": [
+                {"type": "input-text", "name": "flowKey", "label": "流程标识", "required": true},
+                {"type": "select", "name": "connectionId", "label": "连接", "required": true, "source": "/api/approval-workflow/engine-adapters/connections", "labelField": "connectionId", "valueField": "connectionId"},
+                {"type": "input-text", "name": "externalDefinitionId", "label": "外部流程定义 ID（钉钉 processCode）", "required": true},
+                {"type": "input-text", "name": "externalDefinitionVersion", "label": "外部定义版本（可空）"},
+                {"type": "input-text", "name": "externalDefinitionSchemaHash", "label": "Schema 摘要（可空）"},
+                {"type": "select", "name": "authority", "label": "流程真相源", "options": [{"label": "外部引擎 EXTERNAL_ENGINE", "value": "EXTERNAL_ENGINE"}, {"label": "内置引擎 OUROBOROS（镜像）", "value": "OUROBOROS"}]},
+                {"type": "static", "name": "integrationMode", "label": "接入模式", "description": "由适配器端口能力派生，不可编辑"},
+                {"type": "textarea", "name": "resultBindingJson", "label": "业务绑定规则 JSON", "language": "json", "minRows": 4, "description": "仅填写业务字段映射，不要放凭据或 token。"},
+                {"type": "textarea", "name": "startOptionsJson", "label": "发起参数声明 JSON", "language": "json", "minRows": 4, "description": "声明表单字段和发起约束；仅支持 JSON 对象。"},
+                {"type": "textarea", "name": "actionMappingsJson", "label": "动作映射 JSON", "language": "json", "minRows": 4, "description": "RESULT_ONLY 不填写；不得放凭据或 token。"},
+                {"type": "textarea", "name": "resultMappingsJson", "label": "结果映射 JSON", "language": "json", "minRows": 4, "description": "覆盖 RUNNING、APPROVED、REJECTED、CANCELED、ERROR。"},
+                {"type": "textarea", "name": "callbackJson", "label": "回调配置 JSON", "language": "json", "minRows": 4, "description": "仅填写回调 profile 和事件字段映射，不要放 secret。"},
+                {"type": "alert", "level": "warning", "body": "authority=OUROBOROS（镜像）时本地内置引擎仍负责执行，钉钉仅作为待办中心。", "visibleOn": "${authority == 'OUROBOROS'}"}
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "title": "通知渠道",
+  "fullName": "systemSetting.notificationChannel",
+  "icon": "fa fa-share-alt",
+  "url": "/system-setting/notification-channels",
+  "order": 21
+}

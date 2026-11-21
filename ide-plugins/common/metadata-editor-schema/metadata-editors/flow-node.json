@@ -1,0 +1,13 @@
+{
+  "editorId": "flow-node",
+  "editorName": "TideStack Flow Node Metadata Editor",
+  "editorNameKey": "customEditor.flowNode",
+  "metadataType": "flow-node",
+  "schemaName": "flow-node",
+  "viewType": "tidestack.metadataEditor.flowNode",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.flowNode",
+  "fileMatchPatterns": [
+    "*.flow-node.json"
+  ],
+  "priority": "default"
+}

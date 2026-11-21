@@ -1,0 +1,50 @@
+{
+  "id": "data/statistics-reporting-runtime-seed",
+  "title": "Statistics Reporting Runtime Seed",
+  "class": "data",
+  "capabilities": [
+    "statistics-dataset-seed",
+    "statistics-chart-seed",
+    "statistics-dashboard-business-model-seed",
+    "statistics-rbac-seed"
+  ],
+  "lifecycle": {
+    "up": "shell: bash testing/common/fixtures/data/statistics-reporting-runtime-seed/prepare.sh --up",
+    "check": "shell: bash testing/common/fixtures/data/statistics-reporting-runtime-seed/prepare.sh --check",
+    "reset": "shell: bash testing/common/fixtures/data/statistics-reporting-runtime-seed/prepare.sh --reset",
+    "down": ""
+  },
+  "inputs": [
+    {
+      "name": "appRoot",
+      "required": false,
+      "description": "Application metadata root used by the seed lifecycle.",
+      "sources": [
+        {"kind": "env", "name": "OB_TEST_APP_ROOT"},
+        {"kind": "repo", "name": "app-metadata", "label": "--repo app-metadata=/abs/path/to/repo"}
+      ]
+    }
+  ],
+  "outputs": [
+    {"name": "seedType", "value": "statistics-reporting-runtime"},
+    {"name": "seedSpecFile", "value": "testing/common/fixtures/data/statistics-reporting-runtime-seed/seed-spec.json"},
+    {"name": "restrictedSeedSpecFile", "value": "testing/common/fixtures/data/statistics-reporting-runtime-seed/seed-spec-restricted.json"},
+    {"name": "datasetName", "value": "srt.sales.orders"},
+    {"name": "chartMetricName", "value": "sales-kpi-runtime-report"},
+    {"name": "chartTableName", "value": "sales-crosstab-runtime-report"},
+    {"name": "chartChartName", "value": "sales-trend-runtime-report"},
+    {"name": "dashboardName", "value": "sales-overview-runtime-dashboard"},
+    {"name": "evidenceRoot", "value": "tmp/testing-evidence/statistics-reporting-runtime-query-and-bi"}
+  ],
+  "healthChecks": [
+    {"name": "seed-spec-complete", "expect": "seed specification defines deterministic Dataset rows, Charts, and a dashboard business model"}
+  ],
+  "prerequisites": [
+    "The lifecycle script creates or updates definitions through supported platform APIs and metadata roots.",
+    "Seed rows cover multiple scope partitions so Dataset permissions can be validated."
+  ],
+  "notes": [
+    "Dashboard is a standard business model and only references chart widgets.",
+    "JDBC connection information and test fixture configuration remain on the development platform side."
+  ]
+}

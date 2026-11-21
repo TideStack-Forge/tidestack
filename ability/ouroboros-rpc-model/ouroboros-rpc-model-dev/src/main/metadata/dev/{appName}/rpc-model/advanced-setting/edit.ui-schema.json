@@ -1,0 +1,65 @@
+{
+  "name": "/dev/{appName}/rpc-model/advanced-setting/edit",
+  "schema": {
+    "type": "container",
+    "title": false,
+    "wrapWithPanel": false,
+    "body": [
+      {
+        "name": "retrySafe",
+        "type": "switch",
+        "label": "允许安全重试",
+        "description": "仅当接口明确只读或提供稳定幂等保证时开启。关闭时只发一次，重试次数和运行策略不能覆盖。"
+      },
+      {
+        "name": "retry",
+        "type": "script-editor",
+        "label": "重试次数",
+        "language": "rpc-template",
+        "codeResourceType": "rpc-model",
+        "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+        "codeSite": "rpc-model.retry",
+        "codePointer": "/retry",
+        "description": "支持 #{配置键} 引用配置值。"
+      },
+      {
+        "type": "input-group",
+        "label": "超时时间",
+        "className": "flex",
+        "body": [
+          {
+            "type": "script-editor",
+            "name": "timeout",
+            "inputClassName": "flex-auto",
+            "language": "rpc-template",
+            "codeResourceType": "rpc-model",
+            "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+            "codeSite": "rpc-model.timeout",
+            "codePointer": "/timeout",
+            "description": "支持 #{配置键} 引用配置值。"
+          },
+          {
+            "type": "button",
+            "label": "ms",
+            "className": "bg-gray-50"
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "type": "button",
+        "actionType": "cancel",
+        "label": "取消"
+      },
+      {
+        "type": "button",
+        "actionType": "submit",
+        "label": "确定",
+        "level": "primary",
+        "mergeData": true
+      }
+    ],
+    "mode": "horizontal"
+  }
+}

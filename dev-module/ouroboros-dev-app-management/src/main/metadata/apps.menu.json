@@ -1,0 +1,8 @@
+{
+  "url": "/dev/apps",
+  "fullName": "Apps",
+  "icon": "far fa-folder-open",
+  "title": "打开应用",
+  "placement": "main",
+  "order": -100
+}

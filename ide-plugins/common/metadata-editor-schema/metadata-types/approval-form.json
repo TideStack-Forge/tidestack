@@ -1,0 +1,72 @@
+{
+  "type": "approval-form",
+  "fileSuffix": ".approval-form.json",
+  "displayName": "自定义表单描述",
+  "sourcePathPatterns": [
+    "src/main/metadata/approval-form/**/*.approval-form.json",
+    "approval-form/**/*.approval-form.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/metadata",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.approval-form.json",
+    "fields": [
+      {
+        "name": "name",
+        "label": "表单标识",
+        "documentPath": [
+          "name"
+        ],
+        "required": true,
+        "defaultFromPath": "dot-name"
+      },
+      {
+        "name": "title",
+        "label": "表单名称",
+        "documentPath": [
+          "title"
+        ],
+        "required": true,
+        "defaultFromPath": "title"
+      }
+    ],
+    "document": {
+      "formatVersion": 1,
+      "name": "example",
+      "title": "示例表单",
+      "fields": []
+    }
+  },
+  "jsonSchemaFile": "schemas/approval-form.schema.json",
+  "editorSchema": {
+    "type": "form",
+    "title": false,
+    "actions": [],
+    "body": [
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "表单标识",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "title",
+        "label": "表单名称",
+        "required": true
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "说明"
+      },
+      {
+        "type": "json-editor",
+        "name": "fields",
+        "label": "字段描述"
+      }
+    ]
+  }
+}

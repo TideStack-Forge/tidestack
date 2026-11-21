@@ -1,0 +1,14 @@
+{
+  "name": "/system-setting/auth-clients",
+  "schema": {
+    "type": "page",
+    "title": "集成管理入口已迁移",
+    "body": {
+      "type": "button",
+      "label": "前往集成管理",
+      "actionType": "link",
+      "link": "/system-setting/integration-management",
+      "level": "primary"
+    }
+  }
+}

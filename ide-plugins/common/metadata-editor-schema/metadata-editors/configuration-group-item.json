@@ -1,0 +1,13 @@
+{
+  "editorId": "configuration-group-item",
+  "editorName": "TideStack Configuration Group Item Metadata Editor",
+  "editorNameKey": "customEditor.configurationGroupItem",
+  "metadataType": "configuration-group-item",
+  "schemaName": "configuration-group-item",
+  "viewType": "tidestack.metadataEditor.configurationGroupItem",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.configurationGroupItem",
+  "fileMatchPatterns": [
+    "*.config-group.json"
+  ],
+  "priority": "default"
+}

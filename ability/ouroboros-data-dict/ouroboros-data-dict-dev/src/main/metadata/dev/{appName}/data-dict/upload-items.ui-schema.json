@@ -1,0 +1,79 @@
+{
+  "name": "/dev/{appName}/data-dict/upload-items",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "body": [
+      {
+        "type": "export-excel-template",
+        "label": "下载字典项模板",
+        "filename": "字典项模板",
+        "exportColumns": [
+          "编码",
+          "标题",
+          "排序"
+        ],
+        "className": "mb-3",
+        "level": "primary"
+      },
+      {
+        "type": "input-excel",
+        "name": "excel",
+        "label": false,
+        "placeholder": "请拖拽字典项Excel文件到当前区域，注意：导入excel数据会覆盖之前的数据",
+        "onEvent": {
+          "change": {
+            "actions": [
+              {
+                "actionType": "setValue",
+                "componentId": "excelDataId",
+                "args": {
+                  "value": "${event.data.excel|pick:code~编码,label~标题,order~排序|addAttribute:extraProps:{}|addAttribute:hasChildren:false|addAttribute:children:[]|addAttribute:new:true}"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "hidden",
+        "id": "excelDataId",
+        "name": "items"
+      },
+      {
+        "type": "crud",
+        "syncLocation": false,
+        "headerToolbar": [],
+        "visibleOn": "${items}",
+        "columns": [
+          {
+            "name": "code",
+            "label": "编码"
+          },
+          {
+            "name": "label",
+            "label": "标题"
+          },
+          {
+            "name": "order",
+            "label": "排序"
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "type": "button",
+        "actionType": "cancel",
+        "label": "取消"
+      },
+      {
+        "type": "button",
+        "actionType": "submit",
+        "label": "确定",
+        "level": "primary",
+        "mergeData": true
+      }
+    ]
+  }
+}

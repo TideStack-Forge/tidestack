@@ -1,0 +1,25 @@
+{
+  "name": "/dev/{appName}/schedule/detail",
+  "schema": {
+    "type": "amis-schema",
+    "schemaId": "dev/{appName}/schedule/form",
+    "title": "",
+    "wrapWithPanel": false,
+    "initApi": {
+      "method": "get",
+      "url": "/api/dev/${appName}/schedule/${name}"
+    },
+    "mergeProps": {
+      "body": [
+        {},
+        {},
+        {},
+        {},
+        {
+          "type": "static-json"
+        }
+      ]
+    },
+    "static": true
+  }
+}

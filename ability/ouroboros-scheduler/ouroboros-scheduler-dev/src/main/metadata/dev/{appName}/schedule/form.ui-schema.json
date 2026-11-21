@@ -1,0 +1,55 @@
+{
+  "name": "/dev/{appName}/schedule/form",
+  "schema": {
+    "type": "form",
+    "title": "",
+    "wrapWithPanel": false,
+    "body": [
+      {
+        "type": "input-text",
+        "label": "名称",
+        "name": "name",
+        "required": true,
+        "validations": {
+          "isVariableName": true
+        },
+        "validationErrors": {
+          "isVariableName": "请输入合法的任务名（只能包含字母和数字，且不可以数字开头）"
+        }
+      },
+      {
+        "type": "textarea",
+        "label": "任务描述",
+        "name": "description"
+      },
+      {
+        "type": "input-text",
+        "label": "Cron表达式",
+        "placeholder": "请输入符合 Quartz 规范的 Cron 表达式",
+        "name": "cron",
+        "required": true,
+        "validations": {
+          "isCron": "quartz"
+        }
+      },
+      {
+        "type": "select",
+        "label": "逻辑流",
+        "name": "flowName",
+        "source": "get:/api/dev/${appName}/metadata/logic-flow",
+        "required": true,
+        "searchable": true
+      },
+      {
+        "type": "json-editor",
+        "label": "任务数据",
+        "id": "taskData",
+        "name": "data",
+        "value": {},
+        "pipeIn": "if (typeof value === 'object') return JSON.stringify(value); return value",
+        "pipeOut": "try {const v = JSON.parse(value); if (typeof v === 'object') return v;} catch(e) {} return value",
+        "validate": "try {const v = JSON.parse(value); if (typeof v !== 'object' || Array.isArray(value)) return '数据格式错误，必须为一个JSON对象'} catch(e) {return '数据格式错误'}"
+      }
+    ]
+  }
+}

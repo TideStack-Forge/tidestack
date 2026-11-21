@@ -1,0 +1,47 @@
+{
+  "name": "/dev/{appName}/rpc-model/advanced-setting/detail",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "static": true,
+    "wrapWithPanel": false,
+    "body": [
+      {
+        "name": "retrySafe",
+        "type": "switch",
+        "label": "允许安全重试",
+        "description": "仅当接口明确只读或提供稳定幂等保证时开启。关闭时只发一次，重试次数和运行策略不能覆盖。"
+      },
+      {
+        "name": "retry",
+        "type": "input-number",
+        "label": "重试次数",
+        "min": 0
+      },
+      {
+        "name": "timeout",
+        "type": "input-number",
+        "label": "超时时间",
+        "min": 0,
+        "unitOptions": [
+          "ms"
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "type": "button",
+        "actionType": "cancel",
+        "label": "取消"
+      },
+      {
+        "type": "button",
+        "actionType": "submit",
+        "label": "确定",
+        "level": "primary",
+        "mergeData": true
+      }
+    ],
+    "mode": "horizontal"
+  }
+}

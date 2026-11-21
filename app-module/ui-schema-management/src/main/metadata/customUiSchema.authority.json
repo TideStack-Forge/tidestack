@@ -1,0 +1,18 @@
+{
+  "fullName": "systemSetting.customUiSchema",
+  "title": "自定义界面",
+  "apis": [
+    "GET /api/sys/custom-ui-schema/{id}",
+    "POST /api/sys/custom-ui-schema",
+    "DELETE /api/sys/custom-ui-schema/{id}",
+    "PUT /api/sys/custom-ui-schema/{id}",
+    "GET /api/sys/custom-ui-schema",
+    "GET /api/sys/custom-ui-schema/{id}"
+  ],
+  "uiViews": [
+    "/system-setting/custom-ui-schema"
+  ],
+  "menuItems": [
+    "systemSetting.customUiSchema"
+  ]
+}

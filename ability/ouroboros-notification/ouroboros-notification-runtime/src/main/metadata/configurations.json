@@ -1,0 +1,13 @@
+[
+  {
+    "key": "notification.delivery.content-retention-days",
+    "label": "已完成通知内容保留天数",
+    "groupPath": "notification.delivery",
+    "description": "仅清理全部发送单元已成功或跳过的计划正文、完整地址和诊断内容；保留幂等键和投递结果。",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "int",
+    "defaultValue": 30,
+    "scope": "backend"
+  }
+]

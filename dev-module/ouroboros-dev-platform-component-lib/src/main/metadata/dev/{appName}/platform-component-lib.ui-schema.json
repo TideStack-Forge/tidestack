@@ -1,0 +1,101 @@
+{
+  "name": "/dev/{appName}/platform-component-lib",
+  "schema": {
+    "type": "page",
+    "title": "平台组件库",
+    "body": [
+      {
+        "type": "service",
+        "api": {
+          "method": "get",
+          "url": "/api/dev/${appName}/platform-component-lib"
+        },
+        "body": [
+          {
+            "type": "crud",
+            "id": "appComponentLibList",
+            "syncLocation": false,
+            "source": "${imports}",
+            "columns": [
+              {
+                "type": "text",
+                "label": "组件库名称",
+                "name": "name",
+                "inline": true,
+                "placeholder": "-"
+              },
+              {
+                "type": "operation",
+                "label": "操作",
+                "buttons": [
+                  {
+                    "type": "button",
+                    "label": "移除",
+                    "actionType": "ajax",
+                    "level": "link",
+                    "className": "text-danger",
+                    "confirmText": "确认要移除组件库 ${name} 吗？",
+                    "api": {
+                      "method": "delete",
+                      "url": "/api/dev/${appName}/platform-component-lib/${name}"
+                    }
+                  }
+                ],
+                "placeholder": "-"
+              }
+            ],
+            "headerToolbar": [
+              "reload",
+              {
+                "type": "button",
+                "label": "导入组件库",
+                "actionType": "dialog",
+                "level": "primary",
+                "align": "right",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "导入平台组件库",
+                  "body": {
+                    "type": "form",
+                    "api": {
+                      "method": "post",
+                      "url": "/api/dev/${appName}/platform-component-lib"
+                    },
+                    "body": [
+                      {
+                        "type": "select",
+                        "name": "name",
+                        "label": "选择组件库",
+                        "required": true,
+                        "source": {
+                          "method": "get",
+                          "url": "/api/platform-component-lib"
+                        },
+                        "valueField": "name",
+                        "labelField": "name",
+                        "menuTpl": "${name} <span class='text-secondary'>(v${version})</span>",
+                        "description": "从已安装的平台组件库中选择"
+                      },
+                      {
+                        "type": "alert",
+                        "level": "info",
+                        "body": "导入组件库后，您可以在页面设计器中使用该组件库提供的组件"
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "footerToolbar": [],
+            "mode": "table",
+            "placeholder": "暂无导入的组件库，请点击右上角\"导入组件库\"按钮"
+          }
+        ]
+      }
+    ],
+    "asideResizor": false,
+    "pullRefresh": {
+      "disabled": true
+    }
+  }
+}

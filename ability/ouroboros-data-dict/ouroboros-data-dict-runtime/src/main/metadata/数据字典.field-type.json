@@ -1,0 +1,56 @@
+{
+  "name": "数据字典",
+  "label": "数据字典",
+  "order": 300,
+  "dataType": {
+    "type": "DataDictItem",
+    "size": "32",
+    "dictName": "${dictName}"
+  },
+  "ui": {
+    "input": {
+      "type": "data-dict-picker",
+      "dataDictName": "${dictName}",
+      "selectorType": "${selectorType}"
+    }
+  },
+  "validations": {},
+  "paramsUiSchema": [
+    {
+      "label": "字典名称",
+      "type": "select",
+      "name": "dictName",
+      "searchable": true,
+      "source": "/api/sys/data-dict"
+    },
+    {
+      "label": "选择模式",
+      "type": "select",
+      "name": "selectorType",
+      "options": [
+        {
+          "label": "树形下拉框",
+          "value": "tree-select"
+        },
+        {
+          "label": "下拉框",
+          "value": "select"
+        },
+        {
+          "label": "单选按钮",
+          "value": "radios"
+        },
+        {
+          "label": "列表选择",
+          "value": "list-select"
+        },
+        {
+          "label": "按钮组",
+          "value": "button-group-select"
+        }
+      ],
+      "value": "tree-select",
+      "required": true
+    }
+  ]
+}

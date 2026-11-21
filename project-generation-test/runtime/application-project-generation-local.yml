@@ -1,0 +1,15 @@
+spring:
+  config:
+    import: "${PROJECT_GENERATION_DEBUG_CONFIG}"
+
+ouroboros:
+  dev:
+    project-generation:
+      local-template-catalog:
+        enabled: true
+        root: "${PROJECT_GENERATION_REPO_ROOT}/project-templates"
+        catalog: "${PROJECT_GENERATION_REPO_ROOT}/project-templates/dist/catalog/stable-catalog.json"
+        artifact-root: "${PROJECT_GENERATION_REPO_ROOT}/project-templates/dist/artifacts"
+        cache: "${PROJECT_GENERATION_REPO_ROOT}/tmp/project-generation-template-cache"
+        template-origin: https://templates.example.invalid
+        target-platform-version: 2.0.0

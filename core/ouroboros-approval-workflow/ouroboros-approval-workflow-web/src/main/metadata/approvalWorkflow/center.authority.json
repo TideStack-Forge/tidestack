@@ -1,0 +1,27 @@
+{
+  "fullName": "approvalCenter",
+  "title": "审批中心",
+  "apis": [
+    "GET /api/approval-workflow/task/todo",
+    "GET /api/approval-workflow/task/finished",
+    "GET /api/approval-workflow/instance/{instanceId}/timeline",
+    "GET /api/approval-workflow/task/{id}/task-form-schema",
+    "GET /api/approval-workflow/dynamic-form/bindings",
+    "GET /api/approval-workflow/dynamic-form/history",
+    "GET /api/approval-workflow/task/{taskId}/transfer-targets",
+    "GET /api/approval-workflow/task/{taskId}/add-sign-targets",
+    "GET /api/approval-workflow/task/{taskId}/free-reject-targets",
+    "GET /api/approval-workflow/task/{taskId}/free-approval-targets",
+    "GET /api/approval-workflow/task/{taskId}/reject-targets",
+    "GET /api/approval-workflow/task/{taskId}/recovery-targets",
+    "POST /api/approval-workflow/instance/{id}/withdraw",
+    "POST /api/approval-workflow/task/{id}",
+    "GET /api/approval-workflow/instance/{instanceId}/info"
+  ],
+  "uiViews": [
+    "/approval-center"
+  ],
+  "menuItems": [
+    "approvalCenter"
+  ]
+}

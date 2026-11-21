@@ -1,0 +1,8 @@
+{
+  "fullName": "systemSetting.userProfile.configure",
+  "title": "管理用户资料规则",
+  "delegable": false,
+  "apis": [],
+  "uiViews": [],
+  "menuItems": []
+}

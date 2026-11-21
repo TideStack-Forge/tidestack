@@ -1,0 +1,34 @@
+[
+  {
+    "key": "logicflow.runtimeObservation.policies",
+    "label": "逻辑流观测策略",
+    "groupPath": "logicflow.observation",
+    "scope": "backend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "map",
+    "defaultValue": "{}",
+    "managementEntry": "/system-setting/logicflows",
+    "managementAccessPolicyRequired": true
+  },
+  {
+    "key": "logicflow.runtimeObservation.metricRetentionHours",
+    "label": "统计保留小时数",
+    "groupPath": "logicflow.observation",
+    "scope": "backend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "int",
+    "defaultValue": "24"
+  },
+  {
+    "key": "logicflow.runtimeObservation.runRetentionHours",
+    "label": "诊断样本保留小时数",
+    "groupPath": "logicflow.observation",
+    "scope": "backend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "int",
+    "defaultValue": "1"
+  }
+]

@@ -1,0 +1,11 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+
+ouroboros:
+  security:
+    accessTokenExpire: 3600
+    refreshTokenExpire: 86400
+    extraProperties:
+

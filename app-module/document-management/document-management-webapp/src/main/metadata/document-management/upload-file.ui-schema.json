@@ -1,0 +1,28 @@
+{
+  "name": "/document-management/upload-file",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "api": {
+      "method": "post",
+      "url": "/api/document-libraries/${libraryId}/directories/${directoryId}/upload",
+      "messages": {
+        "success": "文件上传成功"
+      }
+    },
+    "body": [
+      {
+        "type": "input-file",
+        "name": "file",
+        "label": "选择文件",
+        "required": true,
+        "accept": "*",
+        "asBlob": true,
+        "drag": true,
+        "multiple": true,
+        "fileField": "files",
+        "description": "请选择要上传的文件"
+      }
+    ]
+  }
+}

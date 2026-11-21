@@ -1,0 +1,331 @@
+---
+sidebar_position: 1
+title: 数据查询 DSL
+toc_min_heading_level: 2
+toc_max_heading_level: 3
+---
+
+# 数据查询 DSL
+
+Java 代码优先通过 `DataModel.query()` 或 `TypedDataModel.query()` 链式构造查询。构造器产出下文介绍的 Map/List DSL，并复用模型现有的查询执行链。脚本和前端仍可直接使用 Map/List。
+
+## Java 链式查询
+
+### 从模型构造并执行
+
+```java
+import static com.ouroboros.data.dsl.query.Query.field;
+import static com.ouroboros.data.dsl.query.Query.populate;
+
+var result = dataModel.query()
+    .select(field("id"), field("name"))
+    .where(field("status").eq("ENABLED"), field("age").gte(18))
+    .populate(populate("department").select("id", "name"))
+    .clause("ORDER", Map.of("name", "asc"))
+    .clause("OFFSET", 0)
+    .clause("LIMIT", 20)
+    .execute();
+
+if (result.isFailure()) {
+  throw new IllegalStateException("查询用户失败", result.getCause());
+}
+var records = result.get();
+```
+
+无参 `query()` 创建构造器，`execute()` 才执行查询。`DataModel` 返回 `Try<RecordList>`；`TypedDataModel<PK, M>` 使用相同的链式方法，返回 `Try<List<M>>`。
+
+| 方法 | 用途 |
+| ---- | ---- |
+| `select(...)` | 接受字段表达式、字符串、集合、数组、Map 或 `SExpression` |
+| `where(...)` | 设置过滤条件；多个 `QueryCondition` 默认 AND，再次调用会替换原条件 |
+| `andWhere(...)` / `orWhere(...)` | 向已有条件追加 AND / OR 条件 |
+| `populate(...)` | 填充关联字段，支持字符串、集合、Map 和嵌套 `PopulateSpec` |
+| `clause(name, value)` / `clauses(map)` | 设置 ORDER、OFFSET、LIMIT、OMIT、JOIN、GROUP 等现有查询子句 |
+| `build()` | 返回查询 Map，不执行查询 |
+| `execute()` | 在绑定的模型视图上执行查询 |
+
+`where(...)` 也接受原始 Map/List 条件。动态条件可以收集为 `List<QueryCondition>` 后传给 `where(conditions)`；空集合表示不设置 WHERE，`null` 会报错。`field("age").in(18, 21)` 接受可变参数；已有值列表应先转成数组，例如 `field("age").in(ages.toArray())`。
+
+`Query.field` 提供 `eq`、`ne`、`gt`、`gte`、`lt`、`lte`、`in`、`contains`、`startsWith`、`endsWith` 和 `between`。需要其他已有操作符时，使用原始 WHERE DSL；例如 `.where(Map.of("name", Map.of("$like", "A%")))` 保留 SQL LIKE 模式语义。
+
+### 只构造查询语句
+
+调用服务接口需要传递 Map 时，使用 `Query.from(modelName)`：
+
+```java
+import com.ouroboros.data.dsl.query.Query;
+
+Map<String, Object> statement = Query.from("User")
+    .select(List.of("id", "name"))
+    .where(field("status").eq("ENABLED"))
+    .clause("LIMIT", 20)
+    .build();
+
+var result = dataModel.query(statement);
+```
+
+`Query.from(...)` 没有绑定运行时模型，只能构造语句，不能直接 `execute()` 或切换插件。需要执行时，优先从目标模型的 `query()` 开始。
+
+### 配合插件视图使用
+
+在模型上切换插件后再调用 `query()`，以及在构造器内切换插件，都会通过模型已有的插件视图机制执行：
+
+```java
+var result = dataModel.query()
+    .withoutPlugins("Probe")
+    .withPlugins(new PluginDescriptor("BasicAudit"))
+    .where(field("status").eq("ENABLED"))
+    .execute();
+
+var resultWithoutPlugins = dataModel.withoutPlugins()
+    .query()
+    .where(field("status").eq("ENABLED"))
+    .execute();
+```
+
+`withoutPlugins("名称")` 移除指定插件，`withoutPlugins()` 移除全部插件。两种入口对 `TypedDataModel` 也适用。`withPlugins(...)` 追加插件的顺序、同名插件处理等规则沿用模型自身的约定。
+
+插件切换只作用于当前构造器所持有的模型视图，不会修改原模型或其他查询。构造器本身会随链式调用改变状态，每次查询应重新调用 `query()`。执行仍进入 `query(Map)`，经规范化后进入插件链。
+
+`build()` 只返回查询子句，**不携带插件视图**。如果先切换插件再 `build()`，随后交给另一个模型的 `query(map)`，实际使用的是接收模型的插件。需要保留构造器选择的插件时，直接调用其 `execute()`。
+
+### 从旧 builders 迁移
+
+`ouroboros-data-builders` 中的 `QueryBuilder`、`WhereBuilder`、`ModelMetaBuilder` 及其嵌套构造器均已弃用。查询构造能力在 `ouroboros-data-core`，类型化入口在 `ouroboros-data-typed-core`，无需依赖旧 builders 模块。
+
+| 旧写法 | 当前写法 |
+| ------ | -------- |
+| `QueryBuilder.create("User")` | `Query.from("User")`，或已持有模型时使用 `dataModel.query()` |
+| `.select("id", "name")` | `.select(field("id"), field("name"))` 或 `.select(List.of("id", "name"))` |
+| `WhereBuilder.create().and().eq("name", name).end().build()` | `field("name").eq(name).toRawCondition()`；传给 `where` 时可直接使用条件对象 |
+| `.orderBy("name", "desc")` | `.clause("ORDER", Map.of("name", "desc"))` |
+| `.offset(20).limit(10)` | `.clause("OFFSET", 20).clause("LIMIT", 10)` |
+
+`ModelMetaBuilder` 用于定义模型元数据，迁移时直接使用 `DataModelMeta`、`DataModelFieldMeta` 的属性接口，或用 `DataMaps.tryToBean(DataModelMeta.class, metadataMap)` 解析模型定义；查询构造器不承担模型定义职责。
+
+## Map/List 查询结构
+
+使用 Map/List 描述字段、条件、排序、分页和关联，把语句传给 `DataModel.query(statement)`。
+
+以下示例假设已定义 `crm.Order` 模型，包含 `id`、`status`、`amount`、`createdAt` 等字段。关联示例还要求模型中定义了对应关系。模型查询使用模型字段名，不使用数据库列名。
+
+## 查询一页数据
+
+Groovy 脚本可直接执行：
+
+```groovy
+def orders = DataModelCenter.get('crm.Order')
+if (orders == null) {
+    Exceptions.business('订单模型不可用')
+}
+def rows = orders.query([
+    select: ['id', 'amount'],
+    where: [status: 'OPEN', amount: [greaterThanOrEqual: 100]],
+    order: [createdAt: 'DESC', id: 'ASC'],
+    skip: 0,
+    limit: 20
+]).get()
+rows
+```
+
+`.get()` 取出 `Try` 中的结果，查询失败时抛出异常。需要总数时，单独调用 `orders.count(where).get()`，不要把当前页长度当作总数。
+
+## 查询语句字段
+
+| 字段 | 常用值 | 用途 |
+| --- | --- | --- |
+| `select` | `['id', 'amount']` | 返回字段或表达式 |
+| `omit` | `['internalNote']` | 从模型查询中排除字段 |
+| `where` | `[status: 'OPEN']` | 过滤条件 |
+| `order` | `[createdAt: 'DESC', id: 'ASC']` | 排序 |
+| `skip` / `offset` | `0` | 跳过条数，两者等价 |
+| `limit` | `20` | 返回条数 |
+| `populate` | `['customer']` | 填充已定义的关联字段，限模型查询 |
+| `distinct` | `true` | 去重 |
+| `from` | `'crm.Order'` 或 `[o: 'crm.Order']` | 数据来源；在模型上查询时可省略 |
+| `join` / `leftJoin` 等 | 关联定义 | 连接数据源 |
+| `group` / `having` | 分组字段 / 条件 | 聚合查询 |
+| `union` / `unionAll` | 查询列表 | 合并结果，后者保留重复行 |
+
+关键字不区分大小写。复杂连接、聚合和集合查询的执行能力取决于目标数据适配器，应在应用使用的数据源上验证。
+
+## SELECT：字段和别名
+
+```groovy
+def statement = [
+    select: ['id', [orderAmount: 'amount']],
+    where: [status: 'OPEN']
+]
+```
+
+别名写作 `[返回名称: '模型字段']`。省略 `select` 时使用模型默认投影；只需要少量字段时明确列出字段。
+
+聚合字段用列表表达式：
+
+```groovy
+def statement = [
+    select: ['status', [count: ['count', ['id']]]],
+    group: ['status'],
+    having: ['>', ['count', ['id']], 10]
+]
+```
+
+## WHERE：过滤条件 {#4-where-子句}
+
+### 等值、范围和集合
+
+同一 Map 中多个字段默认按 `AND` 组合。
+
+```groovy
+def where = [
+    status: 'OPEN',
+    amount: [greaterThanOrEqual: 100, lessThan: 1000],
+    departmentId: ['sales', 'support']
+]
+```
+
+字段对应列表时表示 `IN`。用 `notIn` 表示排除集合：
+
+```groovy
+def where = [status: [notIn: ['CLOSED', 'CANCELLED']]]
+```
+
+| 常用操作符 | 常见等价写法 | 含义 |
+| --- | --- | --- |
+| `equal` | `=`, `==`, `eq` | 等于 |
+| `notEqual` | `!=`, `<>`, `ne` | 不等于 |
+| `greaterThan` | `>`, `gt` | 大于 |
+| `greaterThanOrEqual` | `>=`, `gte` | 大于等于 |
+| `lessThan` | `<`, `lt` | 小于 |
+| `lessThanOrEqual` | `<=`, `lte` | 小于等于 |
+| `between` | — | 闭区间 |
+| `in` / `notIn` | — | 属于 / 不属于集合 |
+| `like` / `notLike` | — | 使用匹配模式 |
+| `startsWith` / `endsWith` | — | 前缀 / 后缀匹配 |
+| `isNull` / `isNotNull` | — | 空值 / 非空值 |
+
+操作符不区分大小写。`like` 的 `%` 等模式字符按目标数据源的匹配规则解释。
+
+```groovy
+def range = [amount: [between: [100, 1000]]]
+def prefix = [code: [startsWith: 'ORD-']]
+```
+
+### AND、OR 和 NOT
+
+```groovy
+def where = [
+    status: 'OPEN',
+    or: [
+        [departmentId: 'sales'],
+        [amount: [greaterThan: 10000]]
+    ]
+]
+```
+
+结果为 `status = OPEN AND (departmentId = sales OR amount > 10000)`。显式组合可使用 `and`、`or`、`not`，也支持 `xor`、`xnor`。
+
+```groovy
+def where = [not: [status: 'CLOSED', departmentId: 'sales']]
+```
+
+上例对整个内部条件取反，即 `NOT (status = CLOSED AND departmentId = sales)`。
+
+### 字段比较和空值：S 表达式
+
+S 表达式写作 `['操作符', 参数1, 参数2, ...]`。字段用列表表示，字符串常量直接写字符串：
+
+```groovy
+// 比较两个字段，而不是把 updatedAt 当成字符串常量。
+def changed = ['!=', ['createdAt'], ['updatedAt']]
+def missing = ['isNull', ['approvedAt']]
+def expensive = ['>', ['amount'], 1000]
+```
+
+Map 条件与 S 表达式可以组合：
+
+```groovy
+def where = ['and', [status: 'OPEN'], ['>', ['amount'], 1000]]
+```
+
+`[createdAt: 'updatedAt']` 表示字段等于字符串常量，不表示两个字段相等。
+
+## 排序与分页
+
+```groovy
+def statement = [
+    order: [[createdAt: 'DESC'], [id: 'ASC']],
+    skip: 20,
+    limit: 20
+]
+```
+
+也支持 `'createdAt DESC'`、`['createdAt DESC', 'id ASC']` 等排序形式。分页时应包含稳定排序，必要时增加主键作为第二排序字段。
+
+## POPULATE：关联数据
+
+```groovy
+def statement = [
+    select: ['id', 'customer'],
+    populate: [customer: [select: ['id', 'name']]],
+    limit: 20
+]
+```
+
+`customer` 必须是模型中已经定义的关联字段。只需默认关联投影时可写 `populate: ['customer']`。此语法用于模型查询，不能把任意数据库列当作关联字段。
+
+## JOIN、子查询和 UNION
+
+以下示例要求目标适配器支持对应查询，并已存在 `crm.Customer` 数据来源：
+
+```groovy
+def statement = [
+    from: [o: 'crm.Order'],
+    select: ['o.id', [customerName: 'c.name']],
+    leftJoin: [[c: 'crm.Customer', on: ['o.customerId': 'c.id']]],
+    where: ['=', ['o.status'], 'OPEN'],
+    limit: 20
+]
+```
+
+来源也可以是子查询，例如 `from: [o: [select: ['id'], from: 'crm.Order']]`。合并查询时，两边投影应兼容：
+
+```groovy
+def statement = [
+    select: ['id'], from: 'crm.Order', where: [status: 'OPEN'],
+    union: [[select: ['id'], from: 'crm.Order', where: [status: 'PENDING']]]
+]
+```
+
+## Java 查询构建器
+
+```java
+import static com.ouroboros.data.dsl.query.Query.field;
+import java.util.Map;
+import com.ouroboros.data.model.DataModelCenter;
+
+var orders = DataModelCenter.getDataModel("crm.Order")
+    .orElseThrow(() -> new IllegalStateException("订单模型不可用"));
+var rows = orders.query()
+    .select(field("id"), field("amount"))
+    .where(field("status").eq("OPEN"))
+    .clause("order", Map.of("id", "ASC"))
+    .clause("limit", 20)
+    .execute().get();
+```
+
+`build()` 只返回 Map 语句，`execute()` 执行并返回 `Try<RecordList>`。`where` 设置条件，`andWhere/orWhere` 追加组合条件；`clause(name, value)` 设置排序、分页等其他语句字段。强类型模型同样提供 `query()` 入口。
+
+## 增删改使用模型接口
+
+常规业务写入直接传数据和条件，不需要自行拼接 `insert/update/delete` 语句：
+
+```groovy
+orders.insert([id: 'order-001', status: 'OPEN', amount: 100]).get()
+orders.update('order-001', [status: 'CLOSED']).get()
+orders.delete('order-001').get()
+```
+
+这些调用会执行模型配置的校验和插件。构建查询时只接收业务允许的字段和操作符，数据权限按应用接口契约处理；不要将外部输入直接拼为 SQL 字符串。
+
+完整读写方法见 [DataModel](../data-model/data-model/)，脚本全局对象见 [脚本上下文](../script-context/)。

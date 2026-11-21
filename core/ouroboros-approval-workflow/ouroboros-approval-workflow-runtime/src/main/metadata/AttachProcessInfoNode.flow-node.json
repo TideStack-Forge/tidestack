@@ -1,0 +1,71 @@
+{
+  "type": "attachProcessInfo",
+  "label": "附加工作流信息",
+  "icon": "approval-attach-process-info",
+  "svgs": {
+    "approval-attach-process-info": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3H4v18h8M8 7h3M8 11h2M17 3v4m0 10v4M13 7h8v10h-8zM11 13h2\"/></g></svg>"
+  },
+  "shape": "rect",
+  "description": "通过审批流运行时服务为业务模型列表记录附加流程实例与当前任务信息",
+  "group": "审批流",
+  "order": 5004,
+  "scaffold": {
+    "type": "attachProcessInfo",
+    "name": "附加工作流信息",
+    "moduleName": "",
+    "modelPath": "",
+    "processId": "",
+    "attachCurrentNodesInfo": true,
+    "inputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "any"
+      }
+    ],
+    "outputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "any"
+      }
+    ],
+    "businessRecordType": ""
+  },
+  "portRules": {
+    "input": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    },
+    "output": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    }
+  },
+  "properties": [
+    {
+      "type": "input-text",
+      "name": "processId",
+      "label": "流程定义 ID",
+      "required": true
+    },
+    {
+      "type": "input-text",
+      "name": "modelPath",
+      "label": "业务模型路径",
+      "required": true
+    },
+    {
+      "type": "input-text",
+      "name": "moduleName",
+      "label": "业务模块"
+    },
+    {
+      "type": "input-text",
+      "name": "businessRecordType",
+      "label": "业务记录类型"
+    }
+  ]
+}

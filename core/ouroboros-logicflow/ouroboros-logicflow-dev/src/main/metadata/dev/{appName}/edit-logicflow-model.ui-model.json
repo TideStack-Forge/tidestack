@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/logicflow-model/{fullName}",
+  "type": "amis",
+  "title": "编辑逻辑流"
+}

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>document-management</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>document-management-webapp</artifactId>
+    <name>Ouroboros Document Management Web Application</name>
+    <description>REST API Controllers for Document Management</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+        </dependency>
+
+
+        <!-- 文档管理服务层 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>document-management-service</artifactId>
+        </dependency>
+
+        <!-- 文档管理核心模块 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>document-management-core</artifactId>
+        </dependency>
+
+        <!-- Spring Boot Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Ouroboros Common Web -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>common-web</artifactId>
+        </dependency>
+
+        <!-- Ouroboros UI Model -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-ui-model-core</artifactId>
+        </dependency>
+
+        <!-- Ouroboros UI Schema -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-ui-model-schema</artifactId>
+        </dependency>
+
+        <!-- Exception Mapper -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>common-exception-mapper</artifactId>
+        </dependency>
+
+        <!-- Validation -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- 测试相关 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-web-security-core</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <release>21</release>
+                    <source>21</source>
+                    <target>21</target>
+                    <compilerArgs>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>vscode-only</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <release>21</release>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>intellij-idea-only</id>
+            <activation>
+                <property>
+                    <name>idea.maven.embedder.version</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <release>21</release>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

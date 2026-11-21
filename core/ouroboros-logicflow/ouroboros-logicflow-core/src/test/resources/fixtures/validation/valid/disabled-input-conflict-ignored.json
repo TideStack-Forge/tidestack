@@ -1,0 +1,83 @@
+{
+  "name": "disabled-input-conflict-ignored",
+  "description": "Disabled reconvergence should be ignored by input-port conflict validation",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "source",
+  "nodes": [
+    {
+      "name": "source",
+      "type": "const",
+      "description": "",
+      "dataType": "string",
+      "value": "returned"
+    },
+    {
+      "name": "earlyReturn",
+      "type": "return",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "string"
+        }
+      ],
+      "outputPorts": []
+    },
+    {
+      "name": "disabledLeft",
+      "type": "const",
+      "description": "",
+      "isEnabled": false,
+      "dataType": "map",
+      "value": {
+        "branch": "left"
+      }
+    },
+    {
+      "name": "disabledRight",
+      "type": "const",
+      "description": "",
+      "isEnabled": false,
+      "dataType": "map",
+      "value": {
+        "branch": "right"
+      }
+    },
+    {
+      "name": "disabledTarget",
+      "type": "mutex",
+      "description": "",
+      "isEnabled": false,
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "map"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "source",
+      "sourceOutputPort": 0,
+      "targetNode": "earlyReturn",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "disabledLeft",
+      "sourceOutputPort": 0,
+      "targetNode": "disabledTarget",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "disabledRight",
+      "sourceOutputPort": 0,
+      "targetNode": "disabledTarget",
+      "targetInputPort": 0
+    }
+  ]
+}

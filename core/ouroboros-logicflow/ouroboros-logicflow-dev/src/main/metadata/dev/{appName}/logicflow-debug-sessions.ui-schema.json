@@ -1,0 +1,91 @@
+{
+  "name": "/dev/{appName}/logicflow-debug-sessions",
+  "schema": {
+    "type": "page",
+    "title": "逻辑流调试会话",
+    "body": [
+      {
+        "type": "crud",
+        "name": "sessionList",
+        "id": "sessionList",
+        "api": {
+          "method": "get",
+          "url": "/api/dev/${appName}/logicflow/debug/sessions",
+          "responseData": {
+            "items": "${sessions}"
+          }
+        },
+        "interval": 5000,
+        "silentPolling": true,
+        "stopAutoRefreshWhen": "false",
+        "headerToolbar": [
+          {
+            "label": "刷新",
+            "icon": "fa fa-repeat",
+            "type": "button",
+            "actionType": "reload"
+          }
+        ],
+        "columns": [
+          {
+            "name": "sessionId",
+            "label": "会话ID",
+            "type": "text"
+          },
+          {
+            "name": "flowName",
+            "label": "逻辑流名称",
+            "type": "text"
+          },
+          {
+            "name": "startedAt",
+            "label": "开始时间",
+            "type": "datetime",
+            "format": "YYYY-MM-DD HH:mm:ss"
+          },
+          {
+            "name": "lastEventAt",
+            "label": "最后事件时间",
+            "type": "datetime",
+            "format": "YYYY-MM-DD HH:mm:ss"
+          },
+          {
+            "name": "status",
+            "label": "状态",
+            "type": "mapping",
+            "map": {
+              "ACTIVE": "<span class='label label-info'>运行中</span>",
+              "COMPLETED": "<span class='label label-success'>已完成</span>",
+              "FAILED": "<span class='label label-danger'>失败</span>"
+            }
+          },
+          {
+            "name": "eventCount",
+            "label": "事件数量",
+            "type": "text"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "buttons": [
+              {
+                "type": "button",
+                "label": "查看详情",
+                "level": "primary",
+                "actionType": "link",
+                "link": "/dev/${appName}/logicflow/debug/sessions/${sessionId}"
+              }
+            ]
+          }
+        ],
+        "footerToolbar": [
+          "statistics",
+          "pagination"
+        ],
+        "perPage": 20,
+        "loadDataOnce": false,
+        "syncLocation": false
+      }
+    ]
+  }
+}

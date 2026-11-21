@@ -1,0 +1,7 @@
+{
+  "url": "/system-setting/custom-ui-schema",
+  "fullName": "systemSetting.customUiSchema",
+  "name": "customUiSchema",
+  "title": "自定义界面",
+  "order": 999
+}

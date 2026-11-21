@@ -1,0 +1,6 @@
+# Reproducible distribution inputs are source files, not generated build output.
+!build/
+build/*
+!build/*.py
+!build/assets.json
+!build/dependencies.xml

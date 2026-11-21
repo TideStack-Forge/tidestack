@@ -1,0 +1,21 @@
+# Redis Pub/Sub Configuration Example
+# Copy to application.yml and adjust for your environment
+
+ouroboros:
+  websocket:
+    broker-type: redis-pubsub
+    redis:
+      topic-broadcast-channel: websocket:topic
+      user-broadcast-channel: websocket:user
+      session-broadcast-channel: websocket:session
+      registry-key-prefix: websocket:registry
+      registry-entry-ttl: 60s
+      heartbeat-interval: 20s
+
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      # password: your-redis-password
+      # database: 0

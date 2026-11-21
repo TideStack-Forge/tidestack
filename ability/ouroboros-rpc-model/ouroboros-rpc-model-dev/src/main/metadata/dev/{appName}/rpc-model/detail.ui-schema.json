@@ -1,0 +1,51 @@
+{
+  "name": "/dev/{appName}/rpc-model/detail",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "initApi": {
+      "url": "/api/dev/${appName}/rpc-model/${name}",
+      "method": "get"
+    },
+    "static": true,
+    "wrapWithPanel": false,
+    "body": {
+      "type": "amis-schema",
+      "schemaId": "/dev/{appName}/rpc-model/form-items"
+    },
+    "mode": "horizontal",
+    "actions": [
+      {
+        "type": "button",
+        "icon": "fa fa-play",
+        "actionType": "drawer",
+        "drawer": {
+          "type": "drawer",
+          "size": "xl",
+          "title": "调试 ${title}（${name}） 接口",
+          "url": "/dev/${appName}/rpc-model/edit",
+          "position": "right",
+          "width": "min(100vw, max(80vw, 720px))",
+          "closeOnOutside": false,
+          "closeOnEsc": true,
+          "onEvent": {
+            "cancel": {
+              "actions": [
+                {
+                  "actionType": "custom",
+                  "script": "if (!context.props.store.data.__rpcEditor?.allowClose) { event.preventDefault(); return doAction({actionType: \"rpc-close\", componentId: \"rpc-model-editor\"}); }"
+                }
+              ]
+            }
+          },
+          "body": {
+            "mergeProps": {
+              "initialTab": "test"
+            }
+          }
+        },
+        "label": "调试"
+      }
+    ]
+  }
+}

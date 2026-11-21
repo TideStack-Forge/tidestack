@@ -1,0 +1,124 @@
+{
+  "name": "/dev/{appName}/micro-web",
+  "schema": {
+    "type": "page",
+    "title": "微前端管理",
+    "initApi": {
+      "method": "get",
+      "url": "/api/app/${appName}/edit-access-entry"
+    },
+    "toolbar": [
+      {
+        "type": "button",
+        "actionType": "dialog",
+        "label": "生成项目",
+        "icon": "fa fa-download",
+        "level": "enhance",
+        "visibleOn": "${currentUserCanEdit}",
+        "dialog": {
+          "type": "dialog",
+          "title": "创建微前端项目",
+          "size": "lg",
+          "body": {
+            "type": "ui-schema",
+            "source": {
+              "method": "get",
+              "url": "/api/dev/${appName}/project-generation-form",
+              "data": {
+                "scope": "MICRO_FRONTEND"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "button",
+        "actionType": "dialog",
+        "label": "新建",
+        "icon": "fa fa-plus",
+        "level": "primary",
+        "dialog": {
+          "type": "dialog",
+          "title": "新建微前端",
+          "url": "/dev/${appName}/micro-web/add"
+        }
+      }
+    ],
+    "body": {
+      "type": "crud",
+      "name": "microWebList",
+      "api": "/api/dev/${appName}/micro-web",
+      "headerToolbar": [
+        "reload"
+      ],
+      "affixHeader": false,
+      "columns": [
+        {
+          "name": "name",
+          "label": "名称"
+        },
+        {
+          "name": "type",
+          "label": "类型",
+          "type": "mapping",
+          "map": {
+            "app": "<span class='label label-primary'>微前端应用</span>",
+            "parcels": "<span class='label label-success'>微前端组件</span>",
+            "library": "<span class='label label-default'>组件库</span>"
+          }
+        },
+        {
+          "name": "publicPath",
+          "label": "微前端路径"
+        },
+        {
+          "name": "description",
+          "label": "描述"
+        },
+        {
+          "name": "packagePath",
+          "label": "微前端包"
+        },
+        {
+          "type": "operation",
+          "label": "操作",
+          "buttons": [
+            {
+              "type": "button",
+              "label": "编辑",
+              "icon": "fa fa-edit",
+              "level": "primary",
+              "actionType": "dialog",
+              "dialog": {
+                "type": "dialog",
+                "title": "编辑微前端",
+                "url": "/dev/${appName}/micro-web/edit"
+              }
+            },
+            {
+              "type": "button",
+              "actionType": "ajax",
+              "label": "删除",
+              "icon": "fa fa-trash",
+              "level": "danger",
+              "confirmText": "您确认要删除${name}?",
+              "api": "delete:/api/dev/${appName}/micro-web/$name"
+            }
+          ]
+        }
+      ],
+      "footerToolbar": [
+        "statistics",
+        "pagination",
+        "switch-per-page"
+      ],
+      "perPageAvailable": [
+        10,
+        20,
+        50
+      ],
+      "loadDataOnce": true,
+      "alwaysShowPagination": true
+    }
+  }
+}

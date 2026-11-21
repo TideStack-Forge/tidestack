@@ -1,0 +1,71 @@
+{
+  "name": "non-terminal-leaf-error-scope",
+  "entryNode": "entry",
+  "exitNode": "exit",
+  "errorEntryNode": "errorEntry",
+  "nodes": [
+    {
+      "name": "entry",
+      "type": "const",
+      "dataType": "string",
+      "value": "ok"
+    },
+    {
+      "name": "exit",
+      "type": "mutex",
+      "inputPorts": [
+        {
+          "name": "input",
+          "dataType": "any"
+        }
+      ]
+    },
+    {
+      "name": "errorEntry",
+      "type": "const",
+      "dataType": "string",
+      "value": "err"
+    },
+    {
+      "name": "errorDangling",
+      "type": "mutex",
+      "inputPorts": [
+        {
+          "name": "input",
+          "dataType": "any"
+        }
+      ]
+    },
+    {
+      "name": "errorReturn",
+      "type": "return",
+      "inputPorts": [
+        {
+          "name": "value",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": []
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "entry",
+      "sourceOutputPort": 0,
+      "targetNode": "exit",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "errorEntry",
+      "sourceOutputPort": 0,
+      "targetNode": "errorDangling",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "errorEntry",
+      "sourceOutputPort": 0,
+      "targetNode": "errorReturn",
+      "targetInputPort": 0
+    }
+  ]
+}

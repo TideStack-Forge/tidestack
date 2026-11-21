@@ -1,0 +1,22 @@
+{
+  "fullName": "systemSetting.logicflow.read",
+  "title": "查看逻辑流",
+  "apis": [
+    "GET /api/runtime/logicflows/models",
+    "GET /api/runtime/logicflows/models/{name}",
+    "GET /api/runtime/logicflows/operations/{id}",
+    "GET /api/runtime/logicflows/instances",
+    "GET /api/runtime/logicflows/catalog/node-definitions",
+    "GET /api/runtime/logicflows/catalog/references/{kind}",
+    "GET /api/runtime/logicflows/models/{name}/observation-policy",
+    "GET /api/runtime/logicflows/models/{name}/observation-status",
+    "GET /api/runtime/logicflows/models/{name}/operations-view"
+  ],
+  "uiViews": [
+    "/system-setting/logicflows",
+    "/system-setting/logicflows/detail"
+  ],
+  "menuItems": [
+    "systemSetting.logicflow"
+  ]
+}

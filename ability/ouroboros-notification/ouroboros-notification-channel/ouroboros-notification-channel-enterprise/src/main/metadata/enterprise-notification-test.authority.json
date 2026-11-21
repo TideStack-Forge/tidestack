@@ -1,0 +1,6 @@
+{
+  "fullName": "systemSetting.integrationManagement.connections.notification.test",
+  "title": "测试企业通知",
+  "apis": ["POST /api/sys/enterprise-notifications/{channel}/test"],
+  "menuItems": ["systemSetting.integrationManagement"]
+}

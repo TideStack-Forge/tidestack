@@ -1,0 +1,19 @@
+{
+  "fullName": "systemSetting.dynamicForm.table",
+  "title": "动态表单-数据管理",
+  "apis": [
+    "GET /api/dynamic-form/{name}/data",
+    "GET /api/dynamic-form/{name}/data/{id}",
+    "POST /api/dynamic-form/{name}/data",
+    "PUT /api/dynamic-form/{name}/data/{id}",
+    "DELETE /api/dynamic-form/{name}/data/{id}",
+    "POST /api/dynamic-form/{name}/data/import"
+  ],
+  "uiViews": [
+    "/dynamic-form/form-page/{name}",
+    "/dynamic-form/form/{name}",
+    "/dynamic-form/table-page/{name}",
+    "/dynamic-form/table/{name}"
+  ],
+  "menuItems": []
+}

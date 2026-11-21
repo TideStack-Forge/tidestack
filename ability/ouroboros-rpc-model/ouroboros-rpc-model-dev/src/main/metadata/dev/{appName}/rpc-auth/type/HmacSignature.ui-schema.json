@@ -1,0 +1,231 @@
+{
+  "name": "/dev/{appName}/rpc-auth/type/HmacSignature",
+  "schema": {
+    "type": "wrapper",
+    "visibleOn": "${type === 'HmacSignature'}",
+    "body": [
+      {
+        "type": "fieldSet",
+        "title": "基础配置",
+        "collapsable": true,
+        "body": [
+          {
+            "type": "alert",
+            "level": "info",
+            "showIcon": true,
+            "body": "AK/SK 与临时安全令牌通常建议通过 #{配置项} 的方式引用基座配置。选择预设模式后，平台会按对应厂商规则自动完成规范化与签名，无需调用方手写 canonical request。"
+          },
+          {
+            "name": "hmacSignature.preset",
+            "type": "script-editor",
+            "label": "预设模式",
+            "required": true,
+            "description": "预设模式决定签名规则、规范化方式与默认注入字段。",
+            "language": "rpc-template",
+            "codeResourceType": "rpc-auth",
+            "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+            "codeSite": "rpc-auth.hmacSignature.preset",
+            "codePointer": "/hmacSignature/preset"
+          },
+          {
+            "name": "hmacSignature.accessKey",
+            "type": "script-editor",
+            "label": "Access Key",
+            "required": true,
+            "placeholder": "请输入 AK，建议通过 #{配置项} 的方式引用",
+            "language": "rpc-template",
+            "codeResourceType": "rpc-auth",
+            "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+            "codeSite": "rpc-auth.hmacSignature.accessKey",
+            "codePointer": "/hmacSignature/accessKey",
+            "description": "支持 #{配置键} 引用配置值。"
+          },
+          {
+            "name": "hmacSignature.secretKey",
+            "type": "script-editor",
+            "label": "Secret Key",
+            "required": true,
+            "placeholder": "请输入 SK，建议通过 #{配置项} 的方式引用",
+            "language": "rpc-template",
+            "codeResourceType": "rpc-auth",
+            "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+            "codeSite": "rpc-auth.hmacSignature.secretKey",
+            "codePointer": "/hmacSignature/secretKey",
+            "description": "支持 #{配置键} 引用配置值。"
+          },
+          {
+            "name": "hmacSignature.securityToken",
+            "type": "script-editor",
+            "label": "安全令牌",
+            "visibleOn": "${(hmacSignature.preset === 'aws_sigv4' || hmacSignature.preset === 'tencent_tc3' || hmacSignature.preset === 'huawei_sdk_hmac_sha256' || hmacSignature.preset === 'volcengine_hmac_sha256' || hmacSignature.preset === 'aliyun_acs3') || (hmacSignature.preset || \"\").indexOf(\"#{\") >= 0}",
+            "placeholder": "临时凭据场景可填写安全令牌，建议通过 #{配置项} 的方式引用",
+            "language": "rpc-template",
+            "codeResourceType": "rpc-auth",
+            "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+            "codeSite": "rpc-auth.hmacSignature.securityToken",
+            "codePointer": "/hmacSignature/securityToken",
+            "description": "支持 #{配置键} 引用配置值。"
+          }
+        ]
+      },
+      {
+        "type": "fieldSet",
+        "title": "签名范围",
+        "collapsable": true,
+        "visibleOn": "${(hmacSignature.preset === 'aws_sigv4' || hmacSignature.preset === 'tencent_tc3' || hmacSignature.preset === 'volcengine_hmac_sha256') || (hmacSignature.preset || \"\").indexOf(\"#{\") >= 0}",
+        "body": [
+          {
+            "name": "hmacSignature.region",
+            "type": "script-editor",
+            "label": "地域",
+            "placeholder": "例如 cn-hangzhou、ap-guangzhou、cn-north-1",
+            "description": "不同预设会按各自厂商规则使用 region。腾讯云场景可留空，由请求头决定是否参与签名。",
+            "language": "rpc-template",
+            "codeResourceType": "rpc-auth",
+            "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+            "codeSite": "rpc-auth.hmacSignature.region",
+            "codePointer": "/hmacSignature/region"
+          },
+          {
+            "name": "hmacSignature.service",
+            "type": "script-editor",
+            "label": "服务名",
+            "required": true,
+            "placeholder": "例如 ecs、cvm、execute-api、iam",
+            "language": "rpc-template",
+            "codeResourceType": "rpc-auth",
+            "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+            "codeSite": "rpc-auth.hmacSignature.service",
+            "codePointer": "/hmacSignature/service",
+            "description": "支持 #{配置键} 引用配置值。"
+          }
+        ]
+      },
+      {
+        "type": "fieldSet",
+        "title": "业务字段",
+        "collapsable": true,
+        "visibleOn": "${(hmacSignature.preset === 'tencent_tc3' || hmacSignature.preset === 'aliyun_acs3' || hmacSignature.preset === 'aliyun_rpc_v1') || (hmacSignature.preset || \"\").indexOf(\"#{\") >= 0}",
+        "body": [
+          {
+            "name": "hmacSignature.action",
+            "type": "script-editor",
+            "label": "Action",
+            "visibleOn": "${(hmacSignature.preset === 'tencent_tc3' || hmacSignature.preset === 'aliyun_acs3' || hmacSignature.preset === 'aliyun_rpc_v1') || (hmacSignature.preset || \"\").indexOf(\"#{\") >= 0}",
+            "placeholder": "可直接写固定 Action；若留空，必须由请求头或请求参数提供",
+            "language": "rpc-template",
+            "codeResourceType": "rpc-auth",
+            "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+            "codeSite": "rpc-auth.hmacSignature.action",
+            "codePointer": "/hmacSignature/action",
+            "description": "支持 #{配置键} 引用配置值。"
+          },
+          {
+            "name": "hmacSignature.version",
+            "type": "script-editor",
+            "label": "Version",
+            "visibleOn": "${(hmacSignature.preset === 'tencent_tc3' || hmacSignature.preset === 'aliyun_acs3' || hmacSignature.preset === 'aliyun_rpc_v1') || (hmacSignature.preset || \"\").indexOf(\"#{\") >= 0}",
+            "placeholder": "可直接写固定版本；若留空，必须由请求头或请求参数提供",
+            "language": "rpc-template",
+            "codeResourceType": "rpc-auth",
+            "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+            "codeSite": "rpc-auth.hmacSignature.version",
+            "codePointer": "/hmacSignature/version",
+            "description": "支持 #{配置键} 引用配置值。"
+          },
+          {
+            "name": "hmacSignature.nonce",
+            "type": "script-editor",
+            "label": "Nonce",
+            "visibleOn": "${(hmacSignature.preset === 'aliyun_acs3' || hmacSignature.preset === 'aliyun_rpc_v1') || (hmacSignature.preset || \"\").indexOf(\"#{\") >= 0}",
+            "placeholder": "留空时优先使用请求内已有 nonce，再由平台自动生成",
+            "language": "rpc-template",
+            "codeResourceType": "rpc-auth",
+            "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+            "codeSite": "rpc-auth.hmacSignature.nonce",
+            "codePointer": "/hmacSignature/nonce",
+            "description": "支持 #{配置键} 引用配置值。"
+          }
+        ]
+      },
+      {
+        "type": "fieldSet",
+        "title": "高级选项",
+        "collapsable": true,
+        "body": [
+          {
+            "type": "alert",
+            "level": "info",
+            "showIcon": true,
+            "body": "signedHeaders.include / exclude 适用于第三方网关变体或代理层需要调整签名头范围的场景；通常保持默认即可。"
+          },
+          {
+            "name": "hmacSignature.payloadHashMode",
+            "type": "script-editor",
+            "label": "Payload Hash 模式",
+            "visibleOn": "${(hmacSignature.preset === 'aws_sigv4') || (hmacSignature.preset || \"\").indexOf(\"#{\") >= 0}",
+            "value": "auto",
+            "description": "仅 AWS SigV4 支持该选项。",
+            "language": "rpc-template",
+            "codeResourceType": "rpc-auth",
+            "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+            "codeSite": "rpc-auth.hmacSignature.payloadHashMode",
+            "codePointer": "/hmacSignature/payloadHashMode"
+          },
+          {
+            "name": "hmacSignature.signedHeaders.include",
+            "type": "input-array",
+            "label": "附加签名头",
+            "visibleOn": "${(hmacSignature.preset === 'aws_sigv4' || hmacSignature.preset === 'tencent_tc3' || hmacSignature.preset === 'huawei_sdk_hmac_sha256' || hmacSignature.preset === 'volcengine_hmac_sha256' || hmacSignature.preset === 'aliyun_acs3') || (hmacSignature.preset || \"\").indexOf(\"#{\") >= 0}",
+            "items": {
+              "type": "script-editor",
+              "clearable": false,
+              "placeholder": "例如 x-trace-id",
+              "language": "rpc-template",
+              "codeResourceType": "rpc-auth",
+              "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+              "codeSite": "rpc-auth.hmacSignature.signedHeaders.include",
+              "codePointer": "/hmacSignature/signedHeaders/include/*"
+            }
+          },
+          {
+            "name": "hmacSignature.signedHeaders.exclude",
+            "type": "input-array",
+            "label": "排除签名头",
+            "visibleOn": "${(hmacSignature.preset === 'aws_sigv4' || hmacSignature.preset === 'tencent_tc3' || hmacSignature.preset === 'huawei_sdk_hmac_sha256' || hmacSignature.preset === 'volcengine_hmac_sha256' || hmacSignature.preset === 'aliyun_acs3') || (hmacSignature.preset || \"\").indexOf(\"#{\") >= 0}",
+            "items": {
+              "type": "script-editor",
+              "clearable": false,
+              "placeholder": "例如 x-debug-header",
+              "language": "rpc-template",
+              "codeResourceType": "rpc-auth",
+              "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+              "codeSite": "rpc-auth.hmacSignature.signedHeaders.exclude",
+              "codePointer": "/hmacSignature/signedHeaders/exclude/*"
+            }
+          }
+        ]
+      },
+      {
+        "type": "fieldSet",
+        "title": "aliyun_rpc_v1 专属选项",
+        "collapsable": true,
+        "visibleOn": "${(hmacSignature.preset === 'aliyun_rpc_v1') || (hmacSignature.preset || \"\").indexOf(\"#{\") >= 0}",
+        "body": [
+          {
+            "name": "hmacSignature.aliyunRpcV1.signatureMethod",
+            "type": "script-editor",
+            "label": "签名算法",
+            "value": "HMAC-SHA1",
+            "description": "不配置时默认使用 HMAC-SHA1。",
+            "language": "rpc-template",
+            "codeResourceType": "rpc-auth",
+            "intelligenceApi": "/api/dev/${appName}/code-intelligence/context",
+            "codeSite": "rpc-auth.hmacSignature.aliyunRpcV1.signatureMethod",
+            "codePointer": "/hmacSignature/aliyunRpcV1/signatureMethod"
+          }
+        ]
+      }
+    ]
+  }
+}

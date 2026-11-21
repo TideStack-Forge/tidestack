@@ -1,0 +1,8 @@
+{
+  "fullName": "DataAndModels",
+  "icon": "fas fa-database",
+  "title": "数据与模型",
+  "placement": "main",
+  "stage": "dev",
+  "order": 30
+}

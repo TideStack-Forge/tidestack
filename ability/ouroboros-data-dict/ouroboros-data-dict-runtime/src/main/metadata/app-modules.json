@@ -1,0 +1,13 @@
+[
+  {
+    "name": "dataDictManagement",
+    "fullName": "systemSetting.dataDictManagement",
+    "title": "数据字典",
+    "menu": "systemSetting.dataDictManagement",
+    "authorities": [
+      "systemSetting.dataDictManagement"
+    ],
+    "order": 20,
+    "parent": "systemSetting.basicConfiguration"
+  }
+]

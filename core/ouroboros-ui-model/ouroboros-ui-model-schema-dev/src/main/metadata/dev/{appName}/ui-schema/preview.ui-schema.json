@@ -1,0 +1,18 @@
+{
+  "name": "/dev/{appName}/ui-schema/preview",
+  "schema": {
+    "type": "service",
+    "api": {
+      "method": "get",
+      "url": "/api/dev/${appName}/ui-schema/${name}"
+    },
+    "body": {
+      "type": "amis-schema-preview",
+      "source": "${schema}",
+      "frontendResourceRenderContext": {
+        "mode": "dev-app-workspace",
+        "appName": "${appName}"
+      }
+    }
+  }
+}

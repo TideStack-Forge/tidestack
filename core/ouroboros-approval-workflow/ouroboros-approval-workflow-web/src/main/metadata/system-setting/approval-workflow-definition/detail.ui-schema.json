@@ -1,0 +1,58 @@
+{
+  "name": "/system-setting/approval-workflow-definition/detail",
+  "schema": {
+    "type": "page",
+    "body": [
+      {
+        "type": "service",
+        "api": {
+          "method": "GET",
+          "url": "/api/approval-workflow/definition/${id}"
+        },
+        "body": [
+          {
+            "type": "card",
+            "header": {
+              "title": "基础信息"
+            },
+            "body": {
+              "type": "property",
+              "mode": "simple",
+              "column": 2,
+              "separator": "：",
+              "items": [
+                {
+                  "label": "流程标识",
+                  "content": "${name}"
+                },
+                {
+                  "label": "流程名称",
+                  "content": "${title}"
+                },
+                {
+                  "label": "流程分类",
+                  "content": "${category}"
+                },
+                {
+                  "label": "流程描述",
+                  "content": "${description ? description : '-'}"
+                }
+              ]
+            }
+          },
+          {
+            "type": "card",
+            "header": {
+              "title": "流程图"
+            },
+            "body": {
+              "type": "workflow-diagram-viewer",
+              "definition": "$$",
+              "height": 600
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

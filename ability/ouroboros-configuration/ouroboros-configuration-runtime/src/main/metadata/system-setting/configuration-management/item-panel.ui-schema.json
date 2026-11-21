@@ -1,0 +1,80 @@
+{
+  "name": "/system-setting/configuration-management/item-panel",
+  "schema": {
+    "type": "container",
+    "title": false,
+    "wrapWithPanel": false,
+    "body": [
+      {
+        "type": "tpl",
+        "tpl": "<div style='font-size: 20px; font-weight: 600;'>${label}</div><div style='color: #8c8c8c; margin-top: 8px;'>${key}</div>",
+        "style": {
+          "marginBottom": "16px"
+        }
+      },
+      {
+        "type": "property",
+        "title": "基本信息",
+        "column": 2,
+        "items": [
+          {
+            "label": "所属分组",
+            "content": "${groupPath || '未分组'}"
+          },
+          {
+            "label": "值类型",
+            "content": "${metadata.valueType}"
+          },
+          {
+            "label": "默认值",
+            "content": "${metadata.defaultValue || '无'}"
+          },
+          {
+            "label": "作用域",
+            "content": "${metadata.scope || '全局'}"
+          },
+          {
+            "label": "允许修改",
+            "content": "${metadata.modifiable === false ? '否' : '是'}"
+          },
+          {
+            "label": "允许为空",
+            "content": "${metadata.nullable ? '是' : '否'}"
+          },
+          {
+            "label": "已过时",
+            "content": "${metadata.obsolete ? '是' : '否'}"
+          },
+          {
+            "label": "过时原因",
+            "content": "${metadata.obsoleteCause || '无'}"
+          },
+          {
+            "label": "描述",
+            "content": "${metadata.description || '无'}",
+            "span": 2
+          }
+        ]
+      },
+      {
+        "type": "property",
+        "title": "最近一次修改",
+        "column": 2,
+        "items": [
+          {
+            "label": "更新时间",
+            "content": {
+              "type": "static-datetime",
+              "name": "configValue.updateAt",
+              "displayFormat": "YYYY-MM-DD HH:mm:ss"
+            }
+          },
+          {
+            "label": "更新人",
+            "content": "${configValue.updateBy || '无'}"
+          }
+        ]
+      }
+    ]
+  }
+}

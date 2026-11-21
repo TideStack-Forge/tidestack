@@ -1,0 +1,598 @@
+{
+  "name": "/system-setting/organization-management",
+  "schema": {
+    "type": "page",
+    "id": "organizationManagementPage",
+    "asideResizor": false,
+    "body": [
+      {
+        "type": "flex",
+        "className": "organization-management-container h-full w-full",
+        "items": [
+          {
+            "type": "wrapper",
+            "className": "organization-nav-wrapper flex-shrink-0 flex-grow-0 h-full flex flex-col",
+            "style": {
+              "width": "300px",
+              "minWidth": "250px",
+              "maxWidth": "400px",
+              "borderRight": "1px solid #e8e8e8",
+              "padding": "10px",
+              "overflow": "auto"
+            },
+            "body": [
+              {
+                "type": "flex",
+                "justify": "space-between",
+                "alignItems": "center",
+                "className": "flex-shrink-0 flex-grow-0",
+                "style": {
+                  "margin": "0 0 10px 0",
+                  "padding": "0 10px"
+                },
+                "items": [
+                  {
+                    "type": "tpl",
+                    "tpl": "<h4 style='margin: 0;'>组织架构</h4>"
+                  },
+                  {
+                    "type": "button",
+                    "icon": "fa fa-refresh",
+                    "level": "link",
+                    "size": "sm",
+                    "onEvent": {
+                      "click": {
+                        "actions": [
+                          {
+                            "actionType": "reload",
+                            "componentName": "organizationTree"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "input-tree",
+                "name": "organizationTree",
+                "className": "organization-tree-nav flex-grow mb-0",
+                "style": {
+                  "height": "calc(100% - 150px)"
+                },
+                "inputClassName": "h-full",
+                "heightAuto": true,
+                "source": {
+                  "method": "get",
+                  "url": "/api/organization/tree?includePositions=true"
+                },
+                "deferApi": {
+                  "method": "get",
+                  "url": "/api/organization/nodes/${value}/children"
+                },
+                "multiple": false,
+                "creatable": false,
+                "removable": false,
+                "editable": false,
+                "draggable": false,
+                "hideRoot": false,
+                "rootLabel": "组织架构",
+                "valueField": "id",
+                "labelField": "name",
+                "iconField": "icon",
+                "childrenField": "children",
+                "deferField": "defer",
+                "selectFirst": false,
+                "initiallyOpen": true,
+                "onlyLeaf": false,
+                "unfoldedLevel": 2,
+                "onEvent": {
+                  "change": {
+                    "actions": [
+                      {
+                        "actionType": "setValue",
+                        "componentId": "organizationManagementPage",
+                        "args": {
+                          "value": {
+                            "nodeId": "${value}",
+                            "nodeName": "${item.name}",
+                            "nodeType": "${item.type}",
+                            "nodeAdminLevel": "${item.adminLevel}",
+                            "nodeAdminLevelScope": "${item.adminLevelScope}"
+                          }
+                        }
+                      },
+                      {
+                        "actionType": "reload",
+                        "componentName": "employeeList"
+                      }
+                    ]
+                  },
+                  "nodeDeleted": {
+                    "actions": [
+                      {
+                        "actionType": "reload",
+                        "componentName": "organizationTree"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "flex",
+                "direction": "column",
+                "className": "flex-shrink-0 flex-grow-0",
+                "style": {
+                  "margin-top": "10px",
+                  "gap": "5px"
+                },
+                "items": [
+                  {
+                    "type": "button",
+                    "label": "${nodeId && nodeAdminLevelScope === 'ORG' ? '新增子组织' : '新增组织'}",
+                    "level": "primary",
+                    "size": "sm",
+                    "block": true,
+                    "icon": "fa fa-plus",
+                    "visibleOn": "${!nodeId || nodeAdminLevelScope === 'ORG'}",
+                    "actionType": "dialog",
+                    "reload": "organizationTree",
+                    "dialog": {
+                      "type": "dialog",
+                      "title": "${nodeId && nodeAdminLevelScope === 'ORG' ? (nodeName + ' - 新增子组织') : '新增组织'}",
+                      "url": "/system-setting/organization-management/add-company",
+                      "data": {
+                        "parentId": "${nodeAdminLevelScope === 'ORG' ? nodeId : ''}"
+                      }
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "label": "新增部门",
+                    "level": "default",
+                    "size": "sm",
+                    "block": true,
+                    "icon": "fa fa-plus",
+                    "visibleOn": "${nodeId && nodeAdminLevelScope}",
+                    "actionType": "dialog",
+                    "reload": "organizationTree",
+                    "dialog": {
+                      "type": "dialog",
+                      "title": "${parentName} - 新增部门",
+                      "url": "/system-setting/organization-management/add-department",
+                      "data": {
+                        "parentId": "${nodeId}",
+                        "parentName": "${nodeName}"
+                      }
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "label": "分配岗位",
+                    "level": "default",
+                    "size": "sm",
+                    "block": true,
+                    "icon": "fa fa-plus",
+                    "visibleOn": "${nodeId && nodeAdminLevelScope === 'DEPT'}",
+                    "actionType": "dialog",
+                    "reload": "organizationTree",
+                    "dialog": {
+                      "type": "dialog",
+                      "title": "${parentName} - 分配岗位",
+                      "size": "md",
+                      "url": "/system-setting/organization-management/add-position",
+                      "data": {
+                        "parentId": "${nodeId}",
+                        "parentName": "${nodeName}"
+                      }
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "label": "编辑岗位",
+                    "level": "default",
+                    "size": "sm",
+                    "block": true,
+                    "icon": "fa fa-pencil",
+                    "visibleOn": "${nodeId && nodeType === 'position'}",
+                    "actionType": "dialog",
+                    "reload": "organizationTree",
+                    "dialog": {
+                      "type": "dialog",
+                      "title": "编辑岗位",
+                      "size": "md",
+                      "body": {
+                        "type": "ui-schema",
+                        "schemaId": "/system-setting/organization-management/edit-position"
+                      },
+                      "data": {
+                        "id": "${nodeId}"
+                      }
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "label": "编辑部门",
+                    "level": "default",
+                    "size": "sm",
+                    "block": true,
+                    "icon": "fa fa-pencil",
+                    "visibleOn": "${nodeId && nodeType !== 'position' && nodeAdminLevelScope === 'DEPT'}",
+                    "actionType": "dialog",
+                    "reload": "organizationTree",
+                    "dialog": {
+                      "type": "dialog",
+                      "title": "编辑部门",
+                      "size": "md",
+                      "body": {
+                        "type": "ui-schema",
+                        "schemaId": "/system-setting/organization-management/edit-department"
+                      },
+                      "data": {
+                        "id": "${nodeId}"
+                      }
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "label": "编辑组织",
+                    "level": "default",
+                    "size": "sm",
+                    "block": true,
+                    "icon": "fa fa-pencil",
+                    "visibleOn": "${nodeId && nodeType !== 'position' && nodeAdminLevelScope === 'ORG'}",
+                    "actionType": "dialog",
+                    "reload": "organizationTree",
+                    "dialog": {
+                      "type": "dialog",
+                      "title": "编辑组织",
+                      "size": "md",
+                      "body": {
+                        "type": "ui-schema",
+                        "schemaId": "/system-setting/organization-management/edit-company"
+                      },
+                      "data": {
+                        "id": "${nodeId}"
+                      }
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "label": "查看详情",
+                    "level": "default",
+                    "size": "sm",
+                    "block": true,
+                    "icon": "fa fa-eye",
+                    "visibleOn": "${nodeId}",
+                    "actionType": "drawer",
+                    "drawer": {
+                      "type": "drawer",
+                      "title": "${name} - 信息",
+                      "size": "md",
+                      "url": "/system-setting/organization-management/organization-detail",
+                      "data": {
+                        "id": "${nodeId}",
+                        "name": "${nodeName}",
+                        "nodeType": "${nodeType}",
+                        "nodeAdminLevel": "${nodeAdminLevel}",
+                        "nodeAdminLevelScope": "${nodeAdminLevelScope}"
+                      }
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "label": "删除岗位",
+                    "level": "danger",
+                    "size": "sm",
+                    "block": true,
+                    "icon": "fa fa-times",
+                    "visibleOn": "${nodeId && nodeType === 'position'}",
+                    "confirmText": "确认要删除这个岗位吗？",
+                    "onEvent": {
+                      "click": {
+                        "actions": [
+                          {
+                            "actionType": "ajax",
+                            "args": {
+                              "api": {
+                                "method": "delete",
+                                "url": "/api/organization/positions/${nodeId}"
+                              }
+                            }
+                          },
+                          {
+                            "actionType": "setValue",
+                            "componentId": "organizationManagementPage",
+                            "args": {
+                              "value": {
+                                "nodeId": "",
+                                "nodeName": "",
+                                "nodeType": "",
+                                "nodeAdminLevel": "",
+                                "nodeAdminLevelScope": ""
+                              }
+                            }
+                          },
+                          {
+                            "actionType": "reload",
+                            "componentName": "organizationTree"
+                          },
+                          {
+                            "actionType": "reload",
+                            "componentName": "employeeList"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "label": "删除部门",
+                    "level": "danger",
+                    "size": "sm",
+                    "block": true,
+                    "icon": "fa fa-times",
+                    "visibleOn": "${nodeId && nodeType !== 'position' && nodeAdminLevelScope === 'DEPT'}",
+                    "confirmText": "确认要删除这个部门吗？此操作将同时删除所有子节点！",
+                    "onEvent": {
+                      "click": {
+                        "actions": [
+                          {
+                            "actionType": "ajax",
+                            "args": {
+                              "api": {
+                                "method": "delete",
+                                "url": "/api/organization/departments/${nodeId}"
+                              }
+                            }
+                          },
+                          {
+                            "actionType": "setValue",
+                            "componentId": "organizationManagementPage",
+                            "args": {
+                              "value": {
+                                "nodeId": "",
+                                "nodeName": "",
+                                "nodeType": "",
+                                "nodeAdminLevel": "",
+                                "nodeAdminLevelScope": ""
+                              }
+                            }
+                          },
+                          {
+                            "actionType": "reload",
+                            "componentName": "organizationTree"
+                          },
+                          {
+                            "actionType": "reload",
+                            "componentName": "employeeList"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "label": "删除组织",
+                    "level": "danger",
+                    "size": "sm",
+                    "block": true,
+                    "icon": "fa fa-times",
+                    "visibleOn": "${nodeId && nodeType !== 'position' && nodeAdminLevelScope === 'ORG'}",
+                    "confirmText": "确认要删除这个组织吗？此操作将同时删除所有子节点！",
+                    "onEvent": {
+                      "click": {
+                        "actions": [
+                          {
+                            "actionType": "ajax",
+                            "args": {
+                              "api": {
+                                "method": "delete",
+                                "url": "/api/organization/companies/${nodeId}"
+                              }
+                            }
+                          },
+                          {
+                            "actionType": "setValue",
+                            "componentId": "organizationManagementPage",
+                            "args": {
+                              "value": {
+                                "nodeId": "",
+                                "nodeName": "",
+                                "nodeType": "",
+                                "nodeAdminLevel": "",
+                                "nodeAdminLevelScope": ""
+                              }
+                            }
+                          },
+                          {
+                            "actionType": "reload",
+                            "componentName": "organizationTree"
+                          },
+                          {
+                            "actionType": "reload",
+                            "componentName": "employeeList"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "container",
+            "className": "employee-content-wrapper flex-grow ml-2",
+            "body": [
+              {
+                "type": "container",
+                "visibleOn": "${nodeId}",
+                "className": "mb-3 p-3 bg-light rounded",
+                "body": [
+                  {
+                    "type": "tpl",
+                    "tpl": "<div class='flex items-center'><span class='label label-${nodeType === \"position\" ? \"success\" : nodeAdminLevelScope === \"DEPT\" ? \"info\" : \"primary\"} mr-2'>${nodeType === 'position' ? '岗位' : nodeAdminLevelScope === 'ORG' ? '组织' : '部门'}</span><strong>${nodeName}</strong></div>"
+                  }
+                ]
+              },
+              {
+                "type": "crud",
+                "name": "employeeList",
+                "api": {
+                  "method": "get",
+                  "url": "/api/organization/employees?departmentId=${nodeAdminLevelScope === 'DEPT' ? nodeId : ''}&companyId=${nodeAdminLevelScope === 'ORG' ? nodeId : ''}&positionId=${nodeType === 'position' ? nodeId : ''}",
+                  "data": {
+                    "name": "${name}"
+                  }
+                },
+                "filter": {
+                  "title": "",
+                  "body": [
+                    {
+                      "type": "input-text",
+                      "placeholder": "请输入员工名称",
+                      "name": "name",
+                      "clearable": true,
+                      "size": "lg",
+                      "addOn": {
+                        "type": "submit",
+                        "label": "搜索",
+                        "level": "primary",
+                        "icon": "fa fa-search pull-left"
+                      }
+                    }
+                  ],
+                  "actions": []
+                },
+                "headerToolbar": [
+                  {
+                    "type": "reload",
+                    "label": "刷新",
+                    "icon": "fa fa-refresh"
+                  },
+                  {
+                    "type": "button",
+                    "actionType": "dialog",
+                    "label": "新增员工",
+                    "icon": "fa fa-plus pull-left",
+                    "align": "right",
+                    "level": "primary",
+                    "visibleOn": "${nodeId && nodeAdminLevelScope === 'DEPT'}",
+                    "reload": "employeeList",
+                    "dialog": {
+                      "type": "dialog",
+                      "title": "新增员工",
+                      "url": "/system-setting/organization-management/add-employee",
+                      "data": {
+                        "departmentId": "${nodeAdminLevelScope === 'DEPT' ? nodeId : ''}"
+                      }
+                    }
+                  }
+                ],
+                "columns": [
+                  {
+                    "name": "name",
+                    "label": "姓名",
+                    "type": "text"
+                  },
+                  {
+                    "name": "gender",
+                    "label": "性别",
+                    "type": "text"
+                  },
+                  {
+                    "name": "positionName",
+                    "label": "主岗位",
+                    "type": "text"
+                  },
+                  {
+                    "name": "departmentName",
+                    "label": "主部门",
+                    "type": "text"
+                  },
+                  {
+                    "type": "date",
+                    "label": "生日",
+                    "name": "birthday",
+                    "format": "YYYY-MM-DD"
+                  },
+                  {
+                    "type": "operation",
+                    "label": "操作",
+                    "buttons": [
+                      {
+                        "type": "button",
+                        "icon": "fa fa-eye",
+                        "tooltip": "详情",
+                        "actionType": "drawer",
+                        "drawer": {
+                          "title": "员工详情 - ${name}",
+                          "size": "lg",
+                          "url": "/system-setting/organization-management/employee-detail",
+                          "data": {
+                            "id": "${id}",
+                            "name": "${name}"
+                          }
+                        }
+                      },
+                      {
+                        "type": "button",
+                        "icon": "fa fa-pencil",
+                        "tooltip": "编辑",
+                        "reload": "employeeList",
+                        "actionType": "dialog",
+                        "dialog": {
+                          "type": "dialog",
+                          "title": "编辑员工",
+                          "url": "/system-setting/organization-management/edit-employee",
+                          "data": {
+                            "id": "${id}"
+                          }
+                        }
+                      },
+                      {
+                        "type": "button",
+                        "icon": "fa fa-exchange",
+                        "tooltip": "调整岗位",
+                        "reload": "employeeList",
+                        "actionType": "drawer",
+                        "drawer": {
+                          "title": "调整岗位 - ${employeeName}",
+                          "size": "md",
+                          "body": {
+                            "type": "ui-schema",
+                            "schemaId": "/system-setting/organization-management/assign-position"
+                          },
+                          "data": {
+                            "employeeId": "${id}",
+                            "employeeName": "${name}",
+                            "mode": "adjust"
+                          }
+                        }
+                      },
+                      {
+                        "type": "button",
+                        "actionType": "ajax",
+                        "confirmText": "确认要删除 ${name} 吗？",
+                        "api": "delete:/api/organization/employees/${id}",
+                        "icon": "fa fa-times text-danger",
+                        "tooltip": "删除"
+                      }
+                    ]
+                  }
+                ],
+                "perPageAvailable": [
+                  10,
+                  20,
+                  50
+                ],
+                "syncLocation": false
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

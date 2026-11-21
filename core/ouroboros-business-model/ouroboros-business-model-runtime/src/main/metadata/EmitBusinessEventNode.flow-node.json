@@ -1,0 +1,25 @@
+{
+  "type": "emitBusinessEvent",
+  "label": "产生业务 Event",
+  "description": "在当前业务事务内记录事实，提交后由平台投递给消费者订阅",
+  "shape": "rect",
+  "group": "业务模型",
+  "order": 4200,
+  "scaffold": {
+    "type": "emitBusinessEvent",
+    "name": "产生业务事实",
+    "modelFullName": "",
+    "eventName": "",
+    "inputPorts": [{"name": "event", "description": "payload 与可选 subjectId、correlationId、causationId", "dataType": "object"}],
+    "outputPorts": [{"name": "", "description": "已暂存的业务事实", "dataType": "object"}]
+  },
+  "portRules": {
+    "input": {"ruleType": "limit", "min": 1, "max": 1},
+    "output": {"ruleType": "limit", "min": 1, "max": 1}
+  },
+  "properties": [
+    {"type": "input-text", "name": "modelFullName", "label": "所属业务模型", "required": true},
+    {"type": "input-text", "name": "eventName", "label": "事件名称", "required": true},
+    {"type": "input-text", "name": "producerRef", "label": "非 Action 生产者", "description": "Action 内留空；其他来源需要已注册且获授权的生产者"}
+  ]
+}

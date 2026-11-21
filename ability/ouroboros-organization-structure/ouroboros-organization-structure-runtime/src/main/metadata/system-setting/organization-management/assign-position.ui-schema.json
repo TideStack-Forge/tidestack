@@ -1,0 +1,78 @@
+{
+  "name": "/system-setting/organization-management/assign-position",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "api": {
+      "method": "post",
+      "url": "/api/organization/employees/${employeeId}/assign-position"
+    },
+    "body": [
+      {
+        "type": "static",
+        "label": "员工姓名",
+        "name": "employeeName"
+      },
+      {
+        "type": "tree-select",
+        "name": "positionId",
+        "label": "选择岗位",
+        "source": "/api/organization/tree?type=position",
+        "valueField": "id",
+        "labelField": "name",
+        "showIcon": false,
+        "cascade": false,
+        "required": true
+      },
+      {
+        "type": "select",
+        "name": "appointmentType",
+        "label": "任职类型",
+        "options": [
+          {
+            "label": "主岗",
+            "value": "PRIMARY"
+          },
+          {
+            "label": "副岗",
+            "value": "SECONDARY"
+          },
+          {
+            "label": "代理",
+            "value": "ACTING"
+          }
+        ],
+        "value": "PRIMARY",
+        "required": true,
+        "onEvent": {
+          "change": {
+            "actions": [
+              {
+                "actionType": "custom",
+                "script": "if (event.data.appointmentType === 'PRIMARY') { if (!confirm('一个人只允许有一个主岗位，继续操作将取消原来的主岗位，是否继续？')) { event.setData({appointmentType: 'SECONDARY'}); } }"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "alert",
+        "level": "warning",
+        "visibleOn": "data.appointmentType === 'PRIMARY'",
+        "body": "⚠️ 设置主岗将自动结束该员工在其他岗位的主岗任职"
+      }
+    ],
+    "actions": [
+      {
+        "type": "button",
+        "actionType": "cancel",
+        "label": "取消"
+      },
+      {
+        "type": "submit",
+        "label": "确定",
+        "level": "primary"
+      }
+    ]
+  }
+}

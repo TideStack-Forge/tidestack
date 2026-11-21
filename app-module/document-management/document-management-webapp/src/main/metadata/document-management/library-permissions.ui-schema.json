@@ -1,0 +1,23 @@
+{
+  "name": "/document-management/library-permissions",
+  "schema": {
+    "type": "crud",
+    "api": "/api/document-libraries/${id}/permissions",
+    "syncLocation": false,
+    "columns": [
+      {
+        "name": "principalType",
+        "label": "主体类型"
+      },
+      {
+        "name": "principal",
+        "label": "主体"
+      },
+      {
+        "name": "permissions",
+        "label": "权限",
+        "type": "tags"
+      }
+    ]
+  }
+}

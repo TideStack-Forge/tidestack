@@ -1,0 +1,5 @@
+{
+  "title": "运行容器详情",
+  "path": "/dev/container/detail",
+  "type": "amis"
+}

@@ -1,0 +1,9 @@
+{
+  "key": "loose0",
+  "label": "Loose 0",
+  "description": "Ungrouped configuration fixture",
+  "modifiable": false,
+  "nullable": false,
+  "valueType": "string",
+  "defaultValue": "loose-default"
+}

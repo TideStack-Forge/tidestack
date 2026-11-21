@@ -1,0 +1,26 @@
+{
+  "name": "/dev/{appName}/rpc-model",
+  "schema": {
+    "type": "page",
+    "body": {
+      "type": "tabs",
+      "swipeable": true,
+      "tabs": [
+        {
+          "title": "外部接口",
+          "body": {
+            "type": "amis-schema",
+            "schemaId": "/dev/{appName}/rpc-model/list"
+          }
+        },
+        {
+          "title": "身份认证",
+          "body": {
+            "type": "amis-schema",
+            "schemaId": "/dev/{appName}/rpc-auth/list"
+          }
+        }
+      ]
+    }
+  }
+}

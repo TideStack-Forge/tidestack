@@ -1,0 +1,25 @@
+{
+  "fullName": "systemSetting.dynamicForm",
+  "title": "动态表单管理",
+  "apis": [
+    "GET /api/dynamic-form/field-types",
+    "GET /api/dynamic-form/field-types/{fieldName}/params-schema",
+    "GET /api/dynamic-form",
+    "GET /api/dynamic-form/{id}",
+    "POST /api/dynamic-form",
+    "PUT /api/dynamic-form/{id}",
+    "DELETE /api/dynamic-form/{id}",
+    "POST /api/dynamic-form/refresh",
+    "POST /api/dynamic-form/{id}/deploy",
+    "POST /api/dynamic-form/{id}/re-deploy",
+    "POST /api/dynamic-form/{id}/take-down",
+    "POST /api/dynamic-form/{id}/archive",
+    "POST /api/dynamic-form/validate-field-name"
+  ],
+  "uiViews": [
+    "/system-setting/dynamic-form"
+  ],
+  "menuItems": [
+    "systemSetting.dynamicForm"
+  ]
+}

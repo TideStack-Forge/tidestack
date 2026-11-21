@@ -1,0 +1,141 @@
+.features {
+  padding: 3.5rem 0 4rem;
+  background: var(--ifm-background-color);
+}
+
+.sectionHeader {
+  margin-bottom: 1.5rem;
+}
+
+.sectionHeader h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.sectionHeader p {
+  margin: 0;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.paths,
+.resourceGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+  padding: 1.5rem;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 0.75rem;
+  background: var(--ifm-background-surface-color);
+  color: var(--ifm-font-color-base);
+}
+
+.card:hover,
+.resourceLink:hover {
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-font-color-base);
+  text-decoration: none;
+}
+
+.card:focus-visible,
+.resourceLink:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 4px;
+}
+
+.cardTop {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.cardAction {
+  color: var(--ifm-color-primary);
+}
+
+.cardAudience,
+.cardSummary,
+.cardNext {
+  margin: 0;
+}
+
+.cardAudience {
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.8125rem;
+}
+
+.cardSummary {
+  color: var(--ifm-color-emphasis-800);
+  font-size: 0.9375rem;
+  line-height: 1.8;
+}
+
+.cardNext {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.8125rem;
+}
+
+.resources {
+  padding-top: 3rem;
+}
+
+.resourceLink {
+  display: block;
+  padding: 1.25rem;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 0.75rem;
+  color: var(--ifm-font-color-base);
+}
+
+.resourceLink h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.resourceLink p {
+  margin: 0.75rem 0 0;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+@media screen and (max-width: 996px) {
+  .paths,
+  .resourceGrid {
+    gap: 1rem;
+  }
+
+  .card {
+    padding: 1.25rem;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .features {
+    padding: 2.5rem 0;
+  }
+
+  .paths,
+  .resourceGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .resources {
+    padding-top: 2.5rem;
+  }
+}

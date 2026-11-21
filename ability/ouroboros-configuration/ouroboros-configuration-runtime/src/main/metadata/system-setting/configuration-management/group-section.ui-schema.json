@@ -1,0 +1,147 @@
+{
+  "name": "/system-setting/configuration-management/group-section",
+  "schema": {
+    "type": "container",
+    "body": [
+      {
+        "type": "combo",
+        "name": "items",
+        "visibleOn": "${items && items.length}",
+        "multiple": true,
+        "multiLine": true,
+        "strictMode": false,
+        "addable": false,
+        "removable": false,
+        "draggable": false,
+        "noBorder": true,
+        "itemsWrapperClassName": "m-0",
+        "itemClassName": "m-0 p-0 border-0 bg-transparent",
+        "items": [
+          {
+            "type": "container",
+            "style": {
+              "padding": "8px 0 20px",
+              "marginBottom": "20px",
+              "borderBottom": "1px solid #f0f0f0"
+            },
+            "body": [
+              {
+                "type": "flex",
+                "justify": "space-between",
+                "alignItems": "center",
+                "style": {
+                  "marginBottom": "14px"
+                },
+                "items": [
+                  {
+                    "type": "tpl",
+                    "tpl": "<div style='font-weight: 600;'>${label}</div>"
+                  },
+                  {
+                    "type": "button",
+                    "icon": "fa fa-question-circle",
+                    "level": "link",
+                    "size": "sm",
+                    "actionType": "dialog",
+                    "dialog": {
+                      "type": "dialog",
+                      "title": "${label}",
+                      "size": "md",
+                      "body": {
+                        "type": "service",
+                        "api": {
+                          "method": "get",
+                          "url": "/api/sys/configuration/workbench/item/${key}"
+                        },
+                        "body": {
+                          "type": "ui-schema",
+                          "schemaId": "/system-setting/configuration-management/item-panel"
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "alert",
+                "level": "info",
+                "showIcon": true,
+                "visibleOn": "${metadata.managementAccessPolicyRequired && metadata.secretConfigured !== undefined}",
+                "body": "${metadata.secretConfigured ? '凭据已配置，真实值不予显示。留空保留，填写新值表示替换。' : '凭据尚未配置。填写后保存，或选择恢复部署默认。'}"
+              },
+              {
+                "type": "container",
+                "style": {
+                  "marginTop": "6px"
+                },
+                "body": [
+                  {
+                    "name": "value",
+                    "type": "amis-schema",
+                    "source": "$editorSchema",
+                    "disabledOn": "${modifiable === false || restoreDefault}"
+                  }
+                ]
+              },
+              {
+                "type": "checkbox",
+                "name": "restoreDefault",
+                "label": false,
+                "option": "恢复部署默认配置",
+                "description": "${metadata.restoreDefaultRemovesOverride ? '保存时撤销此项运行时覆盖，随后跟随部署默认；本项新输入将被忽略。' : '保存时按此组件规则恢复默认值；本项新输入将被忽略。'}",
+                "disabledOn": "${modifiable === false}"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "combo",
+        "name": "childGroups",
+        "visibleOn": "${childGroups && childGroups.length}",
+        "multiple": true,
+        "multiLine": true,
+        "strictMode": false,
+        "addable": false,
+        "removable": false,
+        "draggable": false,
+        "noBorder": true,
+        "itemsWrapperClassName": "m-0",
+        "itemClassName": "m-0 p-0 border-0 bg-transparent",
+        "items": [
+          {
+            "type": "container",
+            "style": {
+              "marginTop": "8px",
+              "marginBottom": "24px",
+              "paddingLeft": "16px",
+              "borderLeft": "2px solid #f0f0f0"
+            },
+            "body": [
+              {
+                "type": "tpl",
+                "tpl": "<div style='font-size: 16px; font-weight: 600;'>${title}</div>"
+              },
+              {
+                "type": "tpl",
+                "visibleOn": "${description}",
+                "tpl": "<div style='margin-top: 6px; margin-bottom: 12px; color: #595959;'>${description}</div>"
+              },
+              {
+                "type": "ui-schema",
+                "schemaId": "/system-setting/configuration-management/group-section"
+              },
+              {
+                "type": "alert",
+                "level": "info",
+                "showIcon": true,
+                "visibleOn": "${(!childGroups || !childGroups.length) && (!items || !items.length)}",
+                "body": "当前子分组还没有直属配置项。"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

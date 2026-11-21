@@ -1,0 +1,18 @@
+{
+  "fullName": "systemSetting.businessLogTemplate",
+  "title": "业务日志模板",
+  "apis": [
+    "GET /api/sys/business-log-template",
+    "GET /api/sys/business-log-template/detail",
+    "POST /api/sys/business-log-template",
+    "PUT /api/sys/business-log-template/{id}",
+    "DELETE /api/sys/business-log-template/{id}",
+    "POST /api/sys/business-log-template/override-from-source"
+  ],
+  "uiViews": [
+    "/system-setting/business-log-template"
+  ],
+  "menuItems": [
+    "systemSetting.businessLogTemplate"
+  ]
+}

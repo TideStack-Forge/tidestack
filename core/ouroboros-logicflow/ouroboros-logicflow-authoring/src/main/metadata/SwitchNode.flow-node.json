@@ -1,0 +1,71 @@
+{
+  "type": "switch",
+  "label": "条件分支",
+  "icon": "switch",
+  "shape": "rect",
+  "description": "条件选择节点",
+  "order": 1004,
+  "svgs": {
+    "switch": "<svg t=\"1694739408983\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"2703\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"200\" height=\"200\"><path d=\"M244.9408 881.2544l-58.7776-57.0368 285.4912-294.2976V41.1648h81.92v521.9328L244.9408 881.2544zM547.75808 640.73728l59.20768-56.6272 228.096 238.53056-59.20768 56.6272z\" p-id=\"2704\"></path><path d=\"M81.92 982.8352l230.4-42.5984-187.8016-187.6992L81.92 982.8352zM942.1824 983.04l-230.4-42.5984 187.8016-187.6992L942.1824 983.04z\" p-id=\"2705\"></path></svg>"
+  },
+  "scaffold": {
+    "type": "switch",
+    "name": "条件分支",
+    "inputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "any"
+      }
+    ],
+    "outputPorts": [
+      {
+        "name": "default",
+        "description": "其余情况",
+        "dataType": "any",
+        "exclusiveGroupId": "switch-branches",
+        "defaultBranch": true
+      }
+    ]
+  },
+  "portRules": {
+    "input": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    },
+    "output": {
+      "ruleType": "auto",
+      "autoFunction": "const conditions = node.conditions; const dataType = node.inputPorts && node.inputPorts[0] && node.inputPorts[0].dataType || 'any'; const exclusiveGroupId = 'switch-branches'; const defaultOutputPort = { __id: 'out-default', name: 'default', description: '其余情况', dataType, exclusiveGroupId, defaultBranch: true, }; if (!conditions || !conditions.length) return [defaultOutputPort]; const outPortsItem = conditions.map((condition) => { return { name: condition.name || '', description: condition.description || '', dataType, exclusiveGroupId, defaultBranch: false, }; }); outPortsItem.push(defaultOutputPort); return outPortsItem;"
+    }
+  },
+  "properties": [
+    {
+      "type": "combo",
+      "name": "conditions",
+      "label": "条件分支",
+      "mode": "normal",
+      "multiLine": true,
+      "multiple": true,
+      "subFormMode": "horizontal",
+      "items": [
+        {
+          "type": "input-text",
+          "name": "name",
+          "label": "分支名",
+          "required": true,
+          "unique": true
+        },
+        {
+          "type": "expression",
+          "name": "expression",
+      "codeSite": "logicflow.switch",
+      "codePointer": "/conditions/*/expression",
+          "label": "分支条件",
+          "required": true
+        }
+      ],
+      "value": []
+    }
+  ]
+}

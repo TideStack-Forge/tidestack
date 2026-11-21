@@ -1,0 +1,14 @@
+{
+  "fullName": "Apps.editAccessManagement",
+  "title": "应用编辑权限管理",
+  "apis": [
+    "GET /api/app/{name}/edit-access-entry",
+    "GET /api/app/{name}/edit-access",
+    "PUT /api/app/{name}/edit-access",
+    "GET /api/app/{name}/edit-access/roles"
+  ],
+  "uiViews": [
+    "/dev/{appName}/edit-access"
+  ],
+  "menuItems": []
+}

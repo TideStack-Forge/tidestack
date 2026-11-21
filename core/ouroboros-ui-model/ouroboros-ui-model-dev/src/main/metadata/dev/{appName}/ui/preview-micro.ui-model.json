@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/ui/preview-micro",
+  "type": "amis",
+  "title": "微前端详情"
+}

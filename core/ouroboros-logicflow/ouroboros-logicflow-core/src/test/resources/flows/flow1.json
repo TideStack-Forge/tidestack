@@ -1,0 +1,79 @@
+{
+  "name": "flow1",
+  "description": "",
+  "isEnabled": true,
+  "inputDataType": "map",
+  "outputDataType": "map",
+  "entryNode": "node1",
+  "exitNode": "nodeX",
+  "nodes": [
+    {
+      "name": "node1",
+      "type": "switch",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "port1",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "conditions": [
+        {
+          "name": "condition1",
+          "description": "",
+          "expression": "a == 1"
+        }
+      ]
+    },
+    {
+      "name": "node2",
+      "type": "const",
+      "description": "",
+      "dataType": "map",
+      "value": {
+        "a": 1,
+        "fromConst": true
+      },
+      "inputPorts": [
+        {
+          "name": "port1",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    },
+    {
+      "name": "nodeX",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "port1",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "node1",
+      "sourceOutputPort": 0,
+      "targetNode": "nodeX",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "node1",
+      "sourceOutputPort": 1,
+      "targetNode": "node2",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "node2",
+      "sourceOutputPort": 0,
+      "targetNode": "nodeX",
+      "targetInputPort": 0
+    }
+  ]
+}

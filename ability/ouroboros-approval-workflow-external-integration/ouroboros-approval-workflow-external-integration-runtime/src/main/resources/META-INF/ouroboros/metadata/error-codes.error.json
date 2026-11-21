@@ -1,0 +1,138 @@
+[
+  {
+    "code": 46101,
+    "title": "Engine Adapter Not Found",
+    "defaultMessageTemplate": "适配器不存在",
+    "category": "WORKFLOW_EXTERNAL",
+    "description": "外部流程引擎适配器未注册或不存在。",
+    "enabled": true
+  },
+  {
+    "code": 46102,
+    "title": "Engine Connection Unavailable",
+    "defaultMessageTemplate": "连接不可用",
+    "category": "WORKFLOW_EXTERNAL",
+    "description": "外部引擎连接健康检查未通过或调用失败。",
+    "enabled": true
+  },
+  {
+    "code": 46103,
+    "title": "Workflow Mapping Not Active",
+    "defaultMessageTemplate": "映射未激活",
+    "category": "WORKFLOW_EXTERNAL",
+    "description": "流程映射不存在、未激活或状态不满足操作要求。",
+    "enabled": true
+  },
+  {
+    "code": 46104,
+    "title": "Workflow Route Not Configured",
+    "defaultMessageTemplate": "流程未配置路由",
+    "category": "WORKFLOW_EXTERNAL",
+    "description": "流程未配置外部映射且禁止发起。",
+    "enabled": true
+  },
+  {
+    "code": 46105,
+    "title": "Result Only Entry Required",
+    "defaultMessageTemplate": "需使用结果型启动接口",
+    "category": "WORKFLOW_EXTERNAL",
+    "description": "历史错误码，保留旧客户端兼容；统一发起入口已支持 RESULT_ONLY，不再产生此错误。",
+    "enabled": true
+  },
+  {
+    "code": 46106,
+    "title": "External Definition Not Found",
+    "defaultMessageTemplate": "外部定义不存在",
+    "category": "WORKFLOW_EXTERNAL",
+    "description": "外部流程定义校验失败或不存在。",
+    "enabled": true
+  },
+  {
+    "code": 46107,
+    "title": "External Capability Unsupported",
+    "defaultMessageTemplate": "外部引擎不支持该能力",
+    "category": "WORKFLOW_EXTERNAL",
+    "description": "外部引擎缺少所需能力或端口。",
+    "enabled": true
+  },
+  {
+    "code": 46108,
+    "title": "External Action Not Mapped",
+    "defaultMessageTemplate": "动作未映射",
+    "category": "WORKFLOW_EXTERNAL",
+    "description": "规范动作未配置外部动作映射。",
+    "enabled": true
+  },
+  {
+    "code": 46109,
+    "title": "External Interaction Required",
+    "defaultMessageTemplate": "需跳转外部处理",
+    "category": "WORKFLOW_EXTERNAL",
+    "description": "交互执行模式要求跳转外部引擎处理。",
+    "enabled": true
+  },
+  {
+    "code": 46110,
+    "title": "External Event Stale",
+    "defaultMessageTemplate": "外部事件乱序",
+    "category": "WORKFLOW_EXTERNAL",
+    "description": "外部事件晚于已处理状态，不覆盖当前状态。",
+    "enabled": true
+  },
+  {
+    "code": 46111,
+    "title": "External Event Unknown",
+    "defaultMessageTemplate": "外部事件状态未知",
+    "category": "WORKFLOW_EXTERNAL",
+    "description": "外部事件状态未命中结果映射，不自动结束流程。",
+    "enabled": true
+  },
+  {
+    "code": 46112,
+    "title": "External Action Conflict",
+    "defaultMessageTemplate": "外部动作冲突",
+    "category": "WORKFLOW_EXTERNAL",
+    "description": "外部动作执行条件不满足或状态冲突。",
+    "enabled": true
+  },
+  {
+    "code": 46113,
+    "title": "External User Mapping Missing",
+    "defaultMessageTemplate": "缺少用户标识映射",
+    "category": "WORKFLOW_EXTERNAL",
+    "description": "平台用户与外部引擎用户标识缺少显式映射。",
+    "enabled": true
+  },
+  {
+    "code": 46114,
+    "title": "External Binding Missing",
+    "defaultMessageTemplate": "外部绑定缺失",
+    "category": "WORKFLOW_EXTERNAL",
+    "description": "外部实例或任务绑定不存在，无法解析外部引用。",
+    "enabled": true
+  },
+  {
+    "code": 46115,
+    "title": "External Mapping Invalid",
+    "defaultMessageTemplate": "映射配置无效",
+    "category": "WORKFLOW_EXTERNAL",
+    "description": "动作或结果映射配置缺失、非法或未覆盖必需状态。",
+    "enabled": true
+  },
+  {
+    "code": 46116,
+    "title": "External Permission Denied",
+    "defaultMessageTemplate": "缺少映射管理权限",
+    "category": "WORKFLOW_EXTERNAL",
+    "description": "当前用户缺少流程映射管理权限点或管理员角色。",
+    "enabled": true
+  },
+  {
+    "code": 46117,
+    "title": "Workflow Mapping Persistence Failed",
+    "defaultMessageTemplate": "映射持久化失败",
+    "category": "WORKFLOW_EXTERNAL",
+    "description": "映射或绑定持久化失败（删除映射、迁移绑定写入等本地存储错误）。",
+    "enabled": true
+  }
+]

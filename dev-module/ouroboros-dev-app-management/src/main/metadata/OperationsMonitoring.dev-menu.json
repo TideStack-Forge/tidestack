@@ -1,0 +1,8 @@
+{
+  "fullName": "OperationsMonitoring",
+  "icon": "fas fa-chart-line",
+  "title": "运维监控",
+  "placement": "main",
+  "stage": "dev",
+  "order": 100
+}

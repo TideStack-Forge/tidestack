@@ -1,0 +1,29 @@
+{
+  "instance_id": "coding-monorepo-main",
+  "instance_name": "Confirmed Defect Coding Dispatcher",
+  "secret_ref": "vault://automation/coding/monorepo",
+  "gitlab": {
+    "base_url": "https://gitlab.example.com",
+    "project": "group/ouroboros"
+  },
+  "issue_selector": {
+    "labels_all": [
+      "type::bug",
+      "state::confirmed",
+      "agent::ready"
+    ],
+    "labels_none": [
+      "agent::claimed"
+    ]
+  },
+  "claim_label": "agent::claimed",
+  "claim_timeout_minutes": 90,
+  "dispatch_limit": 3,
+  "worker_profile": "coding-worker-default",
+  "result_reporting_policy": "standard-gitlab-comment",
+  "worktree_policy": {
+    "root": "/Users/songmingxu/Projects/ouroboros/.worktrees",
+    "prefix": "codex/",
+    "cleanup": "manual-after-review"
+  }
+}

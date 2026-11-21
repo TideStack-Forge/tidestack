@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "ignoreDeprecations": "6.0",
+    "emitDeclarationOnly": false,
+    "outDir": ".tmp",
+    "target": "esnext",
+    "module": "esnext",
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "importHelpers": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceRoot": "",
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "downlevelIteration": true,
+    "composite": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+  },
+  "include": [
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.d.ts",
+    "tests/**/*.ts",
+    "tests/**/*.tsx"
+  ],
+  "exclude": ["node_modules"]
+}

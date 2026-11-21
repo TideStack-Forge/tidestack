@@ -1,0 +1,3 @@
+com.ouroboros.notification.template.provider.DatabaseNotificationTemplateProvider$Proxy
+com.ouroboros.notification.template.provider.FileNotificationTemplateProvider$Proxy
+com.ouroboros.notification.template.provider.JarNotificationTemplateProvider

@@ -1,0 +1,79 @@
+{
+  "type": "position",
+  "fileSuffix": ".position.json",
+  "displayName": "岗位定义",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.position.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/metadata",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.position.json",
+    "fields": [
+      {
+        "name": "key",
+        "label": "岗位键",
+        "documentPath": [
+          "key"
+        ],
+        "required": true,
+        "defaultFromPath": "camel-name"
+      },
+      {
+        "name": "name",
+        "label": "名称",
+        "documentPath": [
+          "name"
+        ],
+        "required": true,
+        "defaultFromPath": "title"
+      },
+      {
+        "name": "description",
+        "label": "描述",
+        "documentPath": [
+          "description"
+        ]
+      }
+    ],
+    "document": {
+      "key": "example",
+      "name": "示例岗位",
+      "level": "default",
+      "description": "示例岗位定义"
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "岗位定义",
+    "actions": [],
+    "body": [
+      {
+        "type": "input-text",
+        "name": "key",
+        "label": "岗位键",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "名称",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "level",
+        "label": "级别"
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "描述",
+        "minRows": 2
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/position.schema.json"
+}

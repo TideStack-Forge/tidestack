@@ -1,0 +1,9 @@
+{
+  "url": "/dev/{appName}/versions",
+  "fullName": "ApplicationManagement.VersionManagement",
+  "icon": "fa-solid fa-code-branch",
+  "title": "版本管理",
+  "placement": "main",
+  "stage": "dev",
+  "order": 100
+}

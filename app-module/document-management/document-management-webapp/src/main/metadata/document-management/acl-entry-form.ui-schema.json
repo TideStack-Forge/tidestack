@@ -1,0 +1,84 @@
+{
+  "name": "/document-management/acl-entry-form",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "api": {
+      "method": "post",
+      "url": "/api/document-libraries/${libraryId}/directories/${directoryId}/acl-entries",
+      "messages": {
+        "success": "权限添加成功"
+      }
+    },
+    "body": [
+      {
+        "type": "button-group-select",
+        "name": "principalType",
+        "label": "主体类型",
+        "required": true,
+        "source": {
+          "method": "get",
+          "url": "/api/document-libraries/principal-types"
+        },
+        "labelField": "displayName",
+        "valueField": "name"
+      },
+      {
+        "type": "alert",
+        "level": "warning",
+        "body": "请选择主体类型",
+        "hiddenOn": "${principalType}"
+      },
+      {
+        "type": "ui-schema",
+        "name": "principal",
+        "visibleOn": "${principalType}",
+        "defaultProps": {
+          "label": "授权主体",
+          "required": true
+        },
+        "source": "/api/document-libraries/principal-type-schema?type=${principalType}"
+      },
+      {
+        "type": "checkboxes",
+        "name": "permissions",
+        "label": "权限",
+        "required": true,
+        "options": [
+          {
+            "label": "查看",
+            "value": "view"
+          },
+          {
+            "label": "下载",
+            "value": "download"
+          },
+          {
+            "label": "创建文件",
+            "value": "create_file"
+          },
+          {
+            "label": "创建目录",
+            "value": "create_dir"
+          },
+          {
+            "label": "重命名/移动",
+            "value": "rename_move"
+          },
+          {
+            "label": "删除目录",
+            "value": "delete_dir"
+          },
+          {
+            "label": "删除文件",
+            "value": "delete_file"
+          },
+          {
+            "label": "管理权限",
+            "value": "manage"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "name": "/dev/{appName}/business-model/create",
+  "schema": {
+    "type": "page",
+    "title": "新建业务模型",
+    "body": [
+      {
+        "type": "form",
+        "mode": "horizontal",
+        "wrapWithPanel": true,
+        "title": false,
+        "id": "create-business-model-form",
+        "panelClassName": "h-full flex flex-col",
+        "bodyClassName": "flex-grow",
+        "initApi": "GET:/api/dev/${appName}/business-model/init-form",
+        "api": {
+          "method": "POST",
+          "url": "/api/dev/${appName}/business-model",
+          "data": {
+            "&": "$$",
+            "namespace": "${module}"
+          }
+        },
+        "className": "h-full",
+        "body": [
+          {
+            "type": "service",
+            "schemaApi": {
+              "method": "get",
+              "url": "/api/amis-schema?path=/dev/{appName}/business-model/editor&appName=${appName}&fullName=${fullName}&modelType=${modelType}"
+            },
+            "className": "h-full"
+          }
+        ],
+        "actions": [
+          {
+            "type": "button",
+            "label": "取消",
+            "size": "lg",
+            "onEvent": {
+              "click": {
+                "actions": [
+                  {
+                    "actionType": "confirmDialog",
+                    "args": {
+                      "title": "确认",
+                      "msg": "确定要取消新建业务模型吗？"
+                    }
+                  },
+                  {
+                    "actionType": "closeCurrentTab"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "button",
+            "actionType": "submit",
+            "label": "保存",
+            "level": "primary",
+            "size": "lg"
+          }
+        ],
+        "onEvent": {
+          "submitSucc": {
+            "actions": [
+              {
+                "actionType": "alert",
+                "args": {
+                  "title": "提示",
+                  "msg": "模型保存成功"
+                }
+              },
+              {
+                "actionType": "openOrSwitchTab",
+                "args": {
+                  "url": "/dev/${appName}/business-model"
+                }
+              },
+              {
+                "actionType": "closeTab",
+                "args": {
+                  "result": "${result.data}"
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

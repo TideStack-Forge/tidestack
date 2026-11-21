@@ -1,0 +1,28 @@
+[
+  {
+    "key": "notification.wechat.appId",
+    "label": "微信通知应用ID",
+    "groupPath": "notification.wechat",
+    "order": 10,
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string",
+    "restoreDefaultRemovesOverride": true
+  },
+  {
+    "key": "notification.wechat.secret",
+    "label": "微信通知密钥",
+    "groupPath": "notification.wechat",
+    "order": 20,
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string",
+    "managementAccessPolicyRequired": true,
+    "editorSchema": {
+      "type": "input-password",
+      "placeholder": "留空保留已配置凭据；填写表示替换",
+      "autoComplete": "new-password"
+    },
+    "restoreDefaultRemovesOverride": true
+  }
+]

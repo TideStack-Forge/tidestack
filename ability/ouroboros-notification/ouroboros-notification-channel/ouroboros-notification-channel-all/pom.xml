@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>ouroboros-notification-channel</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ouroboros-notification-channel-all</artifactId>
+    <packaging>pom</packaging>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>1.65</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcpkix-jdk15on</artifactId>
+                <version>1.65</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-notification-channel-internal-message</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-notification-channel-jpush</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-notification-channel-wechat</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-notification-channel-dingtalk</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-notification-channel-wecom</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-notification-channel-feishu</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-notification-channel-email</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-notification-channel-aliyun-sms</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-notification-channel-call</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-notification-channel-aliyun-call</artifactId>
+        </dependency>
+    </dependencies>
+</project>

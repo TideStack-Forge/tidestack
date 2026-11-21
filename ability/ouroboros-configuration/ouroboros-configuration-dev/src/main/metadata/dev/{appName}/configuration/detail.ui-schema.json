@@ -1,0 +1,107 @@
+{
+  "name": "/dev/{appName}/configuration/detail",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "static": true,
+    "wrapWithPanel": false,
+    "body": [
+      {
+        "label": "配置键",
+        "type": "input-text",
+        "name": "key",
+        "required": true
+      },
+      {
+        "name": "label",
+        "type": "input-text",
+        "label": "配置项名称",
+        "required": true
+      },
+      {
+        "name": "description",
+        "type": "textarea",
+        "label": "描述",
+        "value": ""
+      },
+      {
+        "type": "button-group-select",
+        "label": "范围",
+        "name": "scope",
+        "required": true,
+        "options": [
+          {
+            "label": "前端",
+            "value": "frontend"
+          },
+          {
+            "label": "后端",
+            "value": "backend"
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "body": [
+          {
+            "name": "modifiable",
+            "label": "是否允许修改",
+            "type": "switch",
+            "onText": "允许",
+            "offText": "不允许"
+          },
+          {
+            "name": "nullable",
+            "label": "是否允许为空",
+            "type": "switch",
+            "onText": "允许",
+            "offText": "不允许"
+          }
+        ]
+      },
+      {
+        "name": "valueType",
+        "type": "select",
+        "label": "值类型",
+        "multiple": false,
+        "source": {
+          "url": "/api/sys/configuration/value-type",
+          "method": "get"
+        }
+      },
+      {
+        "name": "defaultValue",
+        "type": "input-text",
+        "label": "默认值",
+        "required": true
+      },
+      {
+        "name": "editorSchema",
+        "type": "amis-schema-editor",
+        "label": "值编辑器",
+        "showSwitch": true,
+        "onText": "自定义编辑器",
+        "offText": "默认编辑器"
+      },
+      {
+        "name": "obsolete",
+        "label": "是否过时",
+        "type": "switch",
+        "onText": "过时",
+        "offText": "不过时"
+      },
+      {
+        "name": "obsoleteCause",
+        "type": "textarea",
+        "label": "过时原因",
+        "required": true,
+        "visibleOn": "${obsolete}"
+      }
+    ],
+    "mode": "horizontal",
+    "initApi": {
+      "url": "/api/dev/${appName}/configuration/${key}",
+      "method": "get"
+    }
+  }
+}

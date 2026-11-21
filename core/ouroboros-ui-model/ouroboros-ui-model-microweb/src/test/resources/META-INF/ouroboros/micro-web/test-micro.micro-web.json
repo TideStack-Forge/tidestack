@@ -1,0 +1,7 @@
+{
+  "name": "test-micro",
+  "type": "app",
+  "entry": "/typed-entry",
+  "publicPath": "/typed-public",
+  "packageName": "test-micro.zip"
+}

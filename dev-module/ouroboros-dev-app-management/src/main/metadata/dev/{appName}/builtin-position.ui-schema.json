@@ -1,0 +1,80 @@
+{
+  "name": "/dev/{appName}/builtin-position",
+  "schema": {
+    "type": "page",
+    "title": "内置岗位",
+    "body": {
+      "type": "crud",
+      "id": "builtin-position-list",
+      "api": "get:/api/dev/${appName}/builtin-position",
+      "headerToolbar": [
+        {
+          "type": "button",
+          "label": "新增内置岗位",
+          "level": "primary",
+          "actionType": "dialog",
+          "dialog": {
+            "type": "dialog",
+            "title": "新增内置岗位",
+            "url": "/dev/${appName}/builtin-position/add",
+            "showCloseButton": true,
+            "showErrorMsg": true,
+            "showLoading": true,
+            "closeOnEsc": false,
+            "dataMapSwitch": false
+          }
+        },
+        "reload"
+      ],
+      "columns": [
+        {
+          "name": "key",
+          "label": "岗位编码"
+        },
+        {
+          "name": "name",
+          "label": "岗位名称"
+        },
+        {
+          "name": "level",
+          "label": "岗位级别"
+        },
+        {
+          "name": "description",
+          "label": "描述"
+        },
+        {
+          "type": "operation",
+          "label": "操作",
+          "buttons": [
+            {
+              "label": "编辑",
+              "level": "link",
+              "actionType": "dialog",
+              "dialog": {
+                "type": "dialog",
+                "title": "编辑内置岗位",
+                "url": "/dev/${appName}/builtin-position/edit",
+                "showCloseButton": true,
+                "showErrorMsg": true,
+                "showLoading": true,
+                "closeOnEsc": false,
+                "dataMapSwitch": false
+              }
+            },
+            {
+              "label": "删除",
+              "level": "link",
+              "actionType": "ajax",
+              "confirmText": "确认删除内置岗位「${name}」？",
+              "api": {
+                "method": "delete",
+                "url": "/api/dev/${appName}/builtin-position/${key}"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

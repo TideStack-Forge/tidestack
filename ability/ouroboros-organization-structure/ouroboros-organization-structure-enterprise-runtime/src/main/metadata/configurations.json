@@ -1,0 +1,24 @@
+[
+  {
+    "key": "organization.directory.snapshot-retention-days",
+    "label": "目录同步快照保留天数",
+    "groupPath": "organization.directory",
+    "description": "已应用或过期预览的个人资料保留期；只清理内容，保留任务和关联记录。",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "int",
+    "defaultValue": 7,
+    "scope": "backend"
+  },
+  {
+    "key": "organization.directory.detail-retention-days",
+    "label": "目录同步结果明细保留天数",
+    "groupPath": "organization.directory",
+    "description": "不得短于快照保留期；到期清理同步决策明细，保留最小任务事实。",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "int",
+    "defaultValue": 30,
+    "scope": "backend"
+  }
+]

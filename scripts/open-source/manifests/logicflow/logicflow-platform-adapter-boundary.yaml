@@ -1,0 +1,203 @@
+adapter_boundary_version: 1
+roadmap: logicflow-open-source-extraction
+source_feature: 2026-07-25-logicflow-platform-adapter-split
+source_public_boundary: logicflow-open-source-boundary.yaml
+status: active
+created: 2026-07-25
+
+public_candidates:
+  - module: ouroboros-logicflow-core
+    source: core/ouroboros-logicflow/ouroboros-logicflow-core
+  - module: ouroboros-logicflow-builtin-nodes
+    source: core/ouroboros-logicflow/ouroboros-logicflow-builtin-nodes
+  - module: ouroboros-logicflow-authoring
+    source: core/ouroboros-logicflow/ouroboros-logicflow-authoring
+  - module: ouroboros-logicflow-data-model
+    source: core/ouroboros-logicflow/ouroboros-logicflow-data-model
+
+global_rules:
+  adapter_export_policy: exclude_by_default
+  public_candidates_forbidden_backflow:
+    modules:
+      - ouroboros-logicflow-extra-nodes
+      - ouroboros-logicflow-runtime
+      - ouroboros-logicflow-dev
+      - ouroboros-logicflow-web-adapter
+      - ouroboros-logicflow-all
+    import_prefixes:
+      - com.ouroboros.logicflow.adapter
+      - com.ouroboros.logicflow.dev
+      - com.ouroboros.logicflow.debug
+      - com.ouroboros.logicflow.LogicFlowExecutionFacade
+      - com.ouroboros.logicflow.DefaultLogicFlowExecutionFacade
+      - com.ouroboros.dev
+      - com.ouroboros.web
+      - com.ouroboros.security
+      - com.ouroboros.websocket
+      - com.ouroboros.mq
+      - com.ouroboros.message
+      - com.ouroboros.modelmanage
+      - com.ouroboros.vcs
+      - com.ouroboros.exception
+  extension_route:
+    node_builder_descriptor: META-INF/services/com.ouroboros.logicflow.nodes.NodeBuilder
+    node_define_resource_glob: META-INF/ouroboros/logic-flow-node-define/*.json
+    node_factory_hardcoded_adapter_entry: forbidden
+
+adapters:
+  - module: ouroboros-logicflow-extra-nodes
+    source: core/ouroboros-logicflow/ouroboros-logicflow-extra-nodes
+    target_visibility: internal-adapter
+    role: Excel and platform exception node bundle
+    export_policy: exclude_by_default
+    allowed_public_candidate_dependencies:
+      - ouroboros-logicflow-core
+    allowed_internal_dependencies:
+      - common-exception
+      - ouroboros-util-excel
+      - spring-web
+    owned_resources:
+      node_builder_descriptor: src/main/resources/META-INF/services/com.ouroboros.logicflow.nodes.NodeBuilder
+      node_define_json_count: 2
+    required_guards:
+      - descriptor_and_json_bundle_pairing
+      - public_candidate_no_backflow
+
+  - module: ouroboros-logicflow-runtime
+    source: core/ouroboros-logicflow/ouroboros-logicflow-runtime
+    target_visibility: internal-adapter
+    role: app-home providers, execution facade, and platform common-script adapter
+    export_policy: exclude_by_default
+    allowed_public_candidate_dependencies:
+      - ouroboros-logicflow-core
+      - ouroboros-logicflow-builtin-nodes
+      - ouroboros-logicflow-extra-nodes
+    allowed_internal_dependencies:
+      - common-app
+      - common-script
+      - spring-boot-autoconfigure
+    owned_resources:
+      spi_descriptors:
+        - src/main/resources/META-INF/services/com.ouroboros.logicflow.model.FlowModelMetaProvider
+        - src/main/resources/META-INF/services/com.ouroboros.logicflow.model.FlowModelProvider
+        - src/main/resources/META-INF/services/com.ouroboros.logicflow.nodes.script.LogicFlowScriptEngine
+      script_engine_adapter:
+        implementation: CommonScriptLogicFlowScriptEngine
+        contract: LogicFlowScriptEngine#getSupportedLanguages declares supported script languages for collection and engine selection.
+    required_guards:
+      - runtime_spi_descriptors_present
+      - script_engine_adapter_descriptor_present
+      - public_candidate_no_backflow
+    must_not_own:
+      - src/main/java/com/ouroboros/logicflow/debug/*
+      - src/main/resources/META-INF/services/com.ouroboros.logicflow.diagnostic.FlowRuntimeAnalyzer
+
+  - module: ouroboros-logicflow-debug-helper
+    source: core/ouroboros-logicflow/ouroboros-logicflow-debug-helper
+    target_visibility: private-dev
+    role: LogicFlow debug analyzer package materialized by dev-app-management and injected into TEST_APP containers by the dev platform
+    export_policy: exclude_by_default
+    allowed_public_candidate_dependencies:
+      - ouroboros-logicflow-core
+    allowed_internal_dependencies:
+      - ouroboros-message-queue-core
+      - ouroboros-util
+    owned_resources:
+      spi_descriptors:
+        - src/main/resources/META-INF/services/com.ouroboros.logicflow.diagnostic.FlowRuntimeAnalyzer
+    required_guards:
+      - debug_runtime_dependency_whitelist
+      - debug_runtime_spi_descriptor_present
+      - debug_runtime_artifact_materializer_present
+      - runtime_default_no_debug_analyzer_descriptor
+      - test_app_loader_path_includes_debug_support
+      - default_image_no_debug_runtime_by_default
+      - public_candidate_no_backflow
+
+  - module: ouroboros-logicflow-dev
+    source: core/ouroboros-logicflow/ouroboros-logicflow-dev
+    target_visibility: private-dev
+    role: authoring API adapter, debug bridge, micro-web resources, script intelligence
+    export_policy: exclude_by_default
+    allowed_public_candidate_dependencies:
+      - ouroboros-logicflow-core
+      - ouroboros-logicflow-authoring
+    allowed_internal_dependencies:
+      - ouroboros-dev-model-manage-webapi-scaffold
+      - ouroboros-web-security-core
+      - common-dev
+      - ouroboros-message-queue-core
+      - ouroboros-websocket-core
+      - common-script
+      - classgraph
+    owned_resources:
+      resource_roots:
+        - src/main/resources/META-INF/ouroboros/ui-schema/dev
+        - src/main/resources/META-INF/ouroboros/ui-model/dev
+        - src/main/resources/META-INF/ouroboros/dev-menu-model
+        - src/main/resources/META-INF/ouroboros/micro-web
+        - src/main/resources/META-INF/ouroboros/script-intelligence
+    required_guards:
+      - dev_consumes_authoring_provider
+      - public_candidate_no_backflow
+
+  - module: ouroboros-logicflow-web-adapter
+    source: core/ouroboros-logicflow/ouroboros-logicflow-web-adapter
+    target_visibility: internal-adapter
+    role: Spring Web request/response/transaction adapter for LogicFlowExecutionFacade
+    export_policy: exclude_by_default
+    allowed_public_candidate_dependencies:
+      - ouroboros-logicflow-core
+      - ouroboros-logicflow-runtime
+    allowed_internal_dependencies:
+      - jakarta.servlet-api
+      - spring-webmvc
+      - spring-tx
+      - common-exception
+      - common-expression
+      - common-web
+      - ouroboros-util
+      - slf4j-api
+    required_guards:
+      - web_adapter_consumes_runtime_facade
+      - public_candidate_no_backflow
+
+  - module: ouroboros-logicflow-all
+    source: core/ouroboros-logicflow/ouroboros-logicflow-all
+    target_visibility: internal
+    role: internal aggregation module
+    export_policy: exclude_by_default
+    allowed_public_candidate_dependencies:
+      - ouroboros-logicflow-core
+      - ouroboros-logicflow-builtin-nodes
+    allowed_internal_dependencies:
+      - ouroboros-logicflow-web-adapter
+      - ouroboros-logicflow-data-model
+      - ouroboros-logicflow-runtime
+      - ouroboros-logicflow-extra-nodes
+    required_guards:
+      - excluded_from_public_export
+
+evidence:
+  adapter_poms_scanned: 7
+  node_builder_bundles:
+    data_model:
+      descriptor: core/ouroboros-logicflow/ouroboros-logicflow-data-model/src/main/resources/META-INF/services/com.ouroboros.logicflow.nodes.NodeBuilder
+      json_count: 11
+    extra_nodes:
+      descriptor: core/ouroboros-logicflow/ouroboros-logicflow-extra-nodes/src/main/resources/META-INF/services/com.ouroboros.logicflow.nodes.NodeBuilder
+      json_count: 2
+  runtime_spi_descriptors_current:
+    - core/ouroboros-logicflow/ouroboros-logicflow-runtime/src/main/resources/META-INF/services/com.ouroboros.logicflow.model.FlowModelMetaProvider
+    - core/ouroboros-logicflow/ouroboros-logicflow-runtime/src/main/resources/META-INF/services/com.ouroboros.logicflow.model.FlowModelProvider
+    - core/ouroboros-logicflow/ouroboros-logicflow-runtime/src/main/resources/META-INF/services/com.ouroboros.logicflow.nodes.script.LogicFlowScriptEngine
+  debug_runtime_spi_descriptors_current:
+    - core/ouroboros-logicflow/ouroboros-logicflow-debug-helper/src/main/resources/META-INF/services/com.ouroboros.logicflow.diagnostic.FlowRuntimeAnalyzer
+  dev_authoring_adapter:
+    - core/ouroboros-logicflow/ouroboros-logicflow-dev/src/main/java/com/ouroboros/logicflow/dev/controller/LogicflowNodeDefineController.java imports LogicFlowNodeDefineProvider
+  web_runtime_adapter:
+    - core/ouroboros-logicflow/ouroboros-logicflow-web-adapter/src/main/java/com/ouroboros/logicflow/adapter/HandlerFunctionAdapter.java imports LogicFlowExecutionFacade
+  verification:
+    architecture_guard: "mvn test -pl testing/architecture-tests -Dtest=LogicFlowExtensionContractTest passed with 12 tests."
+    dev_targeted_tests: "mvn test -pl core/ouroboros-logicflow/ouroboros-logicflow-dev -Dtest=LogicFlowNodeDefineProviderSpiContractTest,LogicflowNodeDefineControllerReturnNodeTest -Dsurefire.failIfNoSpecifiedTests=false passed with 6 tests."
+    adapter_reactor: "CMD-005 original run hit upstream ouroboros-data-core Mockito attach baseline; workaround with -Djacoco.skip=true and -DargLine=-javaagent:/Users/songmingxu/.m2/repository/net/bytebuddy/byte-buddy-agent/1.17.8/byte-buddy-agent-1.17.8.jar passed the requested runtime/web-adapter/data-model/extra-nodes reactor."

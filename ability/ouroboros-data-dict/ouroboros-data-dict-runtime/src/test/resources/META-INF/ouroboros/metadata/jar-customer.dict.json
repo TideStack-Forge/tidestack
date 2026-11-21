@@ -1,0 +1,9 @@
+{
+  "name": "jar-customer",
+  "title": "Jar Customer",
+  "type": "STATIC",
+  "group": "test",
+  "editable": false,
+  "treeMode": false,
+  "items": []
+}

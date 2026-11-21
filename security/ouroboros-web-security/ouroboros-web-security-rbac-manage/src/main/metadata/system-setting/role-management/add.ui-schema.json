@@ -1,0 +1,40 @@
+{
+  "name": "/system-setting/role-management/add",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "mode": "horizontal",
+    "body": [
+      {
+        "label": "角色名称",
+        "type": "input-text",
+        "name": "name",
+        "placeholder": "",
+        "clearable": true,
+        "required": true,
+        "validations": {
+          "maxLength": 100,
+          "minLength": 1
+        }
+      }
+    ],
+    "api": {
+      "url": "/api/sys/role",
+      "method": "post"
+    },
+    "onEvent": {
+      "submitSucc": {
+        "actions": [
+          {
+            "actionType": "closeDialog"
+          },
+          {
+            "actionType": "reload",
+            "componentName": "role-list"
+          }
+        ]
+      }
+    },
+    "wrapWithPanel": false
+  }
+}

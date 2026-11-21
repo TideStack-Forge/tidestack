@@ -1,0 +1,13 @@
+{
+  "editorId": "widget",
+  "editorName": "TideStack Widget Metadata Editor",
+  "editorNameKey": "customEditor.widget",
+  "metadataType": "widget",
+  "schemaName": "widget",
+  "viewType": "tidestack.metadataEditor.widget",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.widget",
+  "fileMatchPatterns": [
+    "*.widget.json"
+  ],
+  "priority": "default"
+}

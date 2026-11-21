@@ -1,0 +1,89 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>ouroboros-dev-helper</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>ouroboros-dev-helper-dev-metadata-provider</artifactId>
+    <name>Ouroboros dev-helper DevMetadataProviders</name>
+    <dependencies>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-dev-helper-dev</artifactId>
+            <version>${ouroboros.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-dev-model-manage-webapi-scaffold</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-configuration-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-data-dict-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-notification-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-rpc-model-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-business-model-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-app-module-model-dev</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-webapi-model-dev</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-ui-model-microweb-dev</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-ui-model-dev</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+</dependencies>
+</project>

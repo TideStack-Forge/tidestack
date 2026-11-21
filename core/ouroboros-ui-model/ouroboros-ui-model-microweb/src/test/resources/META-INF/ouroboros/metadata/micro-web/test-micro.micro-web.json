@@ -1,0 +1,6 @@
+{
+  "name": "test-micro",
+  "entry": "/metadata-entry",
+  "publicPath": "/metadata-public/",
+  "packageName": "test-micro.zip"
+}

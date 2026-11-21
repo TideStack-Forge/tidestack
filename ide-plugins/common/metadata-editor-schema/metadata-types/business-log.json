@@ -1,0 +1,147 @@
+{
+  "type": "business-log",
+  "fileSuffix": ".business-log.json",
+  "displayName": "业务日志模板",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.business-log.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/metadata",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.business-log.json",
+    "fields": [
+      {
+        "name": "name",
+        "label": "名称",
+        "documentPath": [
+          "name"
+        ],
+        "required": true,
+        "defaultFromPath": "camel-name"
+      },
+      {
+        "name": "moduleName",
+        "label": "模块名称",
+        "documentPath": [
+          "moduleName"
+        ],
+        "required": true,
+        "defaultFromPath": "title"
+      },
+      {
+        "name": "operation",
+        "label": "操作名称",
+        "documentPath": [
+          "operation"
+        ],
+        "required": true,
+        "defaultFromPath": "title"
+      }
+    ],
+    "document": {
+      "name": "example",
+      "httpMethod": "POST",
+      "url": "/api/example",
+      "moduleName": "示例模块",
+      "operation": "示例操作",
+      "level": "INFO",
+      "businessKeyName": "id",
+      "summaryTemplate": "示例操作 ${request.id}",
+      "sensitiveFields": [],
+      "shouldSaveResponseBody": false
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "业务日志模板",
+    "actions": [],
+    "body": [
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "名称",
+        "required": true
+      },
+      {
+        "type": "select",
+        "name": "httpMethod",
+        "label": "请求方法",
+        "options": [
+          {
+            "label": "GET",
+            "value": "GET"
+          },
+          {
+            "label": "POST",
+            "value": "POST"
+          },
+          {
+            "label": "PUT",
+            "value": "PUT"
+          },
+          {
+            "label": "DELETE",
+            "value": "DELETE"
+          },
+          {
+            "label": "PATCH",
+            "value": "PATCH"
+          }
+        ]
+      },
+      {
+        "type": "input-text",
+        "name": "url",
+        "label": "请求地址"
+      },
+      {
+        "type": "input-text",
+        "name": "moduleName",
+        "label": "模块名称"
+      },
+      {
+        "type": "input-text",
+        "name": "operation",
+        "label": "操作名称"
+      },
+      {
+        "type": "select",
+        "name": "level",
+        "label": "日志级别",
+        "options": [
+          {
+            "label": "INFO",
+            "value": "INFO"
+          },
+          {
+            "label": "WARN",
+            "value": "WARN"
+          },
+          {
+            "label": "ERROR",
+            "value": "ERROR"
+          }
+        ]
+      },
+      {
+        "type": "input-text",
+        "name": "businessKeyName",
+        "label": "业务键"
+      },
+      {
+        "type": "textarea",
+        "name": "summaryTemplate",
+        "label": "摘要模板",
+        "minRows": 2
+      },
+      {
+        "type": "switch",
+        "name": "shouldSaveResponseBody",
+        "label": "保存响应体"
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/business-log.schema.json"
+}

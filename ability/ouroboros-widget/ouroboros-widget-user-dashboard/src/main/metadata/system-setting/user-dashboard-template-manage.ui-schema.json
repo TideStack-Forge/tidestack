@@ -1,0 +1,147 @@
+{
+  "name": "/system-setting/user-dashboard-template-manage",
+  "schema": {
+    "type": "page",
+    "title": "用户仪表盘模板管理",
+    "body": [
+      {
+        "type": "crud",
+        "id": "templateList",
+        "mode": "table",
+        "syncLocation": false,
+        "api": {
+          "method": "get",
+          "url": "/api/user-dashboard-template"
+        },
+        "headerToolbar": [
+          {
+            "type": "button",
+            "label": "新增模板",
+            "icon": "fa fa-plus",
+            "level": "primary",
+            "actionType": "dialog",
+            "dialog": {
+              "type": "dialog",
+              "title": "新增模板",
+              "size": "lg",
+              "url": "/system-setting/user-dashboard-template-manage/add",
+              "showCloseButton": true,
+              "showErrorMsg": true,
+              "showLoading": true,
+              "closeOnEsc": false
+            },
+            "reload": "templateList"
+          },
+          "bulkActions",
+          {
+            "type": "reload",
+            "align": "right"
+          }
+        ],
+        "footerToolbar": [
+          "statistics",
+          "pagination"
+        ],
+        "columns": [
+          {
+            "name": "name",
+            "label": "模板名称",
+            "type": "text",
+            "searchable": true
+          },
+          {
+            "name": "description",
+            "label": "描述",
+            "type": "text",
+            "searchable": true
+          },
+          {
+            "name": "isDefault",
+            "label": "默认模板",
+            "type": "status",
+            "map": {
+              "true": {
+                "label": "是",
+                "status": "success",
+                "icon": "fa fa-check"
+              },
+              "false": {
+                "label": "否",
+                "status": "default",
+                "icon": "fa fa-times"
+              }
+            }
+          },
+          {
+            "name": "createdBy",
+            "label": "创建人",
+            "type": "text"
+          },
+          {
+            "name": "createdAt",
+            "label": "创建时间",
+            "type": "datetime",
+            "format": "YYYY-MM-DD HH:mm:ss"
+          },
+          {
+            "name": "updatedAt",
+            "label": "更新时间",
+            "type": "datetime",
+            "format": "YYYY-MM-DD HH:mm:ss"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "buttons": [
+              {
+                "type": "button",
+                "label": "查看",
+                "level": "link",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "模板详情",
+                  "size": "lg",
+                  "url": "/system-setting/user-dashboard-template-manage/detail",
+                  "showCloseButton": true,
+                  "closeOnEsc": true,
+                  "actions": []
+                }
+              },
+              {
+                "type": "button",
+                "label": "编辑",
+                "level": "link",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "编辑模板",
+                  "size": "lg",
+                  "url": "/system-setting/user-dashboard-template-manage/edit",
+                  "showCloseButton": true,
+                  "showErrorMsg": true,
+                  "showLoading": true,
+                  "closeOnEsc": false
+                },
+                "reload": "templateList"
+              },
+              {
+                "type": "button",
+                "label": "删除",
+                "level": "link",
+                "className": "text-danger",
+                "confirmText": "确定要删除该模板吗？",
+                "actionType": "ajax",
+                "api": {
+                  "method": "delete",
+                  "url": "/api/user-dashboard-template/${id}"
+                },
+                "reload": "templateList"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

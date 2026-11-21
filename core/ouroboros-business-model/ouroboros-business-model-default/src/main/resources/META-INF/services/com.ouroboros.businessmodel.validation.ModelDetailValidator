@@ -1,0 +1,26 @@
+# 基本校验
+com.ouroboros.businessmodel.validation.BasicInformationValidator
+com.ouroboros.businessmodel.validation.FieldsValidator
+com.ouroboros.businessmodel.validation.RelationValidator
+com.ouroboros.businessmodel.validation.SubmitTogetherRelationValidator
+com.ouroboros.businessmodel.validation.FeatureValidator
+com.ouroboros.businessmodel.validation.AccessControlValidator
+com.ouroboros.businessmodel.validation.BehaviorDefinitionValidator
+
+# 视图分别校验
+com.ouroboros.businessmodel.validation.view.AddViewValidator
+com.ouroboros.businessmodel.validation.view.CustomViewValidator
+com.ouroboros.businessmodel.validation.view.DetailViewValidator
+com.ouroboros.businessmodel.validation.view.EditViewValidator
+com.ouroboros.businessmodel.validation.view.IndexViewValidator
+com.ouroboros.businessmodel.validation.view.StatusFlowValidator
+com.ouroboros.businessmodel.validation.view.StatusFlowViewValidator
+
+# 接口分别校验
+com.ouroboros.businessmodel.validation.webapi.AddWebAPIValidator
+com.ouroboros.businessmodel.validation.webapi.CustomWebAPIValidator
+com.ouroboros.businessmodel.validation.webapi.DeleteWebAPIValidator
+com.ouroboros.businessmodel.validation.webapi.SearchWebAPIValidator
+com.ouroboros.businessmodel.validation.webapi.GetOneWebAPIValidator
+com.ouroboros.businessmodel.validation.webapi.StatusFlowWebAPIValidator
+com.ouroboros.businessmodel.validation.webapi.UpdateWebAPIValidator

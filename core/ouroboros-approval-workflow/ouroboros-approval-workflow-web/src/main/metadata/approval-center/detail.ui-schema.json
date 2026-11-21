@@ -1,0 +1,47 @@
+{
+  "name": "/approval-center/detail",
+  "schema": {
+    "type": "service",
+    "initFetch": "true",
+    "showErrorMsg": false,
+    "body": [
+      {
+        "type": "card",
+        "header": {
+          "title": "任务名称：${name}",
+          "subTitle": "任务类型：${type == null ? '已结束' : type}",
+          "description": "任务发起人：${starterName}"
+        },
+        "body": "发起时间：${startTime | date:YYYY-MM-DD HH\\:mm\\:ss :YYYY-MM-DDTHH\\:mm\\:ssZ} ${CONCATENATE('    ')} —— 结束时间：${endTime == null ? '正在进行' : ${endTime | date:YYYY-MM-DD HH\\:mm\\:ss :YYYY-MM-DDTHH\\:mm\\:ssZ}}",
+        "toolbar": [
+          {
+            "type": "tag",
+            "label": "审批任务编号：${id}",
+            "displayMode": "rounded",
+            "color": "inactive",
+            "className": "w-56"
+          }
+        ]
+      },
+      {
+        "type": "card",
+        "body": {
+          "type": "timeline",
+          "source": {
+            "method": "GET",
+            "url": "/api/approval-workflow/instance/${instanceId}/timeline"
+          }
+        }
+      },
+      {
+        "type": "service",
+        "schemaApi": {
+          "method": "GET",
+          "url": "/api/approval-workflow/task/${id}/task-form-schema"
+        }
+      }
+    ],
+    "wrapWithPanel": false,
+    "actions": []
+  }
+}

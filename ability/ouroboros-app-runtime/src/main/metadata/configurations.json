@@ -1,0 +1,359 @@
+[
+  {
+    "key": "appName",
+    "label": "应用名称",
+    "groupPath": "app.branding",
+    "order": 10,
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "string",
+    "defaultValue": "新应用"
+  },
+  {
+    "key": "logo",
+    "label": "应用Logo",
+    "groupPath": "app.branding",
+    "order": 20,
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string",
+    "defaultValue": null,
+    "scope": "frontend"
+  },
+  {
+    "key": "defaultTheme",
+    "label": "默认主题",
+    "groupPath": "app.theme",
+    "order": 10,
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "string",
+    "defaultValue": "dark",
+    "scope": "frontend",
+    "editorSchema": {
+      "type": "button-group-select",
+      "options": [
+        {
+          "value": "dark",
+          "label": "深色"
+        },
+        {
+          "value": "light",
+          "label": "浅色"
+        }
+      ]
+    }
+  },
+  {
+    "key": "ui.tabs.icon.enabled",
+    "label": "是否显示标签页图标",
+    "groupPath": "ui.tabs",
+    "order": 10,
+    "description": "是否在标签页标题旁显示图标",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "boolean",
+    "defaultValue": true
+  },
+  {
+    "key": "ui.table.lazyRender.enabled",
+    "label": "启用表格懒渲染",
+    "groupPath": "ui.table.lazyRender",
+    "order": 10,
+    "description": "默认关闭。关闭后表格不再逐行懒渲染；宽表仍会使用虚拟窗口。",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "boolean",
+    "defaultValue": false
+  },
+  {
+    "key": "ui.crud.filter.smartLayout.enabled",
+    "label": "启用筛选区智能布局",
+    "groupPath": "ui.crud.filter.smartLayout",
+    "order": 10,
+    "description": "控制 CRUD 筛选区是否按字段类型和容器宽度自动排版",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "boolean",
+    "defaultValue": true
+  },
+  {
+    "key": "ui.crud.filter.smartLayout.labelStyle",
+    "label": "筛选项标签风格",
+    "groupPath": "ui.crud.filter.smartLayout",
+    "order": 20,
+    "description": "label 保留左侧标签；placeholder 将标签收进占位文案以获得更紧凑布局",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "string",
+    "defaultValue": "label",
+    "editorSchema": {
+      "type": "button-group-select",
+      "options": [
+        {
+          "value": "label",
+          "label": "保留标签"
+        },
+        {
+          "value": "placeholder",
+          "label": "占位文案"
+        }
+      ]
+    }
+  },
+  {
+    "key": "ui.crud.filter.smartLayout.fieldsPerRow.desktop",
+    "label": "宽屏每行字段数",
+    "groupPath": "ui.crud.filter.smartLayout",
+    "order": 30,
+    "description": "宽屏场景每行可容纳的筛选字段数",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "int",
+    "defaultValue": 5,
+    "min": 1
+  },
+  {
+    "key": "ui.crud.filter.smartLayout.fieldsPerRow.narrow",
+    "label": "窄屏每行字段数",
+    "groupPath": "ui.crud.filter.smartLayout",
+    "order": 40,
+    "description": "非宽屏桌面场景每行可容纳的筛选字段数",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "int",
+    "defaultValue": 4,
+    "min": 1
+  },
+  {
+    "key": "ui.crud.filter.smartLayout.fieldsPerRow.mobile",
+    "label": "移动端每行字段数",
+    "groupPath": "ui.crud.filter.smartLayout",
+    "order": 50,
+    "description": "移动端场景每行可容纳的筛选字段数",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "int",
+    "defaultValue": 1,
+    "min": 1
+  },
+  {
+    "key": "ui.form.smartLayout.enabled",
+    "label": "启用表单智能布局",
+    "groupPath": "ui.form.smartLayout",
+    "order": 10,
+    "description": "控制普通表单在未显式声明 smartLayout 时是否自动启用智能布局",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "boolean",
+    "defaultValue": false
+  },
+  {
+    "key": "ui.form.smartLayout.labelStyle",
+    "label": "表单标签风格",
+    "groupPath": "ui.form.smartLayout",
+    "order": 20,
+    "description": "normal 使用顶部标签；horizontal 使用左侧标签",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "string",
+    "defaultValue": "normal",
+    "editorSchema": {
+      "type": "button-group-select",
+      "options": [
+        {
+          "value": "normal",
+          "label": "顶部标签"
+        },
+        {
+          "value": "horizontal",
+          "label": "左侧标签"
+        }
+      ]
+    }
+  },
+  {
+    "key": "ui.form.smartLayout.smallItemLimit",
+    "label": "单列字段数阈值",
+    "groupPath": "ui.form.smartLayout",
+    "order": 30,
+    "description": "普通表单字段数小于或等于该值时使用小表单列数",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "int",
+    "defaultValue": 5,
+    "min": 1
+  },
+  {
+    "key": "ui.form.smartLayout.columnCount.small",
+    "label": "小表单列数",
+    "groupPath": "ui.form.smartLayout",
+    "order": 40,
+    "description": "字段数不超过单列字段数阈值时的表单列数",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "int",
+    "defaultValue": 1,
+    "min": 1
+  },
+  {
+    "key": "ui.form.smartLayout.columnCount.large",
+    "label": "大表单列数",
+    "groupPath": "ui.form.smartLayout",
+    "order": 50,
+    "description": "字段数超过单列字段数阈值时的表单列数",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "int",
+    "defaultValue": 2,
+    "min": 1
+  },
+  {
+    "key": "ui.dialog.resize.enabled",
+    "label": "默认启用弹窗尺寸能力",
+    "groupPath": "ui.dialog.resize",
+    "order": 10,
+    "description": "控制未显式配置的对话框是否默认启用尺寸相关能力",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "boolean",
+    "defaultValue": false
+  },
+  {
+    "key": "ui.dialog.resize.sizeSwitchable",
+    "label": "默认显示预设尺寸切换",
+    "groupPath": "ui.dialog.resize",
+    "order": 20,
+    "description": "控制未显式配置的对话框是否默认显示预设尺寸切换按钮",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "boolean",
+    "defaultValue": false
+  },
+  {
+    "key": "ui.dialog.resize.resizable",
+    "label": "默认允许拖拽调整尺寸",
+    "groupPath": "ui.dialog.resize",
+    "order": 30,
+    "description": "控制未显式配置的对话框是否默认允许拖拽改变宽高",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "boolean",
+    "defaultValue": false
+  },
+  {
+    "key": "ui.dialog.resize.sizes",
+    "label": "默认可切换尺寸",
+    "groupPath": "ui.dialog.resize",
+    "order": 40,
+    "description": "控制未显式配置 sizeOptions 的对话框可切换预设尺寸",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "string",
+    "defaultValue": "sm,md,lg,xl,full",
+    "editorSchema": {
+      "type": "select",
+      "multiple": true,
+      "joinValues": true,
+      "delimiter": ",",
+      "extractValue": true,
+      "options": [
+        {
+          "value": "sm",
+          "label": "小"
+        },
+        {
+          "value": "md",
+          "label": "中"
+        },
+        {
+          "value": "lg",
+          "label": "大"
+        },
+        {
+          "value": "xl",
+          "label": "超大"
+        },
+        {
+          "value": "full",
+          "label": "铺满"
+        }
+      ]
+    }
+  },
+  {
+    "key": "sidebar.width",
+    "label": "侧边栏默认宽度",
+    "groupPath": "ui.sidebar",
+    "order": 10,
+    "description": "侧边栏展开态默认宽度（像素）",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "int",
+    "defaultValue": 200
+  },
+  {
+    "key": "sidebar.minWidth",
+    "label": "侧边栏最小宽度",
+    "groupPath": "ui.sidebar",
+    "order": 20,
+    "description": "侧边栏拖拽允许的最小展开宽度（像素）",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "int",
+    "defaultValue": 160
+  },
+  {
+    "key": "sidebar.maxWidth",
+    "label": "侧边栏最大宽度",
+    "groupPath": "ui.sidebar",
+    "order": 30,
+    "description": "侧边栏拖拽允许的最大展开宽度（像素）",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "int",
+    "defaultValue": 360
+  },
+  {
+    "key": "sidebar.resizable",
+    "label": "是否允许拖拽调宽",
+    "groupPath": "ui.sidebar",
+    "order": 40,
+    "description": "控制主壳侧边栏是否渲染拖拽调宽手柄",
+    "scope": "frontend",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "boolean",
+    "defaultValue": true
+  },
+  {
+    "key": "isLockTheme",
+    "label": "是否锁定主题",
+    "groupPath": "app.theme",
+    "order": 20,
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "boolean",
+    "defaultValue": false,
+    "scope": "frontend"
+  }
+]

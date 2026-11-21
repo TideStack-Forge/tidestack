@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/approval-workflow-definition/add",
+  "type": "amis",
+  "title": "新建流程定义"
+}

@@ -1,0 +1,7 @@
+{
+  "title": "通知模板",
+  "fullName": "systemSetting.notificationTemplate",
+  "icon": "fa fa-bell",
+  "url": "/system-setting/notification-templates",
+  "order": 20
+}

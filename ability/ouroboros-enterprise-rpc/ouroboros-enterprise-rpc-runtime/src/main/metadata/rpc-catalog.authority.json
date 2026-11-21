@@ -1,0 +1,11 @@
+{
+  "fullName": "systemSetting.integrationManagement.connections.rpc.catalog",
+  "title": "查看企业 API 接入说明",
+  "delegable": false,
+  "apis": ["GET /api/sys/integration-management/sections/{section}"],
+  "uiViews": [
+    "/system-setting/integration-management",
+    "/system-setting/integration-management/enterprise-rpc"
+  ],
+  "menuItems": ["systemSetting.integrationManagement"]
+}

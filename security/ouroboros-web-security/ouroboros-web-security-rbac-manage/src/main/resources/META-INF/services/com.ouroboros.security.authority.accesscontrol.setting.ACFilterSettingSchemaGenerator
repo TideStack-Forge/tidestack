@@ -1,0 +1,4 @@
+com.ouroboros.security.rbac.accesscontrol.filter.setting.EmbedFilterSettingSchemaGenerator
+com.ouroboros.security.rbac.accesscontrol.filter.setting.EmployeeFilterSettingSchemaGenerator
+com.ouroboros.security.rbac.accesscontrol.filter.setting.DepartmentFilterSettingSchemaGenerator
+com.ouroboros.security.rbac.accesscontrol.filter.setting.CompanyFilterSettingSchemaGenerator

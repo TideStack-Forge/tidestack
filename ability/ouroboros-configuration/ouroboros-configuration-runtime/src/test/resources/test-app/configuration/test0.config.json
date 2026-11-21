@@ -1,0 +1,11 @@
+{
+  "key": "test0",
+  "label": "Test 0",
+  "description": "Configuration fixture for runtime module tests",
+  "groupPath": "security.session",
+  "order": 10,
+  "modifiable": true,
+  "nullable": false,
+  "valueType": "string",
+  "defaultValue": "test0-default"
+}

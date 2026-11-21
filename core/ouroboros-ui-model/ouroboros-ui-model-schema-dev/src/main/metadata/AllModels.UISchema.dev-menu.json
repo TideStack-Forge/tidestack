@@ -1,0 +1,10 @@
+{
+  "fullName": "UIDesign.UIManagement.UISchema",
+  "url": "/dev/{appName}/ui-schema",
+  "icon": "icon-ui-schema",
+  "title": "UI Schema",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 30
+}

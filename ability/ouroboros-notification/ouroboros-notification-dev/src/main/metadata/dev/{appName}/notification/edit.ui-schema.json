@@ -1,0 +1,427 @@
+{
+  "name": "/dev/{appName}/notification/edit",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "wrapWithPanel": false,
+    "body": [
+      {
+        "label": "模版名",
+        "type": "input-text",
+        "name": "name",
+        "required": true,
+        "static": true,
+        "placeholder": "请输入模版名（须符合变量命名规范且唯一）"
+      },
+      {
+        "label": "模版标题",
+        "type": "input-text",
+        "name": "title",
+        "required": true,
+        "placeholder": "请输入模版标题"
+      },
+      {
+        "name": "isEnabled",
+        "type": "switch",
+        "label": "状态"
+      },
+      {
+        "type": "input-kvs",
+        "name": "channel",
+        "label": "渠道",
+        "addButtonText": "新增渠道",
+        "keyItem": {
+          "label": "渠道名",
+          "type": "select",
+          "options": [
+            {
+              "label": "站内信",
+              "value": "internal-message"
+            },
+            {
+              "label": "微信",
+              "value": "wechat"
+            },
+            {
+              "label": "阿里云-短信",
+              "value": "aliyun-sms"
+            },
+            {
+              "label": "钉钉",
+              "value": "ding-talk"
+            },
+            {
+              "label": "极光推送",
+              "value": "j-push"
+            },
+            {
+              "label": "邮箱",
+              "value": "email"
+            },
+            {
+              "label": "阿里云-电话通知",
+              "value": "aliyun-call"
+            }
+          ]
+        },
+        "valueItems": [
+          {
+            "type": "json-data-editor",
+            "visibleOn": "${_key === 'internal-message' || _key ==='ding-talk' || _key ==='j-push' || _key ==='email'  }",
+            "name": "schema",
+            "label": "必填项",
+            "jsonSchema": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "contentTemplate",
+                "titleTemplate"
+              ],
+              "properties": {
+                "titleTemplate": {
+                  "type": "string",
+                  "title": "标题模板"
+                },
+                "contentTemplate": {
+                  "type": "string",
+                  "title": "内容模板"
+                }
+              }
+            },
+            "codeContext": {
+              "codeSite": "notification.template",
+              "codeResourceType": "notification",
+              "codePointer": "/channel/*/schema",
+              "language": "template",
+              "intelligenceApi": "/api/dev/${appName}/code-intelligence/context"
+            }
+          },
+          {
+            "type": "json-data-editor",
+            "visibleOn": "${_key === 'wechat' || _key === 'aliyun-sms' || _key === 'aliyun-call'}",
+            "name": "schema",
+            "label": "必填项",
+            "jsonSchema": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "title": "id"
+                }
+              }
+            },
+            "codeContext": {
+              "codeSite": "notification.template",
+              "codeResourceType": "notification",
+              "codePointer": "/channel/*/schema",
+              "language": "template",
+              "intelligenceApi": "/api/dev/${appName}/code-intelligence/context"
+            }
+          },
+          {
+            "type": "json-data-editor",
+            "visibleOn": "${_key === 'internal-message'}",
+            "name": "options",
+            "label": "可选项",
+            "jsonSchema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "action": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "title": "动作",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "title": "跳转地址"
+                    },
+                    "description": {
+                      "type": "string",
+                      "title": "描述"
+                    }
+                  }
+                },
+                "type": {
+                  "type": "string",
+                  "title": "类型"
+                },
+                "platform": {
+                  "type": "object",
+                  "title": "接收终端",
+                  "additionalProperties": false,
+                  "properties": {
+                    "app": {
+                      "type": "boolean",
+                      "title": "app"
+                    },
+                    "web": {
+                      "type": "boolean",
+                      "title": "web"
+                    }
+                  }
+                }
+              }
+            },
+            "codeContext": {
+              "codeSite": "notification.template",
+              "codeResourceType": "notification",
+              "codePointer": "/channel/*/options",
+              "language": "template",
+              "intelligenceApi": "/api/dev/${appName}/code-intelligence/context"
+            }
+          },
+          {
+            "type": "json-data-editor",
+            "visibleOn": "${_key === 'wechat'}",
+            "name": "options",
+            "label": "可选项",
+            "jsonSchema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "clientMsgId": {
+                  "type": "string",
+                  "title": "防重入id"
+                },
+                "payloadColor": {
+                  "type": "object",
+                  "title": "模板数据颜色",
+                  "properties": {}
+                },
+                "miniprogram": {
+                  "type": "object",
+                  "title": "跳转小程序配置",
+                  "properties": {
+                    "pagepath": {
+                      "type": "string",
+                      "title": "具体页面路径"
+                    },
+                    "appid": {
+                      "type": "string",
+                      "title": "appid"
+                    }
+                  }
+                },
+                "url": {
+                  "type": "string",
+                  "title": "模板跳转链接"
+                }
+              }
+            },
+            "codeContext": {
+              "codeSite": "notification.template",
+              "codeResourceType": "notification",
+              "codePointer": "/channel/*/options",
+              "language": "template",
+              "intelligenceApi": "/api/dev/${appName}/code-intelligence/context"
+            }
+          },
+          {
+            "type": "json-data-editor",
+            "visibleOn": "${_key === 'aliyun-sms'}",
+            "name": "options",
+            "label": "可选项",
+            "jsonSchema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "SmsUpExtendCode": {
+                  "type": "string",
+                  "title": "上行短信扩展码"
+                },
+                "signName": {
+                  "type": "string",
+                  "title": "短信签名"
+                },
+                "OutId": {
+                  "type": "string",
+                  "title": "外部流水扩展字段"
+                }
+              }
+            },
+            "codeContext": {
+              "codeSite": "notification.template",
+              "codeResourceType": "notification",
+              "codePointer": "/channel/*/options",
+              "language": "template",
+              "intelligenceApi": "/api/dev/${appName}/code-intelligence/context"
+            }
+          },
+          {
+            "type": "json-data-editor",
+            "visibleOn": "${_key === 'ding-talk'}",
+            "name": "options",
+            "label": "可选项",
+            "jsonSchema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "statusContent": {
+                  "type": "string",
+                  "title": "状态提示消息"
+                },
+                "appSkipUrl": {
+                  "type": "string",
+                  "title": "App跳转url"
+                },
+                "pcSkipUrl": {
+                  "type": "string",
+                  "title": "PC端跳转url"
+                },
+                "agentId": {
+                  "type": "string",
+                  "title": "应用id"
+                },
+                "author": {
+                  "type": "string",
+                  "title": "发送方"
+                }
+              }
+            },
+            "codeContext": {
+              "codeSite": "notification.template",
+              "codeResourceType": "notification",
+              "codePointer": "/channel/*/options",
+              "language": "template",
+              "intelligenceApi": "/api/dev/${appName}/code-intelligence/context"
+            }
+          },
+          {
+            "type": "json-data-editor",
+            "visibleOn": "${_key === 'j-push'}",
+            "name": "options",
+            "label": "可选项",
+            "jsonSchema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "notification": {
+                  "type": "object",
+                  "title": "通知选项",
+                  "additionalProperties": false,
+                  "properties": {
+                    "android": {
+                      "type": "object",
+                      "title": "Android",
+                      "properties": {}
+                    },
+                    "ios": {
+                      "type": "object",
+                      "title": "iOS",
+                      "properties": {}
+                    }
+                  }
+                },
+                "options": {
+                  "type": "Object",
+                  "title": "推送可选参数",
+                  "properties": {}
+                }
+              }
+            },
+            "codeContext": {
+              "codeSite": "notification.template",
+              "codeResourceType": "notification",
+              "codePointer": "/channel/*/options",
+              "language": "template",
+              "intelligenceApi": "/api/dev/${appName}/code-intelligence/context"
+            }
+          },
+          {
+            "type": "json-data-editor",
+            "visibleOn": "${_key === 'email'}",
+            "name": "options",
+            "label": "可选项",
+            "jsonSchema": {
+              "type": "object",
+              "properties": {}
+            },
+            "codeContext": {
+              "codeSite": "notification.template",
+              "codeResourceType": "notification",
+              "codePointer": "/channel/*/options",
+              "language": "template",
+              "intelligenceApi": "/api/dev/${appName}/code-intelligence/context"
+            }
+          },
+          {
+            "type": "json-data-editor",
+            "visibleOn": "${_key === 'aliyun-call'}",
+            "name": "options",
+            "label": "可选项",
+            "jsonSchema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "volume": {
+                  "type": "interger",
+                  "title": "播放音量"
+                },
+                "calledShowNumber": {
+                  "type": "string",
+                  "title": "被叫显号"
+                },
+                "playTimes": {
+                  "type": "interger",
+                  "title": "播放次数"
+                },
+                "outId": {
+                  "type": "string",
+                  "title": "回执id"
+                },
+                "speed": {
+                  "type": "interger",
+                  "title": "语速控制"
+                }
+              }
+            },
+            "codeContext": {
+              "codeSite": "notification.template",
+              "codeResourceType": "notification",
+              "codePointer": "/channel/*/options",
+              "language": "template",
+              "intelligenceApi": "/api/dev/${appName}/code-intelligence/context"
+            }
+          }
+        ]
+      },
+      {
+        "name": "payloadSchema",
+        "type": "input-kvs",
+        "label": "载荷参数",
+        "addButtonText": "新增字段",
+        "keyItem": {
+          "label": "字段名"
+        },
+        "valueItems": [
+          {
+            "type": "input-text",
+            "name": "description",
+            "label": "描述"
+          },
+          {
+            "type": "select",
+            "name": "type",
+            "label": "字段类型",
+            "options": [
+              "string",
+              "integer",
+              "number",
+              "boolean"
+            ]
+          }
+        ]
+      }
+    ],
+    "api": {
+      "url": "/api/dev/${appName}/notification-template/${name}",
+      "method": "put"
+    },
+    "mode": "horizontal"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "fullName": "systemSetting.logicflow.edit",
+  "title": "编辑逻辑流",
+  "apis": [
+    "POST /api/runtime/logicflows/models/{name}/validate",
+    "PUT /api/runtime/logicflows/models/{name}/override",
+    "POST /api/runtime/logicflows/models/{name}/revoke",
+    "POST /api/runtime/logicflows/models/{name}/restore-previous"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "type": "getOneData",
+  "label": "获取单条数据",
+  "icon": "get-one",
+  "shape": "rect",
+  "description": "获取单条数据",
+  "order": 4001,
+  "svgs": {
+    "get-one": "<svg t=\"1702652592809\" class=\"icon\" viewBox=\"0 0 1025 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"21669\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"300.29296875\" height=\"300\"><path d=\"M512.001473 0C794.746978 0 1024.001473 229.254495 1024.001473 512c0 282.745505-229.254495 512-512 512C229.255967 1024 0.001473 794.745505 0.001473 512 0.001473 229.254495 229.255967 0 512.001473 0z m0 937.146145c234.746784 0 425.146145-190.399361 425.146144-425.146145S746.748257 86.864083 512.001473 86.864083 86.865556 277.263444 86.865556 512c0 234.736556 190.389133 425.146145 425.135917 425.146145z m4.438833-663.810148h59.126488v479.803116h-78.630763V368.095885c-28.893328 26.203436-65.19153 45.687255-109.528725 58.471914v-77.955733c21.508909-5.369557 44.347423-14.789293 68.546224-28.228526 24.188574-14.799521 44.347423-30.243388 60.486776-47.047543z m0 0\" p-id=\"21670\"></path></svg>"
+  },
+  "scaffold": {
+    "type": "getOneData",
+    "name": "获取单条数据",
+    "dataModel": "",
+    "plugins": [],
+    "resultWrapperKey": "",
+    "inputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "any"
+      }
+    ],
+    "outputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "map"
+      }
+    ]
+  },
+  "portRules": {
+    "input": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    },
+    "output": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    }
+  },
+  "properties": [
+    {
+      "type": "data-model",
+      "name": "dataModel",
+      "label": "数据模型",
+      "required": true
+    },
+    {
+      "type": "data-model-plugins",
+      "name": "plugins",
+      "label": "插件"
+    },
+    {
+      "type": "input-text",
+      "name": "resultWrapperKey",
+      "label": "结果包裹key",
+      "description": "将结果以Map形式包裹，key为该值，留空则不包裹直接返回结果"
+    }
+  ],
+  "group": "数据库操作"
+}

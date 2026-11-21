@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>ouroboros-root</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>ouroboros-dev-runtime</artifactId>
+    <packaging>pom</packaging>
+    <name>Ouroboros Dev Runtime</name>
+
+    <properties>
+        <fabric8.kubernetes-client.version>7.8.0</fabric8.kubernetes-client.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Mirror Fabric8 versions here because the standalone dev-module reactor validation
+                 does not include the bom module in-reactor, so Task 1 must remain self-contained. -->
+            <dependency>
+                <groupId>io.fabric8</groupId>
+                <artifactId>kubernetes-client-bom</artifactId>
+                <version>${fabric8.kubernetes-client.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <modules>
+        <module>ouroboros-dev-runtime-core</module>
+        <module>ouroboros-dev-runtime-broker</module>
+        <module>ouroboros-dev-runtime-docker</module>
+        <module>ouroboros-dev-runtime-kubernetes</module>
+        <module>ouroboros-dev-runtime-gateway-apisix</module>
+    </modules>
+</project>

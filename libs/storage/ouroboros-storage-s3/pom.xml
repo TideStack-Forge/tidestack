@@ -1,0 +1,10 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent><groupId>com.ouroboros</groupId><artifactId>ouroboros-storage</artifactId><version>2.0.0-rc.1-SNAPSHOT</version></parent>
+  <artifactId>ouroboros-storage-s3</artifactId>
+  <dependencies><dependency><groupId>com.ouroboros</groupId><artifactId>ouroboros-storage-core</artifactId></dependency><dependency><groupId>software.amazon.awssdk</groupId><artifactId>s3</artifactId><exclusions>
+    <exclusion><groupId>software.amazon.awssdk</groupId><artifactId>apache-client</artifactId></exclusion>
+    <exclusion><groupId>software.amazon.awssdk</groupId><artifactId>apache5-client</artifactId></exclusion>
+    <exclusion><groupId>software.amazon.awssdk</groupId><artifactId>netty-nio-client</artifactId></exclusion>
+  </exclusions></dependency><dependency><groupId>software.amazon.awssdk</groupId><artifactId>url-connection-client</artifactId></dependency></dependencies>
+</project>

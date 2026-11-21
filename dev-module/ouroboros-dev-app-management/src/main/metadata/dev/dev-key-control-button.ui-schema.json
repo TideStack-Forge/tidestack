@@ -1,0 +1,27 @@
+{
+  "name": "/dev/dev-key-control-button",
+  "schema": {
+    "type": "button-group",
+    "className": "mr-2 p-0",
+    "buttons": [
+      {
+        "type": "button",
+        "label": "接入IDE",
+        "icon": "fa fa-key",
+        "size": "sm",
+        "level": "link",
+        "tooltip": "下载 IDE 接入配置或管理当前应用的 Dev Key",
+        "disabledOn": "${!appName}",
+        "actionType": "dialog",
+        "dialog": {
+          "title": "接入IDE",
+          "size": "md",
+          "url": "/dev/container/debug-key-dialog",
+          "data": {
+            "appName": "${appName}"
+          }
+        }
+      }
+    ]
+  }
+}

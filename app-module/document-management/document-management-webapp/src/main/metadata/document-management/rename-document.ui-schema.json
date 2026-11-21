@@ -1,0 +1,22 @@
+{
+  "name": "/document-management/rename-document",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "api": {
+      "method": "put",
+      "url": "/api/document-libraries/${libraryId}/documents/${id}/rename",
+      "messages": {
+        "success": "文件重命名成功"
+      }
+    },
+    "body": [
+      {
+        "type": "input-text",
+        "name": "newName",
+        "label": "新文件名称",
+        "required": true
+      }
+    ]
+  }
+}

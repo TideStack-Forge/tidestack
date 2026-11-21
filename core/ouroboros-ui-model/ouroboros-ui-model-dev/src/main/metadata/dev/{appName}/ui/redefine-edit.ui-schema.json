@@ -1,0 +1,18 @@
+{
+  "name": "/dev/{appName}/ui/redefine-edit",
+  "schema": {
+    "type": "form",
+    "api": {
+      "method": "put",
+      "url": "/api/dev/${appName}/ui-model/${currentModel.fullName}"
+    },
+    "initApi": {
+      "method": "get",
+      "url": "/api/dev/${appName}/all-channel/ui-model?path=${path}"
+    },
+    "wrapWithPanel": false,
+    "body": {
+      "$ref": "uiModelBody"
+    }
+  }
+}

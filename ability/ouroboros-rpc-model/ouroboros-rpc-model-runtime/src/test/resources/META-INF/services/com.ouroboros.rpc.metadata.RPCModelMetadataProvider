@@ -1,0 +1,3 @@
+com.ouroboros.rpc.RPCModelDefinitionCenterTest$DuplicateFirstProvider
+com.ouroboros.rpc.RPCModelDefinitionCenterTest$EdgeCaseProvider
+com.ouroboros.rpc.RPCModelDefinitionCenterTest$DuplicateSecondProvider

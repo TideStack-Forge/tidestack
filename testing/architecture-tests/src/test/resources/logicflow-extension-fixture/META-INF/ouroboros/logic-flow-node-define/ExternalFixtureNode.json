@@ -1,0 +1,6 @@
+{
+  "type": "externalFixture",
+  "label": "External Fixture",
+  "description": "Test-only fixture proving external bundles use NodeBuilder SPI plus NodeDefine JSON.",
+  "category": "test-only"
+}

@@ -1,0 +1,308 @@
+{
+  "name": "/dev/{appName}/ui",
+  "schema": {
+    "type": "page",
+    "css": {
+      ".cover-bg": {
+        "background": "#EDEEF0"
+      }
+    },
+    "definitions": {
+      "uiModelBody": {
+        "type": "service",
+        "body": [
+          {
+            "type": "input-text",
+            "name": "path",
+            "label": "path",
+            "required": true,
+            "disabled": true
+          },
+          {
+            "type": "input-text",
+            "name": "title",
+            "label": "标题",
+            "required": true
+          },
+          {
+            "type": "list-select",
+            "name": "type",
+            "label": "类型",
+            "required": true,
+            "options": [
+              {
+                "label": "UI Schema",
+                "value": "amis"
+              },
+              {
+                "label": "微前端",
+                "value": "micro"
+              },
+              {
+                "label": "内部页面",
+                "value": "internal"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "name": "microWebName",
+            "label": "微前端入口",
+            "required": true,
+            "visibleOn": "this.type === 'micro'",
+            "labelField": "name",
+            "valueField": "name",
+            "source": {
+              "method": "get",
+              "url": "/api/dev/${appName}/micro-web?type=app"
+            },
+            "value": "",
+            "clearValueOnHidden": true
+          },
+          {
+            "type": "input-text",
+            "name": "schemaId",
+            "label": "Schema ID",
+            "visibleOn": "this.type === 'amis'",
+            "value": "",
+            "placeholder": "不填写则使用路径作为Schema ID",
+            "clearValueOnHidden": true
+          }
+        ]
+      }
+    },
+    "body": [
+      {
+        "type": "crud",
+        "model": "table",
+        "name": "uiList",
+        "api": "get:/api/dev/${appName}/ui",
+        "headerToolbar": [
+          {
+            "label": "刷新",
+            "icon": "fa fa-repeat",
+            "type": "button",
+            "actionType": "reload"
+          },
+          {
+            "type": "container",
+            "align": "right",
+            "className": "flex flex-row-reverse",
+            "body": [
+              {
+                "type": "button",
+                "label": "管理微前端",
+                "icon": {
+                  "id": "svg-icon-micro-web"
+                },
+                "iconClassName": "w-5 h-5",
+                "level": "primary",
+                "className": "mr-1",
+                "onEvent": {
+                  "click": {
+                    "actions": [
+                      {
+                        "actionType": "openOrSwitchTab",
+                        "args": {
+                          "title": "微前端",
+                          "url": "/dev/${appName}/micro-web"
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "button",
+                "icon": {
+                  "id": "svg-icon-ui-schema"
+                },
+                "iconClassName": "w-5 h-5",
+                "label": "管理UI Schema",
+                "level": "primary",
+                "onEvent": {
+                  "click": {
+                    "actions": [
+                      {
+                        "actionType": "openOrSwitchTab",
+                        "args": {
+                          "title": "UI Schema",
+                          "url": "/dev/${appName}/ui-schema"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "footable": {},
+        "rowClassNameExpr": "${isChanged ? 'cover-bg' : ''}",
+        "columns": [
+          {
+            "label": "页面路径",
+            "type": "wrapper",
+            "size": "none",
+            "className": "flex items-center",
+            "body": {
+              "type": "wrapper",
+              "size": "sm",
+              "className": "flex items-center m-0",
+              "body": [
+                {
+                  "type": "icon",
+                  "vendor": "",
+                  "icon": "${ nodeType == 'group' ? 'fa fa-folder' : 'far fa-window-restore' }",
+                  "className": "mr-2"
+                },
+                {
+                  "type": "tpl",
+                  "tpl": "${ path || label }"
+                }
+              ]
+            }
+          },
+          {
+            "name": "currentModel.title",
+            "label": "标题"
+          },
+          {
+            "type": "container",
+            "label": "页面渲染方式",
+            "body": [
+              {
+                "type": "wrapper",
+                "size": "none",
+                "className": "m-0 flex items-center",
+                "body": [
+                  {
+                    "type": "tooltip-wrapper",
+                    "title": "UI Schema",
+                    "content": "SchemaId: ${currentModel.schemaId}",
+                    "className": "flex p-0 m-0 items-center",
+                    "body": [
+                      {
+                        "type": "icon",
+                        "icon": {
+                          "id": "svg-icon-ui-schema"
+                        }
+                      },
+                      {
+                        "type": "tpl",
+                        "tpl": "${currentModel.schemaId || '-'}",
+                        "className": "${ currentModel.isChanged ? 'font-black italic text-secondary ml-1' : 'text-secondary ml-1' }"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "button",
+                    "level": "link",
+                    "icon": "fa fa-eye",
+                    "label": "查看",
+                    "actionType": "dialog",
+                    "dialog": {
+                      "type": "dialog",
+                      "size": "lg",
+                      "title": "查看UI Schema",
+                      "url": "/dev/${appName}/ui/preview-amis"
+                    }
+                  }
+                ],
+                "visibleOn": "${currentModel.type == 'amis'}"
+              },
+              {
+                "type": "wrapper",
+                "size": "none",
+                "className": "m-0 flex items-center",
+                "body": [
+                  {
+                    "type": "tooltip-wrapper",
+                    "title": "微前端",
+                    "content": "微前端名: ${currentModel.microWebName}",
+                    "className": "flex p-0 m-0 items-center",
+                    "body": [
+                      {
+                        "type": "icon",
+                        "icon": {
+                          "id": "svg-icon-micro-web"
+                        }
+                      },
+                      {
+                        "type": "tpl",
+                        "tpl": "${currentModel.microWebName || '-'}",
+                        "className": "text-secondary ml-1"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "button",
+                    "level": "link",
+                    "icon": "fa fa-eye",
+                    "label": "查看",
+                    "actionType": "dialog",
+                    "dialog": {
+                      "type": "dialog",
+                      "title": "微前端配置详情",
+                      "url": "/dev/${appName}/ui/preview-micro"
+                    }
+                  }
+                ],
+                "visibleOn": "${currentModel.type == 'micro'}"
+              }
+            ]
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "buttons": [
+              {
+                "type": "button",
+                "level": "link",
+                "label": "修改",
+                "className": "text-black",
+                "icon": "data:image/svg+xml,%3Csvg%20t%3D%221728265842626%22%20class%3D%22icon%22%20viewBox%3D%220%200%201024%201024%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20p-id%3D%2231616%22%20width%3D%22300%22%20height%3D%22300%22%3E%3Cpath%20d%3D%22M1024%2040.915c0-21.693-17.692-39.385-39.385-39.385H39.388C17.695%201.53%200.004%2019.222%200.004%2040.915v118.036c0%200.042-0.003%200.083-0.003%200.125v433.229c0%2043.423%2035.327%2078.769%2078.769%2078.769h374.999c21.75%200%2039.385-17.615%2039.385-39.384s-17.635-39.385-39.385-39.385h-375V198.453h866.459v393.853H807.382c-21.75%200-39.385%2017.615-39.385%2039.385s17.635%2039.384%2039.385%2039.384h137.846c43.442%200%2078.769-35.346%2078.769-78.769V159.193c0-0.042%200.003-0.083%200.003-0.125V40.915zM411.965%20758.607l-151.118%20151.15c-18.92%2018.924-28.227%2071.156-2.844%2096.5%2025.308%2025.348%2071.766%2018.731%2094.921-4.383L504.077%20850.68l-92.112-92.073z%22%20p-id%3D%2231617%22%20fill%3D%22%23007bff%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M177.23%20355.999h315.076c21.75%200%2039.385-17.615%2039.385-39.385s-17.635-39.384-39.385-39.384H177.23c-21.75%200-39.385%2017.615-39.385%2039.384s17.635%2039.385%2039.385%2039.385zM689.229%20355.999h157.538c21.75%200%2039.385-17.615%2039.385-39.385s-17.635-39.384-39.385-39.384H689.229c-21.75%200-39.384%2017.615-39.384%2039.384s17.634%2039.385%2039.384%2039.385zM177.23%20474.152h315.076c21.75%200%2039.385-17.615%2039.385-39.384s-17.635-39.385-39.385-39.385H177.23c-21.75%200-39.385%2017.615-39.385%2039.385s17.635%2039.384%2039.385%2039.384zM840.997%20448.691c7.692-7.692%207.692-20.154%200-27.846s-20.154-7.692-27.846%200l-21.545%2021.545c-41.518%205.359-114.807%2053.104-133.335%2071.6L449.656%20722.605l92.116%2092.116%20208.576-208.576c15.458-15.461%2066.025-94.682%2070.179-136.984l20.47-20.47zM569.633%20806.267L411.018%20963.805c-12.346%2012.269-12.404%2032.192-0.135%2044.538%206.154%206.231%2014.25%209.308%2022.346%209.308%208.019%200%2016.058-3.038%2022.211-9.154l158.615-157.538c12.346-12.269%2012.404-32.192%200.135-44.538-12.25-12.423-32.173-12.423-44.557-0.154z%22%20p-id%3D%2231618%22%20fill%3D%22%23007bff%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E",
+                "hiddenOn": "nodeType == 'group'",
+                "visibleOn": "${isChanged}",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "size": "md",
+                  "title": "修改UI模型",
+                  "url": "/dev/${appName}/ui/redefine-edit"
+                }
+              },
+              {
+                "type": "button",
+                "level": "link",
+                "label": "重定义",
+                "className": "text-black",
+                "icon": "data:image/svg+xml,%3Csvg%20t%3D%221728265842626%22%20class%3D%22icon%22%20viewBox%3D%220%200%201024%201024%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20p-id%3D%2231616%22%20width%3D%22300%22%20height%3D%22300%22%3E%3Cpath%20d%3D%22M1024%2040.915c0-21.693-17.692-39.385-39.385-39.385H39.388C17.695%201.53%200.004%2019.222%200.004%2040.915v118.036c0%200.042-0.003%200.083-0.003%200.125v433.229c0%2043.423%2035.327%2078.769%2078.769%2078.769h374.999c21.75%200%2039.385-17.615%2039.385-39.384s-17.635-39.385-39.385-39.385h-375V198.453h866.459v393.853H807.382c-21.75%200-39.385%2017.615-39.385%2039.385s17.635%2039.384%2039.385%2039.384h137.846c43.442%200%2078.769-35.346%2078.769-78.769V159.193c0-0.042%200.003-0.083%200.003-0.125V40.915zM411.965%20758.607l-151.118%20151.15c-18.92%2018.924-28.227%2071.156-2.844%2096.5%2025.308%2025.348%2071.766%2018.731%2094.921-4.383L504.077%20850.68l-92.112-92.073z%22%20p-id%3D%2231617%22%20fill%3D%22%23007bff%22%3E%3C%2Fpath%3E%3Cpath%20d%3D%22M177.23%20355.999h315.076c21.75%200%2039.385-17.615%2039.385-39.385s-17.635-39.384-39.385-39.384H177.23c-21.75%200-39.385%2017.615-39.385%2039.384s17.635%2039.385%2039.385%2039.385zM689.229%20355.999h157.538c21.75%200%2039.385-17.615%2039.385-39.385s-17.635-39.384-39.385-39.384H689.229c-21.75%200-39.384%2017.615-39.384%2039.384s17.634%2039.385%2039.384%2039.385zM177.23%20474.152h315.076c21.75%200%2039.385-17.615%2039.385-39.384s-17.635-39.385-39.385-39.385H177.23c-21.75%200-39.385%2017.615-39.385%2039.385s17.635%2039.384%2039.385%2039.384zM840.997%20448.691c7.692-7.692%207.692-20.154%200-27.846s-20.154-7.692-27.846%200l-21.545%2021.545c-41.518%205.359-114.807%2053.104-133.335%2071.6L449.656%20722.605l92.116%2092.116%20208.576-208.576c15.458-15.461%2066.025-94.682%2070.179-136.984l20.47-20.47zM569.633%20806.267L411.018%20963.805c-12.346%2012.269-12.404%2032.192-0.135%2044.538%206.154%206.231%2014.25%209.308%2022.346%209.308%208.019%200%2016.058-3.038%2022.211-9.154l158.615-157.538c12.346-12.269%2012.404-32.192%200.135-44.538-12.25-12.423-32.173-12.423-44.557-0.154z%22%20p-id%3D%2231618%22%20fill%3D%22%23007bff%22%3E%3C%2Fpath%3E%3C%2Fsvg%3E",
+                "hiddenOn": "nodeType == 'group'",
+                "visibleOn": "${!isChanged}",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "size": "md",
+                  "title": "新增UI模型",
+                  "url": "/dev/${appName}/ui/redefine-add"
+                }
+              },
+              {
+                "type": "button",
+                "level": "link",
+                "label": "复原",
+                "className": "text-danger",
+                "icon": "fa fa-trash",
+                "visibleOn": "${isChanged && nodeType !== 'group'}",
+                "actionType": "ajax",
+                "confirmText": "您确认要复原?",
+                "api": "delete:/api/dev/${appName}/ui-model/${fullName}"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

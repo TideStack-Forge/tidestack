@@ -1,0 +1,14 @@
+{
+  "name": "create-order",
+  "httpMethod": "POST",
+  "url": "/orders",
+  "moduleName": "订单",
+  "operation": "创建订单",
+  "level": "INFO",
+  "businessKeyName": "id",
+  "summaryTemplate": "创建订单 ${request.id}",
+  "sensitiveFields": [
+    "password"
+  ],
+  "shouldSaveResponseBody": true
+}

@@ -1,0 +1,293 @@
+{
+  "name": "/system-setting/rpc-runtime-detail",
+  "schema": {
+    "type": "page",
+    "title": false,
+    "initApi": {
+      "method": "get",
+      "url": "/api/sys/rpc-runtime/${modelName}"
+    },
+    "body": [
+      {
+        "type": "button-toolbar",
+        "buttons": [
+          {
+            "type": "button",
+            "label": "立即探活",
+            "level": "primary",
+            "actionType": "ajax",
+            "api": {
+              "method": "post",
+              "url": "/api/sys/rpc-runtime/${modelName}/actions/health-check"
+            }
+          },
+          {
+            "type": "button",
+            "label": "恢复可用",
+            "level": "warning",
+            "actionType": "ajax",
+            "api": {
+              "method": "post",
+              "url": "/api/sys/rpc-runtime/${modelName}/actions/reset-status"
+            }
+          },
+          {
+            "type": "button",
+            "label": "测试调用",
+            "level": "info",
+            "actionType": "dialog",
+            "dialog": {
+              "title": "RPC 测试调用",
+              "body": {
+                "type": "form",
+                "api": {
+                  "method": "post",
+                  "url": "/api/sys/rpc-runtime/${modelName}/actions/test-invoke"
+                },
+                "body": [
+                  {
+                    "type": "json-editor",
+                    "name": "parameters",
+                    "label": "调用参数"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "tabs",
+        "tabs": [
+          {
+            "title": "基础信息",
+            "tab": [
+              {
+                "type": "static",
+                "name": "modelName",
+                "label": "模型名称"
+              },
+              {
+                "name": "group",
+                "label": "分组",
+                "type": "static",
+                "placeholder": "未分组"
+              },
+              {
+                "type": "static",
+                "name": "title",
+                "label": "显示名"
+              },
+              {
+                "type": "static",
+                "name": "type",
+                "label": "协议类型"
+              },
+              {
+                "type": "static",
+                "name": "authCredential",
+                "label": "认证器"
+              },
+              {
+                "type": "json",
+                "name": "definitionExtraProps",
+                "label": "定义扩展"
+              }
+            ]
+          },
+          {
+            "title": "运行时策略",
+            "tab": [
+              {
+                "type": "alert",
+                "level": "warning",
+                "showIcon": true,
+                "body": [
+                  "检测到历史策略中存在非法值，运行时已按安全默认值降级处理。你可以先检查下面的降级项，再执行一键修复回写当前合法配置。",
+                  {
+                    "type": "button",
+                    "label": "修复并保存当前合法配置",
+                    "level": "warning",
+                    "size": "sm",
+                    "className": "m-l-md",
+                    "confirmText": "确定按当前合法配置覆盖历史异常策略吗？",
+                    "onEvent": {
+                      "click": {
+                        "actions": [
+                          {
+                            "actionType": "ajax",
+                            "api": {
+                              "method": "post",
+                              "url": "/api/sys/rpc-runtime/${modelName}/actions/repair-policy"
+                            }
+                          },
+                          {
+                            "actionType": "reload"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "visibleOn": "${policy.hasNormalizationWarnings}"
+              },
+              {
+                "type": "each",
+                "name": "policy.normalizationWarnings",
+                "visibleOn": "${policy.hasNormalizationWarnings}",
+                "items": {
+                  "type": "tpl",
+                  "tpl": "${item}"
+                }
+              },
+              {
+                "type": "form",
+                "mode": "horizontal",
+                "wrapWithPanel": false,
+                "api": {
+                  "method": "put",
+                  "url": "/api/sys/rpc-runtime/${modelName}/policy",
+                  "data": "${policy}"
+                },
+                "body": [
+                  {
+                    "type": "switch",
+                    "name": "policy.enabled",
+                    "label": "启用模型"
+                  },
+                  {
+                    "type": "switch",
+                    "name": "policy.loggingEnabled",
+                    "label": "开启调用日志"
+                  },
+                  {
+                    "type": "switch",
+                    "name": "policy.logRequestBody",
+                    "label": "记录请求体"
+                  },
+                  {
+                    "type": "switch",
+                    "name": "policy.logResponseBody",
+                    "label": "记录响应体"
+                  },
+                  {
+                    "type": "json-editor",
+                    "name": "policy.maskHeaders",
+                    "label": "脱敏请求头"
+                  },
+                  {
+                    "type": "json-editor",
+                    "name": "policy.maskFields",
+                    "label": "脱敏字段"
+                  },
+                  {
+                    "type": "switch",
+                    "name": "policy.metricsEnabled",
+                    "label": "开启指标统计"
+                  },
+                  {
+                    "type": "switch",
+                    "name": "policy.availabilityEnabled",
+                    "label": "开启可用性监控"
+                  },
+                  {
+                    "type": "select",
+                    "name": "policy.forcedAvailabilityStatus",
+                    "label": "强制可用性状态",
+                    "clearable": true,
+                    "options": [
+                      {
+                        "label": "健康",
+                        "value": "HEALTHY"
+                      },
+                      {
+                        "label": "不可用",
+                        "value": "UNAVAILABLE"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "input-number",
+                    "name": "policy.timeoutOverrideMs",
+                    "label": "超时覆盖(ms)",
+                    "precision": 0,
+                    "min": 1
+                  },
+                  {
+                    "type": "input-number",
+                    "name": "policy.retryOverride",
+                    "label": "重试覆盖次数",
+                    "precision": 0,
+                    "min": 0
+                  }
+                ],
+                "actions": [
+                  {
+                    "type": "submit",
+                    "label": "保存策略",
+                    "level": "primary"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "title": "运行时状态",
+            "tab": [
+              {
+                "type": "static",
+                "name": "status.availability",
+                "label": "可用性"
+              },
+              {
+                "type": "static",
+                "name": "status.lastHealthCheckAt",
+                "label": "最后探活时间"
+              },
+              {
+                "type": "static",
+                "name": "status.lastInvokeAt",
+                "label": "最后调用时间"
+              },
+              {
+                "type": "static",
+                "name": "status.lastSuccessAt",
+                "label": "最后成功时间"
+              },
+              {
+                "type": "static",
+                "name": "status.lastFailureAt",
+                "label": "最后失败时间"
+              },
+              {
+                "type": "static",
+                "name": "status.lastFailureReason",
+                "label": "最后失败原因"
+              },
+              {
+                "type": "static",
+                "name": "status.consecutiveFailureCount",
+                "label": "连续失败次数"
+              },
+              {
+                "type": "static",
+                "name": "status.successCount",
+                "label": "成功次数"
+              },
+              {
+                "type": "static",
+                "name": "status.failureCount",
+                "label": "失败次数"
+              },
+              {
+                "type": "static",
+                "name": "status.avgLatencyMs",
+                "label": "平均耗时(ms)"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

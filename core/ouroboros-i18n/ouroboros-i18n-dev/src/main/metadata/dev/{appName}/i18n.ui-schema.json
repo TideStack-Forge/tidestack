@@ -1,0 +1,196 @@
+{
+  "name": "/dev/{appName}/i18n",
+  "schema": {
+    "type": "page",
+    "body": [
+      {
+        "type": "crud",
+        "id": "i18nLocaleList",
+        "loadDataOnce": true,
+        "api": {
+          "method": "get",
+          "url": "/api/dev/${appName}/i18n?keyword=${keyword}"
+        },
+        "filter": {
+          "title": "筛选条件",
+          "body": [
+            {
+              "type": "input-text",
+              "name": "keyword",
+              "label": "关键词",
+              "placeholder": "按语言代码、语言名称、版本或文案搜索",
+              "clearable": true
+            }
+          ]
+        },
+        "headerToolbar": [
+          "filter-toggler",
+          {
+            "type": "button",
+            "label": "新增语言文件",
+            "level": "primary",
+            "actionType": "link",
+            "link": "/dev/${appName}/i18n/add"
+          },
+          {
+            "type": "button",
+            "label": "导出翻译模板",
+            "level": "enhance",
+            "actionType": "download",
+            "api": {
+              "method": "get",
+              "url": "/api/dev/${appName}/i18n/template/export"
+            }
+          },
+          {
+            "type": "button",
+            "label": "导入语言文件",
+            "level": "default",
+            "actionType": "dialog",
+            "dialog": {
+              "title": "导入语言文件",
+              "size": "md",
+              "url": "/dev/${appName}/i18n/import"
+            }
+          },
+          "reload"
+        ],
+        "columns": [
+          {
+            "type": "text",
+            "label": "语言代码",
+            "name": "model.locale"
+          },
+          {
+            "type": "text",
+            "label": "语言名称",
+            "name": "model.name"
+          },
+          {
+            "type": "text",
+            "label": "版本",
+            "name": "model.version",
+            "placeholder": "-"
+          },
+          {
+            "type": "tpl",
+            "label": "方向",
+            "name": "model.direction",
+            "tpl": "${model.direction || 'LTR'}"
+          },
+          {
+            "type": "tpl",
+            "label": "启用",
+            "name": "model.enabled",
+            "tpl": "${model.enabled === false ? '否' : '是'}"
+          },
+          {
+            "type": "tpl",
+            "label": "默认",
+            "name": "model.isDefault",
+            "tpl": "${model.isDefault ? '是' : '否'}"
+          },
+          {
+            "type": "text",
+            "label": "文案数量",
+            "name": "model.messageCount"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "buttons": [
+              {
+                "type": "button",
+                "label": "编辑",
+                "level": "link",
+                "actionType": "link",
+                "link": "/dev/${appName}/i18n/${model.locale}"
+              },
+              {
+                "type": "button",
+                "label": "详情",
+                "level": "link",
+                "actionType": "link",
+                "link": "/dev/${appName}/i18n/detail?locale=${model.locale}"
+              },
+              {
+                "type": "button",
+                "label": "导出",
+                "level": "link",
+                "actionType": "download",
+                "api": {
+                  "method": "get",
+                  "url": "/api/dev/${appName}/i18n/${model.locale}/export"
+                }
+              },
+              {
+                "type": "button",
+                "label": "同步文案",
+                "level": "link",
+                "actionType": "dialog",
+                "dialog": {
+                  "title": "同步文案 - ${model.locale}",
+                  "size": "sm",
+                  "body": {
+                    "type": "form",
+                    "wrapWithPanel": false,
+                    "api": {
+                      "method": "post",
+                      "url": "/api/dev/${appName}/i18n/${model.locale}/sync"
+                    },
+                    "body": [
+                      {
+                        "type": "alert",
+                        "level": "info",
+                        "showIcon": true,
+                        "body": "根据当前工作区中的 UI Model 与 UI Schema 提取文案键。"
+                      },
+                      {
+                        "type": "checkbox",
+                        "name": "removeOrphaned",
+                        "label": "删除多余文案",
+                        "description": "勾选后将删除当前自动提取命名空间中不再存在的翻译键"
+                      }
+                    ],
+                    "onEvent": {
+                      "submitSucc": {
+                        "actions": [
+                          {
+                            "actionType": "toast",
+                            "args": {
+                              "msgType": "success",
+                              "msg": "同步完成！新增 ${result.data.added} 条，删除 ${result.data.removed} 条"
+                            }
+                          },
+                          {
+                            "actionType": "reload",
+                            "componentId": "i18nLocaleList"
+                          },
+                          {
+                            "actionType": "closeDialog"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "button",
+                "label": "删除",
+                "level": "link",
+                "className": "text-danger",
+                "actionType": "ajax",
+                "confirmText": "确定要删除语言文件「${model.locale}」吗？",
+                "api": {
+                  "method": "delete",
+                  "url": "/api/dev/${appName}/i18n/${model.locale}"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

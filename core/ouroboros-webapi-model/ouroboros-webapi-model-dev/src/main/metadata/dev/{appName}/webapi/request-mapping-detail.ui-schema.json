@@ -1,0 +1,31 @@
+{
+  "name": "/dev/{appName}/webapi/request-mapping-detail",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "static": "true",
+    "data": {
+      "className": "${currentModel.className}",
+      "methodName": "${currentModel.methodName}(${currentModel.methodArgument|join:', '})"
+    },
+    "body": [
+      {
+        "type": "input-text",
+        "label": "类名",
+        "name": "className"
+      },
+      {
+        "type": "input-text",
+        "label": "方法名",
+        "name": "methodName"
+      }
+    ],
+    "actions": [
+      {
+        "type": "button",
+        "actionType": "close",
+        "label": "关闭"
+      }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "ouroboros-e2e-root",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "npm@10.9.8",
+  "description": "Root dependency boundary for repository-level Playwright E2E assets under testing/e2e.",
+  "scripts": {
+    "test:e2e:list": "playwright test --list",
+    "test:e2e:approval-flow:plan": "python3 testing/common/runners/playwright/browser_asset_bridge.py --e2e-manifest testing/e2e/regression/workflow/approval-flow/e2e.yaml --mode plan",
+    "test:e2e:approval-flow:seed": "python3 testing/common/runners/harness/fixture_harness.py --scenario testing/integration/regression/workflow/approval-flow/scenario.yaml --action reset --mode run --skip-preflight",
+    "test:e2e:approval-flow:form": "playwright test testing/e2e/regression/workflow/approval-flow/scripts/form-and-flow.spec.ts --workers=1 --reporter=list",
+    "test:e2e:approval-flow:runtime": "playwright test testing/e2e/regression/workflow/approval-flow/scripts/runtime-actions.spec.ts --workers=1 --reporter=list",
+    "test:e2e:approval-flow:prepare-design-time": "node testing/common/fixtures/data/approval-workflow-flows-seed/prepare-design-time-metadata.cjs",
+    "test:e2e:approval-flow:topology": "playwright test testing/e2e/regression/workflow/approval-flow/scripts/topology-and-reset.spec.ts --workers=1 --reporter=list",
+    "test:e2e:approval-flow:countersign": "playwright test testing/e2e/regression/workflow/approval-flow/scripts/countersign-history.spec.ts --workers=1 --reporter=list",
+    "test:e2e:approval-flow:dynamic-form": "playwright test testing/e2e/regression/workflow/approval-flow/scripts/dynamic-form-workflow.spec.ts --workers=1 --reporter=list",
+    "test:e2e:statistics-reporting:chart": "playwright test testing/e2e/regression/statistics-reporting/runtime-query-and-bi/scripts/chart-runtime.spec.ts --workers=1 --reporter=list",
+    "test:e2e:statistics-reporting:dashboard": "playwright test testing/e2e/regression/statistics-reporting/runtime-query-and-bi/scripts/dashboard-runtime.spec.ts --workers=1 --reporter=list",
+    "test:e2e:statistics-reporting:rbac": "playwright test testing/e2e/regression/statistics-reporting/runtime-query-and-bi/scripts/dashboard-rbac.spec.ts --workers=1 --reporter=list"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^24.10.1"
+  }
+}

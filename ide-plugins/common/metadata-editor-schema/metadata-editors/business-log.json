@@ -1,0 +1,13 @@
+{
+  "editorId": "business-log",
+  "editorName": "TideStack Business Log Template Metadata Editor",
+  "editorNameKey": "customEditor.businessLog",
+  "metadataType": "business-log",
+  "schemaName": "business-log",
+  "viewType": "tidestack.metadataEditor.businessLog",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.businessLog",
+  "fileMatchPatterns": [
+    "*.business-log.json"
+  ],
+  "priority": "default"
+}

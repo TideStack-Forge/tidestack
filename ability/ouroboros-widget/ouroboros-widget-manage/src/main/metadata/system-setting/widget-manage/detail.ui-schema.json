@@ -1,0 +1,163 @@
+{
+  "name": "/system-setting/widget-manage/detail",
+  "schema": {
+    "type": "form",
+    "mode": "horizontal",
+    "title": false,
+    "static": true,
+    "wrapWithPanel": false,
+    "initApi": {
+      "method": "get",
+      "url": "/api/widget-schema/${id}"
+    },
+    "body": [
+      {
+        "type": "tabs",
+        "tabs": [
+          {
+            "title": "基础信息",
+            "tab": [
+              {
+                "label": "名称",
+                "name": "name",
+                "type": "input-text",
+                "required": true
+              },
+              {
+                "label": "显示名",
+                "name": "title",
+                "type": "input-text",
+                "required": true
+              },
+              {
+                "label": "描述",
+                "name": "description",
+                "type": "input-text",
+                "required": true
+              },
+              {
+                "label": "分类",
+                "name": "category",
+                "type": "input-text"
+              },
+              {
+                "label": "生成器",
+                "name": "generatorName",
+                "type": "select",
+                "required": true,
+                "source": {
+                  "method": "get",
+                  "url": "/api/widget-schema/generators"
+                }
+              }
+            ]
+          },
+          {
+            "title": "生成器参数",
+            "disabledOn": "${!generatorName}",
+            "tab": {
+              "type": "ui-schema",
+              "visibleOn": "${generatorName}",
+              "source": {
+                "method": "get",
+                "url": "/api/widget-schema/generators/${generatorName}/form-items",
+                "responseData": {
+                  "type": "container",
+                  "body": "${items}"
+                }
+              }
+            }
+          },
+          {
+            "title": "显示配置",
+            "tab": [
+              {
+                "type": "switch",
+                "label": "允许显示头部",
+                "name": "allowHeader"
+              },
+              {
+                "type": "combo",
+                "name": "sizeConstraints.min",
+                "label": "最小尺寸",
+                "items": [
+                  {
+                    "type": "input-number",
+                    "label": "列数",
+                    "min": 1,
+                    "max": 24,
+                    "name": "cols",
+                    "required": true
+                  },
+                  {
+                    "type": "input-number",
+                    "label": "行数",
+                    "min": 3,
+                    "name": "rows",
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "combo",
+                "name": "sizeConstraints.max",
+                "label": "最大尺寸",
+                "items": [
+                  {
+                    "type": "input-number",
+                    "label": "列数",
+                    "name": "cols",
+                    "max": 24,
+                    "required": true
+                  },
+                  {
+                    "type": "input-number",
+                    "label": "行数",
+                    "name": "rows",
+                    "min": 3,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "combo",
+                "name": "defaultSize",
+                "label": "默认大小",
+                "items": [
+                  {
+                    "type": "input-number",
+                    "label": "列数",
+                    "name": "cols",
+                    "max": 24,
+                    "required": true
+                  },
+                  {
+                    "type": "input-number",
+                    "label": "行数",
+                    "name": "rows",
+                    "min": 3,
+                    "required": true
+                  }
+                ]
+              },
+              {
+                "type": "fieldSet",
+                "title": "默认样式",
+                "collapsable": true,
+                "collapsed": true,
+                "body": [
+                  {
+                    "type": "ouroboros-widget-style-config",
+                    "name": "config.defaultStyleConfig",
+                    "subFormMode": "horizontal",
+                    "label": false
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

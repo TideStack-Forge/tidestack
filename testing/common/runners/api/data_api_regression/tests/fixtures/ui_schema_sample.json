@@ -1,0 +1,39 @@
+{
+  "name": "buy.waybill-order",
+  "title": "采购运单",
+  "schema": {
+    "type": "page",
+    "body": [
+      {
+        "type": "crud",
+        "crud": {
+          "url": "/api/buy/waybill-order"
+        },
+        "api": {
+          "method": "get",
+          "url": "/api/buy/waybill-order"
+        }
+      },
+      {
+        "type": "picker",
+        "source": "/api/base-info/customer-info",
+        "pickerSchema": {
+          "api": {
+            "method": "get",
+            "url": "/api/base-info/customer-info"
+          }
+        }
+      },
+      {
+        "type": "button",
+        "dialog": {
+          "body": [
+            {
+              "schemaId": "/buy/waybill-order/detail"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

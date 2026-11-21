@@ -1,0 +1,93 @@
+{
+  "name": "input-conflict-non-mutex",
+  "description": "Switch branches reconverge to the same mutex input and also collide with a non-mutex upstream path",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "switchSource",
+  "exitNode": "targetMutex",
+  "nodes": [
+    {
+      "name": "switchSource",
+      "type": "const",
+      "description": "",
+      "dataType": "map",
+      "value": {
+        "route": "left"
+      }
+    },
+    {
+      "name": "extraSource",
+      "type": "const",
+      "description": "",
+      "dataType": "map",
+      "value": {
+        "extra": true
+      }
+    },
+    {
+      "name": "branchSwitch",
+      "type": "switch",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "map"
+        }
+      ],
+      "conditions": [
+        {
+          "name": "left",
+          "description": "",
+          "expression": "route == 'left'"
+        }
+      ]
+    },
+    {
+      "name": "targetMutex",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "map"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "switchSource",
+      "sourceOutputPort": 0,
+      "targetNode": "branchSwitch",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "branchSwitch",
+      "sourceOutputPort": 0,
+      "targetNode": "targetMutex",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "branchSwitch",
+      "sourceOutputPort": 1,
+      "targetNode": "targetMutex",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "extraSource",
+      "sourceOutputPort": 0,
+      "targetNode": "targetMutex",
+      "targetInputPort": 0
+    }
+  ]
+}

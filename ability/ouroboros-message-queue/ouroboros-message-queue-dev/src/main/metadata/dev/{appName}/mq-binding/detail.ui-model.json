@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/mq-binding/detail",
+  "type": "amis",
+  "title": "查看MQ绑定"
+}

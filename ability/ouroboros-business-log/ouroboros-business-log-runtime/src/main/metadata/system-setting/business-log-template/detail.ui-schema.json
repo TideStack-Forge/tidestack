@@ -1,0 +1,96 @@
+{
+  "name": "/system-setting/business-log-template/detail",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "static": true,
+    "wrapWithPanel": false,
+    "mode": "horizontal",
+    "initApi": {
+      "method": "get",
+      "url": "/api/sys/business-log-template/detail",
+      "data": {
+        "templateKey": "${templateKey}"
+      }
+    },
+    "body": [
+      {
+        "type": "static-text",
+        "name": "templateKey",
+        "label": "模板键"
+      },
+      {
+        "type": "static-text",
+        "name": "sourceLabel",
+        "label": "当前生效来源"
+      },
+      {
+        "type": "static-text",
+        "name": "availableSourcesDisplay",
+        "label": "来源链"
+      },
+      {
+        "type": "static-text",
+        "name": "overridesSourcesDisplay",
+        "label": "覆盖下层来源"
+      },
+      {
+        "type": "static-text",
+        "name": "httpMethod",
+        "label": "请求方法"
+      },
+      {
+        "type": "static-text",
+        "name": "url",
+        "label": "URL"
+      },
+      {
+        "type": "static-text",
+        "name": "moduleName",
+        "label": "模块名"
+      },
+      {
+        "type": "static-text",
+        "name": "operation",
+        "label": "操作名"
+      },
+      {
+        "type": "mapping",
+        "name": "level",
+        "label": "级别",
+        "map": {
+          "INFO": "一般",
+          "WARN": "警告",
+          "DANGER": "危险"
+        }
+      },
+      {
+        "type": "static-text",
+        "name": "businessKeyName",
+        "label": "业务键字段",
+        "placeholder": "-"
+      },
+      {
+        "type": "static-text",
+        "name": "summaryTemplate",
+        "label": "摘要模板",
+        "placeholder": "-"
+      },
+      {
+        "type": "input-array",
+        "name": "sensitiveFields",
+        "label": "脱敏字段",
+        "items": [
+          {
+            "type": "input-text"
+          }
+        ]
+      },
+      {
+        "type": "switch",
+        "name": "shouldSaveResponseBody",
+        "label": "保存响应体"
+      }
+    ]
+  }
+}

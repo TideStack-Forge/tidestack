@@ -1,0 +1,91 @@
+{
+  "name": "/dev/container/detail",
+  "schema": {
+    "type": "form",
+    "static": true,
+    "body": [
+      {
+        "type": "static-mapping",
+        "name": "status",
+        "label": "状态",
+        "map": {
+          "launching": "<span class='label label-info'>正在启动</span>",
+          "running": "<span class='label label-success'>运行中</span>",
+          "stopped": "<span class='label label-danger'>已停止</span>",
+          "paused": "<span class='label label-warning'>已暂停</span>",
+          "unknown": "<span class='label label-secondary'>未知</span>",
+          "notFound": "<span class='label label-default'>不存在</span>"
+        }
+      },
+      {
+        "type": "static",
+        "name": "backendType",
+        "label": "运行时后端"
+      },
+      {
+        "type": "static",
+        "name": "exposureStrategy",
+        "label": "暴露策略"
+      },
+      {
+        "type": "static",
+        "name": "backendSummary",
+        "label": "后端摘要"
+      },
+      {
+        "type": "static",
+        "name": "webEndpoint",
+        "label": "Web入口"
+      },
+      {
+        "type": "static",
+        "name": "apiEndpoint",
+        "label": "API入口"
+      },
+      {
+        "type": "static",
+        "name": "debugEndpoint",
+        "label": "远程调试入口"
+      },
+      {
+        "type": "static",
+        "name": "runtimeAccess.webAccess.endpoint",
+        "label": "Web访问视图"
+      },
+      {
+        "type": "static",
+        "name": "runtimeAccess.apiAccess.endpoint",
+        "label": "API访问视图"
+      },
+      {
+        "type": "static",
+        "name": "runtimeAccess.backendApiCapability.endpoint",
+        "label": "后端API隧道端点"
+      },
+      {
+        "type": "static",
+        "name": "activeBackendApiSessionId",
+        "label": "活动后端API会话ID"
+      },
+      {
+        "type": "static",
+        "name": "backendDetails.service",
+        "label": "backendDetails.service"
+      },
+      {
+        "type": "static",
+        "name": "backendDetails.deployment",
+        "label": "backendDetails.deployment"
+      },
+      {
+        "type": "static",
+        "name": "backendDetails.ingress",
+        "label": "backendDetails.ingress"
+      }
+    ],
+    "wrapWithPanel": false,
+    "initApi": {
+      "url": "/api/app/container/${id}/status"
+    }
+  }
+}

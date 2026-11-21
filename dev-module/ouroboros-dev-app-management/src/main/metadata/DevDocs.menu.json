@@ -1,0 +1,9 @@
+{
+  "url": "/dev-docs",
+  "fullName": "DevDocs",
+  "icon": "fa-solid fa-book-open",
+  "title": "开发文档",
+  "showMode": "newWindow",
+  "placement": "secondary",
+  "order": -80
+}

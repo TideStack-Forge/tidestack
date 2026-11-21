@@ -1,0 +1,22 @@
+[
+  {
+    "fullName": "systemSetting.businessLog",
+    "title": "业务日志",
+    "menu": "systemSetting.businessLog",
+    "authorities": [
+      "systemSetting.businessLog"
+    ],
+    "order": 10,
+    "parent": "systemSetting.auditManagement"
+  },
+  {
+    "fullName": "systemSetting.businessLogTemplate",
+    "title": "业务日志模板",
+    "menu": "systemSetting.businessLogTemplate",
+    "authorities": [
+      "systemSetting.businessLogTemplate"
+    ],
+    "order": 20,
+    "parent": "systemSetting.auditManagement"
+  }
+]

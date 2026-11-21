@@ -1,0 +1,13 @@
+{
+  "name": "script-editor-intelligence-mock-server",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "test": "npm run test:unit",
+    "test:unit": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.10"
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "name": "/dev/{appName}/edit-access",
+  "schema": {
+    "type": "page",
+    "title": "编辑权限",
+    "body": [
+      {
+        "type": "service",
+        "id": "editAccessEntryService",
+        "api": {
+          "method": "get",
+          "url": "/api/app/${appName}/edit-access-entry"
+        },
+        "body": [
+          {
+            "type": "alert",
+            "level": "danger",
+            "showIcon": true,
+            "body": "无权限访问",
+            "visibleOn": "${!canManageEditAccess}"
+          },
+          {
+            "type": "form",
+            "name": "editAccessForm",
+            "id": "editAccessForm",
+            "title": false,
+            "visibleOn": "${canManageEditAccess}",
+            "initApi": {
+              "method": "get",
+              "url": "/api/app/${appName}/edit-access"
+            },
+            "api": {
+              "method": "put",
+              "url": "/api/app/${appName}/edit-access"
+            },
+            "mode": "horizontal",
+            "body": [
+              {
+                "type": "alert",
+                "level": "info",
+                "showIcon": true,
+                "body": "未配置任何主体时，默认所有登录用户都可以查看并编辑该应用。"
+              },
+              {
+                "type": "alert",
+                "level": "warning",
+                "showIcon": true,
+                "body": "一旦配置任意主体，就会进入白名单模式；组织授权只匹配所选节点本身，不包含上下级组织。"
+              },
+              {
+                "type": "user-picker",
+                "name": "users",
+                "label": "可编辑用户",
+                "multiple": true,
+                "joinValues": false,
+                "extractValue": false,
+                "placeholder": "请选择用户"
+              },
+              {
+                "type": "select",
+                "name": "roles",
+                "label": "可编辑角色",
+                "multiple": true,
+                "joinValues": false,
+                "extractValue": false,
+                "searchable": true,
+                "source": {
+                  "method": "get",
+                  "url": "/api/app/${appName}/edit-access/roles?perPage=1000"
+                },
+                "labelField": "name",
+                "valueField": "id",
+                "placeholder": "请选择角色"
+              },
+              {
+                "type": "organization-picker",
+                "name": "organizations",
+                "label": "可编辑组织",
+                "multiple": true,
+                "joinValues": false,
+                "extractValue": false,
+                "showCompany": true,
+                "showDepartment": true,
+                "pickCompany": true,
+                "pickDepartment": true,
+                "cascade": false,
+                "placeholder": "请选择组织"
+              }
+            ],
+            "actions": [
+              {
+                "type": "submit",
+                "label": "保存",
+                "level": "primary"
+              }
+            ],
+            "onEvent": {
+              "submitSucc": {
+                "actions": [
+                  {
+                    "actionType": "toast",
+                    "args": {
+                      "msgType": "success",
+                      "msg": "保存成功"
+                    }
+                  },
+                  {
+                    "actionType": "reload",
+                    "componentId": "editAccessForm"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

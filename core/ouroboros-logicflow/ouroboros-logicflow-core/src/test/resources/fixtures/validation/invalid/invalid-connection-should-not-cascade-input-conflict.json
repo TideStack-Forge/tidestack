@@ -1,0 +1,71 @@
+{
+  "name": "invalid-connection-should-not-cascade-input-conflict",
+  "description": "Invalid out port connection should be reported as invalid connection (not misclassified as input-port conflict)",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "map",
+  "entryNode": "source",
+  "nodes": [
+    {
+      "name": "source",
+      "type": "const",
+      "description": "",
+      "dataType": "map",
+      "value": {
+        "route": "left"
+      }
+    },
+    {
+      "name": "branchSwitch",
+      "type": "switch",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "map"
+        }
+      ],
+      "conditions": [
+        {
+          "name": "left",
+          "description": "",
+          "expression": "route == 'left'"
+        }
+      ]
+    },
+    {
+      "name": "returnNode",
+      "type": "return",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "map"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "source",
+      "sourceOutputPort": 0,
+      "targetNode": "branchSwitch",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "branchSwitch",
+      "sourceOutputPort": 0,
+      "targetNode": "returnNode",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "branchSwitch",
+      "sourceOutputPort": 2,
+      "targetNode": "returnNode",
+      "targetInputPort": 0
+    }
+  ]
+}
+

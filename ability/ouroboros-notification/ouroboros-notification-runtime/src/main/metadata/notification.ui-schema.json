@@ -1,0 +1,270 @@
+{
+  "name": "/notification",
+  "schema": {
+    "type": "page",
+    "pullRefresh": {
+      "disabled": true
+    },
+    "body": [
+      {
+        "type": "crud",
+        "name": "notification-list",
+        "id": "notification-list",
+        "syncLocation": false,
+        "mode": "cards",
+        "defaultParams": {
+          "perPage": 10
+        },
+        "filter": {
+          "title": "条件搜索",
+          "body": [
+            {
+              "type": "group",
+              "body": [
+                {
+                  "type": "select",
+                  "options": [
+                    {
+                      "label": "已读",
+                      "value": "read"
+                    },
+                    {
+                      "label": "未读",
+                      "value": "unread"
+                    }
+                  ],
+                  "name": "state",
+                  "label": "状态",
+                  "clearable": true,
+                  "placeholder": "请选择",
+                  "size": "sm"
+                },
+                {
+                  "type": "input-text",
+                  "name": "type",
+                  "label": "业务类型",
+                  "clearable": true,
+                  "placeholder": "请输入",
+                  "size": "sm"
+                }
+              ]
+            }
+          ]
+        },
+        "affixOffsetTop": false,
+        "columnsCount": 1,
+        "itemCheckableOn": "${state === 'unread'}",
+        "card": {
+          "href": "",
+          "header": {
+            "title": "$title",
+            "titleClassName": "font-bold",
+            "subTitle": "${receivingTime|date:LLL:YYYY/MM/DD HH\\:mm\\:ss}"
+          },
+          "body": [
+            {
+              "type": "tpl",
+              "tpl": "${content}"
+            },
+            {
+              "type": "flex",
+              "justify": "flex-start",
+              "items": [
+                {
+                  "type": "text",
+                  "tpl": "业务类型："
+                },
+                {
+                  "style": {
+                    "backgroundColor": "#2468f2",
+                    "borderColor": "#2468f2",
+                    "color": "#fff",
+                    "borderRadius": "12px",
+                    "padding": "0 6px"
+                  },
+                  "type": "tpl",
+                  "tpl": "${type?type:'无'}"
+                }
+              ]
+            },
+            {
+              "visibleOn": "${state === 'read' && handleTime !== null}",
+              "type": "tpl",
+              "tpl": "处理时间：${handleTime|date:LLL:YYYY/MM/DD HH\\:mm\\:ss} "
+            }
+          ],
+          "actions": [
+            {
+              "visibleOn": "${IF(!action.url, true,false)}",
+              "type": "button",
+              "label": "查看",
+              "icon": "fas fa-ban"
+            },
+            {
+              "visibleOn": "/^(https?:\\/\\/)?([\\w.-]+)\\.([a-zA-Z]{2,})(:\\d+)?(\\/\\S*)?$/g.test(action.url)",
+              "label": "查看",
+              "type": "button",
+              "icon": "fas fa-eye",
+              "className": "mr-4",
+              "onEvent": {
+                "click": {
+                  "actions": [
+                    {
+                      "actionType": "url",
+                      "args": {
+                        "url": "${action.url}",
+                        "blank": true
+                      }
+                    },
+                    {
+                      "expression": "${state == 'read'? false: true}",
+                      "actionType": "ajax",
+                      "api": {
+                        "url": "/api/notification/${id}/read",
+                        "method": "patch"
+                      }
+                    },
+                    {
+                      "expression": "${state == 'read'? false: true}",
+                      "actionType": "reload",
+                      "componentId": "notification-list"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "visibleOn": "!(/^(https?:\\/\\/)?([\\w.-]+)\\.([a-zA-Z]{2,})(:\\d+)?(\\/\\S*)?$/g.test(action.url)) && action.url ",
+              "label": "查看",
+              "type": "button",
+              "icon": "fas fa-eye",
+              "onEvent": {
+                "click": {
+                  "actions": [
+                    {
+                      "args": {
+                        "url": "${action.url}"
+                      },
+                      "actionType": "openOrSwitchTab"
+                    },
+                    {
+                      "expression": "${state == 'read'? false: true}",
+                      "actionType": "ajax",
+                      "api": {
+                        "url": "/api/notification/${id}/read",
+                        "method": "patch"
+                      }
+                    },
+                    {
+                      "expression": "${state == 'read'? false: true}",
+                      "actionType": "reload",
+                      "componentId": "notification-list"
+                    }
+                  ]
+                }
+              },
+              "className": "mr-4"
+            }
+          ],
+          "toolbar": [
+            {
+              "visibleOn": "${state == 'read'? true: false}",
+              "type": "button",
+              "disabled": true,
+              "label": "已读",
+              "icon": "fas fa-envelope-open"
+            },
+            {
+              "visibleOn": "${state == 'read'? false: true}",
+              "type": "button",
+              "label": "置为已读",
+              "icon": "far fa-envelope",
+              "confirmText": "确定此条消息置为已读？",
+              "confirmTitle": "提示",
+              "onEvent": {
+                "click": {
+                  "actions": [
+                    {
+                      "actionType": "ajax",
+                      "api": {
+                        "url": "/api/notification/${id}/read",
+                        "method": "patch"
+                      }
+                    },
+                    {
+                      "actionType": "reload",
+                      "componentId": "notification-list"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "headerToolbar": [
+          {
+            "type": "button",
+            "icon": "fa fa-refresh",
+            "actionType": "reload"
+          },
+          {
+            "type": "button",
+            "label": "与我相关所有置为已读",
+            "confirmText": "确定与我相关所有消息置为已读?",
+            "confirmTitle": "提示",
+            "onEvent": {
+              "click": {
+                "actions": [
+                  {
+                    "actionType": "ajax",
+                    "api": "patch:/api/notification/me-all/mark-read"
+                  },
+                  {
+                    "actionType": "reload",
+                    "componentId": "notification-list"
+                  }
+                ]
+              }
+            }
+          },
+          "bulkActions"
+        ],
+        "bulkActions": [
+          {
+            "label": "批量已读",
+            "confirmText": "确定要批量已读?",
+            "confirmTitle": "提示",
+            "onEvent": {
+              "click": {
+                "actions": [
+                  {
+                    "actionType": "ajax",
+                    "api": {
+                      "url": "/api/notification/mark-read",
+                      "method": "patch",
+                      "data": {
+                        "messageIds": "${ids|split}"
+                      }
+                    }
+                  },
+                  {
+                    "actionType": "reload",
+                    "componentId": "notification-list"
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "api": {
+          "method": "get",
+          "url": "/api/notification",
+          "data": {
+            "&": "$$",
+            "platform": "web"
+          }
+        }
+      }
+    ]
+  }
+}

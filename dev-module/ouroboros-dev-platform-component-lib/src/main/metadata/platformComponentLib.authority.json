@@ -1,0 +1,26 @@
+{
+  "fullName": "platformComponentLib",
+  "title": "平台组件库",
+  "apis": [
+    "GET /api/platform-component-lib",
+    "GET /api/platform-component-lib/{name}",
+    "GET /api/platform-component-lib/component-defines",
+    "GET /api/platform-component-lib/{name}/related-apps",
+    "POST /api/platform-component-lib/inspect",
+    "POST /api/platform-component-lib",
+    "DELETE /api/platform-component-lib/{name}",
+    "GET /api/project-templates",
+    "GET /api/project-generation-form",
+    "POST /api/project-generations",
+    "GET /api/dev/{appName}/platform-component-lib",
+    "POST /api/dev/{appName}/platform-component-lib",
+    "DELETE /api/dev/{appName}/platform-component-lib/{componentLibName}"
+  ],
+  "uiViews": [
+    "/platform-component-lib",
+    "/dev/{appName}/platform-component-lib"
+  ],
+  "menuItems": [
+    "platformComponentLib"
+  ]
+}

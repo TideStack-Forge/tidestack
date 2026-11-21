@@ -1,0 +1,123 @@
+{
+  "name": "/system-setting/integration-management/external-auth/ldap",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "initApi": "/api/sys/external-auth/ldap",
+    "api": {
+      "method": "put",
+      "url": "/api/sys/external-auth/ldap",
+      "data": {
+        "expectedRevision": "${expectedRevision}",
+        "changes": "${changes}"
+      }
+    },
+    "body": [
+      {
+        "type": "alert",
+        "level": "info",
+        "body": "各身份源沿原登录协议生效。密码留空保留已配置值；可用密钥引用由服务端解析。保存若发生版本冲突，请保留输入并核对最新配置。"
+      },
+      {
+        "type": "combo",
+        "name": "changes.providers",
+        "label": "身份源",
+        "multiple": true,
+        "multiLine": true,
+        "items": [
+          {
+            "type": "input-text",
+            "name": "key",
+            "label": "身份源标识",
+            "required": true
+          },
+          {
+            "type": "input-text",
+            "name": "displayName",
+            "label": "显示名称"
+          },
+          {
+            "type": "switch",
+            "name": "enabled",
+            "label": "启用登录",
+            "value": true
+          },
+          {
+            "type": "input-tag",
+            "name": "urls",
+            "label": "LDAP 服务地址",
+            "joinValues": false,
+            "extractValue": true
+          },
+          {
+            "type": "input-text",
+            "name": "baseDn",
+            "label": "Base DN"
+          },
+          {
+            "type": "select",
+            "name": "mode",
+            "label": "认证方式",
+            "options": [
+              {
+                "label": "搜索后绑定",
+                "value": "search"
+              },
+              {
+                "label": "直接绑定",
+                "value": "direct"
+              }
+            ]
+          },
+          {
+            "type": "input-text",
+            "name": "searchBindDn",
+            "label": "搜索账号 DN"
+          },
+          {
+            "type": "input-password",
+            "name": "searchBindPassword",
+            "label": "搜索密码（留空保留）"
+          },
+          {
+            "type": "input-text",
+            "name": "searchBindPasswordRef",
+            "label": "搜索密码引用"
+          },
+          {
+            "type": "input-text",
+            "name": "searchFilter",
+            "label": "搜索过滤器"
+          },
+          {
+            "type": "input-text",
+            "name": "domain",
+            "label": "域"
+          },
+          {
+            "type": "input-text",
+            "name": "loginIdMode",
+            "label": "登录标识模式"
+          },
+          {
+            "type": "input-text",
+            "name": "externalIdAttribute",
+            "label": "外部标识属性"
+          },
+          {
+            "type": "input-kv",
+            "name": "attributeMapping",
+            "label": "属性映射"
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "type": "submit",
+        "label": "保存登录配置",
+        "level": "primary"
+      }
+    ]
+  }
+}

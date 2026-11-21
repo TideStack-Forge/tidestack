@@ -1,0 +1,38 @@
+{
+  "name": "minimal-linear",
+  "description": "Minimal valid linear flow fixture",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "constSource",
+  "exitNode": "mutexTarget",
+  "nodes": [
+    {
+      "name": "constSource",
+      "type": "const",
+      "description": "",
+      "dataType": "string",
+      "value": "hello"
+    },
+    {
+      "name": "mutexTarget",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "constSource",
+      "sourceOutputPort": 0,
+      "targetNode": "mutexTarget",
+      "targetInputPort": 0
+    }
+  ]
+}

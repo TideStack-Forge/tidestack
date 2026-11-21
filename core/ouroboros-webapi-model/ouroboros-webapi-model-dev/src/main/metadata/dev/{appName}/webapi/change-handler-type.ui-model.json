@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/webapi/change-handler-type",
+  "type": "amis",
+  "title": "切换处理方式"
+}

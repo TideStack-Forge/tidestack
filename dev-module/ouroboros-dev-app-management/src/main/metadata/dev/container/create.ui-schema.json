@@ -1,0 +1,327 @@
+{
+  "name": "/dev/container/create",
+  "schema": {
+    "type": "form",
+    "id": "runtimeContainerCreateForm",
+    "wrapWithPanel": false,
+    "initApi": {
+      "url": "/api/app/container/create-init",
+      "data": {
+        "appName": "${appName}"
+      }
+    },
+    "api": {
+      "url": "/api/app/container/create",
+      "method": "post"
+    },
+    "body": [
+      {
+        "type": "hidden",
+        "name": "appName"
+      },
+      {
+        "type": "hidden",
+        "name": "imageInputMode"
+      },
+      {
+        "type": "hidden",
+        "name": "backendType"
+      },
+      {
+        "type": "hidden",
+        "name": "exposureStrategy"
+      },
+      {
+        "type": "select",
+        "name": "image",
+        "label": "基座镜像版本",
+        "source": "/api/app/container/images?backendType=${backendType}",
+        "value": "${image}",
+        "requiredOn": "${backendType == 'DOCKER'}",
+        "placeholder": "请选择基座镜像版本",
+        "visibleOn": "${backendType == 'DOCKER'}"
+      },
+      {
+        "type": "input-text",
+        "name": "image",
+        "label": "镜像引用",
+        "value": "${image}",
+        "requiredOn": "${backendType == 'KUBERNETES'}",
+        "placeholder": "请输入镜像引用",
+        "visibleOn": "${backendType == 'KUBERNETES'}"
+      },
+      {
+        "type": "grid",
+        "className": "mb-8",
+        "columns": [
+          {
+            "md": 6,
+            "body": {
+              "type": "static",
+              "name": "backendType",
+              "label": "运行时后端",
+              "tpl": "${availableBackends && availableBackends.length ? availableBackends[0].label : backendType}"
+            }
+          },
+          {
+            "md": 6,
+            "body": {
+              "type": "static",
+              "name": "exposureStrategy",
+              "label": "暴露策略",
+              "visibleOn": "${fieldVisibilityRules.exposureStrategy !== false}",
+              "tpl": "${availableExposureStrategies && availableExposureStrategies.length ? availableExposureStrategies[0].label : exposureStrategy}"
+            }
+          }
+        ]
+      },
+      {
+        "type": "grid",
+        "className": "mb-8",
+        "visibleOn": "${fieldVisibilityRules.portBindings && backendType == 'DOCKER' && exposureStrategy == 'TEMP_PORT'}",
+        "columns": [
+          {
+            "md": 6,
+            "body": {
+              "type": "input-number",
+              "name": "portBindings.web",
+              "label": "Web服务端口"
+            }
+          },
+          {
+            "md": 6,
+            "body": {
+              "type": "input-number",
+              "name": "portBindings.apiDebug",
+              "label": "调试端口"
+            }
+          }
+        ]
+      },
+      {
+        "type": "grid",
+        "className": "mb-8",
+        "columns": [
+          {
+            "md": 6,
+            "body": {
+              "type": "static",
+              "name": "runtimeAccessPreview.web.endpoint",
+              "label": "Web访问预览",
+              "visibleOn": "${runtimeAccessPreview.web && runtimeAccessPreview.web.endpoint}"
+            }
+          },
+          {
+            "md": 6,
+            "body": {
+              "type": "static",
+              "name": "runtimeAccessPreview.api.endpoint",
+              "label": "Api访问预览",
+              "visibleOn": "${runtimeAccessPreview.api && runtimeAccessPreview.api.endpoint}"
+            }
+          }
+        ]
+      },
+      {
+        "type": "grid",
+        "className": "mb-8",
+        "columns": [
+          {
+            "type": "fieldSet",
+            "title": "环境配置",
+            "collapsable": true,
+            "collapsed": false,
+            "body": [
+              {
+                "type": "select",
+                "name": "environmentName",
+                "bodyClassName": "mb-8",
+                "value": "dev",
+                "labelField": "title",
+                "valueField": "name",
+                "source": {
+                  "url": "/api/dev-environment",
+                  "method": "get"
+                }
+              }
+            ]
+          },
+          {
+            "type": "fieldSet",
+            "title": "数据库配置",
+            "collapsable": true,
+            "collapsed": false,
+            "bodyClassName": "mb-8",
+            "body": [
+              {
+                "type": "select",
+                "name": "datasource.type",
+                "value": "default",
+                "label": "",
+                "options": [
+                  {
+                    "label": "默认",
+                    "value": "default"
+                  },
+                  {
+                    "label": "内存",
+                    "value": "memory"
+                  },
+                  {
+                    "label": "跟随环境",
+                    "value": "environment"
+                  }
+                ]
+              },
+              {
+                "type": "wrapper",
+                "className": "p-0 ",
+                "visibleOn": "${datasource.type == 'default'}",
+                "body": {
+                  "type": "checkbox",
+                  "inputClassName": "pt-0",
+                  "name": "datasource.reinitialize",
+                  "label": "",
+                  "optionType": "button",
+                  "option": "重新初始化",
+                  "onEvent": {
+                    "change": {
+                      "actions": [
+                        {
+                          "actionType": "confirmDialog",
+                          "expression": "${event.data.value}",
+                          "dialog": {
+                            "title": "系统提示",
+                            "msg": "此操作会删除已存在的数据库！"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "fieldSet",
+            "title": "配置文件",
+            "collapsable": true,
+            "collapsed": false,
+            "bodyClassName": "mb-8",
+            "body": [
+              {
+                "type": "checkbox",
+                "name": "configFile.isReset",
+                "option": "删除原配置文件",
+                "onEvent": {
+                  "change": {
+                    "actions": [
+                      {
+                        "actionType": "confirmDialog",
+                        "expression": "${event.data.value}",
+                        "dialog": {
+                          "title": "系统提示",
+                          "msg": "此操作会删除已存在的配置文件！"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "fieldSet",
+        "title": "环境变量",
+        "collapsable": true,
+        "collapsed": true,
+        "bodyClassName": "mb-8",
+        "body": [
+          {
+            "type": "input-text",
+            "name": "env.XMS",
+            "label": "Xms",
+            "description": "JVM初始堆大小（Xms）",
+            "validations": {
+              "matchRegexp": "^\\d+[kKmMgG]$"
+            },
+            "validationErrors": {
+              "matchRegexp": "请输入正确的格式，如：512m"
+            }
+          },
+          {
+            "type": "input-text",
+            "name": "env.XMX",
+            "label": "Xmx",
+            "description": "JVM最大堆大小（Xmx）",
+            "validations": {
+              "matchRegexp": "^\\d+[kKmMgG]$"
+            },
+            "validationErrors": {
+              "matchRegexp": "请输入正确的格式，如：512m"
+            }
+          },
+          {
+            "type": "switch",
+            "label": "同步中咨组织架构与用户",
+            "option": "开启",
+            "name": "env.CIECC_MASTER_DATA_SYNC",
+            "falseValue": "false",
+            "trueValue": "true",
+            "id": "u:541d9aebb7b2"
+          },
+          {
+            "type": "input-kv",
+            "draggable": true,
+            "label": "环境变量",
+            "name": "env",
+            "multiple": true,
+            "items": [
+              {
+                "placeholder": "Key",
+                "type": "input-text",
+                "unique": true,
+                "name": "key",
+                "required": true,
+                "validateOnChange": true
+              },
+              {
+                "placeholder": "Value",
+                "type": "input-text",
+                "name": "value"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "onEvent": {
+      "inited": {
+        "actions": [
+          {
+            "actionType": "setValue",
+            "componentId": "runtimeContainerCreateForm",
+            "args": {
+              "value": {
+                "backendType": "${defaultBackendType}",
+                "exposureStrategy": "${defaultExposureStrategy}",
+                "image": "${suggestedValues.image || image}"
+              }
+            }
+          }
+        ]
+      },
+      "submitSucc": {
+        "actions": [
+          {
+            "actionType": "reload",
+            "componentName": "containerControlButtons",
+            "target": "containerControlButtons"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+.DS_Store
+node_modules
+/dist
+lib
+esm
+*/target/
+tsconfig.tsbuildinfo
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.claude
+
+# Temp files
+.semanticgraphs/
+.tmp
+.aider*
+
+# Generated micro-frontend packages
+/ouroboros-approval-workflow-designer/approval-workflow.zip
+/ouroboros-debug-console-topbar/debugConsoleHeader.zip
+/ouroboros-logicflow-editor/logicFlowEditor.zip

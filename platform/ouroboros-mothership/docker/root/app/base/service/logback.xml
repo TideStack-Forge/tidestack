@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <contextName>test_logback</contextName>
+    <!-- 定义日志文件 输入位置 -->
+    <property name="log_dir" value="/app/deploy/logs/service/%d{yyyy-MM}"/>
+    <!-- 日志最大的历史 （maxHistory是和配置的fileNamePattern日期的最小粒度单位保持一致） -->
+    <!-- 这里单位是“天” -->
+    <property name="maxHistory" value="360"/>
+    <!-- 单个文件的最大磁盘空间 -->
+    <property name="maxFileSize" value="10MB"/>
+
+    <springProperty scope="context" name="appName" source="spring.application.name"/>
+    <springProperty scope="context" name="profileName" source="spring.profiles.active" defaultValue="prod"/>
+
+    <springProperty scope="context" name="amqpAddresses" source="spring.rabbitmq.addresses"/>
+    <springProperty scope="context" name="amqpHost" source="spring.rabbitmq.host"/>
+    <springProperty scope="context" name="amqpHosts" source="spring.rabbitmq.hosts"/>
+    <springProperty scope="context" name="amqpPort" source="spring.rabbitmq.port"/>
+    <springProperty scope="context" name="amqpVirtualHost" source="spring.rabbitmq.virtualHost"/>
+    <springProperty scope="context" name="amqpUsername" source="spring.rabbitmq.username" defaultValue="guest"/>
+    <springProperty scope="context" name="amqpPassword" source="spring.rabbitmq.password" defaultValue="guest"/>
+
+    <!-- 文件存储 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder charset="utf-8">
+            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n
+            </pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${log_dir}/%d{MM-dd}.%i.log
+            </fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${maxFileSize}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 控制台打印 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="utf-8">
+            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- AMQP -->
+    <appender name="AMQP" class="org.springframework.amqp.rabbit.logback.AmqpAppender">
+        <encoder>
+            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{36} - %m%n
+            </pattern>
+        </encoder>
+        <if condition='!isNull("amqpAddresses")'>
+            <then>
+                <addresses>${amqpAddresses}</addresses>
+            </then>
+        </if>
+        <if condition='!isNull("amqpHost")'>
+            <then>
+                <host>${amqpHost}</host>
+            </then>
+        </if>
+        <if condition='!isNull("amqpHosts")'>
+            <then>
+                <hosts>${amqpHosts}</hosts>
+            </then>
+        </if>
+        <if condition='!isNull("amqpVirtualHost")'>
+            <then>
+                <virtualHost>${amqpVirtualHost}</virtualHost>
+            </then>
+        </if>
+        <if condition='!isNull("amqpPort")'>
+            <then>
+                <port>${amqpPort}</port>
+            </then>
+        </if>
+        <username>${amqpUsername}</username>
+        <password>${amqpPassword}</password>
+        <exchangeName>ouroboros.app.log</exchangeName>
+        <applicationId>${appName}</applicationId>
+        <routingKeyPattern>app.${appName}.profile.${profileName}.log</routingKeyPattern>
+        <declareExchange>true</declareExchange>
+        <exchangeType>topic</exchangeType>
+        <durable>true</durable>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+        <if condition='!isNull("amqpAddresses") || !isNull("amqpHost") || !isNull("amqpHosts")'>
+            <then>
+                <appender-ref ref="AMQP"/>
+            </then>
+        </if>
+    </root>
+</configuration>

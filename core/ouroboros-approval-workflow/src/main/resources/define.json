@@ -1,0 +1,129 @@
+{
+  "name": "",
+  "id": "",
+  "description": "",
+  "form": [
+    "...",
+    "..."
+  ],
+  "node": [
+    {
+      "type": "发起节点",
+      "name": "",
+      "id": "",
+      "assignee": [
+        "同前文"
+      ],
+      "permission": [
+        {
+          "fieldName": "reason",
+          "visible": true,
+          "writable": false
+        },
+        {
+          "fieldName": "description",
+          "visible": true,
+          "writable": false
+        }
+      ],
+      "next": ""
+    },
+    {
+      "type": "审批节点",
+      "name": "",
+      "id": "",
+      "assignee": [
+        "同前文"
+      ],
+      "sequence": [
+        "顺序",
+        "并行"
+      ],
+      "percentage": "80",
+      "mustComplete": true,
+      "canAdd": false,
+      "canAbsent": true,
+      "permission": [
+        "同前文"
+      ],
+      "next": "",
+      "alternativeNext": [
+        "lastNode",
+        "startNode",
+        ""
+      ]
+    },
+    {
+      "type": "子流程节点",
+      "name": "",
+      "id": "",
+      "assignee": [
+        "同前文"
+      ],
+      "subProcessId": "idOfTheSubProcess",
+      "inParameters": [
+        {
+          "source": "a",
+          "target": "A"
+        },
+        {}
+      ],
+      "outParameters": [
+        {
+          "source": "b",
+          "target": "B"
+        }
+      ],
+      "permission": [
+        "同前文"
+      ],
+      "next": "e"
+    },
+    {
+      "type": "分流节点",
+      "name": "",
+      "id": "",
+      "assignee": [
+        "同前文"
+      ],
+      "logic": "inclusive",
+      "branches": [
+        {
+          "id": "",
+          "condition": "",
+          "first": "firstNodeId"
+        },
+        {}
+      ],
+      "permission": [
+        "同前文"
+      ],
+      "next": ""
+    },
+    {
+      "type": "结束节点",
+      "name": "",
+      "id": "",
+      "assignee": [
+        "同前文"
+      ],
+            "permission": [
+        {
+          "fieldName": "bossOpinion",
+          "visible": true,
+          "writable": false
+        }
+      ],
+      "next": ""
+    },
+    {
+      "type": "结束节点",
+      "name": "",
+      "id": "",
+      "assignee": [
+        "同前文"
+      ],
+      "next": ""
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "name": "input-conflict-metadata-exclusive",
+  "description": "Selective metadata branches reconverge to the same input port and should be treated as mutex",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "branchNode",
+  "exitNode": "targetMutex",
+  "nodes": [
+    {
+      "name": "branchNode",
+      "type": "metadataSelectiveTestNode",
+      "description": "",
+      "outputPorts": [
+        {
+          "name": "left",
+          "description": "",
+          "dataType": "any",
+          "exclusiveGroupId": "g1"
+        },
+        {
+          "name": "right",
+          "description": "",
+          "dataType": "any",
+          "exclusiveGroupId": "g1",
+          "defaultBranch": true
+        }
+      ]
+    },
+    {
+      "name": "targetMutex",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "branchNode",
+      "sourceOutputPort": 0,
+      "targetNode": "targetMutex",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "branchNode",
+      "sourceOutputPort": 1,
+      "targetNode": "targetMutex",
+      "targetInputPort": 0
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "id": "frontends/logicflow-editor-static",
+  "title": "Logicflow Editor Static Frontend",
+  "class": "frontends",
+  "capabilities": [
+    "micro-web",
+    "logicflow-editor-ui",
+    "browser-entry"
+  ],
+  "lifecycle": {
+    "up": "shell: bash testing/common/fixtures/frontends/logicflow-editor-static/up.sh",
+    "check": "shell: bash testing/common/fixtures/frontends/logicflow-editor-static/up.sh",
+    "reset": "shell: bash testing/common/fixtures/frontends/logicflow-editor-static/up.sh",
+    "down": "shell: bash testing/common/fixtures/frontends/logicflow-editor-static/down.sh"
+  },
+  "inputs": [
+    {
+      "name": "frontendHost",
+      "required": false,
+      "default": "127.0.0.1",
+      "sources": [
+        {
+          "kind": "env",
+          "name": "SMOKE_FRONTEND_HOST"
+        }
+      ]
+    },
+    {
+      "name": "frontendPort",
+      "required": false,
+      "default": "19088",
+      "sources": [
+        {
+          "kind": "env",
+          "name": "SMOKE_LOGICFLOW_EDITOR_PORT"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "frontendKind",
+      "value": "logicflow-editor-static"
+    },
+    {
+      "name": "baseUrlEnv",
+      "value": "SMOKE_LOGICFLOW_EDITOR_HOST_BASE_URL"
+    },
+    {
+      "name": "entryRoute",
+      "value": "/micro-logicflow-editor/"
+    }
+  ],
+  "healthChecks": [
+    {
+      "name": "logicflow-editor-static-entry",
+      "expect": "static micro-web root responds and serves the packaged logicflow editor bundle"
+    }
+  ],
+  "prerequisites": [],
+  "notes": [
+    "Use DEV_E2E_FRONTEND_EXTRA_ARGS=\"--logicflow_editor ${SMOKE_LOGICFLOW_EDITOR_HOST_BASE_URL}\" when bootstrapping the develop shell for logicflow validation diagnostics scenarios; legacy FRONTEND_EXTRA_ARGS remains compatibility-only.",
+    "The fixture rebuilds the logicflow editor package when the frontend source signature changes, instead of trusting dist mtime alone."
+  ]
+}

@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.ouroboros.dev.app.DevAppRuntimeLockAutoConfiguration,\
+com.ouroboros.dev.app.DevAppAutoConfiguration

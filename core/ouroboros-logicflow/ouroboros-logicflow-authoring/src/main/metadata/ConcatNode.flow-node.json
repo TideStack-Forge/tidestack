@@ -1,0 +1,65 @@
+{
+  "type": "concat",
+  "label": "并集",
+  "icon": "concat",
+  "shape": "rect",
+  "description": "合并多个集合",
+  "group": "集合操作",
+  "order": 2001,
+  "svgs": {
+    "concat": "<svg t=\"1705812167523\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"32861\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"300\" height=\"300\"><path d=\"M214.4 365.6c0-28.8 2.4-57.6 8-84.8C93.6 343.2 4.8 475.2 4.8 629.6 4.8 843.2 176 1016 387.2 1016c146.4 0 273.6-83.2 338.4-205.6-23.2 4-46.4 5.6-70.4 5.6-243.2-0.8-440.8-201.6-440.8-450.4zM634.4 8C496 8 374.4 82.4 307.2 194.4c20.8-3.2 41.6-4.8 62.4-4.8 243.2 0 440.8 201.6 440.8 449.6 0 35.2-4 70.4-12 103.2 128.8-61.6 218.4-195.2 218.4-348.8C1016.8 180.8 845.6 8 634.4 8z\" p-id=\"32862\"></path><path d=\"M384.8 224c-40 0-78.4 6.4-114.4 17.6-16 43.2-24.8 90.4-24.8 140 0 221.6 176 401.6 393.6 401.6 40 0 78.4-6.4 114.4-17.6 16-43.2 24.8-90.4 24.8-140 0-222.4-176-401.6-393.6-401.6z\" p-id=\"32863\"></path></svg>"
+  },
+  "scaffold": {
+    "type": "concat",
+    "name": "并集",
+    "distinct": false,
+    "isEqualExpr": "",
+    "inputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "array"
+      },
+      {
+        "name": "",
+        "description": "",
+        "dataType": "array"
+      }
+    ],
+    "outputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "array"
+      }
+    ]
+  },
+  "portRules": {
+    "input": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": null
+    },
+    "output": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    }
+  },
+  "properties": [
+    {
+      "type": "switch",
+      "name": "distinct",
+      "label": "去重"
+    },
+    {
+      "type": "expression",
+      "name": "isEqualExpr",
+      "codeSite": "logicflow.collection-comparison",
+      "codePointer": "/isEqualExpr",
+      "label": "比较表达式",
+      "visibleOn": "${distinct}",
+      "description": "留空则直接用对象对比的方式判断是否相等"
+    }
+  ]
+}

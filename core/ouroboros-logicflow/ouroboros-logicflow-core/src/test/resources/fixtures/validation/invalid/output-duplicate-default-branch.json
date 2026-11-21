@@ -1,0 +1,43 @@
+{
+  "name": "output-duplicate-default-branch",
+  "entryNode": "entry",
+  "exitNode": "exit",
+  "nodes": [
+    {
+      "name": "entry",
+      "type": "metadataSelectiveTestNode",
+      "outputPorts": [
+        {
+          "name": "branchA",
+          "dataType": "string",
+          "exclusiveGroupId": "g1",
+          "defaultBranch": true
+        },
+        {
+          "name": "branchB",
+          "dataType": "string",
+          "exclusiveGroupId": "g1",
+          "defaultBranch": true
+        }
+      ]
+    },
+    {
+      "name": "exit",
+      "type": "mutex",
+      "inputPorts": [
+        {
+          "name": "input",
+          "dataType": "any"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "entry",
+      "sourceOutputPort": 0,
+      "targetNode": "exit",
+      "targetInputPort": 0
+    }
+  ]
+}

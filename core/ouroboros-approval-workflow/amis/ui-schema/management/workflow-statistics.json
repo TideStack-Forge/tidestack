@@ -1,0 +1,146 @@
+{
+  "type": "page",
+  "css": {
+    ".container": {
+      "width": "1620px"
+    }
+  },
+  "body": {
+    "type": "crud",
+    "syncLocation": false,
+    "api": {
+      "url": "/api/approval-process/statistic",
+      "method": "get"
+    },
+    "defaultParams": {
+      "page": 1,
+      "perPage": 15
+    },
+    "filterTogglable": true,
+    "headerToolbar": [
+      "load-more",
+      "export-excel",
+      "filter-toggler",
+      {
+        "type": "reload",
+        "align": "right",
+        "icon": "fa fa-repeat",
+        "label": "刷新",
+        "tooltip": "",
+        "level": "primary"
+      }
+    ],
+    "footerToolbar": [
+      "statistics",
+      "switch-per-page",
+      "pagination"
+    ],
+    "alwaysShowPagination": true,
+    "hideQuickSaveBtn": true,
+    "filter": {
+      "title": "流程筛选",
+      "debug": true,
+      "body": [
+        {
+          "type": "group",
+          "body": [
+            {
+              "type": "input-text",
+              "name": "keyword",
+              "label": "名称",
+              "clearable": true,
+              "placeholder": "请输入流程名称搜索",
+              "size": "sm"
+            },
+            {
+              "type": "switch",
+              "label": "包含已下线流程",
+              "name": "includeOffline",
+              "multiple": false,
+              "value": false
+            }
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "type": "reset",
+          "label": "重置"
+        },
+        {
+          "type": "submit",
+          "level": "primary",
+          "label": "查询"
+        }
+      ]
+    },
+    "columns": [
+      {
+        "name": "id",
+        "label": "流程ID"
+      },
+      {
+        "name": "processDefinitionId",
+        "label": "流程部署ID"
+      },
+      {
+        "name": "category",
+        "label": "流程分类"
+      },
+      {
+        "name": "name",
+        "label": "流程名"
+      },
+      {
+        "type": "mapping",
+        "name": "statusName",
+        "label": "流程状态",
+        "map": {
+          "草稿": {
+            "type": "tag",
+            "displayMode": "status",
+            "label": "草稿",
+            "color": "active"
+          },
+          "已部署": {
+            "type": "tag",
+            "displayMode": "status",
+            "label": "已部署",
+            "color": "success"
+          },
+          "已下线": {
+            "type": "tag",
+            "displayMode": "status",
+            "label": "已下线",
+            "color": "warning"
+          }
+        }
+      },
+      {
+        "name": "totalCnt",
+        "label": "总申请数"
+      },
+      {
+        "name": "runningCnt",
+        "label": "正在处理"
+      },
+      {
+        "name": "finishedCnt",
+        "label": "已结束"
+      },
+      {
+        "type": "operation",
+        "label": "操作",
+        "buttons": [
+          {
+            "type": "button",
+            "label": "查看",
+            "level": "link",
+            "actionType": "link",
+            "link": "/management/instance-details?processDefinitionId=${processDefinitionId}"
+          }
+        ]
+      }
+    ]
+  }
+}

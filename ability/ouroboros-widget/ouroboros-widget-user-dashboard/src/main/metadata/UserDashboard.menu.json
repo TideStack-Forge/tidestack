@@ -1,0 +1,8 @@
+{
+  "url": "/user-dashboard",
+  "fullName": "UserDashboard",
+  "icon": "fa fa-home",
+  "title": "个人门户",
+  "placement": "main",
+  "order": -100
+}

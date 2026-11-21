@@ -1,0 +1,15 @@
+[
+  {
+    "key": "notification.unreadCount.realtime",
+    "label": "实时刷新未读通知",
+    "groupPath": "notification.internalMessage",
+    "order": 10,
+    "description": "开启则通过WebSocket实时通信的方式获取，否则通过定时刷新的方式获取",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "boolean",
+    "defaultValue": "true",
+    "scope": "frontend",
+    "restoreDefaultRemovesOverride": true
+  }
+]

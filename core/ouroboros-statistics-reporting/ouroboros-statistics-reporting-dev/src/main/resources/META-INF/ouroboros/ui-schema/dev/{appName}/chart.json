@@ -1,0 +1,138 @@
+{
+  "type": "page",
+  "title": "图表",
+  "body": {
+    "type": "crud",
+    "api": {
+      "method": "get",
+      "url": "/api/dev/${appName}/chart",
+      "data": {"keyword": "${keyword}"}
+    },
+    "filter": {
+      "body": [
+        {
+          "type": "input-text",
+          "name": "keyword",
+          "label": "关键词",
+          "placeholder": "搜索名称或标题",
+          "clearable": true
+        }
+      ]
+    },
+    "headerToolbar": [
+      "filter-toggler",
+      {
+        "type": "button",
+        "label": "新建图表",
+        "level": "primary",
+        "actionType": "link",
+        "link": "/dev/${appName}/chart/add"
+      },
+      "reload"
+    ],
+    "columns": [
+      { "name": "name", "label": "名称", "searchable": true },
+      { "name": "title", "label": "标题" },
+      { "name": "datasetName", "label": "数据集" },
+      {
+        "name": "chartType",
+        "label": "图表类型",
+        "type": "mapping",
+        "map": {
+          "metric-card": "指标卡",
+          "line": "折线图",
+          "bar": "柱状图",
+          "area": "面积图",
+          "pie": "饼图",
+          "donut": "环图",
+          "scatter": "散点图",
+          "sankey": "桑基图",
+          "crosstab": "交叉表",
+          "table": "明细表",
+          "combo": "组合图",
+          "*": "${chartType}"
+        }
+      },
+      {
+        "name": "isEnabled",
+        "label": "状态",
+        "type": "mapping",
+        "map": { "true": "启用", "false": "禁用" }
+      },
+      {
+        "type": "operation",
+        "label": "操作",
+        "buttons": [
+          {
+            "type": "button",
+            "label": "编辑",
+            "level": "link",
+            "actionType": "link",
+            "link": "/dev/${appName}/chart/${name}"
+          },
+          {
+            "type": "button",
+            "label": "禁用",
+            "level": "link",
+            "visibleOn": "${isEnabled === true}",
+            "actionType": "ajax",
+            "confirmText": "确定要禁用图表「${title || name}」吗？",
+            "api": {
+              "method": "put",
+              "url": "/api/dev/${appName}/chart/${name}?commit=true",
+              "data": {
+                "type": "chart",
+                "name": "$name",
+                "title": "$title",
+                "description": "$description",
+                "tags": "$tags",
+                "datasetName": "$datasetName",
+                "isEnabled": false,
+                "chartType": "$chartType",
+                "params": "$params"
+              },
+              "messages": { "success": "图表已禁用" }
+            }
+          },
+          {
+            "type": "button",
+            "label": "启用",
+            "level": "link",
+            "visibleOn": "${isEnabled !== true}",
+            "actionType": "ajax",
+            "confirmText": "确定要启用图表「${title || name}」吗？",
+            "api": {
+              "method": "put",
+              "url": "/api/dev/${appName}/chart/${name}?commit=true",
+              "data": {
+                "type": "chart",
+                "name": "$name",
+                "title": "$title",
+                "description": "$description",
+                "tags": "$tags",
+                "datasetName": "$datasetName",
+                "isEnabled": true,
+                "chartType": "$chartType",
+                "params": "$params"
+              },
+              "messages": { "success": "图表已启用" }
+            }
+          },
+          {
+            "type": "button",
+            "label": "删除",
+            "level": "link",
+            "className": "text-danger",
+            "actionType": "ajax",
+            "confirmText": "确定要删除图表「${title || name}」吗？",
+            "api": {
+              "method": "delete",
+              "url": "/api/dev/${appName}/chart/${name}",
+              "messages": { "success": "图表已删除" }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

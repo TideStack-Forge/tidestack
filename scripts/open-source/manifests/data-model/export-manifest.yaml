@@ -1,0 +1,249 @@
+schema_version: 1
+roadmap: dynamic-data-model-open-source
+status: draft-active
+source_contract: core/ouroboros-data/DESIGN.md
+package_ownership: scripts/open-source/manifests/data-model/package-ownership.yaml
+
+public_repo:
+  name: ouroboros-data-model
+  scope: standalone-distribution
+  platform_source_public_in_monorepo: true
+  history_policy: orphan-from-first-public-release
+  sync_policy: manifest-scoped-forward-sync
+  non_automatic_actions:
+    - remote-push
+    - merge
+    - publish
+    - release
+    - deploy
+
+classification_policy:
+  source_of_truth: this-manifest
+  downstream_consumers:
+    - public-export
+    - dependency-scan
+    - ci-public-profile
+    - code-review
+  topology_rule: "Read source_contract and package_ownership before moving packages, POM dependencies, adapters, or migration code."
+  exception_rule: "Do not add local include/exclude allowlists; update data-model-package-topology first if topology is insufficient."
+
+support_modules:
+  - id: common
+    path: libs/common
+    artifact_id: common
+    aggregator_only: true
+  - id: common-error-code
+    path: libs/common/common-error-code
+    artifact_id: common-error-code
+  - id: common-exception
+    path: libs/common/common-exception
+    artifact_id: common-exception
+  - id: common-exception-mapper
+    path: libs/common/common-exception-mapper
+    artifact_id: common-exception-mapper
+  - id: common-service
+    path: libs/common/common-service
+    artifact_id: common-service
+  - id: util
+    path: libs/util/ouroboros-util
+    artifact_id: ouroboros-util
+    notes: "Shared public foundation, copied unchanged for a closed standalone build; artifact publication remains owned by the monorepo."
+
+included_modules:
+  - id: data-core
+    path: core/ouroboros-data/ouroboros-data-core
+    artifact_id: ouroboros-data-core
+    readiness: candidate
+    blockers: []
+    notes: "Semantic core remains the public API/SPI/port/kernel boundary; expression behavior is exposed through the DataExpressionEvaluator port."
+  - id: data-plugins
+    path: core/ouroboros-data/ouroboros-data-plugins
+    artifact_id: ouroboros-data-plugins
+    readiness: candidate
+    blockers: []
+    notes: "Framework-free data-domain built-in plugin package. Current contents are data-model plugins/decorators plus ArchiveDelete support contracts; runtime depends on it to preserve default SPI behavior."
+  - id: data-typed-core
+    path: core/ouroboros-data/ouroboros-data-typed-core
+    artifact_id: ouroboros-data-typed-core
+    readiness: candidate
+    blockers: []
+    notes: "Platform-agnostic typed annotations/model contracts. Included in the first public build scope because data-plugins has a compile dependency on it."
+  - id: data-typed-meta-processor
+    path: core/ouroboros-data/ouroboros-data-typed-meta-processor
+    artifact_id: ouroboros-data-typed-meta-processor
+    readiness: candidate
+    blockers: []
+    notes: "Annotation processor for typed data model metadata. It only depends on typed-core and is included with the typed public contract profile."
+  - id: data-sql
+    path: core/ouroboros-data/ouroboros-data-sql
+    artifact_id: ouroboros-data-sql
+    readiness: candidate
+    blockers: []
+    notes: "SQL CRUD/query/dialect surface keeps an explicit dependency on data-sql-migration to preserve existing SqlDataStation migration APIs; schema-changing implementation remains isolated in data-sql-migration with no reverse dependency on data-sql."
+  - id: data-sql-migration
+    path: core/ouroboros-data/ouroboros-data-sql-migration
+    artifact_id: ouroboros-data-sql-migration
+    readiness: candidate
+    blockers: []
+    notes: "Concrete schema-changing implementation and SqlMigrationService tool entry. It depends on data-core contracts and is exported because data-sql/test-support currently consume it explicitly."
+  - id: data-builders
+    path: core/ouroboros-data/ouroboros-data-builders
+    artifact_id: ouroboros-data-builders
+    readiness: candidate
+    blockers: []
+    notes: "Builder support may ship with public core if it only depends on included public modules."
+  - id: data-test-support
+    path: core/ouroboros-data/ouroboros-data-test-support
+    artifact_id: ouroboros-data-test-support
+    readiness: candidate
+    blockers: []
+    notes: "Public test fixtures must not backdoor runtime/platform internals into core."
+  - id: data-pkgen-coding
+    path: core/ouroboros-data/ouroboros-data-pkgen-coding
+    artifact_id: ouroboros-data-pkgen-coding
+    readiness: candidate
+    blockers: []
+    notes: "Coding primary-key factory and contract. It depends on data-core's DataExpressionEvaluator port; DB-backed sequence behavior, script wrappers and snowflake runtime adapters stay outside this module."
+
+deferred_public_modules:
+  - id: data-runtime
+    path: core/ouroboros-data/ouroboros-data-runtime
+    artifact_id: ouroboros-data-runtime
+    deferred_reason: public-runtime-profile-validation-required
+    owner_feature: data-model-runtime-adapter-consolidation
+    notes: "Public runtime candidate after profile validation; platform glue is isolated in data-platform-adapter."
+  - id: data-pkgen-snowflake
+    path: core/ouroboros-data/ouroboros-data-pkgen-snowflake
+    artifact_id: ouroboros-data-pkgen-snowflake
+    deferred_reason: future-interface-only-module-if-public-contract-needed
+    owner_feature: data-model-runtime-adapter-consolidation
+    notes: "Snowflake does not belong in data-pkgen-coding; current concrete implementation stays data-runtime-owned."
+  - id: data-initialization-core
+    path: core/ouroboros-data/ouroboros-data-initialization-core
+    artifact_id: ouroboros-data-initialization-core
+    deferred_reason: initialization-public-profile-validation-required
+    owner_feature: data-model-initialization-public-boundary
+    notes: "Current reactor module with initialization policy/ports. It declares its internal helper dependencies explicitly and is not part of the first public profile until its API/support commitment is reviewed."
+  - id: data-sql-druid-datasource
+    path: core/ouroboros-data/ouroboros-data-sql-druid-datasource
+    artifact_id: ouroboros-data-sql-druid-datasource
+    deferred_reason: optional-datasource-adapter-classification-required
+    owner_feature: data-model-runtime-adapter-consolidation
+    notes: "Optional third-party datasource adapter candidate; not first-wave included until public profile is proven."
+  - id: data-typed-runtime
+    path: core/ouroboros-data/ouroboros-data-typed-runtime
+    artifact_id: ouroboros-data-typed-runtime
+    deferred_reason: typed-public-profile-validation-required
+    owner_feature: data-model-typed-model-runtime-boundary
+    notes: "Typed runtime no longer directly depends on common-all/common-app/SpringContextUtil or Ouroboros lifecycle events; internal event bridge lives in data-platform-adapter. Do not keep ouroboros-data-typed-model-runtime as a one-layer compatibility artifact."
+
+split_source_modules:
+  - source_path: core/ouroboros-data/ouroboros-data-pkgen-coding
+    current_artifact_id: ouroboros-data-pkgen-coding
+    split_to:
+      contracts: data-pkgen-coding
+      implementations: data-typed-runtime
+    disallowed_public_contents:
+      - DBCodingSequencer
+      - CodeGenELAndScriptContext
+      - com.ouroboros.data.pkgenerator.model
+    owner_features:
+      - data-model-expression-port
+      - data-model-runtime-adapter-consolidation
+  - source_path: core/ouroboros-data/ouroboros-data-sql
+    current_artifact_id: ouroboros-data-sql
+    split_to:
+      crud_query: data-sql
+      schema_migration: data-sql-migration
+    disallowed_public_contents_until_split:
+      - com.ouroboros.data.migration
+      - liquibase
+    owner_feature: data-model-sql-migration-boundary
+  - source_path: core/ouroboros-data/ouroboros-data-runtime
+    current_artifact_id: ouroboros-data-runtime
+    split_to:
+      public_runtime: data-runtime
+      platform_adapter: data-platform-adapter
+    decision_required_before_package_moves: false
+    owner_feature: data-model-runtime-adapter-consolidation
+
+excluded_modules:
+  - id: data-dev
+    path: core/ouroboros-data/ouroboros-data-dev
+    reason: development-ui-menu-schema-helper
+  - id: data-test
+    path: core/ouroboros-data/ouroboros-data-test
+    reason: internal-integration-test-module
+  - id: data-platform-adapter
+    path: core/ouroboros-data/ouroboros-data-platform-adapter
+    reason: platform-integration-distributed-in-monorepo
+  - id: data-initialization-runtime
+    path: core/ouroboros-data/ouroboros-data-initialization-runtime
+    reason: platform-initialization-distributed-in-monorepo
+  - id: business-model
+    path: core/ouroboros-business-model
+    reason: outside-dynamic-data-model-public-boundary
+  - id: abilities
+    path: ability
+    reason: platform-capability-layer
+  - id: dev-module
+    path: dev-module
+    reason: development-platform-distributed-in-monorepo
+  - id: platform
+    path: platform
+    reason: platform-application-distributed-in-monorepo
+
+forbidden_imports:
+  public_core_sql_gate:
+    scope:
+      - core/ouroboros-data/ouroboros-data-core
+      - core/ouroboros-data/ouroboros-data-plugins
+      - core/ouroboros-data/ouroboros-data-typed-core
+      - core/ouroboros-data/ouroboros-data-typed-meta-processor
+      - core/ouroboros-data/ouroboros-data-sql
+      - core/ouroboros-data/ouroboros-data-sql-migration
+      - core/ouroboros-data/ouroboros-data-builders
+      - core/ouroboros-data/ouroboros-data-test-support
+      - core/ouroboros-data/ouroboros-data-pkgen-coding
+    prefixes:
+      - com.ouroboros.security
+      - com.ouroboros.businessmodel
+      - com.ouroboros.app
+      - com.ouroboros.lifecycle.event
+      - com.ouroboros.exception
+      - com.ouroboros.expression
+      - com.ouroboros.script
+    command: "rg \"com\\.ouroboros\\.(security|businessmodel|app|lifecycle\\.event|exception|expression|script)\" core/ouroboros-data -g '*.java'"
+    failure_policy: report-or-block
+
+runtime_internal_adapter_imports:
+  owner_module: data-platform-adapter
+  allowed_platform_imports:
+    - com.ouroboros.expression
+    - com.ouroboros.script
+    - com.ouroboros.lifecycle.event
+    - com.ouroboros.security
+    - com.ouroboros.app
+  note: "Platform adapter imports are not a whitelist for data-runtime or public core/sql/sql-migration gates."
+
+known_blockers:
+  - id: typed-runtime-deferred
+    owner_feature: data-model-typed-model-runtime-boundary
+    affected_modules:
+      - data-typed-runtime
+    note: "typed-core and typed-meta-processor are included in the first-wave public profile; typed runtime remains deferred until its runtime profile is validated."
+  - id: typed-runtime-platform-dependencies
+    owner_feature: data-model-typed-model-runtime-boundary
+    affected_modules:
+      - data-typed-runtime
+
+validation:
+  manifest_yaml:
+    id: CMD-001
+    command: "python3 scripts/docs/validate-yaml.py --file scripts/open-source/manifests/data-model/export-manifest.yaml --yaml-only"
+  forbidden_import_baseline:
+    id: CMD-002
+    command: "rg \"com\\.ouroboros\\.(security|businessmodel|app|lifecycle\\.event|exception|expression|script)\" core/ouroboros-data -g '*.java'"
+  pkgen_runtime_baseline:
+    id: CMD-003
+    command: "rg \"DBCodingSequencer|Snowflakes|SnowflakePrimaryKeyGeneratorFactory\" core/ouroboros-data -g '*.java'"

@@ -1,0 +1,38 @@
+{
+  "name": "return-only-type-mismatch",
+  "description": "Return-only flow whose payload type does not match flow outputDataType should be invalid",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "map",
+  "entryNode": "constSource",
+  "nodes": [
+    {
+      "name": "constSource",
+      "type": "const",
+      "description": "",
+      "dataType": "string",
+      "value": "returned"
+    },
+    {
+      "name": "earlyReturn",
+      "type": "return",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "string"
+        }
+      ],
+      "outputPorts": []
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "constSource",
+      "sourceOutputPort": 0,
+      "targetNode": "earlyReturn",
+      "targetInputPort": 0
+    }
+  ]
+}

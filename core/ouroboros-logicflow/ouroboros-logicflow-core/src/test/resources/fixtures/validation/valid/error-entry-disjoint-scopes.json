@@ -1,0 +1,75 @@
+{
+  "name": "error-entry-disjoint-scopes",
+  "description": "Valid flow with disjoint main-flow and error-flow scopes",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "mainEntry",
+  "exitNode": "mainExit",
+  "errorEntryNode": "errorEntry",
+  "nodes": [
+    {
+      "name": "mainEntry",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    },
+    {
+      "name": "mainExit",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    },
+    {
+      "name": "errorEntry",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "error",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    },
+    {
+      "name": "errorReturn",
+      "type": "return",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": []
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "mainEntry",
+      "sourceOutputPort": 0,
+      "targetNode": "mainExit",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "errorEntry",
+      "sourceOutputPort": 0,
+      "targetNode": "errorReturn",
+      "targetInputPort": 0
+    }
+  ]
+}

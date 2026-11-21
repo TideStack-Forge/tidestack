@@ -1,0 +1,88 @@
+{
+  "name": "/dev/{appName}/error-code",
+  "schema": {
+    "type": "page",
+    "body": [
+      {
+        "type": "crud",
+        "loadDataOnce": true,
+        "api": {
+          "method": "get",
+          "url": "/api/dev/${appName}/error-code"
+        },
+        "filter": {
+          "title": "筛选条件",
+          "body": [
+            {
+              "type": "input-text",
+              "name": "keyword",
+              "label": "关键词",
+              "placeholder": "按错误码、标题、业务标识搜索",
+              "clearable": true
+            }
+          ]
+        },
+        "headerToolbar": [
+          "filter-toggler",
+          {
+            "type": "button",
+            "label": "新增错误码",
+            "level": "primary",
+            "actionType": "link",
+            "link": "/dev/${appName}/error-code/add"
+          },
+          "reload"
+        ],
+        "columns": [
+          {
+            "type": "text",
+            "label": "错误码",
+            "name": "model.code"
+          },
+          {
+            "type": "text",
+            "label": "标题",
+            "name": "model.title"
+          },
+          {
+            "type": "text",
+            "label": "业务标识",
+            "name": "model.bizCode",
+            "placeholder": "-"
+          },
+          {
+            "type": "text",
+            "label": "默认消息",
+            "name": "model.defaultMessageTemplate"
+          },
+          {
+            "type": "tpl",
+            "label": "是否启用",
+            "name": "model.enabled",
+            "tpl": "${model.enabled === false ? '否' : '是'}"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "buttons": [
+              {
+                "type": "button",
+                "label": "编辑",
+                "level": "link",
+                "actionType": "link",
+                "link": "/dev/${appName}/error-code/${model.code}"
+              },
+              {
+                "type": "button",
+                "label": "详情",
+                "level": "link",
+                "actionType": "link",
+                "link": "/dev/${appName}/error-code/detail?name=${model.code}"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

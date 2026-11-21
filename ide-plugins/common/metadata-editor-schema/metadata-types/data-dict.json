@@ -1,0 +1,141 @@
+{
+  "type": "data-dict",
+  "fileSuffix": ".dict.json",
+  "displayName": "数据字典",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.dict.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/metadata",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.dict.json",
+    "fields": [
+      {
+        "name": "name",
+        "label": "名称",
+        "documentPath": [
+          "name"
+        ],
+        "required": true,
+        "defaultFromPath": "camel-name"
+      },
+      {
+        "name": "title",
+        "label": "标题",
+        "documentPath": [
+          "title"
+        ],
+        "required": true,
+        "defaultFromPath": "title"
+      },
+      {
+        "name": "group",
+        "label": "分组",
+        "documentPath": [
+          "group"
+        ]
+      }
+    ],
+    "document": {
+      "name": "example",
+      "title": "示例数据字典",
+      "type": "STATIC",
+      "group": "default",
+      "editable": false,
+      "treeMode": false,
+      "items": []
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "数据字典",
+    "actions": [],
+    "body": [
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "名称",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "title",
+        "label": "标题",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "type",
+        "label": "类型",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "group",
+        "label": "分组"
+      },
+      {
+        "type": "switch",
+        "name": "editable",
+        "label": "允许编辑"
+      },
+      {
+        "type": "switch",
+        "name": "treeMode",
+        "label": "树形结构"
+      },
+      {
+        "type": "combo",
+        "name": "items",
+        "label": "字典项",
+        "multiple": true,
+        "multiLine": true,
+        "draggable": true,
+        "addButtonText": "新增字典项",
+        "items": [
+          {
+            "type": "input-text",
+            "name": "code",
+            "label": "编码",
+            "required": true
+          },
+          {
+            "type": "input-text",
+            "name": "label",
+            "label": "标签",
+            "required": true
+          },
+          {
+            "type": "input-number",
+            "name": "order",
+            "label": "排序"
+          },
+          {
+            "type": "input-text",
+            "name": "parent",
+            "label": "父级编码",
+            "visibleOn": "${treeMode}"
+          },
+          {
+            "type": "input-kvs",
+            "name": "extraProps",
+            "label": "扩展属性",
+            "keyItem": {
+              "label": "键"
+            },
+            "valueItems": [
+              {
+                "type": "input-text",
+                "name": "_value",
+                "label": "值"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/data-dict.schema.json"
+}

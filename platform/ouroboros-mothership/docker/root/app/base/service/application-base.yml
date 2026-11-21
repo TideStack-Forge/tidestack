@@ -1,0 +1,75 @@
+server:
+  port: 8080
+  tomcat:
+    relaxed-path-chars: '|,{,},[,]'
+    relaxed-query-chars: '|,{,},[,]'
+
+spring:
+  application:
+    name: ouroboros-mothership
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  servlet:
+    multipart:
+      max-file-size: 2GB
+      max-request-size: 2GB
+  cache:
+    type: simple
+  liquibase:
+    enabled: false
+  activiti:
+    check-process-definitions: false
+  groovy:
+    template:
+      check-template-location: false
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+      - org.springframework.boot.autoconfigure.freemarker.FreeMarkerAutoConfiguration
+
+logging:
+  level:
+    org.springframework.amqp.rabbit.connection.CachingConnectionFactory: WARN
+
+ouroboros:
+  security:
+    token:
+      accessTokenExpire: 28800
+      refreshTokenExpire: 86400
+  metadata:
+    sourceType: fileSystem # 暂只支持文件系统
+    path: /app/metadata/
+  microWeb:
+    autoDeploy: true
+    deployPath: /app/deploy/web/
+  upload:
+    storageType: fileSystem
+    filePathStrategy: default
+    filePathPrefix:
+    filePathTemplate: "{yyyy}/{MM}/{dd}"
+    fileNameStrategy: default
+    fileNameTemplate: "{rawName}-{timestamp}.{ext}"
+    fileUrlStrategy: default
+    fileUrlPrefix: /api/file
+    anonymousPrefixes:
+      - "**"
+    fileSystem:
+      rootPath: /app/deploy/data/uploads
+  businessModel:
+    basicAuditFields:
+      createdAt:
+        rawName: created_at
+      createdBy:
+        rawName: created_by
+      updatedAt:
+        rawName: updated_at
+      updatedBy:
+        rawName: updated_by
+      deletedAt:
+        rawName: deleted_at
+      deletedBy:
+        rawName: deleted_by
+      isDeleted:
+        rawName: is_deleted

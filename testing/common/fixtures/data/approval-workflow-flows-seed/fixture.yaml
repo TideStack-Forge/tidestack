@@ -1,0 +1,42 @@
+{
+  "id": "data/approval-workflow-flows-seed",
+  "title": "Approval Workflow Flows Seed",
+  "class": "data",
+  "capabilities": [
+    "approval-flow-seed",
+    "single-and-multi-approval",
+    "advanced-actions"
+  ],
+  "lifecycle": {
+    "up": "",
+    "check": "flow seed contains single approval, serial and parallel multi-approval, and advanced action coverage",
+    "reset": "",
+    "down": ""
+  },
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "seedType",
+      "value": "approval-flow-definitions"
+    },
+    {
+      "name": "flowsSeedFile",
+      "value": "testing/common/fixtures/data/approval-workflow-flows-seed/flow-definitions.json"
+    },
+    {
+      "name": "defaultFlowKey",
+      "value": "awf.single.l1"
+    }
+  ],
+  "healthChecks": [
+    {
+      "name": "flow-definitions-valid",
+      "expect": "all flow definitions have deterministic keys/node IDs and candidate IDs resolvable from users seed"
+    }
+  ],
+  "prerequisites": [],
+  "notes": [
+    "Action metadata follows approval-workflow-action-contracts.md including freeApprove action name and freeApproval VO field mapping.",
+    "This fixture stores static model intent, not deployment/runtime-generated IDs."
+  ]
+}

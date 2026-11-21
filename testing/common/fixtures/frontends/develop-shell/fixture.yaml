@@ -1,0 +1,45 @@
+{
+  "id": "frontends/develop-shell",
+  "title": "Develop Shell Frontend",
+  "class": "frontends",
+  "capabilities": [
+    "web-shell",
+    "develop-platform-ui",
+    "browser-entry"
+  ],
+  "lifecycle": {
+    "up": "",
+    "check": "frontend base URL should open the develop shell login page",
+    "reset": "",
+    "down": ""
+  },
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "frontendKind",
+      "value": "develop-shell"
+    },
+    {
+      "name": "baseUrlEnv",
+      "value": "OB_TEST_FRONTEND_BASE_URL"
+    },
+    {
+      "name": "entryRoute",
+      "value": "/"
+    },
+    {
+      "name": "loginRoute",
+      "value": "/login"
+    }
+  ],
+  "healthChecks": [
+    {
+      "name": "frontend-login-route",
+      "expect": "login route opens without proxy or shell bootstrap errors"
+    }
+  ],
+  "prerequisites": [],
+  "notes": [
+    "This fixture models the browser shell only; backend runtime health remains the responsibility of runtime fixtures."
+  ]
+}

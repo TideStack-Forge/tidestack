@@ -1,0 +1,70 @@
+{
+  "name": "/system-setting/user-management/add",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "body": [
+      {
+        "label": "账号",
+        "type": "input-text",
+        "name": "userIdentity",
+        "placeholder": "",
+        "clearable": true,
+        "required": true,
+        "validations": {
+          "maxLength": 100,
+          "minLength": 6
+        },
+        "validateOnChange": true,
+        "validationErrors": {
+          "minLength": "账号至少输入6个字符"
+        }
+      },
+      {
+        "label": "角色",
+        "name": "roles",
+        "type": "select",
+        "multiple": true,
+        "labelField": "name",
+        "searchable": true,
+        "size": "full",
+        "valueField": "id",
+        "checkAll": false,
+        "joinValues": false,
+        "extractValue": true,
+        "value": [],
+        "source": {
+          "url": "/api/sys/role",
+          "method": "get"
+        }
+      },
+      {
+        "label": "密码",
+        "type": "input-password",
+        "name": "password",
+        "placeholder": "",
+        "clearable": true,
+        "required": true,
+        "validateOnChange": true,
+        "validations": {
+          "matchRegexp": "^(?![0-9A-Za-z]+$)(?![0-9A-Z\\W]+$)(?![0-9a-z\\W]+$)(?![A-Za-z\\W]+$)[0-9A-Za-z~!@#$%^&*()__+`\\-={}|[\\]\\\\:\";'<>?,./]{6,}$"
+        },
+        "validationErrors": {
+          "matchRegexp": "密码同时包含大小写字母、数字和特殊符号,长度大于6"
+        }
+      }
+    ],
+    "api": {
+      "url": "/api/sys/user",
+      "method": "post",
+      "data": {
+        "avatar": "${avatar}",
+        "userIdentity": "${userIdentity}",
+        "roles": "${roles}",
+        "password": "${password}"
+      }
+    },
+    "mode": "horizontal",
+    "wrapWithPanel": false
+  }
+}

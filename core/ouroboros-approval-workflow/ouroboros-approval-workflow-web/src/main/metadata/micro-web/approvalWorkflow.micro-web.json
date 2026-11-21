@@ -1,0 +1,6 @@
+{
+  "name": "microWorkflow",
+  "type": "library",
+  "publicPath": "/micro-workflow-editor/",
+  "packageName": "approval-workflow.zip"
+}

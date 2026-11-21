@@ -1,0 +1,10 @@
+{
+  "fullName": "BusinessLogic.webapiManagement",
+  "url": "/dev/{appName}/webapi",
+  "icon": "fas fa-plug",
+  "title": "后端接口",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 10
+}

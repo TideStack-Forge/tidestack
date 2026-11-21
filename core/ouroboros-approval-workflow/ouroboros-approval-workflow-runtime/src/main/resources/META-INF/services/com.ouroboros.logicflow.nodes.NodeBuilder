@@ -1,0 +1,5 @@
+com.ouroboros.workflow.approval.logicflow.StartProcessNode$Builder
+com.ouroboros.workflow.approval.logicflow.SubmitTaskNode$Builder
+com.ouroboros.workflow.approval.logicflow.GetTaskInfoNode$Builder
+com.ouroboros.workflow.approval.logicflow.AttachProcessInfoNode$Builder
+com.ouroboros.workflow.approval.logicflow.ProcessStatusRouterNode$Builder

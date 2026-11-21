@@ -1,0 +1,78 @@
+governance_gates_version: 1
+roadmap: logicflow-open-source-extraction
+source_feature: 2026-07-26-logicflow-open-source-governance-gates
+status: active
+created: 2026-07-26
+
+referenced_manifests:
+  open_source_boundary: logicflow-open-source-boundary.yaml
+  platform_adapter_boundary: logicflow-platform-adapter-boundary.yaml
+  extension_bundle_classification: logicflow-extension-bundle-classification.yaml
+  public_repo_bootstrap: logicflow-public-repo-bootstrap.yaml
+  public_sync_pipeline: logicflow-public-sync-pipeline.yaml
+
+referenced_reports:
+  bootstrap_report: tmp/testing-evidence/open-source/logicflow-public-repo-bootstrap/bootstrap-report.md
+  sync_report: tmp/testing-evidence/open-source/logicflow-public-sync-pipeline/sync-report.md
+  metadata_scan_report: tmp/testing-evidence/open-source/logicflow-public-sync-pipeline/metadata-scan-report.md
+  patch_import_report: tmp/testing-evidence/open-source/logicflow-public-sync-pipeline/patch-import-report.md
+
+gate_suite:
+  default_mode: snapshot
+  repo_mode_status: supported_by_logicflow_open_source_release_dry_run
+  failure_policy: blocking
+  optional_warning_for_blocking_gate: forbidden
+  technical_gates:
+    - dependency
+    - source
+    - history
+    - secret
+    - build
+    - sync
+
+reports:
+  artifact_dir: tmp/testing-evidence/open-source/logicflow-open-source-governance-gates
+  json: tmp/testing-evidence/open-source/logicflow-open-source-governance-gates/governance-gate-report.json
+  markdown: tmp/testing-evidence/open-source/logicflow-open-source-governance-gates/governance-gate-report.md
+
+runner:
+  command: bash scripts/open-source/logicflow/run-governance-gates.sh --check
+  repo_mode_command: bash scripts/open-source/logicflow/run-governance-gates.sh --check --dry-run-dir target/logicflow-open-source-release-dry-run/snapshot --repo-dir target/logicflow-open-source-release-dry-run/public-repo
+  scope: internal-worktree-or-internal-ci
+  public_snapshot_ci_scope: public-visible-build-and-test-only
+  creates_public_repo: false
+  adds_public_remote: false
+  pushes: false
+  tags: false
+  releases: false
+
+pending_owner_reviews:
+  - id: notice-copyright-holder-review
+    item: NOTICE/copyright holder review
+    sources:
+      - referenced_reports.bootstrap_report
+      - referenced_reports.sync_report
+    blocks: release_governance_status
+
+required_report_fields:
+  - gate_suite
+  - mode
+  - technical_gates_status
+  - release_governance_status
+  - gates
+  - blocking_items
+  - reports
+
+negative_probe_policy:
+  required: true
+  categories:
+    - forbidden_dependency
+    - forbidden_source_path
+    - internal_metadata_marker
+    - sensitive_marker
+  output: tmp/testing-evidence/open-source/logicflow-open-source-governance-gates/negative-probe-report.md
+
+governance_handoff:
+  next_item: logicflow-open-source-release-dry-run
+  release_checklist_in_this_feature: forbidden
+  residual_risk_report_in_this_feature: forbidden

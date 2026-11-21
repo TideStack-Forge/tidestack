@@ -1,0 +1,85 @@
+{
+  "name": "zero-input-upstream-source-participates-in-main-flow",
+  "description": "Valid flow where a zero-input source node contributes to the main flow through a downstream merge",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "mainEntry",
+  "exitNode": "mainExit",
+  "nodes": [
+    {
+      "name": "mainEntry",
+      "type": "const",
+      "description": "",
+      "dataType": "map",
+      "value": {
+        "main": "entry"
+      }
+    },
+    {
+      "name": "sideInput",
+      "type": "const",
+      "description": "",
+      "dataType": "map",
+      "value": {
+        "side": "input"
+      }
+    },
+    {
+      "name": "mergeInputs",
+      "type": "merge",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "main",
+          "description": "",
+          "dataType": "map"
+        },
+        {
+          "name": "side",
+          "description": "",
+          "dataType": "map"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "merged",
+          "description": "",
+          "dataType": "map"
+        }
+      ]
+    },
+    {
+      "name": "mainExit",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "mainEntry",
+      "sourceOutputPort": 0,
+      "targetNode": "mergeInputs",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "sideInput",
+      "sourceOutputPort": 0,
+      "targetNode": "mergeInputs",
+      "targetInputPort": 1
+    },
+    {
+      "sourceNode": "mergeInputs",
+      "sourceOutputPort": 0,
+      "targetNode": "mainExit",
+      "targetInputPort": 0
+    }
+  ]
+}

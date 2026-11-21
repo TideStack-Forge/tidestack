@@ -1,0 +1,21 @@
+[
+  {
+    "fullName": "systemSetting.configurationManagement",
+    "title": "配置管理",
+    "menu": "systemSetting.configurationManagement",
+    "authorities": [
+      "systemSetting.configurationManagement"
+    ],
+    "order": 10,
+    "parent": "systemSetting.basicConfiguration"
+  },
+  {
+    "fullName": "systemSetting.userProfile.configure",
+    "title": "管理用户资料规则",
+    "parent": "systemSetting.configurationManagement",
+    "authorities": [
+      "systemSetting.userProfile.configure"
+    ],
+    "order": 10
+  }
+]

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>ouroboros-resource</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ouroboros-resource-dev</artifactId>
+
+    <name>Ouroboros Resource Dev</name>
+    <description>Low-code resource management and upload capabilities</description>
+
+    <dependencies>
+        <!-- Resource core models and interfaces -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-resource-core</artifactId>
+        </dependency>
+
+        <!-- Development model management framework -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-dev-model-manage-webapi-scaffold</artifactId>
+        </dependency>
+
+        <!-- Version control system -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-dev-version-control-system</artifactId>
+        </dependency>
+
+        <!-- Common utilities -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-util</artifactId>
+        </dependency>
+
+        <!-- Common exception handling -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>common-exception</artifactId>
+        </dependency>
+
+        <!-- Spring Boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Jackson for JSON -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <!-- Vavr for functional programming -->
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+        </dependency>
+
+        <!-- Apache Commons -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>

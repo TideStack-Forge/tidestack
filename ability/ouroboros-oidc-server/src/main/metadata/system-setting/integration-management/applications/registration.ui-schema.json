@@ -1,0 +1,286 @@
+{
+  "name": "/system-setting/integration-management/applications/registration",
+  "schema": {
+    "type": "container",
+    "body": [
+      {
+        "type": "form",
+        "name": "dcr-settings",
+        "title": "动态客户端注册",
+        "persistData": false,
+        "initApi": {
+          "method": "get",
+          "url": "/api/sys/auth-clients/registration",
+          "responseData": {
+            "&": "${settings}",
+            "expectedRevision": "${revision}"
+          }
+        },
+        "api": {
+          "method": "put",
+          "url": "/api/sys/auth-clients/registration",
+          "data": {
+            "expectedRevision": "${expectedRevision}",
+            "settings": {
+              "enabled": "${enabled}",
+              "mode": "${mode}",
+              "allowedClientTypes": "${allowedClientTypes}",
+              "allowedIdentityScopes": "${allowedIdentityScopes}",
+              "allowedGrantTypes": "${allowedGrantTypes}",
+              "redirectPolicy": "${redirectPolicy}",
+              "maxDynamicClients": "${maxDynamicClients}",
+              "rateLimit": "${rateLimit}",
+              "initialAccessTokenTimeToLive": "${initialAccessTokenTimeToLive}"
+            }
+          },
+          "responseData": {
+            "&": "${settings}",
+            "expectedRevision": "${revision}"
+          }
+        },
+        "body": [
+          {
+            "type": "switch",
+            "name": "enabled",
+            "label": "启用动态注册"
+          },
+          {
+            "type": "radios",
+            "name": "mode",
+            "label": "注册方式",
+            "required": true,
+            "options": [
+              {
+                "label": "凭证注册",
+                "value": "INITIAL_ACCESS_TOKEN"
+              },
+              {
+                "label": "开放注册",
+                "value": "OPEN"
+              }
+            ]
+          },
+          {
+            "type": "checkboxes",
+            "name": "allowedClientTypes",
+            "label": "允许的客户端类型",
+            "joinValues": false,
+            "extractValue": true,
+            "required": true,
+            "options": [
+              {
+                "label": "公共客户端",
+                "value": "PUBLIC"
+              },
+              {
+                "label": "机密客户端",
+                "value": "CONFIDENTIAL"
+              }
+            ]
+          },
+          {
+            "type": "checkboxes",
+            "name": "allowedIdentityScopes",
+            "label": "允许申请的身份信息",
+            "joinValues": false,
+            "extractValue": true,
+            "required": true,
+            "options": [
+              {
+                "label": "基本身份",
+                "value": "openid"
+              },
+              {
+                "label": "个人资料",
+                "value": "profile"
+              },
+              {
+                "label": "电子邮箱",
+                "value": "email"
+              },
+              {
+                "label": "手机号码",
+                "value": "phone"
+              },
+              {
+                "label": "持续访问",
+                "value": "offline_access"
+              }
+            ]
+          },
+          {
+            "type": "checkboxes",
+            "name": "allowedGrantTypes",
+            "label": "允许的授权方式",
+            "joinValues": false,
+            "extractValue": true,
+            "required": true,
+            "options": [
+              {
+                "label": "授权码",
+                "value": "authorization_code"
+              },
+              {
+                "label": "刷新令牌",
+                "value": "refresh_token"
+              }
+            ]
+          },
+          {
+            "type": "input-tag",
+            "name": "redirectPolicy.allowedHttpsOrigins",
+            "label": "允许的 HTTPS 回调来源",
+            "joinValues": false,
+            "extractValue": true,
+            "description": "例如 https://app.example；留空表示不额外限制 HTTPS 来源，完整回调仍须登记。"
+          },
+          {
+            "type": "switch",
+            "name": "redirectPolicy.allowLoopbackHttp",
+            "label": "允许本机 HTTP 回调",
+            "description": "仅允许回环 IP 地址，不允许 localhost。"
+          },
+          {
+            "type": "input-number",
+            "name": "maxDynamicClients",
+            "label": "动态注册应用数量上限",
+            "min": 1,
+            "max": 100000,
+            "required": true
+          },
+          {
+            "type": "input-text",
+            "name": "rateLimit.window",
+            "label": "注册频率统计时段",
+            "required": true,
+            "description": "ISO 8601 时长，如 PT1M（1 分钟）；允许 1 秒至 1 天。"
+          },
+          {
+            "type": "input-number",
+            "name": "rateLimit.global",
+            "label": "每时段注册请求数",
+            "min": 1,
+            "max": 1000000,
+            "required": true
+          },
+          {
+            "type": "input-number",
+            "name": "rateLimit.perSource",
+            "label": "每来源每时段请求数",
+            "min": 1,
+            "max": 1000000,
+            "required": true
+          },
+          {
+            "type": "input-text",
+            "name": "initialAccessTokenTimeToLive",
+            "label": "注册凭证有效期",
+            "required": true,
+            "description": "例如 PT30M（30 分钟）；允许 1 分钟至 1 天。"
+          },
+          {
+            "type": "alert",
+            "level": "info",
+            "body": "策略保存后只约束新注册，不改变已有应用。新注册仅开放身份认证；平台 API 权限需要管理员另行配置。"
+          }
+        ],
+        "actions": [
+          {
+            "type": "submit",
+            "label": "保存",
+            "level": "primary"
+          }
+        ],
+        "reload": "dcr-credentials"
+      },
+      {
+        "type": "service",
+        "api": {
+          "method": "get",
+          "url": "/api/sys/auth-clients/registration",
+          "responseData": {
+            "&": "${settings}"
+          }
+        },
+        "body": {
+          "type": "container",
+          "visibleOn": "${enabled && mode === 'INITIAL_ACCESS_TOKEN'}",
+          "body": [
+            {
+              "type": "alert",
+              "level": "warning",
+              "body": "请先保存凭证注册策略。每份凭证只能尝试注册一次；原文仅在本次对话框显示，请妥善保存。"
+            },
+            {
+              "type": "button",
+              "label": "签发注册凭证",
+              "actionType": "dialog",
+              "dialog": {
+                "title": "新注册凭证",
+                "body": {
+                  "type": "form",
+                  "persistData": false,
+                  "initApi": {
+                    "method": "post",
+                    "url": "/api/sys/auth-clients/registration/credentials"
+                  },
+                  "body": [
+                    {
+                      "type": "input-text",
+                      "name": "id",
+                      "label": "凭证标识",
+                      "readOnly": true
+                    },
+                    {
+                      "type": "input-password",
+                      "name": "token",
+                      "label": "注册凭证",
+                      "readOnly": true,
+                      "showReveal": true
+                    },
+                    {
+                      "type": "static-datetime",
+                      "name": "expiresAt",
+                      "label": "到期时间",
+                      "format": "YYYY-MM-DD HH:mm:ss",
+                      "valueFormat": "x"
+                    }
+                  ],
+                  "actions": []
+                }
+              }
+            },
+            {
+              "type": "button",
+              "label": "吊销未使用凭证",
+              "actionType": "dialog",
+              "dialog": {
+                "title": "吊销注册凭证",
+                "body": {
+                  "type": "form",
+                  "persistData": false,
+                  "api": {
+                    "method": "delete",
+                    "url": "/api/sys/auth-clients/registration/credentials/${id}"
+                  },
+                  "body": [
+                    {
+                      "type": "input-text",
+                      "name": "id",
+                      "label": "凭证标识",
+                      "required": true
+                    }
+                  ],
+                  "messages": {
+                    "saveSuccess": "吊销请求已处理；已认领的凭证不能撤回。"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "name": "dcr-credentials"
+      }
+    ]
+  }
+}

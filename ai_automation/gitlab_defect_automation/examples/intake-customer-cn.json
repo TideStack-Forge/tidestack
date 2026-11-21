@@ -1,0 +1,75 @@
+{
+  "instance_id": "intake-customer-cn",
+  "instance_name": "Customer Tencent Sheet Intake",
+  "secret_ref": "vault://automation/intake/customer-cn",
+  "gitlab": {
+    "base_url": "https://gitlab.example.com",
+    "project": "group/ouroboros",
+    "issue_template": "bug-report",
+    "default_labels": [
+      "type::bug",
+      "state::incoming",
+      "review::required",
+      "source::tencent-sheet",
+      "source::customer"
+    ]
+  },
+  "source": {
+    "kind": "tencent_sheet",
+    "locator": {
+      "document_id": "doc-001",
+      "sheet_id": "sheet-a",
+      "header_row": 1,
+      "range": "A:Z"
+    },
+    "identity": "customer_report_cn",
+    "parse_profile": {
+      "title_columns": [
+        "A"
+      ],
+      "description_columns": [
+        "B",
+        "C",
+        "D"
+      ],
+      "module_columns": [
+        "E"
+      ],
+      "version_columns": [
+        "F"
+      ],
+      "reporter_columns": [
+        "G"
+      ],
+      "allow_cross_row_cluster": true
+    },
+    "change_cursor": "incremental"
+  },
+  "dedupe": {
+    "policy": "conservative",
+    "thresholds": {
+      "strong_match": 0.88,
+      "medium_match": 0.65,
+      "weak_match": 0.45
+    }
+  },
+  "writeback": {
+    "enabled": true,
+    "columns": {
+      "gitlab_issue_iid": "H",
+      "gitlab_issue_url": "I",
+      "sync_status": "J",
+      "primary_issue_iid": "K",
+      "relation_type": "L",
+      "intake_confidence": "M",
+      "last_synced_at": "N",
+      "last_sync_note": "O"
+    }
+  },
+  "human_review": {
+    "rule": {
+      "require_review_for_new_issue": true,
+      "require_review_for_medium_match": true
+    }
+  }
+}

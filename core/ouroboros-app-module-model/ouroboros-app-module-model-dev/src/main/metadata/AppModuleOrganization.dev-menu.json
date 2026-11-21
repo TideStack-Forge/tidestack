@@ -1,0 +1,10 @@
+{
+  "fullName": "ApplicationManagement.ModuleTree",
+  "url": "/dev/{appName}/app-module",
+  "title": "模块树编排",
+  "showMode": "tab",
+  "icon": "icon-app-module",
+  "placement": "main",
+  "stage": "dev",
+  "order": 30
+}

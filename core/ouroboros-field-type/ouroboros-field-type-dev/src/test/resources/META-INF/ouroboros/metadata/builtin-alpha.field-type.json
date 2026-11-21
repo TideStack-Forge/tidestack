@@ -1,0 +1,5 @@
+{
+  "name": "builtinAlpha",
+  "label": "Shared Alpha",
+  "paramsUiSchema": [{"name": "size", "value": 24}]
+}

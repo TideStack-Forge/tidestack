@@ -1,0 +1,37 @@
+{
+  "id": "lowcode/logicflow-runtime-manage",
+  "title": "LogicFlow 运行时覆盖与独立刷新",
+  "domain": "lowcode",
+  "testType": "integration",
+  "suite": "feature",
+  "risk": "p1",
+  "modes": [
+    "harness"
+  ],
+  "fixtures": {
+    "services": [],
+    "runtimes": [],
+    "frontends": [],
+    "data": [],
+    "identities": []
+  },
+  "entrypoints": {
+    "localRunner": "acceptance.py",
+    "frontendBaseUrlEnv": "LF_RUNTIME_MANAGE_URL"
+  },
+  "caseTable": "cases.md",
+  "artifacts": {
+    "contract": "contract.md",
+    "harness": "harness.playbook.md"
+  },
+  "reporting": {
+    "summaryFormat": "markdown",
+    "evidenceRoot": "tmp/testing-evidence/logicflow-runtime-manage"
+  },
+  "exclusions": [
+    "不连接生产环境；AMIS 外壳和可信身份由隔离夹具提供，业务控制器、数据操作、模型构建、执行和编辑器资产均为正式实现。"
+  ],
+  "notes": [
+    "本场景的本地 runner 自行管理 H2 TCP、两个 JVM 与静态宿主；不登记为跨场景共享 fixture。"
+  ]
+}

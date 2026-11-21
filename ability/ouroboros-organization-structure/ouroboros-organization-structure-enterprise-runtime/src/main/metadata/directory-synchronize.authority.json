@@ -1,0 +1,16 @@
+{
+  "fullName": "systemSetting.integrationManagement.connections.directory.synchronize",
+  "title": "管理和执行企业目录同步",
+  "delegable": false,
+  "apis": [
+    "PUT /api/sys/enterprise-directory/scopes",
+    "POST /api/sys/enterprise-directory/scopes/{id}/preview",
+    "POST /api/sys/enterprise-directory/runs/{id}/apply"
+  ],
+  "uiViews": [
+    "/system-setting/integration-management"
+  ],
+  "menuItems": [
+    "systemSetting.integrationManagement"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "jar.flow",
+  "description": "typed flow",
+  "entryNode": "start",
+  "exitNode": "end",
+  "nodes": [],
+  "connections": []
+}

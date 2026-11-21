@@ -1,0 +1,12 @@
+{
+  "fullName": "systemSetting.userManagement.profile",
+  "title": "管理用户资料",
+  "delegable": false,
+  "apis": [
+    "GET /api/sys/user/{id}/profile",
+    "PATCH /api/sys/user/{id}/profile",
+    "PATCH /api/sys/user/{id}/contacts/{kind}"
+  ],
+  "uiViews": [],
+  "menuItems": []
+}

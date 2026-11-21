@@ -1,0 +1,17 @@
+{
+  "fullName": "AppTemplates",
+  "title": "模版管理",
+  "apis": [
+    "GET /api/app-template/**",
+    "POST /api/app-template/**",
+    "PUT /api/app-template/**",
+    "PATCH /api/app-template/**",
+    "DELETE /api/app-template/**"
+  ],
+  "uiViews": [
+    "/dev/templates"
+  ],
+  "menuItems": [
+    "AppTemplates"
+  ]
+}

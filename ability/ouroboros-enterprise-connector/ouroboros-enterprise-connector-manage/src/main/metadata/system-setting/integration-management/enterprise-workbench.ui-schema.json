@@ -1,0 +1,22 @@
+{
+  "name": "/system-setting/integration-management/enterprise-workbench",
+  "schema": {
+    "type": "page",
+    "title": "工作台入口",
+    "body": {
+      "type": "service",
+      "api": "/api/sys/enterprise-workbench",
+      "body": [
+        {"type": "alert", "level": "info", "body": "此处生成连接级登录入口 URL，供管理员复制到企业平台工作台。平台不会自动发布供应商工作台配置；用户进入后仍执行现有登录、第三方账号绑定和业务权限检查。"},
+        {"type": "each", "name": "items", "items": {"type": "panel", "title": "${connectionId}", "body": [
+          {"type": "tpl", "tpl": "渠道：${provider}；企业登录：${authAvailable ? '可用' : '不可用'}"},
+          {"type": "input-text", "name": "returnUrl", "value": "/", "label": "业务页面路径", "description": "只允许站内路径，例如 /app/orders；不要填外部 URL。"},
+          {"type": "button", "label": "生成入口 URL", "visibleOn": "${canConfigure && authAvailable}", "actionType": "ajax",
+            "api": {"method": "get", "url": "/api/sys/enterprise-workbench/${connectionId}/entry-url?returnUrl=${returnUrl}"},
+            "feedback": {"type": "alert", "level": "success", "body": "${entryUrl}"}},
+          {"type": "tpl", "visibleOn": "${!authAvailable}", "tpl": "请先在企业连接中配置并启用企业登录。"}
+        ]}}
+      ]
+    }
+  }
+}

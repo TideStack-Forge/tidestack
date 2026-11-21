@@ -1,0 +1,17 @@
+{
+  "id": "test-status",
+  "version": "v1",
+  "blocks": [
+    {
+      "id": "statuses",
+      "targetModel": "Status",
+      "matchFields": ["code"],
+      "records": [
+        {
+          "code": "enabled",
+          "label": "Enabled"
+        }
+      ]
+    }
+  ]
+}

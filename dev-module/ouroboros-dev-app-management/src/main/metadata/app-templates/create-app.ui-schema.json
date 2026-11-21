@@ -1,0 +1,63 @@
+{
+  "name": "/app-templates/create-app",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "api": {
+      "method": "post",
+      "url": "/api/app-template/${templateName}/create-app"
+    },
+    "body": [
+      {
+        "type": "static",
+        "name": "templateName",
+        "label": "模板名称",
+        "value": "${templateName}"
+      },
+      {
+        "type": "input-text",
+        "name": "appName",
+        "label": "应用名称",
+        "placeholder": "请输入新应用的名称",
+        "required": true,
+        "validations": {
+          "matchRegexp": "^[a-zA-Z][a-zA-Z0-9_-]*$"
+        },
+        "validationErrors": {
+          "matchRegexp": "应用名称必须以字母开头，只能包含字母、数字、下划线和短横线"
+        },
+        "description": "应用名称将作为目录名和唯一标识符"
+      },
+      {
+        "type": "input-text",
+        "name": "appTitle",
+        "label": "应用标题",
+        "placeholder": "请输入新应用的标题",
+        "required": true
+      },
+      {
+        "type": "ouroboros-icon-picker",
+        "name": "appIcon",
+        "label": "应用图标"
+      },
+      {
+        "type": "textarea",
+        "name": "appDescription",
+        "label": "应用描述",
+        "placeholder": "请输入新应用的描述"
+      }
+    ],
+    "actions": [
+      {
+        "type": "button",
+        "label": "取消",
+        "actionType": "cancel"
+      },
+      {
+        "type": "submit",
+        "label": "创建应用",
+        "level": "primary"
+      }
+    ]
+  }
+}

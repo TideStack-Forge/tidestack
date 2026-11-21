@@ -1,0 +1,12 @@
+{
+  "locale": "jar-ZH",
+  "name": "Jar Chinese",
+  "version": "1.0.0",
+  "enabled": true,
+  "isDefault": false,
+  "messages": {
+    "common": {
+      "hello": "hello-from-jar"
+    }
+  }
+}

@@ -1,0 +1,177 @@
+{
+  "name": "/system-setting/rpc-runtime-management",
+  "schema": {
+    "type": "page",
+    "pullRefresh": {
+      "disabled": true
+    },
+    "body": [
+      {
+        "type": "crud",
+        "syncLocation": false,
+        "autoFillHeight": true,
+        "api": {
+          "method": "get",
+          "url": "/api/sys/rpc-runtime"
+        },
+        "headerToolbar": [
+          "bulkActions",
+          {
+            "type": "button",
+            "icon": "fa fa-refresh",
+            "actionType": "reload"
+          }
+        ],
+        "columns": [
+          {
+            "name": "group",
+            "label": "分组",
+            "type": "text",
+            "sortable": true,
+            "placeholder": "未分组"
+          },
+          {
+            "name": "modelName",
+            "label": "模型名称"
+          },
+          {
+            "name": "title",
+            "label": "显示名"
+          },
+          {
+            "name": "type",
+            "label": "协议类型"
+          },
+          {
+            "type": "mapping",
+            "name": "policy.enabled",
+            "label": "启用状态",
+            "map": {
+              "true": "<span class='label label-success'>启用</span>",
+              "false": "<span class='label label-danger'>禁用</span>"
+            }
+          },
+          {
+            "type": "mapping",
+            "name": "policy.loggingEnabled",
+            "label": "调用日志",
+            "map": {
+              "true": "<span class='label label-info'>已开启</span>",
+              "false": "<span class='label label-default'>已关闭</span>"
+            }
+          },
+          {
+            "type": "mapping",
+            "name": "policy.metricsEnabled",
+            "label": "指标统计",
+            "map": {
+              "true": "<span class='label label-info'>已开启</span>",
+              "false": "<span class='label label-default'>已关闭</span>"
+            }
+          },
+          {
+            "type": "mapping",
+            "name": "policy.hasNormalizationWarnings",
+            "label": "策略告警",
+            "map": {
+              "true": "<span class='label label-warning'>已降级</span>",
+              "false": "<span class='label label-success'>正常</span>"
+            }
+          },
+          {
+            "name": "status.availability",
+            "label": "可用性"
+          },
+          {
+            "name": "status.failureCount",
+            "label": "失败次数"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "buttons": [
+              {
+                "type": "action",
+                "actionType": "drawer",
+                "label": "详情",
+                "level": "link",
+                "drawer": {
+                  "title": "RPC 运行时详情",
+                  "size": "lg",
+                  "actions": [],
+                  "url": "/system-setting/rpc-runtime-detail?modelName=${modelName}"
+                }
+              },
+              {
+                "type": "action",
+                "actionType": "ajax",
+                "label": "立即探活",
+                "level": "link",
+                "api": {
+                  "method": "post",
+                  "url": "/api/sys/rpc-runtime/${modelName}/actions/health-check"
+                }
+              },
+              {
+                "type": "action",
+                "actionType": "ajax",
+                "label": "重置状态",
+                "level": "link",
+                "api": {
+                  "method": "post",
+                  "url": "/api/sys/rpc-runtime/${modelName}/actions/reset-status"
+                }
+              }
+            ]
+          }
+        ],
+        "perPageAvailable": [
+          10,
+          20,
+          50
+        ],
+        "loadDataOnce": true,
+        "loadDataOnceFetchOnFilter": false,
+        "orderBy": "group",
+        "orderDir": "asc",
+        "className": "rpc-model-browser",
+        "bodyClassName": "rpc-model-browser__list",
+        "placeholder": "暂无匹配的 RPC 模型",
+        "filter": {
+          "title": "",
+          "mode": "normal",
+          "className": "rpc-model-browser__aside",
+          "wrapWithPanel": false,
+          "canAccessSuperData": true,
+          "submitOnChange": true,
+          "actions": [],
+          "body": [
+            {
+              "type": "input-text",
+              "name": "__rpcKeyword",
+              "label": "搜索模型",
+              "placeholder": "名称或标题",
+              "clearable": true,
+              "size": "full"
+            },
+            {
+              "type": "input-tree",
+              "name": "__rpcGroup",
+              "label": "分组",
+              "value": "all",
+              "source": "${itemsRaw | rpcModelGroups}",
+              "multiple": false,
+              "onlyLeaf": false,
+              "showRadio": false,
+              "showIcon": false,
+              "showOutline": true,
+              "initiallyOpen": true,
+              "size": "full"
+            }
+          ]
+        },
+        "matchFunc": "const selected = options.query.__rpcGroup || 'all';\nconst keyword = String(options.query.__rpcKeyword || '').trim().toLocaleLowerCase();\nreturn items.filter(item => {\n  const group = item.group || '';\n  const path = selected.slice(6);\n  const inGroup = selected === 'all' || (path === '' ? !group : group === path || group.startsWith(path + '/'));\n  const matches = ['name', 'modelName', 'title', 'label', 'value']\n    .some(field => item[field] != null && String(item[field]).toLocaleLowerCase().includes(keyword));\n  return inGroup && matches;\n});"
+      }
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "wecom.contact.user.list",
+  "title": "企业微信读取部门成员详情",
+  "type": "OpenAPI",
+  "isEnabled": true,
+  "authCredential": "wecom.application-token",
+  "description": "只读取指定部门；必须逐层读取子部门，当前合同不使用 fetch_child 参数；应用须拥有指定部门查看权限",
+  "timeout": 10000,
+  "retry": 0,
+  "retrySafe": true,
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "department_id": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "required": [
+      "department_id"
+    ]
+  },
+  "request": {
+    "method": "GET",
+    "url": "https://qyapi.weixin.qq.com/cgi-bin/user/list",
+    "parameters": [
+      {
+        "in": "QUERY",
+        "name": "department_id",
+        "value": "${department_id}",
+        "required": true
+      }
+    ]
+  },
+  "group": "企业微信/通讯录"
+}

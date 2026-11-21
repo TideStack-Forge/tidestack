@@ -1,0 +1,3 @@
+com.ouroboros.dev.app.inspector.AppMetadataInspector
+com.ouroboros.dev.app.inspector.CustomStyleInspector
+com.ouroboros.dev.app.inspector.ExtendJarInspector

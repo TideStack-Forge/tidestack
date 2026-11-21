@@ -1,0 +1,89 @@
+[
+  {
+    "key": "notification.aliyun.call.accessKeyId",
+    "label": "阿里云电话通知访问KEY-ID",
+    "groupPath": "notification.call.aliyun",
+    "order": 10,
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string",
+    "restoreDefaultRemovesOverride": true
+  },
+  {
+    "key": "notification.aliyun.call.accessKeySecret",
+    "label": "阿里云电话通知访问KEY-SECRET",
+    "groupPath": "notification.call.aliyun",
+    "order": 20,
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string",
+    "managementAccessPolicyRequired": true,
+    "editorSchema": {
+      "type": "input-password",
+      "placeholder": "留空保留已配置凭据；填写表示替换",
+      "autoComplete": "new-password"
+    },
+    "restoreDefaultRemovesOverride": true
+  },
+  {
+    "key": "notification.aliyun.call.endpoint",
+    "label": "阿里云电话通知访问域名",
+    "groupPath": "notification.call.aliyun",
+    "order": 30,
+    "description": "默认为：dyvmsapi.aliyuncs.com（如非必要请勿修改）",
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string",
+    "defaultValue": "dyvmsapi.aliyuncs.com",
+    "restoreDefaultRemovesOverride": true
+  },
+  {
+    "key": "notification.aliyun.call.calledShowNumber",
+    "label": "阿里云电话通知被叫号码",
+    "groupPath": "notification.call.aliyun",
+    "order": 40,
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string",
+    "restoreDefaultRemovesOverride": true
+  },
+  {
+    "key": "notification.aliyun.call.playTimes",
+    "label": "阿里云电话通知内容播放次数",
+    "groupPath": "notification.call.aliyun",
+    "order": 50,
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "int",
+    "defaultValue": "3",
+    "restoreDefaultRemovesOverride": true
+  },
+  {
+    "key": "notification.aliyun.call.volume",
+    "label": "阿里云电话通知播放音量",
+    "groupPath": "notification.call.aliyun",
+    "order": 60,
+    "description": "音量范围（0-100）",
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "int",
+    "defaultValue": "100",
+    "min": 0,
+    "max": 100,
+    "restoreDefaultRemovesOverride": true
+  },
+  {
+    "key": "notification.aliyun.call.speed",
+    "label": "阿里云电话通知播放语速",
+    "groupPath": "notification.call.aliyun",
+    "order": 70,
+    "description": "语速范围（-500~500）",
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "int",
+    "defaultValue": "0",
+    "min": -500,
+    "max": 500,
+    "restoreDefaultRemovesOverride": true
+  }
+]

@@ -1,0 +1,253 @@
+{
+  "name": "/system-setting/approval-workflow-definition/statistics",
+  "schema": {
+    "type": "page",
+    "body": {
+      "type": "crud",
+      "syncLocation": false,
+      "api": {
+        "url": "/api/approval-workflow/instance/statistic",
+        "method": "get"
+      },
+      "perPageAvailable": [
+        10
+      ],
+      "filterTogglable": true,
+      "headerToolbar": [
+        "load-more",
+        "filter-toggler",
+        "reload",
+        {
+          "type": "export-excel",
+          "label": "导出当前页",
+          "filename": "审批流统计-P${page}"
+        },
+        {
+          "type": "export-excel",
+          "label": "导出全部",
+          "filename": "审批流统计-全部",
+          "api": {
+            "url": "/api/approval-workflow/instance/statistic",
+            "data": {
+              "&": "$$",
+              "perPage": "${total}",
+              "page": 1
+            }
+          }
+        }
+      ],
+      "alwaysShowPagination": true,
+      "hideQuickSaveBtn": true,
+      "filter": {
+        "title": "流程筛选",
+        "body": [
+          {
+            "type": "group",
+            "body": [
+              {
+                "type": "input-text",
+                "name": "keyword",
+                "label": "名称",
+                "clearable": true,
+                "placeholder": "请输入流程名称搜索",
+                "size": "sm"
+              },
+              {
+                "type": "list-select",
+                "name": "status",
+                "label": "状态",
+                "clearable": true,
+                "options": [
+                  {
+                    "label": "全部",
+                    "value": "all"
+                  },
+                  {
+                    "label": "已部署",
+                    "value": "deployed"
+                  },
+                  {
+                    "label": "已下线",
+                    "value": "offline"
+                  }
+                ]
+              },
+              {
+                "type": "input-datetime",
+                "name": "from",
+                "label": "开始时间",
+                "clearable": true,
+                "inputFormat": "YYYY-MM-DDTHH:mm:ssZ",
+                "displayFormat": "YYYY-MM-DD HH:mm:ss"
+              },
+              {
+                "type": "input-datetime",
+                "name": "to",
+                "label": "结束时间",
+                "clearable": true,
+                "inputFormat": "YYYY-MM-DDTHH:mm:ssZ",
+                "displayFormat": "YYYY-MM-DD HH:mm:ss"
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "type": "reset",
+            "label": "重置"
+          },
+          {
+            "type": "submit",
+            "level": "primary",
+            "label": "查询"
+          }
+        ]
+      },
+      "columns": [
+        {
+          "name": "displayName",
+          "label": "流程名"
+        },
+        {
+          "name": "category",
+          "label": "流程分类"
+        },
+        {
+          "name": "description",
+          "label": "流程描述"
+        },
+        {
+          "type": "mapping",
+          "name": "status",
+          "label": "流程状态",
+          "map": {
+            "deployed": {
+              "type": "tag",
+              "displayMode": "status",
+              "label": "已部署",
+              "color": "success",
+              "name": ""
+            },
+            "offline": {
+              "type": "tag",
+              "displayMode": "status",
+              "label": "已下线",
+              "color": "warning",
+              "name": ""
+            }
+          }
+        },
+        {
+          "name": "total",
+          "label": "总申请数"
+        },
+        {
+          "name": "running",
+          "label": "正在处理"
+        },
+        {
+          "name": "finished",
+          "label": "已结束"
+        },
+        {
+          "name": "avgDurationMillis",
+          "label": "平均流程时长(ms)"
+        },
+        {
+          "name": "nodeCount",
+          "label": "已完成节点数"
+        },
+        {
+          "name": "avgNodeDurationMillis",
+          "label": "平均节点时长(ms)"
+        },
+        {
+          "name": "handledCount",
+          "label": "已处理审批数"
+        },
+        {
+          "name": "avgHandleMillis",
+          "label": "平均审批时长(ms)"
+        },
+        {
+          "type": "operation",
+          "label": "操作",
+          "buttons": [
+            {
+              "type": "button",
+              "label": "时长明细",
+              "level": "link",
+              "actionType": "dialog",
+              "dialog": {
+                "type": "dialog",
+                "title": "时长明细",
+                "size": "lg",
+                "body": {
+                  "type": "service",
+                  "api": {
+                    "url": "/api/approval-workflow/statistics/duration",
+                    "method": "get",
+                    "data": {
+                      "flowKey": "${flowKey}",
+                      "from": "${from}",
+                      "to": "${to}"
+                    }
+                  },
+                  "body": [
+                    {
+                      "type": "tpl",
+                      "tpl": "完成实例数：${instanceCount}，平均流程时长(ms)：${avgDurationMillis}"
+                    },
+                    {
+                      "type": "table",
+                      "source": "${nodes}",
+                      "columns": [
+                        {
+                          "name": "nodeName",
+                          "label": "节点"
+                        },
+                        {
+                          "name": "taskCount",
+                          "label": "任务数"
+                        },
+                        {
+                          "name": "avgDurationMillis",
+                          "label": "平均节点时长(ms)"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "table",
+                      "source": "${approvers}",
+                      "columns": [
+                        {
+                          "name": "userName",
+                          "label": "审批人"
+                        },
+                        {
+                          "name": "handledCount",
+                          "label": "处理数"
+                        },
+                        {
+                          "name": "avgHandleMillis",
+                          "label": "平均审批时长(ms)"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "type": "button",
+              "label": "查看",
+              "level": "link",
+              "actionType": "link",
+              "link": "/system-setting/approval-workflow-definition/instance-details?flowKey=${flowKey}"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

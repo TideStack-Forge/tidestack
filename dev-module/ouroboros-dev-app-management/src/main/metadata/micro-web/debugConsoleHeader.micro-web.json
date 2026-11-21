@@ -1,0 +1,6 @@
+{
+  "name": "microDebugConsoleHeader",
+  "type": "micro",
+  "publicPath": "/debug-console-header/",
+  "packageName": "debugConsoleHeader.zip"
+}

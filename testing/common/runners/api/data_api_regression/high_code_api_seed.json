@@ -1,0 +1,293 @@
+[
+  {
+    "family": "sys.user",
+    "module": "RBAC",
+    "cases": [
+      {
+        "case_id": "sys.user.list.search",
+        "endpoint": "/api/sys/user",
+        "method": "GET",
+        "risk": "P1",
+        "scenario": "search"
+      },
+      {
+        "case_id": "sys.user.write.create",
+        "endpoint": "/api/sys/user",
+        "method": "POST",
+        "risk": "P1",
+        "scenario": "create",
+        "stage_one_write_executable": true,
+        "sample_payload": {
+          "userIdentity": "sample-id",
+          "password": "sample-text"
+        },
+        "cleanup_method": "DELETE",
+        "cleanup_endpoint": "/api/sys/user/${userIdentity}"
+      }
+    ]
+  },
+  {
+    "family": "sys.role",
+    "module": "RBAC",
+    "cases": [
+      {
+        "case_id": "sys.role.list.search",
+        "endpoint": "/api/sys/role",
+        "method": "GET",
+        "risk": "P1",
+        "scenario": "search"
+      }
+    ]
+  },
+  {
+    "family": "organization.company",
+    "module": "Organization",
+    "cases": [
+      {
+        "case_id": "organization.company.list.search",
+        "endpoint": "/api/organization/companies",
+        "method": "GET",
+        "risk": "P1",
+        "scenario": "search"
+      },
+      {
+        "case_id": "organization.company.write.create",
+        "endpoint": "/api/organization/companies",
+        "method": "POST",
+        "risk": "P1",
+        "scenario": "create",
+        "stage_one_write_executable": true,
+        "sample_payload": {
+          "name": "sample-text",
+          "description": "sample-text",
+          "parentId": ""
+        },
+        "cleanup_method": "DELETE",
+        "cleanup_endpoint": "/api/organization/companies/${id}"
+      }
+    ]
+  },
+  {
+    "family": "organization.nodes",
+    "module": "Organization",
+    "cases": [
+      {
+        "case_id": "organization.nodes.tree.children",
+        "endpoint": "/api/organization/nodes/{id}/children",
+        "method": "GET",
+        "risk": "P0",
+        "scenario": "tree-children"
+      }
+    ]
+  },
+  {
+    "family": "organization.tree",
+    "module": "Organization",
+    "cases": [
+      {
+        "case_id": "organization.tree.read.list",
+        "endpoint": "/api/organization/tree",
+        "method": "GET",
+        "risk": "P0",
+        "scenario": "tree-root"
+      }
+    ]
+  },
+  {
+    "family": "document.library",
+    "module": "Document Management",
+    "cases": [
+      {
+        "case_id": "document.library.read.accessible",
+        "endpoint": "/api/document-libraries/accessible",
+        "method": "GET",
+        "risk": "P1",
+        "scenario": "accessible"
+      },
+      {
+        "case_id": "document.library.write.create",
+        "endpoint": "/api/document-libraries",
+        "method": "POST",
+        "risk": "P1",
+        "scenario": "create",
+        "stage_one_write_executable": true,
+        "sample_payload": {
+          "name": "sample-text",
+          "displayName": "sample-text",
+          "description": "sample-text"
+        },
+        "cleanup_method": "POST",
+        "cleanup_endpoint": "/api/document-libraries/admin/${id}/soft-delete",
+        "cleanup_followups": [
+          {
+            "method": "DELETE",
+            "endpoint": "/api/document-libraries/admin/${id}"
+          }
+        ]
+      },
+      {
+        "case_id": "document.library.write.soft-delete-before-hard-delete",
+        "endpoint": "/api/document-libraries/admin/{id}/soft-delete",
+        "method": "POST",
+        "risk": "P0",
+        "scenario": "soft-delete-before-hard-delete"
+      }
+    ]
+  },
+  {
+    "family": "data.dict",
+    "module": "Data Dictionary",
+    "cases": [
+      {
+        "case_id": "data.dict.read.manage",
+        "endpoint": "/api/sys/data-dict-manage",
+        "method": "GET",
+        "risk": "P1",
+        "scenario": "manage-search"
+      },
+      {
+        "case_id": "data.dict.write.items-create",
+        "endpoint": "/api/sys/data-dict-manage/{name}/items",
+        "method": "POST",
+        "risk": "P1",
+        "scenario": "items-create",
+        "regression_bucket": "primary",
+        "case_note": "Use the authority-backed batch items endpoint; single-item POST /item is not the primary managed path."
+      }
+    ]
+  },
+  {
+    "family": "configuration",
+    "module": "Configuration",
+    "cases": [
+      {
+        "case_id": "configuration.read.list",
+        "endpoint": "/api/sys/configuration",
+        "method": "GET",
+        "risk": "P1",
+        "scenario": "search"
+      },
+      {
+        "case_id": "configuration.write.roundtrip",
+        "endpoint": "/api/sys/configuration",
+        "method": "PUT",
+        "risk": "P1",
+        "scenario": "roundtrip",
+        "stage_one_write_executable": true,
+        "sample_payload": [],
+        "case_note": "Use an empty same-value roundtrip payload to verify the configuration write chain without introducing net config drift."
+      }
+    ]
+  },
+  {
+    "family": "user.setting",
+    "module": "User Setting",
+    "cases": [
+      {
+        "case_id": "user.setting.read.list",
+        "endpoint": "/api/user-setting",
+        "method": "GET",
+        "risk": "P1",
+        "scenario": "search"
+      },
+      {
+        "case_id": "user.setting.write.patch",
+        "endpoint": "/api/user-setting",
+        "method": "PATCH",
+        "risk": "P1",
+        "scenario": "patch",
+        "stage_one_write_executable": true,
+        "sample_payload": {
+          "settingName": "sample-id",
+          "settingValue": {
+            "theme": "sample-text"
+          },
+          "isAutoLoad": true
+        },
+        "cleanup_method": "DELETE",
+        "cleanup_endpoint": "/api/user-setting?settingName=${settingName}"
+      }
+    ]
+  },
+  {
+    "family": "notification.template",
+    "module": "Notification",
+    "cases": [
+      {
+        "case_id": "notification.template.read",
+        "endpoint": "/api/sys/notification-template",
+        "method": "GET",
+        "risk": "P1",
+        "scenario": "search"
+      },
+      {
+        "case_id": "notification.template.write.create",
+        "endpoint": "/api/sys/notification-template",
+        "method": "POST",
+        "risk": "P1",
+        "scenario": "create",
+        "regression_bucket": "develop-scope",
+        "case_note": "Notification template management belongs to the develop metadata surface, not the generic mothership runtime gate."
+      }
+    ]
+  },
+  {
+    "family": "notification.channel",
+    "module": "Notification",
+    "cases": [
+      {
+        "case_id": "notification.channel.employee.bind.info",
+        "endpoint": "/api/notification/internal-message/employee/bind/info",
+        "method": "GET",
+        "risk": "P1",
+        "scenario": "employee-bind-info",
+        "regression_bucket": "contextual-user",
+        "case_note": "Requires the current authenticated user to resolve an employee from OrganizationContext."
+      }
+    ]
+  },
+  {
+    "family": "business.log.template",
+    "module": "Business Log",
+    "cases": [
+      {
+        "case_id": "business.log.template.read.list",
+        "endpoint": "/api/sys/business-log-template",
+        "method": "GET",
+        "risk": "P1",
+        "scenario": "search"
+      },
+      {
+        "case_id": "business.log.template.write.create",
+        "endpoint": "/api/sys/business-log-template",
+        "method": "POST",
+        "risk": "P1",
+        "scenario": "create",
+        "stage_one_write_executable": true,
+        "sample_payload": {
+          "httpMethod": "GET",
+          "url": "sample-text",
+          "moduleName": "sample-text",
+          "operation": "sample-text",
+          "level": "INFO",
+          "summaryTemplate": "sample-text"
+        },
+        "cleanup_method": "DELETE",
+        "cleanup_endpoint": "/api/sys/business-log-template/${id}"
+      }
+    ]
+  },
+  {
+    "family": "business.log",
+    "module": "Business Log",
+    "cases": [
+      {
+        "case_id": "business.log.read.list",
+        "endpoint": "/api/sys/business-log",
+        "method": "GET",
+        "risk": "P1",
+        "scenario": "search"
+      }
+    ]
+  }
+]

@@ -1,0 +1,40 @@
+{
+  "type": "return",
+  "label": "成功返回",
+  "description": "结束流程并返回首个输入值",
+  "group": "其他",
+  "order": 10002,
+  "isTerminal": true,
+  "terminalKind": "successful",
+  "editorCapabilities": {
+    "canBeEntry": false,
+    "canBeExit": false,
+    "canBeErrorEntry": false,
+    "isSuccessfulTerminal": true
+  },
+  "scaffold": {
+    "type": "return",
+    "name": "成功返回",
+    "inputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "any"
+      }
+    ],
+    "outputPorts": []
+  },
+  "portRules": {
+    "input": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    },
+    "output": {
+      "ruleType": "limit",
+      "min": 0,
+      "max": 0
+    }
+  },
+  "properties": []
+}

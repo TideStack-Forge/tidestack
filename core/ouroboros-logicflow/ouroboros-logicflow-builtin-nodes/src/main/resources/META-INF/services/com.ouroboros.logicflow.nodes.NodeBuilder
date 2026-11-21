@@ -1,0 +1,17 @@
+com.ouroboros.logicflow.nodes.CallFlowNode$Builder
+com.ouroboros.logicflow.nodes.ConcatNode$Builder
+com.ouroboros.logicflow.nodes.ConstNode$Builder
+com.ouroboros.logicflow.nodes.DistinctNode$Builder
+com.ouroboros.logicflow.nodes.FilterNode$Builder
+com.ouroboros.logicflow.nodes.IntersectNode$Builder
+com.ouroboros.logicflow.nodes.MappingNode$Builder
+com.ouroboros.logicflow.nodes.MergeNode$Builder
+com.ouroboros.logicflow.nodes.MutexNode$Builder
+com.ouroboros.logicflow.nodes.OmitNode$Builder
+com.ouroboros.logicflow.nodes.PickNode$Builder
+com.ouroboros.logicflow.nodes.ReturnNode$Builder
+com.ouroboros.logicflow.nodes.ScriptNode$Builder
+com.ouroboros.logicflow.nodes.SubtractNode$Builder
+com.ouroboros.logicflow.nodes.SwitchNode$Builder
+com.ouroboros.logicflow.nodes.TakeNode$Builder
+com.ouroboros.logicflow.nodes.ValidateNode$Builder

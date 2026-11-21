@@ -1,0 +1,5 @@
+{
+  "bindingType": "producer",
+  "bindingName": "jar-producer",
+  "destination": "orders.created"
+}

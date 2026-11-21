@@ -1,0 +1,24 @@
+{
+  "name": "/dev/apps/rename",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "mode": "horizontal",
+    "api": "post:/api/app/${name}/rename",
+    "body": [
+      {
+        "type": "input-text",
+        "label": "新名称",
+        "name": "newName",
+        "validations": {
+          "matchRegexp": "^[A-Za-z]+[\\w\\d\\-]*$"
+        },
+        "validationErrors": {
+          "matchRegexp": "应用名只能包含字母、数字、下划线、中划线，且不能以数字开头"
+        },
+        "required": true
+      }
+    ],
+    "wrapWithPanel": false
+  }
+}

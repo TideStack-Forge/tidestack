@@ -1,0 +1,49 @@
+{
+  "name": "/dev/{appName}/business-model/commit",
+  "schema": {
+    "type": "form",
+    "title": "",
+    "api": {
+      "method": "POST",
+      "url": "/api/dev/${appName}/business-model/${fullName}/commit"
+    },
+    "body": {
+      "label": false,
+      "type": "textarea",
+      "name": "commitMsg",
+      "required": true
+    },
+    "submitText": "提交",
+    "onEvent": {
+      "submitSucc": {
+        "actions": [
+          {
+            "actionType": "toast",
+            "args": {
+              "msgType": "success",
+              "msg": "提交成功"
+            },
+            "expression": "result.data"
+          },
+          {
+            "actionType": "toast",
+            "args": {
+              "msgType": "success",
+              "msg": "文件没有改变"
+            },
+            "expression": "!result.data"
+          },
+          {
+            "actionType": "sendToOpenerTab",
+            "args": {
+              "msg": true
+            }
+          },
+          {
+            "actionType": "closeTab"
+          }
+        ]
+      }
+    }
+  }
+}

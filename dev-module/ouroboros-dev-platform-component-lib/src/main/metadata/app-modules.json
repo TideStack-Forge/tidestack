@@ -1,0 +1,12 @@
+[
+  {
+    "fullName": "platformComponentLib",
+    "icon": "fa fa-puzzle-piece",
+    "title": "平台组件库",
+    "menu": "platformComponentLib",
+    "authorities": [
+      "platformComponentLib"
+    ],
+    "order": 4
+  }
+]

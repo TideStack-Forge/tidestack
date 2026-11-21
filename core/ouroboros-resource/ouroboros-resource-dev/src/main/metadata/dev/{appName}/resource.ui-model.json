@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/resource",
+  "type": "amis",
+  "title": "资源管理"
+}

@@ -1,0 +1,29 @@
+# Spring AI default provider line example for local OpenAI-compatible smoke testing.
+# 仅用于本地联调和非生产验证。
+ouroboros:
+  ai:
+    providerConnections:
+      - providerInstanceId: ollama-local
+        providerFamily: OPENAI
+        transportKind: HTTP
+        endpointRef: http://127.0.0.1:11434/v1
+        connectionOptions:
+          # 某些 OpenAI-compatible SDK 仍要求 token 头，这里保留兼容字段示例。
+          apiKey: ollama
+
+    models:
+      - modelId: ollama-chat-local
+        providerInstanceId: ollama-local
+        providerFamily: OPENAI
+        providerKey: ollama
+        modelName: qwen2.5:14b-instruct
+        capabilities:
+          - CHAT
+        defaultOptions:
+          temperature: 0.3
+          maxTokens: 1024
+
+    # 本地样例同样只是 descriptor 配置形状，不表示平台已经提供额外的流式服务合同。
+    # RAG/MCP readiness is explicit-opt-in and not enabled by this local descriptor.
+    knowledgeBases: []
+    mcpEndpoints: []

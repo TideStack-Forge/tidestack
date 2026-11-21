@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+  <extension point="org.eclipse.jdt.groovy.core.typeLookup">
+    <lookup lookup="com.ouroboros.testing.groovy.ContextTypeLookup">
+      <appliesTo projectNature="org.eclipse.jdt.groovy.core.groovyNature"/>
+    </lookup>
+  </extension>
+</plugin>

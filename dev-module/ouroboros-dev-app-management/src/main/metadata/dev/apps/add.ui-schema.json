@@ -1,0 +1,62 @@
+{
+  "name": "/dev/apps/add",
+  "schema": {
+    "type": "form",
+    "mode": "horizontal",
+    "title": false,
+    "body": [
+      {
+        "label": "应用名",
+        "type": "input-text",
+        "name": "name",
+        "required": true,
+        "validations": {
+          "matchRegexp": "^[A-Za-z]+[\\w\\d\\-]*$"
+        },
+        "validationErrors": {
+          "matchRegexp": "应用名只能包含字母、数字、下划线、中划线，且不能以数字开头"
+        }
+      },
+      {
+        "type": "input-text",
+        "label": "应用标题",
+        "name": "title",
+        "required": true,
+        "validations": {
+          "matchRegexp": "^[\\u4e00-\\u9fa5\\w\\-]+[\\u4e00-\\u9fa5\\w\\-\\d]+$"
+        },
+        "validationErrors": {
+          "matchRegexp": "应用标题只能包含中文、字母、数字、下划线、中划线，且不能以数字开头"
+        }
+      },
+      {
+        "type": "ouroboros-icon-picker",
+        "name": "icon",
+        "label": "图标"
+      },
+      {
+        "type": "textarea",
+        "label": "描述",
+        "name": "description"
+      }
+    ],
+    "api": {
+      "url": "/api/app?category=${categoryTree}",
+      "method": "post"
+    },
+    "onEvent": {
+      "submitSucc": {
+        "actions": [
+          {
+            "actionType": "closeDialog"
+          },
+          {
+            "actionType": "reload",
+            "componentName": "appList"
+          }
+        ]
+      }
+    },
+    "wrapWithPanel": false
+  }
+}

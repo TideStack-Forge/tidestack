@@ -1,0 +1,946 @@
+schema_version: 1
+as_of: '2026-11-15'
+scope:
+  excluded_globs:
+  - micro-app/spreadsheet/**
+  - ide-plugins/**
+  - '**/node_modules/**'
+  - '**/target/**'
+  - .worktrees/**
+  - '**/dist/**'
+  - '**/tmp/**'
+  path_semantics:
+    root: repository
+    separator: /
+    case_sensitive: true
+    symlinks: reject
+    glob_grammar: segment-star-double-star
+discovery:
+  maven:
+    parser: xml
+    manifest_glob: '**/pom.xml'
+    direct_selector: /project/dependencies/dependency
+    management_selector: /project/dependencyManagement/dependencies/dependency
+  npm:
+    parser: json
+    manifest_glob: '**/package.json'
+    lockfile_name: package-lock.json
+  junit4_source:
+    source_glob: '**/src/test/**/*.java'
+    import_rule: (?m)^\s*import\s+org\.junit\.(?!jupiter(?:\.|;)|platform(?:\.|;))
+    static_imports: excluded
+    expected_file_count: 135
+evidence:
+# Evidence references point to maintained contracts, source and behavior tests.
+# Enforceable repository state is scanned independently by the rules below.
+- id: E-SCHEMA
+  kind: file
+  artifacts:
+  - path: docs/design/automation-checks.md
+  - path: scripts/ci/tests/test_verify_dependency_policy.py
+  selector:
+    language: exists
+    expression: dependency policy design and verifier behavior tests
+  expected:
+    type: scalar
+    value: true
+- id: E-GROOVY-MANIFESTS
+  kind: xml
+  artifacts:
+  - path: bom/pom.xml
+  - path: libs/common/common-script/pom.xml
+  - path: ability/ouroboros-organization-structure/ouroboros-organization-structure-runtime/pom.xml
+  - path: core/ouroboros-approval-workflow/pom.xml
+  - path: core/ouroboros-data/pom.xml
+  - path: platform/ouroboros-mothership/pom.xml
+  - path: platform/ouroboros-develop/pom.xml
+  - path: security/ouroboros-web-security/ouroboros-web-security-rbac-manage/pom.xml
+  selector:
+    language: xpath
+    expression: groovy direct and managed dependencies
+  expected:
+    type: mapping
+    value:
+      apache_groovy: org.apache.groovy:groovy:4.0.30
+      default_runtime_path: libs/common/common-script
+      legacy_boundary: legacy-compat/quickbuilder
+- id: E-GROOVY-RUNTIME-TREE
+  kind: markdown-section
+  artifacts:
+  - path: docs/design/cross-cutting/template-and-script-runtime.md
+  selector:
+    language: markdown-heading
+    expression: '## Groovy 运行时依赖'
+  expected:
+    type: contains-lines
+    value:
+    - 默认运行时通过 `common-script` 引入 `org.apache.groovy:groovy`，版本由 BOM 统一管理。
+    - 默认运行时排除 `org.codehaus.groovy:*` 与 `groovy-all`。
+- id: E-FE-MANIFEST-MAP
+  kind: json
+  artifacts:
+  - path: package.json
+  - path: docs/handbook/package.json
+  - path: frontends/web/package.json
+  - path: frontends/web/main-app/package.json
+  - path: frontends/web/ouroboros-approval-workflow-designer/package.json
+  - path: frontends/web/ouroboros-debug-console-topbar/package.json
+  - path: frontends/web/ouroboros-debug-console-topbar/package-lock.json
+  - path: frontends/web/ouroboros-logicflow-editor/package.json
+  - path: frontends/web/ouroboros-logicflow-editor/package-lock.json
+  - path: frontends/web/ouroboros-logicflow-editor/src/package.json
+  - path: frontends/web/ouroboros-sdk/package.json
+  - path: frontends/web/script-editor-intelligence-mock-server/package.json
+  selector:
+    language: json-pointer
+    expression: /dependencies,/devDependencies,/scripts
+  expected:
+    type: mapping
+    value:
+      manifests: 10
+      install_roots: 9
+      locks: 9
+      missing_locks: 0
+      non_install_manifests: 1
+- id: E-JUNIT-SOURCE
+  kind: source-scan
+  artifacts:
+  - path: bom/pom.xml
+  selector:
+    language: regex
+    expression: (?m)^\s*import\s+org\.junit\.(?!jupiter(?:\.|;)|platform(?:\.|;))
+  expected:
+    type: count
+    value: 137
+- id: E-JUNIT-DECLARATIONS
+  kind: xml
+  artifacts:
+  - path: bom/pom.xml
+  selector:
+    language: xpath
+    expression: junit vintage and junit direct declarations
+  expected:
+    type: mapping
+    value:
+      direct_vintage: 25
+      management_vintage: 1
+      direct_junit: 0
+- id: E-JUNIT-EFFECTIVE
+  kind: xml
+  artifacts:
+  - path: bom/pom.xml
+  selector:
+    language: xpath
+    expression: local parent chain effective owner mapping
+  expected:
+    type: mapping
+    value:
+      covered: 137
+      uncovered: 0
+- id: E-APPROVAL-POMS
+  kind: xml
+  artifacts:
+  - path: core/ouroboros-approval-workflow/pom.xml
+  - path: core/ouroboros-approval-workflow/ouroboros-approval-workflow-runtime/pom.xml
+  - path: core/ouroboros-approval-workflow/ouroboros-approval-workflow-qb-spring-boot-starter/pom.xml
+  selector:
+    language: xpath
+    expression: approval workflow runtime dependencies and modules
+  expected:
+    type: mapping
+    value:
+      positive: ouroboros-approval-workflow-flowable
+      negative: ouroboros-approval-workflow-activiti6
+- id: E-APPROVAL-ADR
+  kind: markdown-section
+  artifacts:
+  - path: core/ouroboros-approval-workflow/docs/engine-routing-decision.md
+  selector:
+    language: markdown-heading
+    expression: '## Decision'
+  expected:
+    type: contains-lines
+    value:
+    - 'Chosen default production path: `flowable`'
+    - '`activiti6` may not remain bundled into the default `runtime` or default starter artifacts'
+dependency_groups:
+- id: groovy-runtime
+  usage_scopes:
+  - runtime
+  coordinates:
+    canonical:
+    - id: GRV-APACHE-4
+      ecosystem: maven
+      match:
+        group_id: org.apache.groovy
+        artifact_id: groovy
+        type: jar
+        classifier: ''
+      version:
+        kind: exact
+        value: 4.0.30
+      usage_scopes:
+      - runtime
+      evidence_ids:
+      - E-GROOVY-MANIFESTS
+    forbidden:
+    - id: GRV-CODEHAUS-3
+      ecosystem: maven
+      match:
+        group_id: org.codehaus.groovy
+        artifact_id: groovy
+        type: jar
+        classifier: ''
+      version:
+        kind: exact
+        value: 3.0.25
+      usage_scopes:
+      - runtime
+      evidence_ids:
+      - E-GROOVY-MANIFESTS
+    - id: GRV-CODEHAUS-ALL-3
+      ecosystem: maven
+      match:
+        group_id: org.codehaus.groovy
+        artifact_id: groovy-all
+        type: jar
+        classifier: ''
+      version:
+        kind: exact
+        value: 3.0.25
+      usage_scopes:
+      - runtime
+      evidence_ids:
+      - E-GROOVY-MANIFESTS
+  boundaries:
+  - id: GRV-COMMON-SCRIPT
+    path_match:
+      path: libs/common/common-script/pom.xml
+    delivery: repository-module
+    compatibility: default
+    reactor_entry: present
+    allowed_coordinate_ids:
+    - GRV-APACHE-4
+    evidence_ids:
+    - E-GROOVY-MANIFESTS
+  required_states:
+    runtime_canonical_id: GRV-APACHE-4
+    runtime_forbidden_ids:
+    - GRV-CODEHAUS-3
+    - GRV-CODEHAUS-ALL-3
+    runtime_facts:
+    - path: libs/common/common-script/pom.xml
+      coordinate_id: GRV-APACHE-4
+      state: canonical
+      evidence_ids:
+      - E-GROOVY-MANIFESTS
+      exception_id: null
+    runtime_tree_evidence_id: E-GROOVY-RUNTIME-TREE
+  exceptions: []
+- id: frontend-tooling
+  usage_scopes:
+  - build-tooling
+  coordinates:
+    canonical:
+    - id: FE-WEBPACK-5
+      ecosystem: npm
+      match:
+        package_name: webpack
+      version:
+        kind: major
+        value: 5
+      usage_scopes:
+      - build-tooling
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    - id: FE-BABEL-7
+      ecosystem: npm
+      match:
+        package_name: '@babel/core'
+      version:
+        kind: major
+        value: 7
+      usage_scopes:
+      - build-tooling
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    - id: FE-VITEST-4
+      ecosystem: npm
+      match:
+        package_name: vitest
+      version:
+        kind: major
+        value: 4
+      usage_scopes:
+      - build-tooling
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    - id: FE-TYPESCRIPT-5
+      ecosystem: npm
+      match:
+        package_name: typescript
+      version:
+        kind: major
+        value: 5
+      usage_scopes:
+      - build-tooling
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    forbidden: []
+  boundaries:
+  - id: FE-DOCS-HANDBOOK-PACKAGE-JSON
+    path_match:
+      path: docs/handbook/package.json
+    delivery: install-root
+    compatibility: default
+    reactor_entry: not-applicable
+    allowed_coordinate_ids: []
+    evidence_ids:
+    - E-FE-MANIFEST-MAP
+  - id: FE-FRONTENDS-WEB-MAIN-APP-PACKAGE-JSON
+    path_match:
+      path: frontends/web/main-app/package.json
+    delivery: install-root
+    compatibility: default
+    reactor_entry: not-applicable
+    allowed_coordinate_ids: []
+    evidence_ids:
+    - E-FE-MANIFEST-MAP
+  - id: FE-FRONTENDS-WEB-OUROBOROS-APPROVAL-WORKFLOW-DESIGNER-PACKAGE-JSON
+    path_match:
+      path: frontends/web/ouroboros-approval-workflow-designer/package.json
+    delivery: install-root
+    compatibility: default
+    reactor_entry: not-applicable
+    allowed_coordinate_ids: []
+    evidence_ids:
+    - E-FE-MANIFEST-MAP
+  - id: FE-FRONTENDS-WEB-OUROBOROS-DEBUG-CONSOLE-TOPBAR-PACKAGE-JSON
+    path_match:
+      path: frontends/web/ouroboros-debug-console-topbar/package.json
+    delivery: install-root
+    compatibility: default
+    reactor_entry: not-applicable
+    allowed_coordinate_ids: []
+    evidence_ids:
+    - E-FE-MANIFEST-MAP
+  - id: FE-FRONTENDS-WEB-OUROBOROS-LOGICFLOW-EDITOR-PACKAGE-JSON
+    path_match:
+      path: frontends/web/ouroboros-logicflow-editor/package.json
+    delivery: install-root
+    compatibility: default
+    reactor_entry: not-applicable
+    allowed_coordinate_ids: []
+    evidence_ids:
+    - E-FE-MANIFEST-MAP
+  - id: FE-FRONTENDS-WEB-OUROBOROS-SDK-PACKAGE-JSON
+    path_match:
+      path: frontends/web/ouroboros-sdk/package.json
+    delivery: install-root
+    compatibility: default
+    reactor_entry: not-applicable
+    allowed_coordinate_ids: []
+    evidence_ids:
+    - E-FE-MANIFEST-MAP
+  - id: FE-FRONTENDS-WEB-PACKAGE-JSON
+    path_match:
+      path: frontends/web/package.json
+    delivery: install-root
+    compatibility: default
+    reactor_entry: not-applicable
+    allowed_coordinate_ids: []
+    evidence_ids:
+    - E-FE-MANIFEST-MAP
+  - id: FE-FRONTENDS-WEB-SCRIPT-EDITOR-INTELLIGENCE-MOCK-SERVER-PACKAGE-JSON
+    path_match:
+      path: frontends/web/script-editor-intelligence-mock-server/package.json
+    delivery: install-root
+    compatibility: default
+    reactor_entry: not-applicable
+    allowed_coordinate_ids: []
+    evidence_ids:
+    - E-FE-MANIFEST-MAP
+  - id: FE-PACKAGE-JSON
+    path_match:
+      path: package.json
+    delivery: install-root
+    compatibility: default
+    reactor_entry: not-applicable
+    allowed_coordinate_ids: []
+    evidence_ids:
+    - E-FE-MANIFEST-MAP
+  - id: FE-LOGICFLOW-SRC-NON-INSTALL
+    path_match:
+      path: frontends/web/ouroboros-logicflow-editor/src/package.json
+    delivery: non-install-manifest
+    compatibility: none
+    reactor_entry: not-applicable
+    allowed_coordinate_ids: []
+    evidence_ids:
+    - E-FE-MANIFEST-MAP
+  required_states:
+    install_roots:
+    - path: docs/handbook/package.json
+      lockfile: docs/handbook/package-lock.json
+      lock_state: locked
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    - path: frontends/web/main-app/package.json
+      lockfile: frontends/web/main-app/package-lock.json
+      lock_state: locked
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    - path: frontends/web/ouroboros-approval-workflow-designer/package.json
+      lockfile: frontends/web/ouroboros-approval-workflow-designer/package-lock.json
+      lock_state: locked
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    - path: frontends/web/ouroboros-debug-console-topbar/package.json
+      lockfile: frontends/web/ouroboros-debug-console-topbar/package-lock.json
+      lock_state: locked
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    - path: frontends/web/ouroboros-logicflow-editor/package.json
+      lockfile: frontends/web/ouroboros-logicflow-editor/package-lock.json
+      lock_state: locked
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    - path: frontends/web/ouroboros-sdk/package.json
+      lockfile: frontends/web/ouroboros-sdk/package-lock.json
+      lock_state: locked
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    - path: frontends/web/package.json
+      lockfile: frontends/web/package-lock.json
+      lock_state: locked
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    - path: frontends/web/script-editor-intelligence-mock-server/package.json
+      lockfile: frontends/web/script-editor-intelligence-mock-server/package-lock.json
+      lock_state: locked
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    - path: package.json
+      lockfile: package-lock.json
+      lock_state: locked
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    non_install_manifests:
+    - path: frontends/web/ouroboros-logicflow-editor/src/package.json
+      delivery: non-install-manifest
+      expected_json:
+        type: module
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    tooling_cohorts:
+    - id: webpack
+      package_names:
+      - webpack
+      state: canonical-major
+      allowed_major: 5
+      observations:
+      - manifest: frontends/web/main-app/package.json
+        package_name: webpack
+        specifier: ^5.108.4
+      - manifest: frontends/web/ouroboros-approval-workflow-designer/package.json
+        package_name: webpack
+        specifier: ^5.108.4
+      - manifest: frontends/web/ouroboros-debug-console-topbar/package.json
+        package_name: webpack
+        specifier: ^5.108.4
+      - manifest: frontends/web/ouroboros-logicflow-editor/package.json
+        package_name: webpack
+        specifier: ^5.108.4
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    - id: babel
+      package_names:
+      - '@babel/core'
+      - '@babel/eslint-parser'
+      - '@babel/plugin-transform-private-methods'
+      - '@babel/preset-env'
+      - '@babel/preset-react'
+      - '@babel/preset-typescript'
+      state: canonical-major
+      allowed_major: 7
+      observations:
+      - manifest: frontends/web/main-app/package.json
+        package_name: '@babel/core'
+        specifier: ^7.29.7
+      - manifest: frontends/web/main-app/package.json
+        package_name: '@babel/eslint-parser'
+        specifier: ^7.29.7
+      - manifest: frontends/web/main-app/package.json
+        package_name: '@babel/plugin-transform-private-methods'
+        specifier: ^7.29.7
+      - manifest: frontends/web/main-app/package.json
+        package_name: '@babel/preset-env'
+        specifier: ^7.29.7
+      - manifest: frontends/web/main-app/package.json
+        package_name: '@babel/preset-react'
+        specifier: ^7.29.7
+      - manifest: frontends/web/main-app/package.json
+        package_name: '@babel/preset-typescript'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-approval-workflow-designer/package.json
+        package_name: '@babel/core'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-approval-workflow-designer/package.json
+        package_name: '@babel/eslint-parser'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-approval-workflow-designer/package.json
+        package_name: '@babel/plugin-transform-private-methods'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-approval-workflow-designer/package.json
+        package_name: '@babel/preset-env'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-approval-workflow-designer/package.json
+        package_name: '@babel/preset-react'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-approval-workflow-designer/package.json
+        package_name: '@babel/preset-typescript'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-debug-console-topbar/package.json
+        package_name: '@babel/core'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-debug-console-topbar/package.json
+        package_name: '@babel/plugin-transform-private-methods'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-debug-console-topbar/package.json
+        package_name: '@babel/preset-env'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-debug-console-topbar/package.json
+        package_name: '@babel/preset-react'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-debug-console-topbar/package.json
+        package_name: '@babel/preset-typescript'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-logicflow-editor/package.json
+        package_name: '@babel/core'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-logicflow-editor/package.json
+        package_name: '@babel/eslint-parser'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-logicflow-editor/package.json
+        package_name: '@babel/plugin-transform-private-methods'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-logicflow-editor/package.json
+        package_name: '@babel/preset-env'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-logicflow-editor/package.json
+        package_name: '@babel/preset-react'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-logicflow-editor/package.json
+        package_name: '@babel/preset-typescript'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-sdk/package.json
+        package_name: '@babel/core'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-sdk/package.json
+        package_name: '@babel/eslint-parser'
+        specifier: ^7.29.7
+      - manifest: frontends/web/ouroboros-sdk/package.json
+        package_name: '@babel/preset-env'
+        specifier: ^7.28.3
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    - id: vitest
+      package_names:
+      - vitest
+      - '@vitest/ui'
+      state: canonical-major
+      allowed_major: 4
+      observations:
+      - manifest: docs/handbook/package.json
+        package_name: vitest
+        specifier: ^4.1.10
+      - manifest: frontends/web/main-app/package.json
+        package_name: vitest
+        specifier: ^4.1.10
+      - manifest: frontends/web/ouroboros-approval-workflow-designer/package.json
+        package_name: vitest
+        specifier: ^4.1.10
+      - manifest: frontends/web/ouroboros-debug-console-topbar/package.json
+        package_name: vitest
+        specifier: ^4.1.10
+      - manifest: frontends/web/ouroboros-logicflow-editor/package.json
+        package_name: vitest
+        specifier: ^4.1.10
+      - manifest: frontends/web/ouroboros-sdk/package.json
+        package_name: '@vitest/ui'
+        specifier: ^4.1.0
+      - manifest: frontends/web/ouroboros-sdk/package.json
+        package_name: vitest
+        specifier: ^4.1.10
+      - manifest: frontends/web/package.json
+        package_name: vitest
+        specifier: ^4.1.10
+      - manifest: frontends/web/script-editor-intelligence-mock-server/package.json
+        package_name: vitest
+        specifier: ^4.1.10
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    - id: typescript
+      package_names:
+      - typescript
+      state: canonical-major
+      allowed_major: 5
+      observations:
+      - manifest: frontends/web/main-app/package.json
+        package_name: typescript
+        specifier: ^5.9.3
+      - manifest: frontends/web/ouroboros-approval-workflow-designer/package.json
+        package_name: typescript
+        specifier: ^5.8.3
+      - manifest: frontends/web/ouroboros-debug-console-topbar/package.json
+        package_name: typescript
+        specifier: ^5.8.3
+      - manifest: frontends/web/ouroboros-logicflow-editor/package.json
+        package_name: typescript
+        specifier: ^5.8.3
+      - manifest: frontends/web/ouroboros-sdk/package.json
+        package_name: typescript
+        specifier: ^5.8.3
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    - id: sass-loader
+      package_names:
+      - sass
+      - sass-loader
+      state: observed-only
+      observations:
+      - manifest: frontends/web/main-app/package.json
+        package_name: sass
+        specifier: ^1.101.0
+      - manifest: frontends/web/main-app/package.json
+        package_name: sass-loader
+        specifier: ^16.0.8
+      - manifest: frontends/web/ouroboros-approval-workflow-designer/package.json
+        package_name: sass
+        specifier: ^1.101.0
+      - manifest: frontends/web/ouroboros-approval-workflow-designer/package.json
+        package_name: sass-loader
+        specifier: ^13.3.2
+      - manifest: frontends/web/ouroboros-debug-console-topbar/package.json
+        package_name: sass
+        specifier: ^1.101.0
+      - manifest: frontends/web/ouroboros-debug-console-topbar/package.json
+        package_name: sass-loader
+        specifier: ^13.3.2
+      - manifest: frontends/web/ouroboros-logicflow-editor/package.json
+        package_name: sass
+        specifier: ^1.101.0
+      - manifest: frontends/web/ouroboros-logicflow-editor/package.json
+        package_name: sass-loader
+        specifier: ^13.3.2
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    - id: playwright
+      package_names:
+      - '@playwright/test'
+      state: observed-only
+      observations:
+      - manifest: frontends/web/main-app/package.json
+        package_name: '@playwright/test'
+        specifier: ^1.61.1
+      - manifest: frontends/web/ouroboros-approval-workflow-designer/package.json
+        package_name: '@playwright/test'
+        specifier: ^1.61.1
+      - manifest: frontends/web/ouroboros-logicflow-editor/package.json
+        package_name: '@playwright/test'
+        specifier: ^1.61.1
+      - manifest: package.json
+        package_name: '@playwright/test'
+        specifier: ^1.58.2
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+    - id: jsdom
+      package_names:
+      - jsdom
+      state: observed-only
+      observations:
+      - manifest: frontends/web/main-app/package.json
+        package_name: jsdom
+        specifier: ^29.1.1
+      - manifest: frontends/web/ouroboros-logicflow-editor/package.json
+        package_name: jsdom
+        specifier: ^29.1.1
+      evidence_ids:
+      - E-FE-MANIFEST-MAP
+  exceptions: []
+- id: approval-workflow-engine
+  usage_scopes:
+  - runtime
+  coordinates:
+    canonical:
+    - id: APPROVAL-FLOWABLE
+      ecosystem: maven
+      match:
+        group_id: cn.ciecc.ouroboros
+        artifact_id: ouroboros-approval-workflow-flowable
+        type: jar
+        classifier: ''
+      version:
+        kind: managed
+      usage_scopes:
+      - runtime
+      evidence_ids:
+      - E-APPROVAL-POMS
+    forbidden:
+    - id: APPROVAL-ACTIVITI6
+      ecosystem: maven
+      match:
+        group_id: cn.ciecc.ouroboros
+        artifact_id: ouroboros-approval-workflow-activiti6
+        type: jar
+        classifier: ''
+      version:
+        kind: managed
+      usage_scopes:
+      - runtime
+      evidence_ids:
+      - E-APPROVAL-POMS
+  boundaries:
+  - id: APPROVAL-FLOWABLE-DEFAULT
+    path_match:
+      path: core/ouroboros-approval-workflow/ouroboros-approval-workflow-flowable/pom.xml
+    delivery: repository-module
+    compatibility: default
+    reactor_entry: present
+    allowed_coordinate_ids:
+    - APPROVAL-FLOWABLE
+    evidence_ids:
+    - E-APPROVAL-POMS
+    - E-APPROVAL-ADR
+  - id: APPROVAL-ACTIVITI6-BOUNDARY
+    path_match:
+      path: core/ouroboros-approval-workflow/ouroboros-approval-workflow-activiti6/pom.xml
+    delivery: not-established
+    compatibility: explicit
+    reactor_entry: absent
+    allowed_coordinate_ids:
+    - APPROVAL-ACTIVITI6
+    evidence_ids:
+    - E-APPROVAL-POMS
+    - E-APPROVAL-ADR
+  required_states:
+    positive_edges:
+    - from_pom: core/ouroboros-approval-workflow/ouroboros-approval-workflow-runtime/pom.xml
+      to_artifact: ouroboros-approval-workflow-flowable
+      evidence_ids:
+      - E-APPROVAL-POMS
+    - from_pom: core/ouroboros-approval-workflow/ouroboros-approval-workflow-qb-spring-boot-starter/pom.xml
+      to_artifact: ouroboros-approval-workflow-flowable
+      evidence_ids:
+      - E-APPROVAL-POMS
+    negative_edges:
+    - from_pom: core/ouroboros-approval-workflow/ouroboros-approval-workflow-runtime/pom.xml
+      to_artifact: ouroboros-approval-workflow-activiti6
+      evidence_ids:
+      - E-APPROVAL-POMS
+    - from_pom: core/ouroboros-approval-workflow/ouroboros-approval-workflow-qb-spring-boot-starter/pom.xml
+      to_artifact: ouroboros-approval-workflow-activiti6
+      evidence_ids:
+      - E-APPROVAL-POMS
+    parent_module_state:
+      path: core/ouroboros-approval-workflow/pom.xml
+      required_modules:
+      - ouroboros-approval-workflow-flowable
+      forbidden_modules:
+      - ouroboros-approval-workflow-activiti6
+      evidence_ids:
+      - E-APPROVAL-POMS
+    adr_evidence_id: E-APPROVAL-ADR
+    activiti_boundary_id: APPROVAL-ACTIVITI6-BOUNDARY
+  exceptions: []
+- id: junit-compatibility
+  usage_scopes:
+  - test
+  - runtime
+  coordinates:
+    canonical:
+    - id: JUNIT-JUPITER
+      ecosystem: maven
+      match:
+        group_id: org.junit.jupiter
+        artifact_id: junit-jupiter
+        type: jar
+        classifier: ''
+      version:
+        kind: managed
+      usage_scopes:
+      - test
+      evidence_ids:
+      - E-JUNIT-DECLARATIONS
+    forbidden:
+    - id: JUNIT4-RUNTIME
+      ecosystem: maven
+      match:
+        group_id: junit
+        artifact_id: junit
+        type: jar
+        classifier: ''
+      version:
+        kind: managed
+      usage_scopes:
+      - runtime
+      evidence_ids:
+      - E-JUNIT-DECLARATIONS
+    - id: JUNIT-VINTAGE-RUNTIME
+      ecosystem: maven
+      match:
+        group_id: org.junit.vintage
+        artifact_id: junit-vintage-engine
+        type: jar
+        classifier: ''
+      version:
+        kind: managed
+      usage_scopes:
+      - runtime
+      evidence_ids:
+      - E-JUNIT-DECLARATIONS
+  boundaries:
+  - id: JUNIT-TEST-COMPATIBILITY
+    path_match:
+      path: bom/pom.xml
+    delivery: repository-module
+    compatibility: explicit
+    reactor_entry: present
+    allowed_coordinate_ids:
+    - JUNIT-JUPITER
+    - JUNIT4-RUNTIME
+    - JUNIT-VINTAGE-RUNTIME
+    evidence_ids:
+    - E-JUNIT-DECLARATIONS
+    - E-JUNIT-EFFECTIVE
+  required_states:
+    source_snapshot:
+      source_glob: '**/src/test/**/*.java'
+      import_rule: (?m)^\s*import\s+org\.junit\.(?!jupiter(?:\.|;)|platform(?:\.|;))
+      file_count: 135
+      evidence_ids:
+      - E-JUNIT-SOURCE
+    vintage_declarations:
+      direct_count: 25
+      management_count: 1
+      management_paths:
+      - bom/pom.xml
+      evidence_ids:
+      - E-JUNIT-DECLARATIONS
+    vintage_effective_mappings:
+    - declaration_pom: ability/ouroboros-app-runtime/pom.xml
+      effective_source_count: 1
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: ability/ouroboros-configuration/ouroboros-configuration-core/pom.xml
+      effective_source_count: 7
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: ability/ouroboros-configuration/ouroboros-configuration-runtime/pom.xml
+      effective_source_count: 4
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: ability/ouroboros-notification/ouroboros-notification-channel/ouroboros-notification-channel-aliyun-call/pom.xml
+      effective_source_count: 1
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: ability/ouroboros-notification/ouroboros-notification-channel/ouroboros-notification-channel-aliyun-sms/pom.xml
+      effective_source_count: 1
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: ability/ouroboros-notification/ouroboros-notification-channel/ouroboros-notification-channel-dingtalk/pom.xml
+      effective_source_count: 1
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: ability/ouroboros-notification/ouroboros-notification-channel/ouroboros-notification-channel-email/pom.xml
+      effective_source_count: 1
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: ability/ouroboros-notification/ouroboros-notification-channel/ouroboros-notification-channel-internal-message/pom.xml
+      effective_source_count: 1
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: ability/ouroboros-notification/ouroboros-notification-channel/ouroboros-notification-channel-jpush/pom.xml
+      effective_source_count: 1
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: ability/ouroboros-notification/ouroboros-notification-channel/ouroboros-notification-channel-wechat/pom.xml
+      effective_source_count: 1
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: ability/ouroboros-notification/ouroboros-notification-runtime/pom.xml
+      effective_source_count: 2
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: app-module/ui-schema-management/pom.xml
+      effective_source_count: 1
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: core/ouroboros-business-model/pom.xml
+      effective_source_count: 16
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: core/ouroboros-data/pom.xml
+      effective_source_count: 3
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: core/ouroboros-data/ouroboros-data-typed-runtime/pom.xml
+      effective_source_count: 2
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: core/ouroboros-logicflow/pom.xml
+      effective_source_count: 48
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: core/ouroboros-ui-model/ouroboros-ui-model-dev/pom.xml
+      effective_source_count: 1
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: core/ouroboros-ui-model/ouroboros-ui-model-schema/pom.xml
+      effective_source_count: 7
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: core/ouroboros-ui-model/ouroboros-ui-model-schema-dev/pom.xml
+      effective_source_count: 2
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: dev-module/ouroboros-dev-container/ouroboros-dev-container-docker/pom.xml
+      effective_source_count: 1
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: dev-module/ouroboros-dev-helper/ouroboros-dev-helper-runtime/pom.xml
+      effective_source_count: 1
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: libs/common/pom.xml
+      effective_source_count: 8
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: libs/util/ouroboros-util/pom.xml
+      effective_source_count: 22
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: security/ouroboros-web-security/ouroboros-web-security-rbac-manage/pom.xml
+      effective_source_count: 1
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    - declaration_pom: security/ouroboros-web-security/ouroboros-web-security-runtime/pom.xml
+      effective_source_count: 1
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    direct_junit_mappings: []
+    effective_coverage:
+      covered_source_count: 135
+      uncovered_source_count: 0
+      inherited_key_counts:
+        core/ouroboros-business-model/pom.xml: 16
+        core/ouroboros-data/ouroboros-data-typed-runtime/pom.xml: 2
+        core/ouroboros-data/pom.xml: 3
+        core/ouroboros-logicflow/pom.xml: 48
+        libs/common/pom.xml: 8
+      evidence_ids:
+      - E-JUNIT-EFFECTIVE
+    runtime_forbidden_coordinate_ids:
+    - JUNIT4-RUNTIME
+    - JUNIT-VINTAGE-RUNTIME
+  exceptions: []

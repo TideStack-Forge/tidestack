@@ -1,0 +1,148 @@
+{
+  "type": "page",
+  "title": "数据集",
+  "toolbar": [
+    {
+      "type": "button",
+      "label": "新建数据集",
+      "level": "primary",
+      "actionType": "link",
+      "link": "/dev/${appName}/dataset/add"
+    },
+    {
+      "type": "button",
+      "label": "图表",
+      "actionType": "link",
+      "link": "/dev/${appName}/chart"
+    }
+  ],
+  "body": {
+    "type": "crud",
+    "api": {
+      "method": "get",
+      "url": "/api/dev/${appName}/dataset",
+      "data": {"keyword": "${keyword}"}
+    },
+    "filter": {
+      "body": [
+        {
+          "type": "input-text",
+          "name": "keyword",
+          "label": "关键词",
+          "placeholder": "搜索名称或标题",
+          "clearable": true
+        }
+      ]
+    },
+    "headerToolbar": [
+      "filter-toggler",
+      "reload"
+    ],
+    "columns": [
+      {
+        "name": "name",
+        "label": "名称"
+      },
+      {
+        "name": "title",
+        "label": "标题"
+      },
+      {
+        "name": "queryDefinition.datasource",
+        "label": "数据源"
+      },
+      {
+        "name": "isEnabled",
+        "label": "状态",
+        "type": "mapping",
+        "map": {
+          "true": "启用",
+          "false": "禁用",
+          "*": "启用"
+        }
+      },
+      {
+        "type": "operation",
+        "label": "操作",
+        "buttons": [
+          {
+            "type": "button",
+            "label": "编辑",
+            "level": "link",
+            "actionType": "link",
+            "link": "/dev/${appName}/dataset/${name}"
+          },
+          {
+            "type": "button",
+            "label": "禁用",
+            "level": "link",
+            "visibleOn": "${isEnabled === true}",
+            "actionType": "ajax",
+            "confirmText": "确定要禁用数据集「${title || name}」吗？",
+            "api": {
+              "method": "put",
+              "url": "/api/dev/${appName}/dataset/${name}?commit=true",
+              "data": {
+                "name": "$name",
+                "title": "$title",
+                "description": "$description",
+                "tags": "$tags",
+                "isEnabled": false,
+                "queryDefinition": "$queryDefinition",
+                "parameters": "$parameters",
+                "schema": "$schema",
+                "permissionDefinition": "$permissionDefinition",
+                "executionConstraints": "$executionConstraints"
+              },
+              "messages": {
+                "success": "数据集已禁用"
+              }
+            }
+          },
+          {
+            "type": "button",
+            "label": "启用",
+            "level": "link",
+            "visibleOn": "${isEnabled !== true}",
+            "actionType": "ajax",
+            "confirmText": "确定要启用数据集「${title || name}」吗？",
+            "api": {
+              "method": "put",
+              "url": "/api/dev/${appName}/dataset/${name}?commit=true",
+              "data": {
+                "name": "$name",
+                "title": "$title",
+                "description": "$description",
+                "tags": "$tags",
+                "isEnabled": true,
+                "queryDefinition": "$queryDefinition",
+                "parameters": "$parameters",
+                "schema": "$schema",
+                "permissionDefinition": "$permissionDefinition",
+                "executionConstraints": "$executionConstraints"
+              },
+              "messages": {
+                "success": "数据集已启用"
+              }
+            }
+          },
+          {
+            "type": "button",
+            "label": "删除",
+            "level": "link",
+            "className": "text-danger",
+            "actionType": "ajax",
+            "confirmText": "确定要删除数据集「${title || name}」吗？被图表引用的数据集无法删除。",
+            "api": {
+              "method": "delete",
+              "url": "/api/dev/${appName}/dataset/${name}",
+              "messages": {
+                "success": "数据集已删除"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

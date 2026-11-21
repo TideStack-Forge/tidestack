@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "sourceRoot": "src/main/metadata",
+  "packagedResourceRoot": "resources/META-INF/ouroboros",
+  "metadataResourceDirectory": "metadata",
+  "pathRules": {
+    "relativeCurrentDirectoryPrefix": "./",
+    "jsonExtension": ".json",
+    "fallbackFileName": "metadata.json",
+    "sourceMainSegments": ["src", "main"]
+  },
+  "templateDefaultRules": {
+    "fixedFileNameStem": "example",
+    "fallbacks": {
+      "camel-name": "example",
+      "dot-name": "Example",
+      "slash-path": "example",
+      "title": "Example"
+    }
+  }
+}

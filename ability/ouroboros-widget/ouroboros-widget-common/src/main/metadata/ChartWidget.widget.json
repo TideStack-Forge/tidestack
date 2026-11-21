@@ -1,0 +1,129 @@
+{
+  "name": "ChartWidget",
+  "title": "通用图表",
+  "description": "通用图表小组件，支持所有 Echarts 图表类型",
+  "category": "图表",
+  "allowHeader": true,
+  "sizeConstraints": {
+    "min": {
+      "cols": 6,
+      "rows": 8
+    },
+    "max": {
+      "cols": 24,
+      "rows": 30
+    }
+  },
+  "defaultSize": {
+    "cols": 12,
+    "rows": 12
+  },
+  "defaultConfig": {
+    "api": "",
+    "intervalTime": 0
+  },
+  "defaultStyleConfig": {
+    "showBorder": true,
+    "showShadow": true
+  },
+  "configFormItems": [
+    {
+      "type": "fieldSet",
+      "title": "数据源配置",
+      "body": [
+        {
+          "type": "ae-apiControl",
+          "name": "api",
+          "label": "数据接口",
+          "required": true,
+          "description": "接口必须返回完整的 Echarts 配置对象"
+        },
+        {
+          "type": "input-number",
+          "name": "intervalTime",
+          "label": "刷新间隔",
+          "value": 0,
+          "min": 0,
+          "description": "设置图表自动刷新的时间间隔，单位为毫秒，0 表示不自动刷新"
+        }
+      ]
+    },
+    {
+      "type": "alert",
+      "level": "info",
+      "body": "API 数据格式说明：<br/>接口应返回标准的 Echarts 配置对象，例如：<br/><code>{\n  \"xAxis\": { \"type\": \"category\", \"data\": [\"Mon\", \"Tue\"] },\n  \"yAxis\": { \"type\": \"value\" },\n  \"series\": [{ \"type\": \"bar\", \"data\": [120, 200] }]\n}</code><br/><br/>更多配置请参考：<a href=\"https://echarts.apache.org/zh/option.html\" target=\"_blank\">Echarts 官方文档</a>"
+    }
+  ],
+  "thumbSchema": {
+    "type": "chart",
+    "config": {
+      "title": {
+        "text": "示例图表",
+        "left": "center",
+        "top": 10,
+        "textStyle": {
+          "fontSize": 14
+        }
+      },
+      "grid": {
+        "top": 50,
+        "bottom": 30,
+        "left": 50,
+        "right": 30
+      },
+      "xAxis": {
+        "type": "category",
+        "data": ["A", "B", "C"]
+      },
+      "yAxis": {
+        "type": "value"
+      },
+      "series": [
+        {
+          "type": "bar",
+          "data": [10, 20, 15]
+        },
+        {
+          "type": "line",
+          "data": [22, 12, 14]
+        }
+      ],
+      "tooltip": {
+        "trigger": "axis"
+      }
+    }
+  },
+  "schemaTpl": {
+    "type": "chart",
+    "api": "#{api}",
+    "interval": "#{intervalTime}",
+    "trackExpression": "#{api}"
+  },
+  "exampleData": {
+    "title": {
+      "text": "销售数据统计"
+    },
+    "xAxis": {
+      "type": "category",
+      "data": ["周一", "周二", "周三", "周四", "周五"]
+    },
+    "yAxis": {
+      "type": "value"
+    },
+    "series": [
+      {
+        "name": "销售额",
+        "type": "line",
+        "data": [120, 200, 150, 180, 220]
+      },
+      {
+        "name": "利润率",
+        "type": "bar",
+        "data": [22, 12, 14, 25, 16]
+      }
+    ],
+    "tooltip": {
+      "trigger": "axis"
+    }
+  }
+}

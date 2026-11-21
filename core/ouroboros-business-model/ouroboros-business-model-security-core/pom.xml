@@ -1,0 +1,14 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.ouroboros</groupId>
+    <artifactId>ouroboros-business-model</artifactId>
+    <version>2.0.0-rc.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>ouroboros-business-model-security-core</artifactId>
+  <description>Security-aware business action and authority projection contracts</description>
+  <dependencies>
+    <dependency><groupId>com.ouroboros</groupId><artifactId>ouroboros-business-model-core</artifactId></dependency>
+    <dependency><groupId>com.ouroboros</groupId><artifactId>ouroboros-web-security-core</artifactId></dependency>
+  </dependencies>
+</project>

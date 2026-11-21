@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>ouroboros-root</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>core</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>ouroboros-data</module>
+        <module>ouroboros-dynamic-form-core</module>
+        <module>ouroboros-logicflow</module>
+        <module>ouroboros-approval-workflow</module>
+        <module>ouroboros-statistics-reporting</module>
+        <module>ouroboros-field-type</module>
+        <module>ouroboros-business-model</module>
+        <module>ouroboros-ui-model</module>
+        <module>ouroboros-webapi-model</module>
+        <module>ouroboros-app-module-model</module>
+        <module>ouroboros-menu-model</module>
+        <module>ouroboros-i18n</module>
+        <module>ouroboros-error-code</module>
+        <module>ouroboros-resource</module>
+    </modules>
+
+</project>

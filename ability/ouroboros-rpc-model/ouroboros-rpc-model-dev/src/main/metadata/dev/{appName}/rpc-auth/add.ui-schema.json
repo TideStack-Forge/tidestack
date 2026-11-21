@@ -1,0 +1,22 @@
+{
+  "name": "/dev/{appName}/rpc-auth/add",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "labelWidth": 120,
+    "wrapWithPanel": false,
+    "data": {
+      "add": true
+    },
+    "body": {
+      "type": "amis-schema",
+      "schemaId": "/dev/{appName}/rpc-auth/form-items"
+    },
+    "api": {
+      "url": "/api/dev/${appName}/rpc-auth",
+      "method": "post",
+      "requestAdaptor": "const { add, ...formData } = context\r\nreturn {\r\n    ...api,\r\n    data: {\r\n        ...formData    }\r\n};"
+    },
+    "mode": "horizontal"
+  }
+}

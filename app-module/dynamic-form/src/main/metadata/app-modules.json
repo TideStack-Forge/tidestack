@@ -1,0 +1,14 @@
+[
+  {
+    "fullName": "systemSetting.dynamicForm",
+    "title": "动态表单",
+    "menu": "systemSetting.dynamicForm",
+    "authorities": [
+      "systemSetting.dynamicForm",
+      "systemSetting.dynamicForm.form",
+      "systemSetting.dynamicForm.table"
+    ],
+    "order": 30,
+    "parent": "systemSetting.portalAndInterface"
+  }
+]

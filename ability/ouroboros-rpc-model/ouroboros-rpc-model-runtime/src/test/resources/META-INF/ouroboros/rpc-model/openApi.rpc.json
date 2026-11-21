@@ -1,0 +1,15 @@
+{
+  "group": "钉钉XX",
+  "name": "openApi",
+  "title": "查询用户详情",
+  "type": "OpenApi",
+  "description": "查询用户详情",
+  "isEnabled": true,
+  "retry": 3,
+  "timeout": 10000,
+  "authenticator": "apiKey",
+  "request": {
+    "method": "get",
+    "url": "http://106.14.31.75:9600/api/user/info"
+  }
+}

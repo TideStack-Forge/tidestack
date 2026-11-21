@@ -1,0 +1,1 @@
+{"name": "enterpriseRpc-test", "title": "企业 RPC 测试", "type": "OpenAPI", "isEnabled": true, "authCredential": "enterpriseAuth-test", "request": {"method": "GET", "url": "https://open.feishu.cn/open-apis/contact/v3/users"}}

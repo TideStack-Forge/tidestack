@@ -1,0 +1,14 @@
+{
+  "editorId": "ui-model",
+  "editorName": "TideStack UI Model Metadata Editor",
+  "editorNameKey": "customEditor.uiModel",
+  "metadataType": "ui-model",
+  "schemaName": "ui-model",
+  "viewType": "tidestack.metadataEditor.uiModel",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.uiModel",
+  "fileMatchPatterns": [
+    "*.ui-model.json",
+    "**/resources/META-INF/ouroboros/ui-model/**/*.json"
+  ],
+  "priority": "default"
+}

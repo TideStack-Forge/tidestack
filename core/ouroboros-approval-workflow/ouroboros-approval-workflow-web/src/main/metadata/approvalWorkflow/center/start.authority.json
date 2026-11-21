@@ -1,0 +1,17 @@
+{
+  "fullName": "approvalCenter.start",
+  "title": "发起审批",
+  "apis": [
+    "POST /api/approval-workflow/instance/{id}/start",
+    "POST /api/approval-workflow/instance/{id}/start-requirements",
+    "GET /api/approval-workflow/instance/available",
+    "GET /api/approval-workflow/instance/{id}/init-form",
+    "GET /api/organization-structure/tree",
+    "GET /api/organization-structure/{id}/employee"
+  ],
+  "uiViews": [
+    "/approval-center/start"
+  ],
+  "menuItems": [
+  ]
+}

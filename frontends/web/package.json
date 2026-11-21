@@ -1,0 +1,43 @@
+{
+  "name": "lowcode-platform",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "packageManager": "pnpm@11.9.0",
+  "scripts": {
+    "test": "npm run test:unit",
+    "test:unit": "vitest run",
+    "validate:agent-entrypoints": "node ./scripts/validate-agent-entrypoints.mjs",
+    "install:web": "npm ci --legacy-peer-deps",
+    "install:main": "cd main-app && npm ci --legacy-peer-deps && ../scripts/apply-amis-ui-tooltip-patch.sh",
+    "install:approval-workflow-designer": "cd ouroboros-approval-workflow-designer && npm ci",
+    "install:debug-console-topbar": "cd ouroboros-debug-console-topbar && npm ci",
+    "install:logicflow-editor": "cd ouroboros-logicflow-editor && npm ci --legacy-peer-deps",
+    "install:sdk": "cd ouroboros-sdk && npm ci",
+    "install:script-editor-intelligence-mock": "cd script-editor-intelligence-mock-server && npm ci",
+    "install-all": "npm-run-all install:web install:main install:approval-workflow-designer install:debug-console-topbar install:logicflow-editor install:sdk install:script-editor-intelligence-mock",
+    "pnpm:install": "pnpm install --frozen-lockfile",
+    "pnpm:install:update": "pnpm install --no-frozen-lockfile",
+    "start:script-editor-intelligence-mock": "cd script-editor-intelligence-mock-server && npm start",
+    "start:main": "cd main-app && yarn serve",
+    "start-all": "npm-run-all --parallel start:*",
+    "build:main": "cd main-app && npm run build:ouroboros",
+    "build-ouroboros": "npm-run-all build:*"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.8",
+    "amis": "^6.13.0",
+    "amis-core": "^6.13.0",
+    "amis-ui": "^6.13.0",
+    "mobx-react-lite": "^2.2.2",
+    "npm-run-all": "^4.1.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-is": "^18.3.1",
+    "vitest": "^4.1.10",
+    "vue": "^3.5.40"
+  },
+  "dependencies": {
+    "ouroboros-sdk": "^1.2.3"
+  }
+}

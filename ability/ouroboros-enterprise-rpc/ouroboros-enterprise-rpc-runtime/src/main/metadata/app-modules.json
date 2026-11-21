@@ -1,0 +1,12 @@
+[
+  {
+    "fullName": "systemSetting.integrationManagement.connections.rpc",
+    "title": "企业开放 API",
+    "parent": "systemSetting.integrationManagement.connections",
+    "order": 40,
+    "authorities": [
+      "systemSetting.integrationManagement.connections.rpc.invoke",
+      "systemSetting.integrationManagement.connections.rpc.catalog"
+    ]
+  }
+]

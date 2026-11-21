@@ -1,0 +1,439 @@
+{
+  "name": "/dev/{appName}/logicflow-model",
+  "schema": {
+    "type": "page",
+    "definitions": {
+      "addModelDialog": {
+        "type": "dialog",
+        "title": "新建逻辑流",
+        "size": "md",
+        "url": "/dev/${appName}/logicflow-model/add",
+        "closeOnEsc": false,
+        "showErrorMsg": true,
+        "showCloseButton": true,
+        "showLoading": true
+      },
+      "editModelButton": {
+        "type": "button",
+        "label": "编辑",
+        "icon": "fa fa-edit",
+        "disabledOn": "${ lockState == 'LOCKED' }",
+        "tooltipPlacement": "top",
+        "disabledTip": "该模型正在被 ${lockUserName} 编辑",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "ajax",
+                "args": {
+                  "api": {
+                    "method": "post",
+                    "url": "/api/dev/${appName}/logic-flow/${name}/lock"
+                  }
+                }
+              },
+              {
+                "actionType": "openOrSwitchTab",
+                "expression": "responseResult.responseStatus == 0",
+                "args": {
+                  "title": "编辑逻辑流「${name}」",
+                  "url": "/dev/${appName}/logicflow-model/${name}",
+                  "reloadOnReceive": true
+                }
+              },
+              {
+                "actionType": "reload",
+                "componentName": "modelList"
+              }
+            ]
+          }
+        }
+      },
+      "showModelChangeLogDrawer": {
+        "type": "drawer",
+        "title": "查看逻辑流「${name}」的变更记录",
+        "url": "/dev/${appName}/logicflow-model/change-log",
+        "size": "md",
+        "resizable": true,
+        "closeOnEsc": true,
+        "closeOnOutside": true
+      },
+      "showValidationErrorsDialog": {
+        "type": "dialog",
+        "title": "逻辑流「${name}」的后端校验错误",
+        "size": "md",
+        "closeOnEsc": true,
+        "closeOnOutside": true,
+        "body": [
+          {
+            "type": "alert",
+            "level": "warning",
+            "showIcon": true,
+            "className": "mb-3",
+            "body": "${validationSummary}"
+          },
+          {
+            "type": "each",
+            "name": "validationDiagnostics",
+            "visibleOn": "${validationDiagnostics && validationDiagnostics.length}",
+            "items": {
+              "type": "container",
+              "className": "border rounded-sm p-3 mb-2 bg-white",
+              "body": [
+                {
+                  "type": "tpl",
+                  "tpl": "${item.message}"
+                },
+                {
+                  "type": "tpl",
+                  "className": "text-secondary text-sm mt-1",
+                  "visibleOn": "${item.nodeNames && item.nodeNames.length}",
+                  "tpl": "相关节点：${JOIN(item.nodeNames, '、')}"
+                },
+                {
+                  "type": "tpl",
+                  "className": "text-muted text-xs mt-1",
+                  "visibleOn": "${item.nodeNames && item.nodeNames.length}",
+                  "tpl": "请进入编辑页定位节点"
+                }
+              ]
+            }
+          },
+          {
+            "type": "each",
+            "name": "validationErrors",
+            "visibleOn": "${!(validationDiagnostics && validationDiagnostics.length)}",
+            "items": {
+              "type": "container",
+              "className": "border rounded-sm p-3 mb-2 bg-white",
+              "body": [
+                {
+                  "type": "tpl",
+                  "tpl": "${item}"
+                }
+              ]
+            }
+          }
+        ],
+        "actions": [
+          {
+            "type": "button",
+            "label": "关闭",
+            "actionType": "close"
+          }
+        ]
+      }
+    },
+    "body": [
+      {
+        "type": "crud",
+        "name": "modelList",
+        "id": "modelList",
+        "api": {
+          "method": "get",
+          "data": {
+            "module": "$module",
+            "keyword": "$keyword",
+            "includeValidationSnapshot": true
+          },
+          "url": "/api/dev/${appName}/logic-flow",
+          "responseData": {
+            "items": {
+              "$items": {
+                "&": "$model.flowModel",
+                "validationState": "$model.validationSnapshot.validationState",
+                "validationSummary": "$model.validationSnapshot.validationSummary",
+                "validationDiagnostics": "$model.validationSnapshot.validationDiagnostics",
+                "validationErrors": "$model.validationSnapshot.validationErrors",
+                "lastValidatedTime": "$model.validationSnapshot.lastValidatedTime",
+                "creationTime": "$creationTime",
+                "lastModifiedTime": "$lastModifiedTime",
+                "lastCommittedTime": "$lastCommittedTime",
+                "isLocked": "$isLocked",
+                "lockUser": "$lockUser",
+                "lockUserName": "$lockUserName",
+                "isChanged": "$isChanged",
+                "lockState": "$lockState",
+                "versionState": "$versionState",
+                "size": "${ size | bytes }"
+              }
+            }
+          }
+        },
+        "headerToolbar": [
+          "bulkActions",
+          {
+            "label": "刷新",
+            "icon": "fa fa-repeat",
+            "type": "button",
+            "actionType": "reload"
+          },
+          {
+            "type": "button",
+            "label": "新增",
+            "actionType": "dialog",
+            "level": "primary",
+            "align": "right",
+            "dialog": {
+              "$ref": "addModelDialog"
+            }
+          }
+        ],
+        "rowClassNameExpr": "${isLocked ? lockUser != SystemContext.user.userIdentity ? 'bg-red-50' : 'bg-green-50' : ''}",
+        "columns": [
+          {
+            "type": "container",
+            "name": "name",
+            "label": "模型",
+            "bodyClassName": "flex items-center",
+            "body": [
+              {
+                "type": "icon",
+                "icon": "${icon ? icon : 'fas fa-gears'}",
+                "vendor": "",
+                "className": "w-11 mr-3 text-center text-3xl text-secondary"
+              },
+              {
+                "type": "container",
+                "body": [
+                  {
+                    "type": "container",
+                    "bodyClassName": "flex flex-row",
+                    "body": [
+                      {
+                        "type": "tpl",
+                        "tpl": "${name}${((validationDiagnostics && validationDiagnostics.length) || (validationErrors && validationErrors.length) || validationSummary) ? '&nbsp;<i class=\"text-warning ml-2\">(存在校验错误)</i>' : ''}${!isEnabled ? '&nbsp;<i class=\"text-gray-400 ml-2\">(未启用)</i>' : ''}",
+                        "hiddenOn": "${ isChanged }"
+                      },
+                      {
+                        "type": "tooltip-wrapper",
+                        "content": "存在未提交的修改",
+                        "body": "${name}&nbsp;* ${((validationDiagnostics && validationDiagnostics.length) || (validationErrors && validationErrors.length) || validationSummary) ? '&nbsp;<i class=\"text-warning ml-2\">(存在校验错误)</i>' : ''}${!isEnabled ? '&nbsp;<i class=\"text-gray-400 ml-2\">(未启用)</i>' : ''}",
+                        "className": "font-bold italic",
+                        "visibleOn": "${ isChanged }"
+                      },
+                      {
+                        "type": "tooltip-wrapper",
+                        "title": "存在后端校验错误",
+                        "content": "${validationSummary}",
+                        "body": {
+                          "type": "icon",
+                          "icon": "fa fa-triangle-exclamation ml-1",
+                          "className": "text-warning",
+                          "vendor": ""
+                        },
+                        "visibleOn": "${(validationDiagnostics && validationDiagnostics.length) || (validationErrors && validationErrors.length) || validationSummary}"
+                      },
+                      {
+                        "type": "tooltip-wrapper",
+                        "title": "${lockUser == SystemContext.user.userIdentity ? '' : '模型已被锁定'}",
+                        "content": "${lockUser == SystemContext.user.userIdentity ? '你正在编辑该模型' : '该模型正在被 ' + lockUserName + ' 编辑'}",
+                        "body": {
+                          "type": "icon",
+                          "icon": "fa fa-lock ml-1",
+                          "className": {
+                            "text-danger": "${ lockUser != SystemContext.user.userIdentity }",
+                            "text-success": "${ lockUser == SystemContext.user.userIdentity }"
+                          },
+                          "vendor": ""
+                        },
+                        "visibleOn": "${isLocked}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "entryNode",
+            "label": "入口节点"
+          },
+          {
+            "name": "exitNode",
+            "label": "出口节点"
+          },
+          {
+            "name": "size",
+            "label": "文件大小"
+          },
+          {
+            "type": "tooltip-wrapper",
+            "name": "creationTime",
+            "label": "创建时间",
+            "content": "${creationTime | toDate | date: YYYY-MM-DD HH\\:mm\\:ss}",
+            "body": {
+              "type": "date",
+              "name": "creationTime",
+              "fromNow": true
+            }
+          },
+          {
+            "type": "tooltip-wrapper",
+            "name": "lastModifiedTime",
+            "label": "修改时间",
+            "content": "${lastModifiedTime | toDate | date: YYYY-MM-DD HH\\:mm\\:ss}",
+            "body": {
+              "type": "date",
+              "name": "lastModifiedTime",
+              "fromNow": true
+            }
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "width": 130,
+            "buttons": [
+              {
+                "$ref": "editModelButton",
+                "level": "primary",
+                "hiddenOn": "${lockState == 'OWNED'}"
+              },
+              {
+                "type": "button-group",
+                "buttons": [
+                  {
+                    "$ref": "editModelButton",
+                    "label": false,
+                    "level": "success",
+                    "tooltip": "继续编辑"
+                  },
+                  {
+                    "type": "button",
+                    "actionType": "ajax",
+                    "label": false,
+                    "icon": "fa fa-undo",
+                    "level": "warning",
+                    "tooltipPlacement": "top",
+                    "tooltip": "放弃变更并解锁",
+                    "api": {
+                      "method": "post",
+                      "url": "/api/dev/${appName}/logic-flow/${name}/rollback"
+                    },
+                    "confirmText": "确认要放弃变更吗？该操作无法撤销！"
+                  }
+                ],
+                "visibleOn": "${lockState == 'OWNED'}"
+              },
+              {
+                "type": "dropdown-button",
+                "label": "",
+                "icon": "fa fa-ellipsis-v text-secondary hover:text-primary",
+                "align": "right",
+                "buttons": [
+                  {
+                    "type": "button",
+                    "actionType": "dialog",
+                    "label": "查看校验错误",
+                    "icon": "fa fa-triangle-exclamation text-warning text-center w-4 mr-2",
+                    "visibleOn": "${(validationDiagnostics && validationDiagnostics.length) || (validationErrors && validationErrors.length) || validationSummary}",
+                    "dialog": {
+                      "$ref": "showValidationErrorsDialog"
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "actionType": "drawer",
+                    "label": "查看变更记录",
+                    "icon": "fa-solid fa-history text-center w-4 mr-2",
+                    "drawer": {
+                      "$ref": "showModelChangeLogDrawer"
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "actionType": "ajax",
+                    "icon": "fa fa-trash text-danger text-center w-4 mr-2",
+                    "className": "hover:text-danger",
+                    "confirmText": "确定要删除「${name}」？",
+                    "label": "删除",
+                    "disabledOn": "${isLocked && lockUser != SystemContext.user.userIdentity}",
+                    "api": {
+                      "method": "delete",
+                      "url": "/api/dev/${appName}/logic-flow/${name}"
+                    },
+                    "messages": {
+                      "success": "模型已成功删除"
+                    }
+                  }
+                ],
+                "hideCaret": true,
+                "closeOnClick": true,
+                "menuClassName": "shadow-md"
+              }
+            ]
+          }
+        ],
+        "itemAction": {
+          "actionType": "dialog",
+          "dialog": {
+            "title": {
+              "type": "container",
+              "bodyClassName": "flex content-center",
+              "body": [
+                "<b>查看逻辑流 ${ name }</b>",
+                {
+                  "type": "switch",
+                  "name": "modelDetailShowMode",
+                  "onText": "编辑器",
+                  "offText": "Json",
+                  "style": {
+                    "marginLeft": "10px",
+                    "marginTop": "-8px"
+                  },
+                  "onEvent": {
+                    "change": {
+                      "actions": [
+                        {
+                          "actionType": "hidden",
+                          "componentId": "logicFlowJsonEditor",
+                          "expression": "value"
+                        },
+                        {
+                          "actionType": "show",
+                          "componentId": "logicFlowEditor",
+                          "expression": "value"
+                        },
+                        {
+                          "actionType": "hidden",
+                          "componentId": "logicFlowEditor",
+                          "expression": "!value"
+                        },
+                        {
+                          "actionType": "show",
+                          "componentId": "logicFlowJsonEditor",
+                          "expression": "!value"
+                        }
+                      ]
+                    }
+                  },
+                  "value": true
+                }
+              ]
+            },
+            "size": "full",
+            "closeOnEsc": true,
+            "closeOnOutside": true,
+            "url": "/dev/${appName}/logicflow-model/detail"
+          }
+        },
+        "footerToolbar": [
+          "statistics",
+          "pagination",
+          "switch-per-page"
+        ],
+        "perPageAvailable": [
+          10,
+          20,
+          50
+        ],
+        "perPage": 20,
+        "primaryField": "fullName",
+        "syncLocation": false,
+        "affixHeader": false,
+        "loadDataOnce": true,
+        "alwaysShowPagination": true
+      }
+    ]
+  }
+}

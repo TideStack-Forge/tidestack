@@ -1,0 +1,122 @@
+{
+  "type": "processStatusRouter",
+  "label": "流程状态路由",
+  "icon": "approval-process-status-router",
+  "svgs": {
+    "approval-process-status-router": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m12 3 6 6-6 6-6-6zM6 9H3v12h5m10-12h3v12h-5M6 19l2 2-2 2m12-4-2 2 2 2\"/></g></svg>"
+  },
+  "shape": "rect",
+  "description": "根据审批流程事件、结果或状态选择后续逻辑流分支",
+  "group": "审批流",
+  "order": 5005,
+  "scaffold": {
+    "type": "processStatusRouter",
+    "name": "流程状态路由",
+    "statusField": "",
+    "statusMap": {
+      "processing": {
+        "code": ""
+      },
+      "suspended": {
+        "code": ""
+      },
+      "withdrawn": {
+        "code": ""
+      },
+      "approved": {
+        "code": ""
+      },
+      "veto": {
+        "code": ""
+      },
+      "canceled": {
+        "code": ""
+      },
+      "terminated": {
+        "code": ""
+      }
+    },
+    "inputPorts": [
+      {
+        "name": "",
+        "description": "流程事件、流程信息或包含状态字段的业务数据",
+        "dataType": "any"
+      }
+    ],
+    "outputPorts": [
+      {
+        "name": "审批中",
+        "description": "流程已发起或正在审批",
+        "dataType": "any",
+        "exclusiveGroupId": "approval-process-status"
+      },
+      {
+        "name": "已暂停",
+        "description": "流程已暂停，可恢复或撤回",
+        "dataType": "any",
+        "exclusiveGroupId": "approval-process-status"
+      },
+      {
+        "name": "已撤回",
+        "description": "流程已由发起人撤回",
+        "dataType": "any",
+        "exclusiveGroupId": "approval-process-status"
+      },
+      {
+        "name": "通过",
+        "description": "流程审批通过",
+        "dataType": "any",
+        "exclusiveGroupId": "approval-process-status"
+      },
+      {
+        "name": "否决",
+        "description": "流程审批否决",
+        "dataType": "any",
+        "exclusiveGroupId": "approval-process-status"
+      },
+      {
+        "name": "撤销",
+        "description": "流程已撤销",
+        "dataType": "any",
+        "exclusiveGroupId": "approval-process-status"
+      },
+      {
+        "name": "终止",
+        "description": "流程已终止",
+        "dataType": "any",
+        "exclusiveGroupId": "approval-process-status"
+      },
+      {
+        "name": "其他",
+        "description": "未识别或不属于以上状态",
+        "dataType": "any",
+        "exclusiveGroupId": "approval-process-status",
+        "defaultBranch": true
+      }
+    ]
+  },
+  "portRules": {
+    "input": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    },
+    "output": {
+      "ruleType": "limit",
+      "min": 8,
+      "max": 8
+    }
+  },
+  "properties": [
+    {
+      "type": "input-text",
+      "name": "statusField",
+      "label": "业务状态字段"
+    },
+    {
+      "type": "json",
+      "name": "statusMap",
+      "label": "流程状态映射"
+    }
+  ]
+}

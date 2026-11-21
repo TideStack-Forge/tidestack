@@ -1,0 +1,5 @@
+{
+  "path": "/auth/oidc-consent",
+  "type": "amis",
+  "title": "授权确认"
+}

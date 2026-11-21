@@ -1,0 +1,200 @@
+{
+  "type": "readExcel",
+  "label": "读取Excel",
+  "icon": "excel",
+  "svgs": {
+    "excel": "<svg class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"4481\" width=\"300\" height=\"300\"><path d=\"M875.789474 35.031579H382.652632c-21.557895 0-48.505263 0-80.842106 24.252632L145.515789 191.326316C121.263158 210.189474 107.789474 223.663158 107.789474 266.778947v37.726316c0 21.557895 18.863158 40.421053 40.421052 40.421053h134.736842c21.557895 0 40.421053-18.863158 40.421053-40.421053V261.389474c0-10.778947-8.084211-18.863158-18.863158-18.863158s-18.863158 8.084211-18.863158 18.863158v43.115789c0 2.694737-2.694737 2.694737-2.694737 2.694737h-134.736842c-2.694737 0-2.694737-2.694737-2.694737-2.694737V266.778947c0-26.947368 5.389474-29.642105 26.947369-48.505263L323.368421 88.926316c24.252632-16.168421 37.726316-16.168421 59.284211-16.168421h493.136842c2.694737 0 2.694737 2.694737 2.694737 2.694737v875.789473c0 2.694737-2.694737 2.694737-2.694737 2.694737h-727.578948c-2.694737 0-2.694737-2.694737-2.694737-2.694737v-512c0-10.778947-8.084211-18.863158-18.863157-18.863158s-18.863158 5.389474-18.863158 16.168421v512c0 21.557895 18.863158 40.421053 40.421052 40.421053H878.484211c21.557895 0 40.421053-18.863158 40.421052-40.421053V75.452632c-2.694737-21.557895-18.863158-40.421053-43.115789-40.421053z\" p-id=\"4482\"></path><path d=\"M382.652632 770.694737c2.694737 2.694737 8.084211 5.389474 10.778947 5.389474 5.389474 0 10.778947-2.694737 13.473684-8.084211L512 646.736842l102.4 121.263158c2.694737 5.389474 8.084211 8.084211 13.473684 8.084211s8.084211-2.694737 10.778948-5.389474c8.084211-5.389474 8.084211-18.863158 2.694736-26.947369l-105.094736-126.652631 105.094736-126.652632c5.389474-8.084211 5.389474-18.863158-2.694736-26.947368-8.084211-5.389474-18.863158-5.389474-26.947369 2.694737L512 587.452632l-102.4-121.263158c-5.389474-8.084211-18.863158-8.084211-26.947368-2.694737-8.084211 5.389474-8.084211 18.863158-2.694737 26.947368l105.094737 126.652632-105.094737 126.652631c-5.389474 8.084211-5.389474 21.557895 2.694737 26.947369z\" p-id=\"4483\"></path></svg>"
+  },
+  "shape": "rect",
+  "description": "从文件路径、上传文件对象、文件对象、输入流、内存缓冲等数据源读取 Excel 文件内容",
+  "group": "文件格式",
+  "order": 9001,
+  "scaffold": {
+    "type": "readExcel",
+    "name": "读取Excel",
+    "inputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "any"
+      }
+    ],
+    "outputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "any"
+      }
+    ]
+  },
+  "portRules": {
+    "input": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    },
+    "output": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    }
+  },
+  "properties": [
+    {
+      "type": "input-text",
+      "name": "excelSourcePath",
+      "label": "Excel数据源",
+      "value": "data.file"
+    },
+    {
+      "type": "input-text",
+      "name": "xlsFlagPath",
+      "label": "XLS格式标识",
+      "value": "data.isXls"
+    },
+    {
+      "type": "button-group-select",
+      "name": "sheetSelectionMode",
+      "label": "读取范围",
+      "value": "Single",
+      "options": [
+        {
+          "label": "单工作表",
+          "value": "Single"
+        },
+        {
+          "label": "多工作表",
+          "value": "Multiple"
+        },
+        {
+          "label": "全部",
+          "value": "All"
+        }
+      ]
+    },
+    {
+      "type": "button-group-select",
+      "name": "sheetIdentifierType",
+      "label": "工作表选择方式",
+      "value": "Index",
+      "options": [
+        {
+          "label": "索引",
+          "value": "Index"
+        },
+        {
+          "label": "名称",
+          "value": "Name"
+        }
+      ],
+      "visibleOn": "${ sheetSelectionMode !== 'All'}"
+    },
+    {
+      "type": "input-text",
+      "name": "sheetName",
+      "label": "工作表名",
+      "required": true,
+      "visibleOn": "${ sheetSelectionMode == 'Single' && sheetIdentifierType == 'Name'}"
+    },
+    {
+      "type": "input-number",
+      "name": "sheetIndex",
+      "label": "工作表索引",
+      "required": true,
+      "min": 0,
+      "value": 0,
+      "visibleOn": "${ sheetSelectionMode == 'Single' && sheetIdentifierType == 'Index'}"
+    },
+    {
+      "type": "input-array",
+      "name": "sheetNames",
+      "label": "工作表名",
+      "required": true,
+      "items": [
+        {
+          "type": "input-text"
+        }
+      ],
+      "visibleOn": "${ sheetSelectionMode == 'Multiple' && sheetIdentifierType == 'Name'}"
+    },
+    {
+      "type": "input-array",
+      "name": "sheetIndexes",
+      "label": "工作表索引",
+      "required": true,
+      "items": [
+        {
+          "type": "input-number",
+          "min": 0
+        }
+      ],
+      "visibleOn": "${ sheetSelectionMode == 'Multiple' && sheetIdentifierType == 'Index'}"
+    },
+    {
+      "type": "button-group-select",
+      "name": "multiSheetResultFormat",
+      "label": "多工作表读取格式",
+      "value": "Map",
+      "options": [
+        {
+          "label": "Map格式",
+          "value": "Map"
+        },
+        {
+          "label": "列表格式",
+          "value": "List"
+        }
+      ],
+      "hiddenOn": "${ sheetSelectionMode == 'Single' }"
+    },
+    {
+      "type": "button-group-select",
+      "name": "sheetDataFormat",
+      "label": "工作表数据格式",
+      "value": "ListOfMap",
+      "options": [
+        {
+          "label": "行数据为Map的行列表",
+          "value": "ListOfMap"
+        },
+        {
+          "label": "行数据为List的行列表",
+          "value": "ListOfList"
+        },
+        {
+          "label": "SheetData对象",
+          "value": "SheetData"
+        }
+      ],
+      "hiddenOn": "${ sheetSelectionMode == 'Single' }"
+    },
+    {
+      "type": "input-number",
+      "name": "startRow",
+      "label": "开始行索引",
+      "required": true,
+      "value": 0,
+      "min": 0
+    },
+    {
+      "type": "input-number",
+      "name": "startColumn",
+      "label": "开始列索引",
+      "required": true,
+      "value": 0,
+      "min": 0
+    },
+    {
+      "type": "input-number",
+      "name": "maxRows",
+      "label": "最大读取行数",
+      "clearValueOnEmpty": true
+    },
+    {
+      "type": "input-number",
+      "name": "maxColumn",
+      "label": "最大读取列树",
+      "clearValueOnEmpty": true
+    }
+  ]
+}

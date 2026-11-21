@@ -1,0 +1,271 @@
+{
+  "name": "/system-setting/platform-cache",
+  "schema": {
+    "type": "page",
+    "title": "平台缓存管理",
+    "initApi": {
+      "method": "get",
+      "url": "/api/platform-cache/summary"
+    },
+    "data": {
+      "cacheName": "",
+      "cacheTitle": ""
+    },
+    "body": [
+      {
+        "type": "tpl",
+        "tpl": "<div class='m-b-sm'>当前平台缓存管理器：${cacheManagerType || '未知'}</div>"
+      },
+      {
+        "type": "grid",
+        "columns": [
+          {
+            "md": 6,
+            "body": {
+              "type": "crud",
+              "id": "cacheRegionList",
+              "syncLocation": false,
+              "api": {
+                "method": "get",
+                "url": "/api/platform-cache/regions"
+              },
+              "childrenField": "children",
+              "onEvent": {
+                "rowClick": {
+                  "actions": [
+                    {
+                      "actionType": "reload",
+                      "componentId": "cacheEntryList",
+                      "args": {
+                        "resetPage": true
+                      },
+                      "dataMergeMode": "merge",
+                      "data": {
+                        "cacheName": "${item.name}",
+                        "cacheTitle": "${item.name}"
+                      }
+                    }
+                  ]
+                }
+              },
+              "headerToolbar": [
+                "reload",
+                {
+                  "type": "button",
+                  "label": "清空全部缓存",
+                  "level": "danger",
+                  "actionType": "ajax",
+                  "confirmText": "确认清空全部缓存吗？",
+                  "api": {
+                    "method": "delete",
+                    "url": "/api/platform-cache"
+                  },
+                  "onEvent": {
+                    "success": {
+                      "actions": [
+                        {
+                          "actionType": "reload",
+                          "componentName": "cacheRegionList"
+                        },
+                        {
+                          "actionType": "reload",
+                          "componentName": "cacheEntryList",
+                          "args": {
+                            "resetPage": true
+                          },
+                          "dataMergeMode": "merge",
+                          "data": {
+                            "cacheName": "",
+                            "cacheTitle": ""
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ],
+              "columns": [
+                {
+                  "name": "displayName",
+                  "label": "缓存空间"
+                },
+                {
+                  "name": "entryCount",
+                  "label": "条目数"
+                },
+                {
+                  "name": "entryCountMode",
+                  "label": "统计方式"
+                },
+                {
+                  "name": "inspectable",
+                  "label": "可查看",
+                  "type": "mapping",
+                  "map": {
+                    "true": "<span class='label label-success'>是</span>",
+                    "false": "<span class='label label-default'>否</span>"
+                  }
+                },
+                {
+                  "type": "operation",
+                  "label": "操作",
+                  "buttons": [
+                    {
+                      "type": "button",
+                      "label": "清空缓存",
+                      "level": "link",
+                      "className": "text-danger",
+                      "hiddenOn": "${!hasCache}",
+                      "actionType": "ajax",
+                      "confirmText": "确认清空缓存空间 ${name} 吗？",
+                      "api": {
+                        "method": "delete",
+                        "url": "/api/platform-cache/regions?cacheName=${name}"
+                      },
+                      "onEvent": {
+                        "success": {
+                          "actions": [
+                            {
+                              "actionType": "reload",
+                              "componentName": "cacheRegionList"
+                            },
+                            {
+                              "actionType": "reload",
+                              "componentName": "cacheEntryList",
+                              "args": {
+                                "resetPage": true
+                              },
+                              "dataMergeMode": "merge",
+                              "data": {
+                                "cacheName": "${__rendererData.cacheName || __rendererData.name}",
+                                "cacheTitle": "${__rendererData.cacheTitle || __rendererData.name}"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "footerToolbar": [
+                "statistics"
+              ]
+            }
+          },
+          {
+            "md": 6,
+            "body": {
+              "type": "crud",
+              "name": "cacheEntryList",
+              "id": "cacheEntryList",
+              "syncLocation": false,
+              "api": {
+                "method": "get",
+                "url": "/api/platform-cache/entries?cacheName=${cacheName}",
+                "sendOn": "${cacheName}"
+              },
+              "headerToolbar": [
+                {
+                  "type": "tpl",
+                  "tpl": "当前缓存空间：${cacheTitle || cacheName || '未选择'}"
+                },
+                "reload"
+              ],
+              "columns": [
+                {
+                  "name": "keyDisplay",
+                  "label": "键"
+                },
+                {
+                  "name": "keyType",
+                  "label": "键类型"
+                },
+                {
+                  "name": "valueType",
+                  "label": "值类型"
+                },
+                {
+                  "name": "valuePreview",
+                  "label": "值预览"
+                },
+                {
+                  "type": "operation",
+                  "label": "操作",
+                  "buttons": [
+                    {
+                      "type": "button",
+                      "label": "查看",
+                      "level": "link",
+                      "actionType": "dialog",
+                      "dialog": {
+                        "type": "dialog",
+                        "title": "缓存值",
+                        "size": "lg",
+                        "body": {
+                          "type": "form",
+                          "wrapWithPanel": false,
+                          "body": [
+                            {
+                              "type": "json-editor",
+                              "name": "valueJson",
+                              "label": false,
+                              "disabled": true
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "button",
+                      "label": "删除条目",
+                      "level": "link",
+                      "className": "text-danger",
+                      "actionType": "ajax",
+                      "confirmText": "确认删除该缓存条目吗？",
+                      "api": {
+                        "method": "delete",
+                        "url": "/api/platform-cache/entries?cacheName=${cacheName}&entryToken=${entryToken}"
+                      },
+                      "onEvent": {
+                        "success": {
+                          "actions": [
+                            {
+                              "actionType": "reload",
+                              "componentName": "cacheEntryList",
+                              "args": {
+                                "resetPage": true
+                              }
+                            },
+                            {
+                              "actionType": "reload",
+                              "componentName": "cacheRegionList"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "placeholder": "请选择左侧缓存空间后查看条目",
+              "footerToolbar": [
+                "statistics",
+                "switch-per-page",
+                "pagination"
+              ],
+              "perPageAvailable": [
+                10,
+                20,
+                50
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "pullRefresh": {
+      "disabled": true
+    }
+  }
+}

@@ -1,0 +1,650 @@
+{
+  "name": "/dev/{appName}/resource",
+  "schema": {
+    "type": "page",
+    "title": "资源管理",
+    "aside": [
+      {
+        "size": "sm",
+        "style": {
+          "display": "block",
+          "position": "static"
+        },
+        "wrapperBody": false,
+        "isFixedHeight": false,
+        "type": "container",
+        "body": [
+          {
+            "type": "container",
+            "className": "m-b-xs",
+            "wrapperBody": false,
+            "isFixedHeight": false,
+            "style": {
+              "display": "flex",
+              "justifyContent": "space-between",
+              "alignItems": "center",
+              "gap": "8px"
+            },
+            "body": [
+              {
+                "type": "tpl",
+                "tpl": "<div class='text-muted'>目录</div>"
+              },
+              {
+                "type": "button",
+                "label": "新建目录",
+                "level": "link",
+                "actionType": "dialog",
+                "dialog": {
+                  "title": "新建目录",
+                  "body": {
+                    "type": "form",
+                    "api": {
+                      "method": "post",
+                      "url": "/api/dev/${appName}/resource/directories"
+                    },
+                    "body": [
+                      {
+                        "type": "hidden",
+                        "name": "scope",
+                        "value": "${scope}"
+                      },
+                      {
+                        "type": "input-text",
+                        "name": "directory",
+                        "label": "目录路径",
+                        "required": true,
+                        "placeholder": "例如：templates/mail"
+                      }
+                    ],
+                    "onEvent": {
+                      "submitSucc": {
+                        "actions": [
+                          {
+                            "actionType": "closeDialog"
+                          },
+                          {
+                            "actionType": "reload",
+                            "componentName": "resourceDirectoryTree",
+                            "dataMergeMode": "merge",
+                            "data": {
+                              "scope": "${scope}"
+                            }
+                          },
+                          {
+                            "actionType": "reload",
+                            "componentName": "resourceList",
+                            "args": {
+                              "resetPage": true
+                            },
+                            "dataMergeMode": "merge",
+                            "data": {
+                              "scope": "${scope}"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "input-tree",
+            "name": "resourceDirectoryTree",
+            "label": "",
+            "value": "",
+            "enableNodePath": false,
+            "multiple": false,
+            "source": {
+              "method": "get",
+              "url": "/api/dev/${appName}/resource/directories?scope=${scope}",
+              "responseData": {
+                "items": [
+                  {
+                    "label": "全部资源",
+                    "value": "",
+                    "icon": "folder",
+                    "children": "$items"
+                  }
+                ]
+              }
+            },
+            "valueField": "value",
+            "labelField": "label",
+            "showIcon": true,
+            "initiallyOpen": true,
+            "heightAuto": true,
+            "onEvent": {
+              "change": {
+                "actions": [
+                  {
+                    "actionType": "reload",
+                    "componentName": "resourceList",
+                    "args": {
+                      "resetPage": true
+                    },
+                    "dataMergeMode": "merge",
+                    "data": {
+                      "resourceDirectoryTree": "${event.data.value}"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "toolbar": [
+      {
+        "type": "button",
+        "label": "新建资源",
+        "level": "primary",
+        "actionType": "dialog",
+        "dialog": {
+          "title": "新建资源",
+          "size": "lg",
+          "body": {
+            "type": "form",
+            "reload": "resourceList",
+            "api": {
+              "method": "post",
+              "url": "/api/dev/${appName}/resource"
+            },
+            "body": [
+              {
+                "type": "select",
+                "name": "scope",
+                "label": "范围",
+                "required": true,
+                "options": [
+                  {
+                    "label": "前端",
+                    "value": "frontend"
+                  },
+                  {
+                    "label": "后端",
+                    "value": "backend"
+                  }
+                ]
+              },
+              {
+                "type": "input-text",
+                "name": "key",
+                "label": "资源 Key",
+                "required": true,
+                "placeholder": "例如：templates/invoice.docx"
+              },
+              {
+                "type": "input-text",
+                "name": "displayName",
+                "label": "显示名称"
+              },
+              {
+                "type": "textarea",
+                "name": "description",
+                "label": "描述"
+              },
+              {
+                "type": "input-text",
+                "name": "versionTag",
+                "label": "版本标记"
+              },
+              {
+                "type": "input-kv",
+                "name": "metadata",
+                "label": "扩展元数据"
+              }
+            ]
+          }
+        }
+      },
+      "reload"
+    ],
+    "body": [
+      {
+        "type": "container",
+        "className": "mb-2",
+        "wrapperBody": false,
+        "isFixedHeight": false,
+        "style": {
+          "display": "flex",
+          "alignItems": "center",
+          "gap": "12px",
+          "flexWrap": "wrap"
+        },
+        "body": [
+          {
+            "type": "button-group-select",
+            "name": "scope",
+            "value": "frontend",
+            "options": [
+              {
+                "label": "前端资源",
+                "value": "frontend"
+              },
+              {
+                "label": "后端资源",
+                "value": "backend"
+              }
+            ],
+            "onEvent": {
+              "change": {
+                "actions": [
+                  {
+                    "actionType": "reload",
+                    "componentName": "resourceDirectoryTree",
+                    "dataMergeMode": "merge",
+                    "data": {
+                      "scope": "${event.data.value}",
+                      "resourceDirectoryTree": ""
+                    }
+                  },
+                  {
+                    "actionType": "reload",
+                    "componentName": "resourceList",
+                    "args": {
+                      "resetPage": true
+                    },
+                    "dataMergeMode": "merge",
+                    "data": {
+                      "scope": "${event.data.value}",
+                      "resourceDirectoryTree": ""
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "tpl",
+            "tpl": "<span class='text-muted'>按目录浏览应用默认资源，在列表中按关键字筛选和管理文件内容。</span>"
+          }
+        ]
+      },
+      {
+        "type": "crud",
+        "name": "resourceList",
+        "id": "resourceList",
+        "syncLocation": false,
+        "api": {
+          "method": "get",
+          "url": "/api/dev/${appName}/resource",
+          "data": {
+            "scope": "$scope",
+            "directory": "$resourceDirectoryTree",
+            "keyword": "$keyword"
+          }
+        },
+        "filter": {
+          "title": "",
+          "submitText": "搜索",
+          "body": [
+            {
+              "type": "input-text",
+              "name": "keyword",
+              "label": "关键字",
+              "placeholder": "按资源 Key 或文件名搜索",
+              "clearable": true
+            }
+          ]
+        },
+        "headerToolbar": [
+          "filter-toggler",
+          "reload"
+        ],
+        "columns": [
+          {
+            "name": "model.scope",
+            "label": "范围",
+            "type": "mapping",
+            "map": {
+              "frontend": "<span class='label label-success'>前端</span>",
+              "backend": "<span class='label label-warning'>后端</span>"
+            }
+          },
+          {
+            "name": "model.key",
+            "label": "资源 Key"
+          },
+          {
+            "name": "model.fileName",
+            "label": "文件名"
+          },
+          {
+            "name": "model.contentType",
+            "label": "内容类型"
+          },
+          {
+            "name": "model.size",
+            "label": "大小(B)"
+          },
+          {
+            "name": "lastModifiedTime",
+            "label": "最后修改",
+            "type": "datetime"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "buttons": [
+              {
+                "type": "button",
+                "label": "详情",
+                "level": "link",
+                "actionType": "drawer",
+                "drawer": {
+                  "title": "资源详情",
+                  "size": "lg",
+                  "position": "right",
+                  "body": [
+                    {
+                      "type": "panel",
+                      "title": "基础信息",
+                      "body": {
+                        "type": "property",
+                        "items": [
+                          {
+                            "label": "范围",
+                            "content": "${model.scope == 'frontend' ? '前端' : '后端'}"
+                          },
+                          {
+                            "label": "资源 Key",
+                            "content": "${model.key}"
+                          },
+                          {
+                            "label": "目录",
+                            "content": "${model.directory || '<根目录>'}"
+                          },
+                          {
+                            "label": "文件名",
+                            "content": "${model.fileName}"
+                          },
+                          {
+                            "label": "内容类型",
+                            "content": "${model.contentType || '-'}"
+                          },
+                          {
+                            "label": "大小(B)",
+                            "content": "${model.size || '-'}"
+                          },
+                          {
+                            "label": "校验和",
+                            "content": "${model.checksum || '-'}"
+                          },
+                          {
+                            "label": "版本标记",
+                            "content": "${model.versionTag || '-'}"
+                          },
+                          {
+                            "label": "显示名称",
+                            "content": "${model.displayName || '-'}"
+                          },
+                          {
+                            "label": "最后修改",
+                            "content": "${lastModifiedTime ? (lastModifiedTime | date:YYYY-MM-DD HH\\:mm\\:ss:) : '-'}"
+                          },
+                          {
+                            "label": "描述",
+                            "content": "${model.description || '-'}",
+                            "span": 2
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "json",
+                      "label": "扩展元数据",
+                      "source": "${model.metadata}"
+                    },
+                    {
+                      "type": "service",
+                      "name": "resourceDetailStatus",
+                      "id": "resourceDetailStatus",
+                      "api": {
+                        "method": "get",
+                        "url": "/api/dev/${appName}/resource/${model.scope}/${model.key}/status"
+                      },
+                      "body": [
+                        {
+                          "type": "panel",
+                          "title": "VCS 状态",
+                          "body": {
+                            "type": "property",
+                            "items": [
+                              {
+                                "name": "versionState",
+                                "label": "版本状态"
+                              },
+                              {
+                                "name": "lockState",
+                                "label": "锁状态"
+                              },
+                              {
+                                "name": "lockOwner",
+                                "label": "锁定人"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "button-toolbar",
+                          "buttons": [
+                            {
+                              "type": "button",
+                              "label": "提交",
+                              "level": "success",
+                              "actionType": "ajax",
+                              "reload": "resourceList,resourceDetailStatus,resourceDetailChangeLog",
+                              "confirmText": "确认提交当前修改吗？",
+                              "api": {
+                                "method": "post",
+                                "url": "/api/dev/${appName}/resource/${model.scope}/${model.key}/commit",
+                                "data": {
+                                  "commitMsg": "更新资源内容或元数据"
+                                }
+                              }
+                            },
+                            {
+                              "type": "button",
+                              "label": "回滚",
+                              "level": "warning",
+                              "actionType": "ajax",
+                              "reload": "resourceList,resourceDetailStatus,resourceDetailChangeLog",
+                              "confirmText": "确认回滚当前未提交修改吗？",
+                              "api": {
+                                "method": "post",
+                                "url": "/api/dev/${appName}/resource/${model.scope}/${model.key}/rollback"
+                              }
+                            },
+                            {
+                              "type": "button",
+                              "label": "锁定",
+                              "level": "link",
+                              "visibleOn": "${lockState == 'UNLOCKED'}",
+                              "actionType": "ajax",
+                              "reload": "resourceList,resourceDetailStatus",
+                              "api": {
+                                "method": "post",
+                                "url": "/api/dev/${appName}/resource/${model.scope}/${model.key}/lock"
+                              }
+                            },
+                            {
+                              "type": "button",
+                              "label": "释放锁",
+                              "level": "link",
+                              "visibleOn": "${lockState != 'UNLOCKED'}",
+                              "actionType": "ajax",
+                              "reload": "resourceList,resourceDetailStatus",
+                              "api": {
+                                "method": "post",
+                                "url": "/api/dev/${appName}/resource/${model.scope}/${model.key}/release-lock"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "panel",
+                          "title": "变更记录",
+                          "body": {
+                            "type": "crud",
+                            "name": "resourceDetailChangeLog",
+                            "id": "resourceDetailChangeLog",
+                            "api": {
+                              "method": "get",
+                              "url": "/api/dev/${appName}/resource/${model.scope}/${model.key}/change-log"
+                            },
+                            "columns": [
+                              {
+                                "name": "revision",
+                                "label": "版本"
+                              },
+                              {
+                                "name": "message",
+                                "label": "说明"
+                              },
+                              {
+                                "name": "author",
+                                "label": "作者"
+                              },
+                              {
+                                "name": "timestamp",
+                                "label": "时间",
+                                "type": "datetime"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "button-toolbar",
+                      "buttons": [
+                        {
+                          "type": "button",
+                          "label": "上传内容",
+                          "level": "primary",
+                          "actionType": "dialog",
+                          "dialog": {
+                            "title": "上传资源内容",
+                            "body": {
+                              "type": "form",
+                              "reload": "resourceList",
+                              "api": {
+                                "method": "post",
+                                "url": "/api/dev/${appName}/resource/content"
+                              },
+                              "body": [
+                                {
+                                  "type": "hidden",
+                                  "name": "scope",
+                                  "value": "${model.scope}"
+                                },
+                                {
+                                  "type": "hidden",
+                                  "name": "key",
+                                  "value": "${model.key}"
+                                },
+                                {
+                                  "type": "input-file",
+                                  "name": "file",
+                                  "label": "文件",
+                                  "required": true
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "type": "button",
+                          "label": "下载当前内容",
+                          "level": "link",
+                          "actionType": "download",
+                          "api": {
+                            "method": "get",
+                            "url": "/api/dev/${appName}/resource/content?scope=${model.scope}&key=${model.key}"
+                          }
+                        },
+                        {
+                          "type": "button",
+                          "label": "删除当前内容",
+                          "level": "link",
+                          "className": "text-danger",
+                          "actionType": "ajax",
+                          "confirmText": "确认删除当前资源内容吗？",
+                          "api": {
+                            "method": "delete",
+                            "url": "/api/dev/${appName}/resource/content?scope=${model.scope}&key=${model.key}"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "button",
+                "label": "上传内容",
+                "level": "link",
+                "actionType": "dialog",
+                "dialog": {
+                  "title": "上传资源内容",
+                  "body": {
+                    "type": "form",
+                    "reload": "resourceList",
+                    "api": {
+                      "method": "post",
+                      "url": "/api/dev/${appName}/resource/content"
+                    },
+                    "body": [
+                      {
+                        "type": "hidden",
+                        "name": "scope",
+                        "value": "${model.scope}"
+                      },
+                      {
+                        "type": "hidden",
+                        "name": "key",
+                        "value": "${model.key}"
+                      },
+                      {
+                        "type": "input-file",
+                        "name": "file",
+                        "label": "文件",
+                        "required": true
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "button",
+                "label": "下载",
+                "level": "link",
+                "actionType": "download",
+                "api": {
+                  "method": "get",
+                  "url": "/api/dev/${appName}/resource/content?scope=${model.scope}&key=${model.key}"
+                }
+              },
+              {
+                "type": "button",
+                "label": "删除",
+                "level": "link",
+                "className": "text-danger",
+                "actionType": "ajax",
+                "confirmText": "确认删除这个资源吗？",
+                "api": {
+                  "method": "delete",
+                  "url": "/api/dev/${appName}/resource/${model.scope}/${model.key}"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

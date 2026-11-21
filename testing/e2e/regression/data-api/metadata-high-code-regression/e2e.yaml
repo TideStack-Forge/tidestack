@@ -1,0 +1,26 @@
+{
+  "scenario": "data-api/metadata-high-code-regression",
+  "testType": "e2e",
+  "suite": "regression",
+  "mode": "e2e",
+  "runner": "testing/common/runners/api/metadata_high_code_data_api_regression.py",
+  "defaultMode": "inventory",
+  "steps": [
+    {
+      "name": "inventory-only",
+      "run": "python3 testing/common/runners/api/metadata_high_code_data_api_regression.py --mode inventory"
+    },
+    {
+      "name": "high-code-read",
+      "run": "python3 testing/common/runners/api/metadata_high_code_data_api_regression.py --mode execute --execution-ring high-code-read --base-url ${OB_TEST_BASE_URL}"
+    }
+  ],
+  "reports": {
+    "summary": "tmp/testing-evidence/metadata-high-code-data-api-regression/default-docs/2026-03-15-major-refactor-metadata-high-code-data-api-regression-report.md",
+    "evidenceDir": "tmp/testing-evidence/metadata-high-code-data-api-regression"
+  },
+  "notes": [
+    "Bridge phase: machine execution covers metadata live rings, high-code GET rings, and shared inventory generation.",
+    "High-code write execution stays in harness/manual follow-up until seed payloads and cleanup semantics are standardized."
+  ]
+}

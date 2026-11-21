@@ -1,0 +1,70 @@
+{
+  "name": "/dev/{appName}/business-model/detail",
+  "schema": {
+    "type": "tabs",
+    "tabsMode": "simple",
+    "toolbar": [
+      {
+        "$ref": "editModelButton",
+        "level": "link",
+        "close": true
+      }
+    ],
+    "tabs": [
+      {
+        "title": "基本信息",
+        "tab": [
+          {
+            "$ref": "modelBasicInfo"
+          },
+          {
+            "type": "tpl",
+            "tpl": "<h3>变更日志</h3>"
+          },
+          {
+            "$ref": "changeLogList"
+          }
+        ]
+      },
+      {
+        "title": "模型详情",
+        "tab": {
+          "type": "wrapper",
+          "style": {
+            "height": "70vh",
+            "padding": "0"
+          },
+          "body": {
+            "type": "form",
+            "className": "h-full",
+            "static": true,
+            "wrapWithPanel": false,
+            "initApi": "GET:/api/dev/${appName}/business-model/${fullName}",
+            "body": {
+              "type": "amis-schema",
+              "schemaId": "/dev/{appName}/business-model/editor",
+              "data": {
+                "appName": "${appName}",
+                "fullName": "${fullName}",
+                "modelType": "${modelType}"
+              }
+            }
+          }
+        }
+      },
+      {
+        "title": "投射模型",
+        "tab": {
+          "$ref": "modelBundlePanel"
+        }
+      }
+    ],
+    "actions": [
+      {
+        "type": "button",
+        "label": "关闭",
+        "actionType": "close"
+      }
+    ]
+  }
+}

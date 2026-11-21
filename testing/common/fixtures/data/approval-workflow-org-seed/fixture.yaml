@@ -1,0 +1,42 @@
+{
+  "id": "data/approval-workflow-org-seed",
+  "title": "Approval Workflow Organization Seed",
+  "class": "data",
+  "capabilities": [
+    "organization-seed",
+    "approval-workflow-context",
+    "deterministic-hierarchy"
+  ],
+  "lifecycle": {
+    "up": "",
+    "check": "organization seed contains deterministic IDs, parent-child hierarchy, and traceable org codes",
+    "reset": "",
+    "down": ""
+  },
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "seedType",
+      "value": "organization-structure"
+    },
+    {
+      "name": "organizationSeedFile",
+      "value": "testing/common/fixtures/data/approval-workflow-org-seed/organization-structure.json"
+    },
+    {
+      "name": "rootOrganizationId",
+      "value": "AWF_ORG_COMPANY"
+    }
+  ],
+  "healthChecks": [
+    {
+      "name": "org-hierarchy-complete",
+      "expect": "all organization nodes contain unique deterministic IDs and valid parent references"
+    }
+  ],
+  "prerequisites": [],
+  "notes": [
+    "This fixture is repository-local static seed data and should not include environment-specific runtime identifiers.",
+    "Organization IDs are shared with users and approval-flow datasets for composable scenario assembly."
+  ]
+}

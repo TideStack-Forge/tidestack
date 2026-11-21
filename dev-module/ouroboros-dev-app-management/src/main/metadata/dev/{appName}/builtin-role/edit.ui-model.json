@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/builtin-role/edit",
+  "type": "amis",
+  "title": "编辑内置角色"
+}

@@ -1,0 +1,61 @@
+{
+  "dataset": {
+    "name": "srt.sales.orders",
+    "title": "Statistics Reporting Runtime Sales Orders",
+    "kernelType": "sql",
+    "permissionDefinition": {
+      "requiredRoles": ["statistics-reporting.read"],
+      "exportRoles": ["statistics-reporting.export"],
+      "scopeBindings": {"ownerUserId": "currentUser"}
+    },
+    "parameters": [
+      {"name": "region", "title": "Region", "type": "string", "required": false, "visibleInView": true},
+      {"name": "status", "title": "Status", "type": "string", "required": false, "visibleInView": true},
+      {"name": "departmentId", "title": "Department", "type": "string", "required": false, "visibleInView": true},
+      {"name": "ownerUserId", "title": "Owner User", "type": "string", "required": false, "visibleInView": false}
+    ],
+    "fields": [
+      {"name": "orderId", "title": "Order ID", "type": "string", "semanticRole": "detail", "exportable": true},
+      {"name": "customerName", "title": "Customer Name", "type": "string", "semanticRole": "detail", "exportable": true},
+      {"name": "region", "title": "Region", "type": "string", "semanticRole": "dimension", "exportable": true},
+      {"name": "productCategory", "title": "Product Category", "type": "string", "semanticRole": "dimension", "exportable": true},
+      {"name": "orderDate", "title": "Order Date", "type": "date", "semanticRole": "time", "exportable": true},
+      {"name": "status", "title": "Status", "type": "string", "semanticRole": "dimension", "exportable": true},
+      {"name": "salesAmount", "title": "Sales Amount", "type": "number", "semanticRole": "metric", "exportable": true},
+      {"name": "grossProfit", "title": "Gross Profit", "type": "number", "semanticRole": "metric", "exportable": true},
+      {"name": "departmentId", "title": "Department ID", "type": "string", "semanticRole": "dimension", "exportable": false},
+      {"name": "ownerUserId", "title": "Owner User ID", "type": "string", "semanticRole": "detail", "exportable": false}
+    ]
+  },
+  "seedRows": [
+    {"orderId": "SO-2026-001", "customerName": "Acme China", "region": "east", "productCategory": "software", "orderDate": "2026-01-10", "status": "paid", "salesAmount": 120000, "grossProfit": 48000, "departmentId": "D-100", "ownerUserId": "u-alice"},
+    {"orderId": "SO-2026-002", "customerName": "Beta Retail", "region": "east", "productCategory": "hardware", "orderDate": "2026-01-14", "status": "pending", "salesAmount": 42000, "grossProfit": 12600, "departmentId": "D-100", "ownerUserId": "u-alice"},
+    {"orderId": "SO-2026-003", "customerName": "Gamma Med", "region": "north", "productCategory": "software", "orderDate": "2026-02-03", "status": "paid", "salesAmount": 87000, "grossProfit": 34800, "departmentId": "D-200", "ownerUserId": "u-bob"},
+    {"orderId": "SO-2026-004", "customerName": "Delta Foods", "region": "north", "productCategory": "service", "orderDate": "2026-02-09", "status": "cancelled", "salesAmount": 15000, "grossProfit": 1500, "departmentId": "D-200", "ownerUserId": "u-bob"},
+    {"orderId": "SO-2026-005", "customerName": "Echo Auto", "region": "south", "productCategory": "hardware", "orderDate": "2026-02-17", "status": "paid", "salesAmount": 64000, "grossProfit": 16000, "departmentId": "D-100", "ownerUserId": "srt-scoped-reader"},
+    {"orderId": "SO-2026-006", "customerName": "Foxtrot Labs", "region": "south", "productCategory": "software", "orderDate": "2026-03-02", "status": "pending", "salesAmount": 91000, "grossProfit": 36400, "departmentId": "D-100", "ownerUserId": "srt-scoped-reader"},
+    {"orderId": "SO-2026-007", "customerName": "Helios Energy", "region": "west", "productCategory": "service", "orderDate": "2026-03-07", "status": "paid", "salesAmount": 53000, "grossProfit": 13250, "departmentId": "D-200", "ownerUserId": "u-dan"},
+    {"orderId": "SO-2026-008", "customerName": "Iota Trade", "region": "west", "productCategory": "hardware", "orderDate": "2026-03-18", "status": "paid", "salesAmount": 47000, "grossProfit": 11750, "departmentId": "D-200", "ownerUserId": "u-dan"},
+    {"orderId": "SO-2026-009", "customerName": "Jade Telecom", "region": "east", "productCategory": "service", "orderDate": "2026-03-22", "status": "pending", "salesAmount": 39000, "grossProfit": 9750, "departmentId": "D-100", "ownerUserId": "u-alice"},
+    {"orderId": "SO-2026-010", "customerName": "Kappa Health", "region": "north", "productCategory": "software", "orderDate": "2026-04-01", "status": "paid", "salesAmount": 76000, "grossProfit": 30400, "departmentId": "D-200", "ownerUserId": "u-bob"},
+    {"orderId": "SO-2026-011", "customerName": "Lumen Hotels", "region": "south", "productCategory": "service", "orderDate": "2026-04-04", "status": "cancelled", "salesAmount": 21000, "grossProfit": 2100, "departmentId": "D-100", "ownerUserId": "srt-scoped-reader"},
+    {"orderId": "SO-2026-012", "customerName": "Metro Foods", "region": "west", "productCategory": "software", "orderDate": "2026-04-11", "status": "paid", "salesAmount": 99000, "grossProfit": 39600, "departmentId": "D-200", "ownerUserId": "u-dan"}
+  ],
+  "charts": [
+    {"name": "sales-kpi-runtime-chart", "title": "Sales Orders KPI", "type": "chart", "isEnabled": true, "chartType": "metric-card", "datasetName": "srt.sales.orders", "params": {"valueFields": ["salesAmount", "grossProfit"]}},
+    {"name": "sales-crosstab-runtime-chart", "title": "Sales Orders Crosstab", "type": "chart", "isEnabled": true, "chartType": "crosstab", "datasetName": "srt.sales.orders", "params": {"rowField": "region", "columnField": "status", "valueField": "salesAmount"}},
+    {"name": "sales-trend-runtime-chart", "title": "Sales Orders Trend", "type": "chart", "isEnabled": true, "chartType": "line", "datasetName": "srt.sales.orders", "params": {"xField": "orderDate", "yFields": ["salesAmount"], "seriesField": "region"}}
+  ],
+  "dashboard": {
+    "modelType": "dashboard",
+    "name": "sales-overview-runtime-dashboard",
+    "title": "Sales Overview Runtime Dashboard",
+    "isEnabled": true,
+    "layout": {"cols": 24, "rowHeight": 30, "draggable": true, "resizable": true},
+    "widgets": [
+      {"id": "sales-kpi-runtime-chart-widget", "widgetName": "chart", "chartName": "sales-kpi-runtime-chart", "position": {"x": 0, "y": 0}, "size": {"cols": 8, "rows": 8}, "config": {"title": "Sales KPI", "showHeader": true, "showBorder": true}},
+      {"id": "sales-crosstab-runtime-chart-widget", "widgetName": "chart", "chartName": "sales-crosstab-runtime-chart", "position": {"x": 8, "y": 0}, "size": {"cols": 8, "rows": 10}, "config": {"title": "Sales Crosstab", "showHeader": true, "showBorder": true}},
+      {"id": "sales-trend-runtime-chart-widget", "widgetName": "chart", "chartName": "sales-trend-runtime-chart", "position": {"x": 16, "y": 0}, "size": {"cols": 8, "rows": 12}, "config": {"title": "Sales Trend", "showHeader": true, "showBorder": true}}
+    ]
+  }
+}

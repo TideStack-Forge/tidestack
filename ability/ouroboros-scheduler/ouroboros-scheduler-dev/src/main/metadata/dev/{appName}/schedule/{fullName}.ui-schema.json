@@ -1,0 +1,67 @@
+{
+  "name": "/dev/{appName}/schedule/{fullName}",
+  "schema": {
+    "type": "page",
+    "title": "编辑计划任务「${fullName}」",
+    "toolbar": [
+      {
+        "type": "amis-schema",
+        "source": {
+          "method": "get",
+          "url": "/api/dev-fragment-schema/vcs-buttons",
+          "data": {
+            "apiPath": "schedule/${fullName}",
+            "statusId": "scheduleStatus",
+            "formId": "scheduleForm",
+            "actionType": "static"
+          }
+        },
+        "mergeProps": {
+          "onEvent": {
+            "fetchInited": {
+              "actions": [
+                {},
+                {},
+                {
+                  "actionType": "enabled",
+                  "componentId": "taskData",
+                  "expression": "${event.data.responseData.lockState == 'OWNED'}"
+                },
+                {
+                  "actionType": "disabled",
+                  "componentId": "taskData",
+                  "expression": "${event.data.responseData.lockState != 'OWNED'}"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "body": [
+      {
+        "type": "amis-schema",
+        "schemaId": "dev/{appName}/schedule/form",
+        "title": "",
+        "wrapWithPanel": false,
+        "mode": "horizontal",
+        "id": "scheduleForm",
+        "initApi": {
+          "method": "get",
+          "url": "/api/dev/${appName}/schedule/${fullName}"
+        },
+        "api": {
+          "method": "put",
+          "url": "/api/dev/${appName}/schedule/${fullName}"
+        },
+        "mergeProps": {
+          "body": [
+            {
+              "static": true
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

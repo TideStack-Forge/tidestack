@@ -1,0 +1,10 @@
+TideStack (Ouroboros)
+Copyright (c) 2026 TideStack contributors.
+https://github.com/TideStack-Forge/tidestack
+
+This project is licensed under the Apache License, Version 2.0.
+Redistributions must retain the applicable copyright and attribution notices
+as required by Section 4 of that license. This NOTICE does not modify the license.
+
+The included ouroboros-sdk retains its ISC license. Other components and
+third-party code with separate license notices retain their respective licenses.

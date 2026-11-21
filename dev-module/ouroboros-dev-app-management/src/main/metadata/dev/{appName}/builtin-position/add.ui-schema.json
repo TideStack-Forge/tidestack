@@ -1,0 +1,64 @@
+{
+  "name": "/dev/{appName}/builtin-position/add",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "wrapWithPanel": false,
+    "api": {
+      "method": "post",
+      "url": "/api/dev/${appName}/builtin-position"
+    },
+    "onEvent": {
+      "submitSucc": {
+        "actions": [
+          {
+            "actionType": "closeDialog"
+          },
+          {
+            "actionType": "reload",
+            "componentName": "builtin-position-list"
+          }
+        ]
+      }
+    },
+    "body": [
+      {
+        "type": "input-text",
+        "name": "key",
+        "label": "岗位编码",
+        "required": true,
+        "placeholder": "例如：engineer"
+      },
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "岗位名称",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "level",
+        "label": "岗位级别"
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "描述"
+      }
+    ],
+    "actions": [
+      {
+        "type": "button",
+        "label": "关闭",
+        "actionType": "close"
+      },
+      {
+        "type": "button",
+        "label": "保存",
+        "actionType": "confirm",
+        "level": "primary",
+        "primary": true
+      }
+    ]
+  }
+}

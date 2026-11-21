@@ -1,0 +1,128 @@
+{
+  "name": "/system-setting/config-detail",
+  "schema": {
+    "type": "form",
+    "static": true,
+    "title": false,
+    "body": [
+      {
+        "label": "配置键",
+        "type": "input-text",
+        "name": "key",
+        "required": true
+      },
+      {
+        "name": "metadata.label",
+        "type": "input-text",
+        "label": "配置项名称",
+        "required": true
+      },
+      {
+        "name": "value",
+        "type": "amis-schema",
+        "source": "$editorSchema",
+        "static": true,
+        "label": "当前值"
+      },
+      {
+        "name": "metadata.description",
+        "type": "textarea",
+        "label": "描述",
+        "value": "无"
+      },
+      {
+        "type": "fieldSet",
+        "title": "更多元数据",
+        "collapsable": true,
+        "collapsed": true,
+        "body": [
+          {
+            "name": "metadata.valueType",
+            "type": "select",
+            "label": "值类型",
+            "multiple": false,
+            "source": {
+              "url": "/api/sys/configuration/value-type",
+              "method": "get"
+            }
+          },
+          {
+            "name": "metadata.defaultValue",
+            "type": "input-text",
+            "label": "默认值",
+            "required": true
+          },
+          {
+            "name": "metadata.scope",
+            "type": "input-text",
+            "label": "范围"
+          },
+          {
+            "label": "是否允许修改",
+            "name": "metadata.modifiable",
+            "type": "switch",
+            "onText": "允许",
+            "offText": "不允许"
+          },
+          {
+            "label": "是否允许为空",
+            "name": "metadata.nullable",
+            "type": "switch",
+            "onText": "允许",
+            "offText": "不允许"
+          },
+          {
+            "name": "metadata.obsolete",
+            "label": "已过时",
+            "type": "switch",
+            "onText": "是",
+            "offText": "否",
+            "visibleOn": "${metadata.obsolete}"
+          },
+          {
+            "name": "metadata.obsoleteCause",
+            "type": "textarea",
+            "label": "过时原因",
+            "visibleOn": "${metadata.obsolete}",
+            "value": "无"
+          }
+        ]
+      },
+      {
+        "type": "fieldSet",
+        "title": "配置值",
+        "hiddenOn": "${configValue}",
+        "body": "未修改"
+      },
+      {
+        "type": "fieldSet",
+        "title": "配置值",
+        "collapsable": true,
+        "collapsed": false,
+        "visibleOn": "${configValue}",
+        "body": [
+          {
+            "name": "configValue.value",
+            "type": "amis-schema",
+            "source": "$editorSchema",
+            "static": true,
+            "label": "配置值"
+          },
+          {
+            "name": "configValue.updateAt",
+            "type": "input-datetime",
+            "label": "修改时间"
+          },
+          {
+            "name": "configValue.updateBy",
+            "type": "input-text",
+            "label": "修改人"
+          }
+        ]
+      }
+    ],
+    "mode": "horizontal",
+    "actions": [],
+    "wrapWithPanel": false
+  }
+}

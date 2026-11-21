@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent><groupId>com.ouroboros</groupId><artifactId>dev-module</artifactId><version>2.0.0-rc.1-SNAPSHOT</version></parent>
+  <artifactId>ouroboros-dev-groovy-language-server</artifactId>
+  <packaging>pom</packaging>
+  <!-- The isolated distribution must never add patched JDT to a platform application's classpath. -->
+  <build><plugins>
+    <plugin><groupId>org.codehaus.mojo</groupId><artifactId>exec-maven-plugin</artifactId><version>3.5.0</version>
+      <executions><execution><id>groovy-language-server-build-tests</id><phase>test</phase><goals><goal>exec</goal></goals>
+        <configuration><skip>${skipTests}</skip><executable>python3</executable><arguments>
+          <argument>-m</argument><argument>unittest</argument><argument>discover</argument>
+          <argument>-s</argument><argument>${project.basedir}/src/test/python</argument>
+        </arguments></configuration>
+      </execution><execution><id>groovy-language-server-distribution</id><phase>prepare-package</phase><goals><goal>exec</goal></goals>
+        <configuration><executable>python3</executable><arguments><argument>${project.basedir}/build/distribution.py</argument></arguments></configuration>
+      </execution></executions>
+    </plugin>
+    <plugin><groupId>org.codehaus.mojo</groupId><artifactId>build-helper-maven-plugin</artifactId><version>3.6.1</version>
+      <executions><execution><id>attach-language-server-distribution</id><phase>package</phase><goals><goal>attach-artifact</goal></goals>
+        <configuration><artifacts><artifact><file>${project.build.directory}/ouroboros-dev-groovy-language-server.zip</file><type>zip</type><classifier>distribution</classifier></artifact></artifacts></configuration>
+      </execution></executions>
+    </plugin>
+  </plugins></build>
+</project>

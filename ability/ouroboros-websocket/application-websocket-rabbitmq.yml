@@ -1,0 +1,21 @@
+# RabbitMQ STOMP Relay Configuration Example
+# Copy to application.yml and adjust for your environment
+
+ouroboros:
+  websocket:
+    broker-type: rabbitmq-stomp-relay
+    rabbitmq:
+      host: localhost
+      port: 61613
+      username: admin
+      password: admin123
+      virtual-host: /
+      registry-exchange: websocket.registry
+
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin123
+    virtual-host: /

@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/i18n/{fullName}",
+  "type": "amis",
+  "title": "编辑语言文件"
+}

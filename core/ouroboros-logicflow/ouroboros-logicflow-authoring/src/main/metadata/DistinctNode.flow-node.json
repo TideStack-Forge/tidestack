@@ -1,0 +1,53 @@
+{
+  "type": "distinct",
+  "label": "去重",
+  "icon": "distinct",
+  "shape": "rect",
+  "description": "集合去重",
+  "group": "集合操作",
+  "order": 2005,
+  "svgs": {
+    "distinct": "<svg t=\"1705811285632\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"4250\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"300\" height=\"300\"><path d=\"M915.6608 695.296v281.2928H143.872V695.296h771.7376zM403.3536 762.88H340.5824v153.6h62.7712v-153.6z m313.9072 0h-62.7712v153.6h62.7712v-153.6z m0.512-415.5392v281.344H0V347.3408h717.824z m99.84 11.6736l77.6704 80.4352 78.2336-80.4352a29.5424 29.5424 0 0 1 41.984 0 31.0784 31.0784 0 0 1 0 42.7008l-78.2336 80.4864 77.6704 79.872a31.0784 31.0784 0 0 1 0 42.752 29.5424 29.5424 0 0 1-41.984 0l-78.2336-80.4352-77.1072 80.9984a29.5424 29.5424 0 0 1-41.984 0 31.0784 31.0784 0 0 1 0-42.752l77.7216-80.4352-77.7216-80.4864a31.0784 31.0784 0 0 1 0-42.7008 29.5424 29.5424 0 0 1 41.984 0zM218.112 409.6H155.392v153.6H218.112V409.6z m313.9072 0H469.2992v153.6h62.7712V409.6z m383.5904-409.6v281.344H143.872V0h771.7376zM385.4848 67.1232H208.5888v149.2992h176.896V67.072z m466.6368 0H449.536v149.2992h402.5856V67.072z\" p-id=\"4251\"></path></svg>"
+  },
+  "scaffold": {
+    "type": "distinct",
+    "name": "去重",
+    "isEqualExpr": "",
+    "inputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "array"
+      }
+    ],
+    "outputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "array"
+      }
+    ]
+  },
+  "portRules": {
+    "input": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    },
+    "output": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    }
+  },
+  "properties": [
+    {
+      "type": "expression",
+      "name": "isEqualExpr",
+      "codeSite": "logicflow.collection-comparison",
+      "codePointer": "/isEqualExpr",
+      "label": "",
+      "description": "留空则直接用对象对比的方式判断是否相等"
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "script": {
+    "repository": "tidestack-script",
+    "paths": [
+      "libs/util/ouroboros-util/src",
+      "libs/util/ouroboros-util/pom.xml",
+      "libs/common/pom.xml",
+      "libs/common/common-code-intelligence/src",
+      "libs/common/common-code-intelligence/pom.xml",
+      "libs/common/common-script/src",
+      "libs/common/common-script/pom.xml",
+      "libs/common/common-expression/src",
+      "libs/common/common-expression/pom.xml",
+      "libs/common/common-template/src",
+      "libs/common/common-template/pom.xml"
+    ],
+    "overlay": "scripts/open-source/public/script",
+    "license": "metadata-schema/LICENSE"
+  },
+  "project-templates": {
+    "repository": "tidestack-project-templates",
+    "paths": [
+      "project-templates"
+    ],
+    "overlay": "scripts/open-source/public/project-templates",
+    "license": "metadata-schema/LICENSE"
+  },
+  "web-base": {
+    "repository": "tidestack-web",
+    "paths": [
+      "frontends/web/main-app",
+      "frontends/web/ouroboros-amis-runtime",
+      "frontends/web/scripts",
+      "frontends/web/patches",
+      "frontends/web/ouroboros-sdk",
+      "frontends/web/AGENTS.md",
+      "frontends/web/TESTING.md",
+      "frontends/web/tests/README.md",
+      "frontends/web/README.md",
+      "frontends/web/publish-ouroboros-web.sh",
+      "core/ouroboros-business-model/ouroboros-business-model-dev/src/main/metadata/dev/{appName}/business-model.ui-schema.json",
+      "security/ouroboros-web-security/ouroboros-web-security-rbac-manage/src/main/metadata/system-setting/role-management/edit.ui-schema.json",
+      "security/ouroboros-web-security/ouroboros-web-security-rbac-manage/src/main/metadata/system-setting/role-management/view.ui-schema.json",
+      "dev-module/ouroboros-dev-app-management/src/main/metadata/dev/{appName}/builtin-role/add.ui-schema.json",
+      "dev-module/ouroboros-dev-app-management/src/main/metadata/dev/{appName}/builtin-role/edit.ui-schema.json",
+      "ability/ouroboros-widget/ouroboros-widget-user-dashboard/src/main/metadata/user-dashboard.ui-schema.json",
+      "ability/ouroboros-widget/ouroboros-widget-user-dashboard/src/main/metadata/system-setting/user-dashboard-template-manage/add.ui-schema.json",
+      "ability/ouroboros-widget/ouroboros-widget-user-dashboard/src/main/metadata/system-setting/user-dashboard-template-manage/edit.ui-schema.json",
+      "ability/ouroboros-widget/ouroboros-widget-user-dashboard/src/main/metadata/system-setting/user-dashboard-template-manage/detail.ui-schema.json"
+    ],
+    "overlay": "scripts/open-source/public/web-base",
+    "license": "metadata-schema/LICENSE"
+  },
+  "approval-workflow-designer": {
+    "repository": "tidestack-approval-workflow-designer",
+    "paths": [
+      "frontends/web/ouroboros-approval-workflow-designer",
+      "frontends/web/ouroboros-sdk",
+      "frontends/web/AGENTS.md",
+      "frontends/web/TESTING.md",
+      "frontends/web/tests/README.md",
+      "frontends/web/README.md",
+      "testing/fixtures/approval-workflow"
+    ],
+    "overlay": "scripts/open-source/public/approval-workflow-designer",
+    "license": "metadata-schema/LICENSE"
+  },
+  "approval-workflow": {
+    "repository": "tidestack-approval-workflow",
+    "paths": [
+      "bom",
+      "core/ouroboros-approval-workflow/ouroboros-approval-workflow-core",
+      "core/ouroboros-approval-workflow/ouroboros-approval-workflow-engine-testkit",
+      "core/ouroboros-approval-workflow/ouroboros-approval-workflow-flowable",
+      "core/ouroboros-approval-workflow/pom.xml",
+      "core/ouroboros-data/ouroboros-data-core",
+      "core/ouroboros-data/ouroboros-data-pkgen-coding",
+      "core/ouroboros-data/ouroboros-data-plugins",
+      "core/ouroboros-data/ouroboros-data-runtime",
+      "core/ouroboros-data/ouroboros-data-sql",
+      "core/ouroboros-data/ouroboros-data-sql-druid-datasource",
+      "core/ouroboros-data/ouroboros-data-sql-migration",
+      "core/ouroboros-data/ouroboros-data-typed-core",
+      "core/ouroboros-data/ouroboros-data-typed-runtime",
+      "core/ouroboros-data/pom.xml",
+      "core/ouroboros-field-type/ouroboros-field-type-core",
+      "core/ouroboros-field-type/ouroboros-field-type-default-types",
+      "core/ouroboros-field-type/pom.xml",
+      "core/ouroboros-ui-model/ouroboros-ui-model-core",
+      "core/ouroboros-ui-model/ouroboros-ui-model-schema",
+      "core/ouroboros-ui-model/pom.xml",
+      "core/pom.xml",
+      "docs/examples/automation-checks/checkstyle.xml",
+      "docs/examples/automation-checks/pmd-ruleset.xml",
+      "libs/common/common-all",
+      "libs/common/common-app",
+      "libs/common/common-code-intelligence",
+      "libs/common/common-error-code",
+      "libs/common/common-exception",
+      "libs/common/common-exception-mapper",
+      "libs/common/common-expression",
+      "libs/common/common-metadata",
+      "libs/common/common-model",
+      "libs/common/common-script",
+      "libs/common/common-service",
+      "libs/common/common-web",
+      "libs/common/pom.xml",
+      "libs/pom.xml",
+      "libs/util/ouroboros-util",
+      "pom.xml",
+      "testing/fixtures/approval-workflow"
+    ],
+    "overlay": "scripts/open-source/public/approval-workflow",
+    "license": "metadata-schema/LICENSE"
+  },
+  "metadata-schema": {
+    "repository": "tidestack-metadata-schema",
+    "source_root": "metadata-schema",
+    "paths": [
+      "metadata-schema"
+    ]
+  },
+  "skills": {
+    "repository": "tidestack-skills",
+    "source_root": "skills",
+    "paths": [
+      "skills"
+    ]
+  }
+}

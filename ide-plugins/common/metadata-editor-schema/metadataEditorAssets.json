@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "resourceRoot": "ouroboros-metadata-editor",
+  "runtimeFiles": [
+    "runtime/metadata-editor-runtime.js",
+    "runtime/metadata-editor-webview.html",
+    "runtime/metadata-editor-amis-editor.js",
+    "runtime/metadata-editor-amis-editor.css"
+  ],
+  "hostRuntimeFiles": [
+    "runtime/metadata-editor-host.js"
+  ],
+  "schemaFiles": [
+    "metadataTypeContributions.json",
+    "metadataEditorRegistrations.json",
+    "metadataCreationContract.json",
+    "metadataCreationCases.json",
+    "metadataEditorAssets.json",
+    "tidestackDevelopCapabilities.json"
+  ],
+  "editorIntegrationFiles": [
+    "editor-integrations/logicflow-node-defines.json",
+    "editor-integrations/approval-workflow-candidate-source.json",
+    "editor-integrations/approval-workflow-form-field-source.json",
+    "editor-integrations/business-field-types.json",
+    "editor-integrations/metadata-editor-integrations.js"
+  ],
+  "editorBundles": [
+    {
+      "name": "logicflow",
+      "globalName": "logicflow-app",
+      "sourceRoot": "frontends/web/ouroboros-logicflow-editor/dist",
+      "targetRoot": "editor-bundles/logicflow",
+      "scripts": [
+        "static/js/app.js"
+      ],
+      "styles": [
+        "static/css/app.css"
+      ],
+      "requiredFiles": [
+        "static/js/app.js",
+        "static/css/app.css"
+      ]
+    },
+    {
+      "name": "approval-workflow",
+      "globalName": "workflow-frontend-app",
+      "sourceRoot": "frontends/web/ouroboros-approval-workflow-designer/dist",
+      "targetRoot": "editor-bundles/approval-workflow",
+      "scripts": [
+        "static/js/app.js"
+      ],
+      "styles": [
+        "static/css/app.css"
+      ],
+      "requiredFiles": [
+        "static/js/app.js",
+        "static/css/app.css"
+      ]
+    }
+  ],
+  "i18nFiles": [
+    "zh-CN.json",
+    "en-US.json"
+  ],
+  "amisSdkRequiredFiles": [
+    "sdk.js",
+    "sdk.css",
+    "cxd.css",
+    "dark.css"
+  ],
+  "xlsxRuntimeFiles": [
+    "xlsx.full.min.js"
+  ],
+  "amisSdkCssFilesWithReferencedAssets": [
+    "sdk.css",
+    "cxd.css",
+    "dark.css"
+  ],
+  "contractFiles": [
+    "tidestack-develop-config.json",
+    "tidestack-develop-config-cases.json"
+  ]
+}

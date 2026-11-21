@@ -1,0 +1,60 @@
+{
+  "name": "/system-setting/organization-management/add-position",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "api": {
+      "method": "post",
+      "url": "/api/organization/positions"
+    },
+    "body": [
+      {
+        "type": "select",
+        "name": "positionKey",
+        "label": "岗位定义",
+        "required": true,
+        "placeholder": "请选择全局岗位定义",
+        "source": {
+          "url": "/api/organization/position-definitions",
+          "method": "get"
+        },
+        "labelField": "name",
+        "valueField": "key",
+        "searchable": true
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "岗位描述",
+        "disabled": true,
+        "visibleOn": false,
+        "placeholder": "请输入岗位描述"
+      },
+      {
+        "type": "input-number",
+        "name": "headcount",
+        "label": "编制人数",
+        "placeholder": "请输入编制人数",
+        "min": 1
+      },
+      {
+        "type": "hidden",
+        "name": "departmentId",
+        "value": "${parentId}"
+      }
+    ],
+    "onEvent": {
+      "submitSucc": {
+        "actions": [
+          {
+            "actionType": "closeDialog"
+          },
+          {
+            "actionType": "reload",
+            "componentName": "organizationTree"
+          }
+        ]
+      }
+    }
+  }
+}

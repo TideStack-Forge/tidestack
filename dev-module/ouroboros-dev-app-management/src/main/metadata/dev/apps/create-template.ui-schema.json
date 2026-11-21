@@ -1,0 +1,77 @@
+{
+  "name": "/dev/apps/create-template",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "api": {
+      "method": "post",
+      "url": "/api/app/${appName}/create-template"
+    },
+    "body": [
+      {
+        "type": "static",
+        "name": "appName",
+        "label": "应用名称",
+        "value": "${appName}"
+      },
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "模板名称",
+        "placeholder": "请输入模板名称",
+        "required": true,
+        "validations": {
+          "matchRegexp": "^[a-zA-Z][a-zA-Z0-9_-]*$"
+        },
+        "validationErrors": {
+          "matchRegexp": "模板名称必须以字母开头，只能包含字母、数字、下划线和短横线"
+        }
+      },
+      {
+        "type": "input-text",
+        "name": "title",
+        "label": "模板标题",
+        "placeholder": "请输入模板标题",
+        "required": true
+      },
+      {
+        "type": "ouroboros-icon-picker",
+        "name": "icon",
+        "label": "模版图标"
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "模板描述",
+        "placeholder": "请输入模板描述",
+        "maxRows": 4
+      },
+      {
+        "type": "input-text",
+        "name": "version",
+        "label": "模板版本",
+        "placeholder": "请输入版本号，如：1.0.0",
+        "value": "1.0.0",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "author",
+        "label": "作者",
+        "placeholder": "请输入作者名称"
+      }
+    ],
+    "actions": [
+      {
+        "type": "button",
+        "label": "取消",
+        "actionType": "cancel"
+      },
+      {
+        "type": "submit",
+        "label": "创建模板",
+        "level": "primary"
+      }
+    ]
+  }
+}

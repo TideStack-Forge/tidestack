@@ -1,0 +1,35 @@
+{
+  "name": "accessToken",
+  "title": "钉钉接口",
+  "type": "accessToken",
+  "description": "获取企业内部应用的accessToken",
+  "isEnabled": true,
+  "request": {
+    "url": "http://106.14.31.75:9600/api/auth/login",
+    "method": "POST",
+    "parameters": [
+      {
+        "name": "username",
+        "in": "body",
+        "value": "admin"
+      },
+      {
+        "name": "password",
+        "in": "body",
+        "value": "Aa@666666"
+      }
+    ]
+  },
+  "response": {
+    "accessToken": "$.data.accessToken"
+  },
+  "expire": {
+    "expireIn": 1,
+    "unit": "hours"
+  },
+  "attachment": {
+    "name": "Authorization",
+    "in": "header",
+    "value": "Bearer ${accessToken}"
+  }
+}

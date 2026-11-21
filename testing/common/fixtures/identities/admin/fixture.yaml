@@ -1,0 +1,41 @@
+{
+  "id": "identities/admin",
+  "title": "Admin Identity",
+  "class": "identities",
+  "capabilities": [
+    "authenticated-user",
+    "broad-authority",
+    "merge-gate-primary-user"
+  ],
+  "lifecycle": {
+    "up": "",
+    "check": "login should succeed and /api/auth/authorities should return the expected authority surface",
+    "reset": "",
+    "down": ""
+  },
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "loginPayload",
+      "value": {
+        "account": "admin",
+        "password": "666666"
+      }
+    },
+    {
+      "name": "identityKind",
+      "value": "admin"
+    }
+  ],
+  "healthChecks": [
+    {
+      "name": "login-success",
+      "expect": "POST /api/auth/login returns access token"
+    }
+  ],
+  "prerequisites": [],
+  "notes": [
+    "This identity is the default primary regression user for the current data API runner.",
+    "Even for admin, the authority surface must still match the runtime under test."
+  ]
+}

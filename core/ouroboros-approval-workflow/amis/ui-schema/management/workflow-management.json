@@ -1,0 +1,217 @@
+{
+  "type": "page",
+  "data": {},
+  "css": {
+    ".container": {
+      "width": "1620px"
+    }
+  },
+  "body": [
+    {
+      "type": "crud",
+      "name": "工作流管理",
+      "placeholder": "没有符合条件的审批流模型",
+      "api": {
+        "url": "/api/approval-process",
+        "method": "get"
+      },
+      "defaultParams": {
+        "page": 1,
+        "perPage": 15
+      },
+      "syncLocation": false,
+      "filter": {
+        "debug": true,
+        "title": "流程筛选",
+        "body": [
+          {
+            "type": "group",
+            "body": [
+              {
+                "type": "input-text",
+                "name": "keyword",
+                "label": "名称",
+                "clearable": true,
+                "placeholder": "请输入流程名称搜索",
+                "size": "md"
+              },
+              {
+                "type": "list-select",
+                "name": "status",
+                "label": "流程状态",
+                "clearable": true,
+                "options": [
+                  {
+                    "label": "全部",
+                    "value": "all"
+                  },
+                  {
+                    "label": "已部署",
+                    "value": "deployed"
+                  },
+                  {
+                    "label": "已下线",
+                    "value": "offline"
+                  },
+                  {
+                    "label": "草稿",
+                    "value": "draft"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "type": "action",
+            "label": "新建流程",
+            "actionType": "url",
+            "url": "/system-setting/approval-workflow-definition/add",
+            "tooltip": "点击后创建新的审批流"
+          },
+          {
+            "type": "reset",
+            "label": "重置"
+          },
+          {
+            "type": "submit",
+            "level": "primary",
+            "label": "查询"
+          }
+        ]
+      },
+      "filterTogglable": true,
+      "headerToolbar": [
+        "load-more",
+        "export-excel",
+        "filter-toggler",
+        {
+          "type": "reload",
+          "align": "right",
+          "icon": "fa fa-repeat",
+          "label": "刷新",
+          "tooltip": "",
+          "level": "primary"
+        }
+      ],
+      "footerToolbar": [
+        "statistics",
+        "switch-per-page",
+        "pagination"
+      ],
+      "alwaysShowPagination": true,
+      "hideQuickSaveBtn": true,
+      "columns": [
+        {
+          "name": "id",
+          "label": "ID"
+        },
+        {
+          "name": "processDefinitionId",
+          "label": "流程部署 ID"
+        },
+        {
+          "name": "category",
+          "label": "流程分类"
+        },
+        {
+          "name": "name",
+          "label": "流程名称"
+        },
+        {
+          "name": "description",
+          "label": "流程描述"
+        },
+        {
+          "type": "mapping",
+          "name": "statusName",
+          "label": "流程状态",
+          "map": {
+            "草稿": {
+              "type": "tag",
+              "displayMode": "status",
+              "label": "草稿",
+              "color": "active",
+              "name": ""
+            },
+            "已部署": {
+              "type": "tag",
+              "displayMode": "status",
+              "label": "已部署",
+              "color": "success",
+              "name": ""
+            },
+            "已下线": {
+              "type": "tag",
+              "displayMode": "status",
+              "label": "已下线",
+              "color": "warning",
+              "name": ""
+            }
+          }
+        },
+        {
+          "type": "operation",
+          "label": "操作",
+          "buttons": [
+            {
+              "type": "button",
+              "label": "查看",
+              "level": "link",
+              "actionType": "url",
+              "url": "/system-setting/approval-workflow-definition/${id}?mode=preview",
+              "tooltip": "查看审批流模型的配置信息",
+              "disabledTip": "查看审批流模型的配置信息"
+            },
+            {
+              "label": "编辑",
+              "type": "button",
+              "level": "primary",
+              "actionType": "url",
+              "url": "/system-setting/approval-workflow-definition/${id}",
+              "disabledOn": "this.status != 'draft'",
+              "tooltip": "编辑审批流模型的配置信息",
+              "disabledTip": "已部署审批流模型无法被编辑"
+            },
+            {
+              "type": "button",
+              "label": "删除",
+              "id": "u:d9907c0b1db9",
+              "actionType": "ajax",
+              "level": "danger",
+              "confirmText": "确认要删除这一个流程吗？将会删除该审批流以及所有配置",
+              "api": "delete:/api/approval-process/${id}",
+              "disabledOn": "this.status != 'draft'",
+              "tooltip": "点击后将删除该审批流模型",
+              "disabledTip": "已部署审批流模型无法被删除"
+            },
+            {
+              "type": "button",
+              "label": "部署",
+              "id": "u:d9907c0b1db9",
+              "level": "success",
+              "actionType": "ajax",
+              "confirmText": "确认要部署这个流程吗？",
+              "api": "post:/api/approval-process/${id}/deploy",
+              "disabledOn": "this.status != 'draft'",
+              "tooltip": "点击后将部署该审批流模型",
+              "disabledTip": "已部署审批流模型无法再次被部署"
+            },
+            {
+              "type": "button",
+              "label": "下线",
+              "level": "warning",
+              "actionType": "ajax",
+              "confirmText": "确认要下线这个流程吗？下线后，流程将不可使用",
+              "api": "post:/api/approval-process/${id}/offline",
+              "disabledOn": "this.status != 'deployed'",
+              "tooltip": "点击后将下线该审批流模型",
+              "disabledTip": "该审批流模型已下线"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

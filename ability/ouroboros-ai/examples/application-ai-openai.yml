@@ -1,0 +1,48 @@
+ouroboros:
+  ai:
+    # Spring AI default provider line example.
+    # corrective exit packet: status=go, alias_action=switch; OpenAI readiness is chat=pass, embedding=pass.
+    # 这些 YAML 只表达 descriptor 形状，真正如何加载/覆盖/分层由平台自己的 provider 决定。
+    providerConnections:
+      - providerInstanceId: openai-prod
+        providerFamily: OPENAI
+        transportKind: HTTP
+        endpointRef: https://api.openai.com/v1
+        credentialsRef: secret://ai/openai/prod
+
+    models:
+      - modelId: openai-chat
+        providerInstanceId: openai-prod
+        providerFamily: OPENAI
+        providerKey: openai
+        modelName: gpt-4o
+        capabilities:
+          - CHAT
+          - TOOL_CALLING
+        defaultOptions:
+          temperature: 0.2
+          maxTokens: 4096
+          providerOptions:
+            serviceTier: default
+      - modelId: openai-embedding
+        providerInstanceId: openai-prod
+        providerFamily: OPENAI
+        providerKey: openai
+        modelName: text-embedding-3-large
+        capabilities:
+          - EMBEDDING
+
+    knowledgeBases:
+      - knowledgeBaseId: kb-docs
+        retrievalMode: VECTOR
+        backendRef: kb-docs-pgvector
+        retrieverRef: kb-docs-default
+        embeddingModelId: openai-embedding
+        vectorStoreType: pgvector
+        indexName: kb_docs
+        retrievalPolicy:
+          topK: 5
+
+    # RAG readiness is explicit-opt-in: backendRef/retrieverRef show descriptor shape, not default RAG orchestration.
+    # MCP readiness is explicit-opt-in: endpoints are client-side descriptors, not a default MCP server export.
+    mcpEndpoints: []

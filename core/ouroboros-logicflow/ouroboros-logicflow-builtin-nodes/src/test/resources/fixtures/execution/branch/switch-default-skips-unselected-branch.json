@@ -1,0 +1,116 @@
+{
+  "name": "switch-default-skips-unselected-branch",
+  "description": "Default branch succeeds while unselected branch would fail if executed",
+  "isEnabled": true,
+  "inputDataType": "map",
+  "outputDataType": "string",
+  "entryNode": "entryMutex",
+  "exitNode": "safeResult",
+  "nodes": [
+    {
+      "name": "entryMutex",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "map"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "map"
+        }
+      ]
+    },
+    {
+      "name": "routeSwitch",
+      "type": "switch",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "map"
+        }
+      ],
+      "conditions": [
+        {
+          "name": "special",
+          "description": "",
+          "expression": "route == 'special'"
+        }
+      ]
+    },
+    {
+      "name": "failingScript",
+      "type": "script",
+      "description": "",
+      "language": "groovy",
+      "script": "throw new RuntimeException('should-not-run')",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "map"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    },
+    {
+      "name": "specialReturn",
+      "type": "return",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "string"
+        }
+      ],
+      "outputPorts": []
+    },
+    {
+      "name": "safeResult",
+      "type": "const",
+      "description": "",
+      "dataType": "string",
+      "value": "safe-result"
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "entryMutex",
+      "sourceOutputPort": 0,
+      "targetNode": "routeSwitch",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "routeSwitch",
+      "sourceOutputPort": 0,
+      "targetNode": "failingScript",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "failingScript",
+      "sourceOutputPort": 0,
+      "targetNode": "specialReturn",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "routeSwitch",
+      "sourceOutputPort": 1,
+      "targetNode": "safeResult",
+      "targetInputPort": 0
+    }
+  ]
+}

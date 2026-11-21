@@ -1,0 +1,11 @@
+{
+  "key": "list0",
+  "label": "List 0",
+  "description": "Configuration fixture for empty collection update tests",
+  "groupPath": "security.auth",
+  "order": 30,
+  "modifiable": true,
+  "nullable": false,
+  "valueType": "list",
+  "defaultValue": []
+}

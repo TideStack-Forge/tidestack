@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>ouroboros-root</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ability</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>ouroboros-ability-all</module>
+        <module>ouroboros-ai</module>
+        <module>ouroboros-app-runtime</module>
+        <module>ouroboros-cache-management</module>
+        <module>ouroboros-business-log</module>
+        <module>ouroboros-configuration</module>
+        <module>ouroboros-integration-management</module>
+        <module>ouroboros-enterprise-connector</module>
+        <module>ouroboros-enterprise-rpc</module>
+        <module>ouroboros-external-auth-configuration</module>
+        <module>ouroboros-oidc-server</module>
+        <module>ouroboros-data-dict</module>
+        <module>ouroboros-approval-workflow-external-integration</module>
+        <module>ouroboros-notification</module>
+        <module>ouroboros-logicflow-runtime-manage</module>
+        <module>ouroboros-file-upload</module>
+        <module>ouroboros-rpc-model</module>
+        <module>ouroboros-organization-structure</module>
+        <module>ouroboros-platform-component-lib</module>
+        <module>ouroboros-websocket</module>
+        <module>ouroboros-message-queue</module>
+        <module>ouroboros-scheduler</module>
+        <module>ouroboros-user-setting</module>
+        <module>ouroboros-widget</module>
+    </modules>
+
+</project>

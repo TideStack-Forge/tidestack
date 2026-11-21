@@ -1,0 +1,53 @@
+{
+  "name": "CustomWidget",
+  "title": "自定义小组件",
+  "description": "完全自定义的小组件",
+  "sizeConstraints": {
+    "min": {
+      "cols": 1,
+      "rows": 1
+    },
+    "max": {
+      "cols": 24,
+      "rows": 1000
+    }
+  },
+  "defaultSize": {
+    "cols": 6,
+    "rows": 12
+  },
+  "defaultConfig": {
+    "showHeader": true,
+    "title": "自定义小组件",
+    "schema": {
+      "type": "container",
+      "body": [
+        {
+          "type": "tpl",
+          "tpl": "自定义小组件"
+        }
+      ]
+    }
+  },
+  "defaultStyleConfig": {
+    "showBorder": true,
+    "showShadow": true
+  },
+  "configFormItems": [
+    {
+      "label": "小组件设计",
+      "type": "amis-schema-editor",
+      "name": "schema"
+    }
+  ],
+  "thumbSchema": {
+    "type": "container",
+    "body": [
+      {
+        "type": "tpl",
+        "tpl": "自由定义小组件"
+      }
+    ]
+  },
+  "schemaTpl": "#{schema}"
+}

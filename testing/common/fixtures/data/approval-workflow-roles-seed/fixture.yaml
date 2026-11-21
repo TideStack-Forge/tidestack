@@ -1,0 +1,38 @@
+{
+  "id": "data/approval-workflow-roles-seed",
+  "title": "Approval Workflow Roles Seed",
+  "class": "data",
+  "capabilities": [
+    "role-seed",
+    "permission-mapping",
+    "approval-action-coverage"
+  ],
+  "lifecycle": {
+    "up": "",
+    "check": "role seed includes deterministic role IDs and permission mappings for base and advanced approval actions",
+    "reset": "",
+    "down": ""
+  },
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "seedType",
+      "value": "roles-and-permissions"
+    },
+    {
+      "name": "rolesSeedFile",
+      "value": "testing/common/fixtures/data/approval-workflow-roles-seed/roles-and-permissions.json"
+    }
+  ],
+  "healthChecks": [
+    {
+      "name": "roles-have-permissions",
+      "expect": "all seeded roles map to a deterministic permission set and include approval action permissions where required"
+    }
+  ],
+  "prerequisites": [],
+  "notes": [
+    "Action names align with approval workflow action contracts, including freeApprove/freeApproval mapping metadata.",
+    "Role IDs are referenced by approval-workflow-users-seed for composable identity assembly."
+  ]
+}

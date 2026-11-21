@@ -1,0 +1,13 @@
+{
+  "editorId": "logicflow",
+  "editorName": "TideStack Logic Flow Model Metadata Editor",
+  "editorNameKey": "customEditor.logicflow",
+  "metadataType": "logicflow",
+  "schemaName": "logicflow",
+  "viewType": "tidestack.metadataEditor.logicflow",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.logicflow",
+  "fileMatchPatterns": [
+    "*.logicflow.json"
+  ],
+  "priority": "default"
+}

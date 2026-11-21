@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/ui/redefine-edit",
+  "type": "amis",
+  "title": "重定义UI Model"
+}

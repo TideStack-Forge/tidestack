@@ -1,0 +1,23 @@
+[
+  {
+    "path": "security",
+    "title": "安全设置",
+    "icon": "shield",
+    "order": 10,
+    "description": "认证与会话相关运行时配置"
+  },
+  {
+    "path": "security.auth",
+    "title": "认证设置",
+    "icon": "lock",
+    "order": 10,
+    "description": "登录方式与令牌存储策略"
+  },
+  {
+    "path": "security.session",
+    "title": "会话设置",
+    "icon": "clock",
+    "order": 20,
+    "description": "会话超时、空闲检测与并发控制"
+  }
+]

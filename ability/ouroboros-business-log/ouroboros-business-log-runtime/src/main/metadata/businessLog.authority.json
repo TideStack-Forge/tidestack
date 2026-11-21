@@ -1,0 +1,13 @@
+{
+  "fullName": "systemSetting.businessLog",
+  "title": "业务日志",
+  "apis": [
+    "GET /api/sys/business-log"
+  ],
+  "uiViews": [
+    "/system-setting/business-log"
+  ],
+  "menuItems": [
+    "systemSetting.businessLog"
+  ]
+}

@@ -1,0 +1,46 @@
+const footer = {
+  style: 'dark',
+  links: [
+    {
+      title: '开始浏览',
+      items: [
+        {
+          label: '平台介绍',
+          to: '/docs/overview',
+        },
+        {
+          label: '快速上手',
+          to: '/docs/getting-started',
+        },
+        {
+          label: '低代码开发',
+          to: '/docs/low-code',
+        },
+        {
+          label: '融合开发',
+          to: '/docs/fusion-development',
+        },
+        {
+          label: '运维管理',
+          to: '/docs/operations',
+        },
+      ],
+    },
+    {
+      title: '理解与查阅',
+      items: [
+        {
+          label: '概念与设计',
+          to: '/docs/concepts',
+        },
+        {
+          label: '参考资料',
+          to: '/docs/reference',
+        },
+      ],
+    },
+  ],
+  copyright: `Copyright © ${new Date().getFullYear()} TideStack`,
+}
+
+export default footer

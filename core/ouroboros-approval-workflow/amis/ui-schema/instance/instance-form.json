@@ -1,0 +1,47 @@
+{
+  "type": "page",
+  "css": {
+    ".container": {
+      "width": "1620px"
+    }
+  },
+  "body": {
+    "title": "",
+    "type": "form",
+    "mode": "normal",
+    "autoFocus": false,
+    "redirect": "/instance/open-instance",
+    "messages": {
+      "saveSuccess": "提交表单成功，即将开始审批流程",
+      "saveFailed": "提交表单失败，请重试"
+    },
+    "api": {
+      "method": "POST",
+      "url": "/api/approval-process/${id}/start"
+    },
+    "body": [
+      {
+        "type": "service",
+        "schemaApi": {
+          "method": "GET",
+          "url": "/api/approval-process/${id}/start-form",
+          "headers": {
+            "Authorization": "${ls:token}"
+          }
+        }
+      }
+    ],
+    "actions": [
+      {
+        "type": "reset",
+        "label": "重置"
+      },
+      {
+        "type": "submit",
+        "label": "提交审批",
+        "level": "primary",
+        "hotKey": "backspace"
+      }
+    ]
+  }
+}

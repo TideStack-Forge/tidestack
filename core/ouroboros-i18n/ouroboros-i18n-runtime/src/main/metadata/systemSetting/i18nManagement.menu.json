@@ -1,0 +1,7 @@
+{
+  "url": "/system-setting/i18n-management",
+  "fullName": "systemSetting.i18nManagement",
+  "title": "国际化管理",
+  "icon": "fa fa-language",
+  "order": 100
+}

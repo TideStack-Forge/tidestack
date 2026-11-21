@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/ui-schema/{fullName}",
+  "type": "amis",
+  "title": "编辑页面"
+}

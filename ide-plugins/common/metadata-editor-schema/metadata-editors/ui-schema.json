@@ -1,0 +1,14 @@
+{
+  "editorId": "ui-schema",
+  "editorName": "TideStack UI Schema Metadata Editor",
+  "editorNameKey": "customEditor.uiSchema",
+  "metadataType": "ui-schema",
+  "schemaName": "ui-schema",
+  "viewType": "tidestack.metadataEditor.uiSchema",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.uiSchema",
+  "fileMatchPatterns": [
+    "*.ui-schema.json",
+    "**/resources/META-INF/ouroboros/ui-schema/**/*.json"
+  ],
+  "priority": "default"
+}

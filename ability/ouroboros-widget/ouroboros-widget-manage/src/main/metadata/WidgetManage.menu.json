@@ -1,0 +1,8 @@
+{
+  "url": "/system-setting/widget-manage",
+  "fullName": "systemSetting.WidgetManage",
+  "icon": "fa fa-th-large",
+  "title": "门户栏目管理",
+  "placement": "main",
+  "order": 10
+}

@@ -1,0 +1,230 @@
+{
+  "name": "/dev/container/debug-session-dialog",
+  "schema": {
+    "type": "service",
+    "name": "debugSessionStatus",
+    "api": {
+      "method": "get",
+      "url": "/api/app/container/${containerId}/status"
+    },
+    "body": [
+      {
+        "type": "alert",
+        "level": "info",
+        "showCloseButton": false,
+        "body": "调试通过临时会话隧道暴露，不再固定映射调试端口。开启后请按提示通过 SSH 或受控网络做二次转发。"
+      },
+      {
+        "type": "grid",
+        "className": "mb-4",
+        "columns": [
+          {
+            "md": 6,
+            "body": {
+              "type": "static",
+              "name": "appName",
+              "label": "应用"
+            }
+          },
+          {
+            "md": 6,
+            "body": {
+              "type": "static",
+              "name": "profile",
+              "label": "Profile"
+            }
+          },
+          {
+            "md": 6,
+            "body": {
+              "type": "static",
+              "name": "backendType",
+              "label": "运行时后端"
+            }
+          },
+          {
+            "md": 6,
+            "body": {
+              "type": "static-mapping",
+              "name": "status",
+              "label": "运行状态",
+              "map": {
+                "launching": "<span class='label label-info'>正在启动</span>",
+                "running": "<span class='label label-success'>运行中</span>",
+                "stopped": "<span class='label label-danger'>已停止</span>",
+                "paused": "<span class='label label-warning'>已暂停</span>",
+                "unknown": "<span class='label label-default'>未知</span>",
+                "notFound": "<span class='label label-danger'>不存在</span>"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "panel",
+        "title": "调试能力",
+        "body": [
+          {
+            "type": "tpl",
+            "tpl": "<ul><li>访问策略：${debugCapability && debugCapability.enabled ? 'SESSION_TUNNEL' : '-'}</li><li>当前会话：${activeDebugSessionId || '未开启'}</li><li>会话状态：${debugCapability && debugCapability.sessionStatus ? debugCapability.sessionStatus : '-'}</li><li>会话可开启：${debugCapability && debugCapability.sessionOpenable ? '是' : '否'}</li><li>客户端提示：${debugCapability && debugCapability.clientAccessHint ? debugCapability.clientAccessHint : '-'}</li></ul>"
+          }
+        ]
+      },
+      {
+        "type": "service",
+        "name": "activeDebugSessionDetail",
+        "visibleOn": "${activeDebugSessionId}",
+        "api": {
+          "method": "get",
+          "url": "/api/dev/runtime/debug-sessions/${activeDebugSessionId}"
+        },
+        "body": [
+          {
+            "type": "panel",
+            "title": "当前调试会话",
+            "body": [
+              {
+                "type": "static",
+                "name": "sessionId",
+                "label": "会话 ID"
+              },
+              {
+                "type": "static",
+                "name": "status",
+                "label": "会话状态"
+              },
+              {
+                "type": "static",
+                "name": "host",
+                "label": "brokerHost"
+              },
+              {
+                "type": "static",
+                "name": "port",
+                "label": "brokerPort"
+              },
+              {
+                "type": "static",
+                "name": "bindingScope",
+                "label": "bindScope"
+              },
+              {
+                "type": "static",
+                "name": "clientAccessHint",
+                "label": "clientAccessHint"
+              },
+              {
+                "type": "static",
+                "name": "expiresAt",
+                "label": "expiresAt"
+              }
+            ]
+          },
+          {
+            "type": "form",
+            "wrapWithPanel": false,
+            "api": {
+              "method": "delete",
+              "url": "/api/dev/runtime/debug-sessions/${sessionId}"
+            },
+            "actions": [
+              {
+                "type": "submit",
+                "label": "关闭当前会话",
+                "level": "danger",
+                "confirmText": "确定关闭当前调试会话吗？"
+              }
+            ],
+            "onEvent": {
+              "submitSucc": {
+                "actions": [
+                  {
+                    "actionType": "toast",
+                    "args": {
+                      "msgType": "success",
+                      "msg": "调试会话已关闭"
+                    }
+                  },
+                  {
+                    "actionType": "reload",
+                    "componentName": "debugSessionStatus"
+                  },
+                  {
+                    "actionType": "reload",
+                    "componentName": "containerList"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "form",
+        "title": "开启调试会话",
+        "wrapWithPanel": false,
+        "visibleOn": "${status == 'running' && debugCapability && debugCapability.sessionOpenable}",
+        "api": {
+          "method": "post",
+          "url": "/api/dev/runtime/debug-sessions",
+          "data": {
+            "appName": "${appName}",
+            "profile": "${profile}",
+            "runtimeKind": "${runtimeKind || 'TEST_APP'}",
+            "backendType": "${backendType}",
+            "reason": "${reason}"
+          }
+        },
+        "body": [
+          {
+            "type": "input-text",
+            "name": "reason",
+            "label": "开启原因",
+            "clearable": true,
+            "placeholder": "可选，说明本次调试目的"
+          }
+        ],
+        "actions": [
+          {
+            "type": "submit",
+            "label": "开启调试会话",
+            "level": "primary"
+          }
+        ],
+        "onEvent": {
+          "submitSucc": {
+            "actions": [
+              {
+                "actionType": "toast",
+                "args": {
+                  "msgType": "success",
+                  "msg": "调试会话已开启"
+                }
+              },
+              {
+                "actionType": "reload",
+                "componentName": "debugSessionStatus"
+              },
+              {
+                "actionType": "reload",
+                "componentName": "containerList"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "tpl",
+        "className": "text-muted",
+        "tpl": "运行时需要处于运行中，且当前没有活动调试会话，才可以开启新的调试会话。",
+        "visibleOn": "${status != 'running' && !activeDebugSessionId}"
+      },
+      {
+        "type": "tpl",
+        "className": "text-muted",
+        "tpl": "当前运行时未启用会话式调试。",
+        "visibleOn": "${!debugCapability || !debugCapability.enabled}"
+      }
+    ]
+  }
+}

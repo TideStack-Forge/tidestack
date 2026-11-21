@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/dataset/add",
+  "type": "amis",
+  "title": "新建数据集"
+}

@@ -1,0 +1,235 @@
+{
+  "name": "/dev/{appName}/rpc-model/list",
+  "schema": {
+    "type": "crud",
+    "api": {
+      "method": "get",
+      "url": "/api/dev/${appName}/rpc-model"
+    },
+    "headerToolbar": [
+      {
+        "type": "reload",
+        "label": "刷新",
+        "icon": "fa fa-refresh"
+      },
+      {
+        "type": "button",
+        "label": "新增",
+        "actionType": "drawer",
+        "level": "primary",
+        "align": "right",
+        "drawer": {
+          "type": "drawer",
+          "title": "新建外部接口",
+          "size": "xl",
+          "url": "/dev/${appName}/rpc-model/add",
+          "showCloseButton": true,
+          "closeOnEsc": true,
+          "showErrorMsg": true,
+          "showLoading": true,
+          "position": "right",
+          "width": "min(100vw, max(80vw, 720px))",
+          "closeOnOutside": false,
+          "onEvent": {
+            "cancel": {
+              "actions": [
+                {
+                  "actionType": "custom",
+                  "script": "if (!context.props.store.data.__rpcEditor?.allowClose) { event.preventDefault(); return doAction({actionType: \"rpc-close\", componentId: \"rpc-model-editor\"}); }"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "columns": [
+      {
+        "name": "group",
+        "label": "分组",
+        "type": "text",
+        "sortable": true,
+        "placeholder": "未分组"
+      },
+      {
+        "name": "name",
+        "label": "名称",
+        "type": "text"
+      },
+      {
+        "name": "title",
+        "label": "标题",
+        "type": "text"
+      },
+      {
+        "label": "是否启用",
+        "name": "isEnabled",
+        "type": "switch",
+        "onText": "启用",
+        "offText": "禁用",
+        "static": true
+      },
+      {
+        "type": "select",
+        "label": "身份认证",
+        "name": "authCredential",
+        "placeholder": "<无>",
+        "source": {
+          "method": "get",
+          "url": "/api/dev/${appName}/rpc-auth",
+          "cache": 1000
+        },
+        "labelField": "title",
+        "valueField": "name",
+        "static": true
+      },
+      {
+        "type": "text",
+        "label": "重试次数",
+        "name": "retry"
+      },
+      {
+        "type": "text",
+        "label": "超时时间",
+        "name": "timeout"
+      },
+      {
+        "type": "operation",
+        "label": "操作",
+        "buttons": [
+          {
+            "type": "button",
+            "actionType": "dialog",
+            "dialog": {
+              "type": "dialog",
+              "size": "lg",
+              "title": "查看 ${title}（${name}） 接口",
+              "url": "/dev/${appName}/rpc-model/detail",
+              "actions": []
+            },
+            "icon": "fa fa-eye"
+          },
+          {
+            "type": "button",
+            "icon": "fa fa-pencil",
+            "actionType": "drawer",
+            "drawer": {
+              "type": "drawer",
+              "size": "xl",
+              "title": "编辑 ${title}（${name}） 接口",
+              "url": "/dev/${appName}/rpc-model/edit",
+              "position": "right",
+              "width": "min(100vw, max(80vw, 720px))",
+              "closeOnOutside": false,
+              "closeOnEsc": true,
+              "onEvent": {
+                "cancel": {
+                  "actions": [
+                    {
+                      "actionType": "custom",
+                      "script": "if (!context.props.store.data.__rpcEditor?.allowClose) { event.preventDefault(); return doAction({actionType: \"rpc-close\", componentId: \"rpc-model-editor\"}); }"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "type": "button",
+            "icon": "fa fa-play",
+            "actionType": "drawer",
+            "drawer": {
+              "type": "drawer",
+              "size": "xl",
+              "title": "调试 ${title}（${name}） 接口",
+              "url": "/dev/${appName}/rpc-model/edit",
+              "position": "right",
+              "width": "min(100vw, max(80vw, 720px))",
+              "closeOnOutside": false,
+              "closeOnEsc": true,
+              "onEvent": {
+                "cancel": {
+                  "actions": [
+                    {
+                      "actionType": "custom",
+                      "script": "if (!context.props.store.data.__rpcEditor?.allowClose) { event.preventDefault(); return doAction({actionType: \"rpc-close\", componentId: \"rpc-model-editor\"}); }"
+                    }
+                  ]
+                }
+              },
+              "body": {
+                "mergeProps": {
+                  "initialTab": "test"
+                }
+              }
+            },
+            "label": "调试"
+          },
+          {
+            "type": "button",
+            "actionType": "ajax",
+            "icon": "fa fa-times text-danger",
+            "confirmText": "确认要删除 ${title}（${name}） 接口吗？",
+            "api": {
+              "method": "delete",
+              "url": "/api/dev/${appName}/rpc-model/${name}"
+            }
+          }
+        ]
+      }
+    ],
+    "alwaysShowPagination": true,
+    "footerToolbar": [
+      "statistics",
+      "pagination",
+      "switch-per-page"
+    ],
+    "perPageAvailable": [
+      10,
+      20,
+      50
+    ],
+    "loadDataOnce": true,
+    "mode": "table",
+    "loadDataOnceFetchOnFilter": false,
+    "orderBy": "group",
+    "orderDir": "asc",
+    "className": "rpc-model-browser",
+    "bodyClassName": "rpc-model-browser__list",
+    "placeholder": "暂无匹配的 RPC 模型",
+    "filter": {
+      "title": "",
+      "mode": "normal",
+      "className": "rpc-model-browser__aside",
+      "wrapWithPanel": false,
+      "canAccessSuperData": true,
+      "submitOnChange": true,
+      "actions": [],
+      "body": [
+        {
+          "type": "input-text",
+          "name": "__rpcKeyword",
+          "label": "搜索模型",
+          "placeholder": "名称或标题",
+          "clearable": true,
+          "size": "full"
+        },
+        {
+          "type": "input-tree",
+          "name": "__rpcGroup",
+          "label": "分组",
+          "value": "all",
+          "source": "${itemsRaw | rpcModelGroups}",
+          "multiple": false,
+          "onlyLeaf": false,
+          "showRadio": false,
+          "showIcon": false,
+          "showOutline": true,
+          "initiallyOpen": true,
+          "size": "full"
+        }
+      ]
+    },
+    "matchFunc": "const selected = options.query.__rpcGroup || 'all';\nconst keyword = String(options.query.__rpcKeyword || '').trim().toLocaleLowerCase();\nreturn items.filter(item => {\n  const group = item.group || '';\n  const path = selected.slice(6);\n  const inGroup = selected === 'all' || (path === '' ? !group : group === path || group.startsWith(path + '/'));\n  const matches = ['name', 'modelName', 'title', 'label', 'value']\n    .some(field => item[field] != null && String(item[field]).toLocaleLowerCase().includes(keyword));\n  return inGroup && matches;\n});"
+  }
+}

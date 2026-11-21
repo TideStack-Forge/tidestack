@@ -1,0 +1,11 @@
+.DS_Store
+/node_modules/
+/metadata-editor-runtime/node_modules/
+/metadata-editor-schema/node_modules/
+/metadata-editor-runtime/vendor/**/node_modules/
+/metadata-editor-runtime/vendor/**/dist/
+*.log
+
+metadata-editor-schema/dist/
+
+metadata-editor-runtime/dist/

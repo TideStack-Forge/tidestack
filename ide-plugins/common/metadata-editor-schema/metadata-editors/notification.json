@@ -1,0 +1,13 @@
+{
+  "editorId": "notification",
+  "editorName": "TideStack Notification Template Metadata Editor",
+  "editorNameKey": "customEditor.notification",
+  "metadataType": "notification",
+  "schemaName": "notification",
+  "viewType": "tidestack.metadataEditor.notification",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.notification",
+  "fileMatchPatterns": [
+    "*.notification.json"
+  ],
+  "priority": "default"
+}

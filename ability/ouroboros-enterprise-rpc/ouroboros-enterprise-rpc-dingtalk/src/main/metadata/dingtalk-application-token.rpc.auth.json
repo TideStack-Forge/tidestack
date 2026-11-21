@@ -1,0 +1,20 @@
+{
+  "name": "dingtalk.application-token",
+  "title": "dingtalk 企业应用令牌",
+  "type": "EnterpriseAccessToken",
+  "isEnabled": true,
+  "enterprise": {
+    "provider": "dingtalk",
+    "tokenKind": "access_token"
+  },
+  "accessToken": {
+    "tokenPlacement": "custom",
+    "customPlacement": [
+      {
+        "in": "QUERY",
+        "name": "access_token",
+        "value": "${accessToken}"
+      }
+    ]
+  }
+}

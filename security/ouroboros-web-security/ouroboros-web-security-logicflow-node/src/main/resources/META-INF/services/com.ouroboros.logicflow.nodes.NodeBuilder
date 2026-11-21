@@ -1,0 +1,3 @@
+com.ouroboros.security.logicflow.nodes.AuthAllowedFieldsNode$Builder
+com.ouroboros.security.logicflow.nodes.AuthDisallowedFieldsNode$Builder
+com.ouroboros.security.logicflow.nodes.AuthFilterNode$Builder

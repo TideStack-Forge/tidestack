@@ -1,0 +1,106 @@
+{
+  "name": "/dev/{appName}/builtin-role",
+  "schema": {
+    "type": "page",
+    "body": [
+      {
+        "type": "crud",
+        "id": "builtin-role-list",
+        "name": "builtin-role-list",
+        "syncLocation": false,
+        "api": {
+          "method": "get",
+          "url": "/api/dev/${appName}/builtin-role"
+        },
+        "quickSaveItemApi": {
+          "url": "/api/dev/${appName}/builtin-role/${id}",
+          "method": "put",
+          "data": {
+            "id": "${id}",
+            "name": "${name}",
+            "authorities": "${authorities}"
+          }
+        },
+        "headerToolbar": [
+          {
+            "label": "刷新",
+            "icon": "fa fa-refresh",
+            "type": "reload"
+          },
+          {
+            "type": "button",
+            "label": "新增",
+            "icon": "fa fa-plus pull-left",
+            "align": "right",
+            "level": "primary",
+            "actionType": "dialog",
+            "dialog": {
+              "type": "dialog",
+              "title": "新增内置角色",
+              "url": "/dev/${appName}/builtin-role/add",
+              "showCloseButton": true,
+              "showErrorMsg": true,
+              "showLoading": true,
+              "closeOnEsc": false,
+              "dataMapSwitch": false
+            }
+          }
+        ],
+        "columns": [
+          {
+            "name": "id",
+            "label": "角色标识",
+            "type": "text"
+          },
+          {
+            "name": "name",
+            "label": "角色名称",
+            "type": "text",
+            "quickEdit": {
+              "saveImmediately": true
+            },
+            "quickEditEnabledOn": "${true}"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "width": 160,
+            "buttons": [
+              {
+                "type": "button",
+                "actionType": "dialog",
+                "icon": "fa fa-pencil",
+                "tooltip": "编辑内置角色",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "编辑${name}",
+                  "size": "lg",
+                  "url": "/dev/${appName}/builtin-role/edit",
+                  "showCloseButton": true,
+                  "showErrorMsg": true,
+                  "showLoading": true,
+                  "closeOnEsc": false,
+                  "dataMapSwitch": false,
+                  "resizable": true
+                }
+              },
+              {
+                "type": "button",
+                "actionType": "ajax",
+                "icon": "fa fa-times text-danger",
+                "confirmText": "确认要删除内置角色？",
+                "api": "delete:/api/dev/${appName}/builtin-role/${id}"
+              }
+            ]
+          }
+        ],
+        "perPageAvailable": [
+          10,
+          20,
+          50,
+          100
+        ]
+      }
+    ]
+  }
+}

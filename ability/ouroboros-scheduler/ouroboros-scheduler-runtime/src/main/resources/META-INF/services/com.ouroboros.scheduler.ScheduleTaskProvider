@@ -1,0 +1,2 @@
+com.ouroboros.scheduler.runtime.JarScheduleTaskProvider
+com.ouroboros.scheduler.runtime.LowCodeScheduleTaskProvider$Proxy

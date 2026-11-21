@@ -1,0 +1,7 @@
+{
+  "fullName": "metadata.order.probe",
+  "title": "Legacy Authority",
+  "apis": ["/api/legacy"],
+  "uiViews": [],
+  "menuItems": []
+}

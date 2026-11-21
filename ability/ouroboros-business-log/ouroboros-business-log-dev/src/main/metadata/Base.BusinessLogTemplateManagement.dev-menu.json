@@ -1,0 +1,10 @@
+{
+  "fullName": "OperationsMonitoring.BusinessLogTemplate",
+  "url": "/dev/{appName}/business-log-template",
+  "icon": "fas fa-clipboard-list",
+  "title": "业务日志模板",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 30
+}

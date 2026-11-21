@@ -1,0 +1,7 @@
+{
+  "fullName": "metadata.order.probe",
+  "title": "Metadata Authority",
+  "apis": ["/api/metadata"],
+  "uiViews": [],
+  "menuItems": []
+}

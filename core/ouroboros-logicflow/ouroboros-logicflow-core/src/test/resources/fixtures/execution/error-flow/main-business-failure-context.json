@@ -1,0 +1,111 @@
+{
+  "name": "main-business-failure-context",
+  "description": "Main flow business failure is normalized into the standardized error context",
+  "isEnabled": true,
+  "inputDataType": "string",
+  "outputDataType": "any",
+  "entryNode": "mainEntry",
+  "exitNode": "failingScript",
+  "errorEntryNode": "errorEntry",
+  "nodes": [
+    {
+      "name": "mainEntry",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    },
+    {
+      "name": "failingScript",
+      "type": "script",
+      "description": "",
+      "language": "groovy",
+      "script": "throw new com.ouroboros.logicflow.support.TestErrorCodeException(4321, 'biz-boom')",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "string"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    },
+    {
+      "name": "errorEntry",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "error",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    },
+    {
+      "name": "contextReader",
+      "type": "script",
+      "description": "",
+      "language": "groovy",
+      "script": "return [exceptionType: $0.exceptionType, exceptionMessage: $0.exceptionMessage, exceptionCode: $0.exceptionCode, flowName: $0.flowName, nodeName: $0.nodeName, nodeInputs: $0.nodeInputs, flowInputs: $0.flowInputs]",
+      "inputPorts": [
+        {
+          "name": "error",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    },
+    {
+      "name": "errorReturn",
+      "type": "return",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": []
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "mainEntry",
+      "sourceOutputPort": 0,
+      "targetNode": "failingScript",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "errorEntry",
+      "sourceOutputPort": 0,
+      "targetNode": "contextReader",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "contextReader",
+      "sourceOutputPort": 0,
+      "targetNode": "errorReturn",
+      "targetInputPort": 0
+    }
+  ]
+}

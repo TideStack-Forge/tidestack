@@ -1,0 +1,57 @@
+{
+  "name": "broken-selective-node-violates-exclusive-group",
+  "description": "Runtime fixture where a selective-output node violates an exclusive group by satisfying two branches at once",
+  "inputDataType": "string",
+  "outputDataType": "any",
+  "entryNode": "entry",
+  "exitNode": "targetExit",
+  "nodes": [
+    {
+      "name": "entry",
+      "type": "brokenSelectiveTestNode",
+      "inputPorts": [
+        {
+          "name": "input",
+          "dataType": "string"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "left",
+          "dataType": "string",
+          "exclusiveGroupId": "g1"
+        },
+        {
+          "name": "right",
+          "dataType": "string",
+          "exclusiveGroupId": "g1",
+          "defaultBranch": true
+        }
+      ]
+    },
+    {
+      "name": "targetExit",
+      "type": "mutex",
+      "inputPorts": [
+        {
+          "name": "input",
+          "dataType": "string"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "entry",
+      "sourceOutputPort": 0,
+      "targetNode": "targetExit",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "entry",
+      "sourceOutputPort": 1,
+      "targetNode": "targetExit",
+      "targetInputPort": 0
+    }
+  ]
+}

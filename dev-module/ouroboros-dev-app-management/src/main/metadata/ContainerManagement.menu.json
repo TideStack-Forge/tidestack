@@ -1,0 +1,8 @@
+{
+  "fullName": "ContainerManagement",
+  "url": "/container-management",
+  "icon": "fa-brands fa-docker",
+  "title": "运行实例",
+  "placement": "main",
+  "order": -90
+}

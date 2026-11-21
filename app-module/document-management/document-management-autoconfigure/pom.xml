@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>document-management</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>document-management-autoconfigure</artifactId>
+    <name>Ouroboros Document Management Auto Configuration</name>
+    <description>Spring Boot Auto Configuration for Document Management</description>
+
+    <dependencies>
+        <dependency><groupId>com.ouroboros</groupId><artifactId>ouroboros-storage-filesystem</artifactId><scope>test</scope></dependency>
+
+        <!-- 文档管理核心模块 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>document-management-core</artifactId>
+        </dependency>
+
+        <!-- 文档管理服务层 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>document-management-service</artifactId>
+        </dependency>
+
+        <!-- 文档管理持久化 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>document-management-persistence</artifactId>
+        </dependency>
+
+        <!-- 文档管理存储 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>document-management-storage</artifactId>
+        </dependency>
+
+        <!-- 文档管理基础设施 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>document-management-infra-support</artifactId>
+        </dependency>
+
+        <!-- 文档管理 WebApp -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>document-management-webapp</artifactId>
+        </dependency>
+
+        <!-- Spring Boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <release>21</release>
+                    <source>21</source>
+                    <target>21</target>
+                    <compilerArgs>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>vscode-only</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <release>21</release>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>intellij-idea-only</id>
+            <activation>
+                <property>
+                    <name>idea.maven.embedder.version</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <release>21</release>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "AWF_USER_SEED_V1",
+  "generatedAt": "2026-01-01T00:00:00Z",
+  "users": [
+    {
+      "id": "AWF_USER_SUBMITTER",
+      "account": "awf.submitter",
+      "displayName": "AWF Submitter",
+      "email": "awf.submitter@example.test",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "AWF_USER_APPROVER_1",
+      "account": "awf.approver1",
+      "displayName": "AWF Approver 1",
+      "email": "awf.approver1@example.test",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "AWF_USER_APPROVER_2",
+      "account": "awf.approver2",
+      "displayName": "AWF Approver 2",
+      "email": "awf.approver2@example.test",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "AWF_USER_APPROVER_3",
+      "account": "awf.approver3",
+      "displayName": "AWF Approver 3",
+      "email": "awf.approver3@example.test",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "AWF_USER_AUDITOR",
+      "account": "awf.auditor",
+      "displayName": "AWF Auditor",
+      "email": "awf.auditor@example.test",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "AWF_USER_FLOW_ADMIN",
+      "account": "awf.flowadmin",
+      "displayName": "AWF Flow Admin",
+      "email": "awf.flowadmin@example.test",
+      "status": "ACTIVE"
+    }
+  ],
+  "userRoleMappings": [
+    {
+      "userId": "AWF_USER_SUBMITTER",
+      "roleId": "AWF_ROLE_SUBMITTER"
+    },
+    {
+      "userId": "AWF_USER_APPROVER_1",
+      "roleId": "AWF_ROLE_APPROVER_L1"
+    },
+    {
+      "userId": "AWF_USER_APPROVER_2",
+      "roleId": "AWF_ROLE_APPROVER_L2"
+    },
+    {
+      "userId": "AWF_USER_APPROVER_3",
+      "roleId": "AWF_ROLE_PARALLEL_APPROVER"
+    },
+    {
+      "userId": "AWF_USER_AUDITOR",
+      "roleId": "AWF_ROLE_AUDITOR"
+    },
+    {
+      "userId": "AWF_USER_FLOW_ADMIN",
+      "roleId": "AWF_ROLE_FLOW_ADMIN"
+    }
+  ],
+  "userOrganizationMappings": [
+    {
+      "userId": "AWF_USER_SUBMITTER",
+      "organizationId": "AWF_ORG_TEAM_APPLICATION"
+    },
+    {
+      "userId": "AWF_USER_APPROVER_1",
+      "organizationId": "AWF_ORG_DEPT_ENGINEERING"
+    },
+    {
+      "userId": "AWF_USER_APPROVER_2",
+      "organizationId": "AWF_ORG_DEPT_FINANCE"
+    },
+    {
+      "userId": "AWF_USER_APPROVER_3",
+      "organizationId": "AWF_ORG_DEPT_LEGAL"
+    },
+    {
+      "userId": "AWF_USER_AUDITOR",
+      "organizationId": "AWF_ORG_DEPT_EXEC"
+    },
+    {
+      "userId": "AWF_USER_FLOW_ADMIN",
+      "organizationId": "AWF_ORG_TEAM_PLATFORM"
+    }
+  ],
+  "aliases": {
+    "submitter": "AWF_USER_SUBMITTER",
+    "approver1": "AWF_USER_APPROVER_1",
+    "approver2": "AWF_USER_APPROVER_2",
+    "approver3": "AWF_USER_APPROVER_3"
+  }
+}

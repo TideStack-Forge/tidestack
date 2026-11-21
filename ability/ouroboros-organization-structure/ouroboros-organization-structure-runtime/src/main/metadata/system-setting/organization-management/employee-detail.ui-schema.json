@@ -1,0 +1,257 @@
+{
+  "name": "/system-setting/organization-management/employee-detail",
+  "schema": {
+    "type": "page",
+    "title": "",
+    "body": [
+      {
+        "type": "service",
+        "api": {
+          "method": "get",
+          "url": "/api/organization/employees/${id}"
+        },
+        "id": "employeeService",
+        "name": "employeeService",
+        "body": [
+          {
+            "type": "fieldset",
+            "title": "基本信息",
+            "body": [
+              {
+                "type": "personnel-profile-layout"
+              }
+            ]
+          },
+          {
+            "type": "fieldset",
+            "title": "用户关联",
+            "body": [
+              {
+                "type": "container",
+                "visibleOn": "data.userId",
+                "body": [
+                  {
+                    "type": "static",
+                    "label": "关联用户",
+                    "name": "userId"
+                  },
+                  {
+                    "type": "button",
+                    "label": "取消关联",
+                    "level": "danger",
+                    "size": "sm",
+                    "actionType": "ajax",
+                    "confirmText": "确认要取消用户关联吗？取消后该员工将无法登录系统。",
+                    "api": "delete:/api/organization/employees/${id}/user",
+                    "reload": "employeeService"
+                  }
+                ]
+              },
+              {
+                "type": "container",
+                "visibleOn": "!data.userId",
+                "body": [
+                  {
+                    "type": "static",
+                    "label": "关联用户",
+                    "value": "未关联用户"
+                  },
+                  {
+                    "type": "button",
+                    "label": "关联用户",
+                    "level": "primary",
+                    "size": "sm",
+                    "actionType": "dialog",
+                    "dialog": {
+                      "type": "dialog",
+                      "title": "关联用户",
+                      "body": {
+                        "type": "form",
+                        "api": "put:/api/organization/employees/${id}/user",
+                        "body": [
+                          {
+                            "type": "radios",
+                            "name": "mode",
+                            "label": "关联方式",
+                            "value": "existing",
+                            "options": [
+                              {
+                                "label": "选择已有用户",
+                                "value": "existing"
+                              },
+                              {
+                                "label": "创建新用户",
+                                "value": "create"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "select",
+                            "name": "userId",
+                            "label": "选择用户",
+                            "required": true,
+                            "visibleOn": "data.mode === 'existing'",
+                            "source": {
+                              "method": "get",
+                              "url": "/api/sys/user?perPage=1000"
+                            },
+                            "labelField": "userIdentity",
+                            "valueField": "userIdentity"
+                          },
+                          {
+                            "type": "input-text",
+                            "name": "newUsername",
+                            "label": "用户名",
+                            "required": true,
+                            "visibleOn": "data.mode === 'create'"
+                          },
+                          {
+                            "type": "input-password",
+                            "name": "newPassword",
+                            "label": "密码",
+                            "required": true,
+                            "visibleOn": "data.mode === 'create'"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "service",
+            "api": {
+              "method": "get",
+              "url": "/api/organization/employees/${id}/org-chain"
+            },
+            "body": [
+              {
+                "type": "fieldset",
+                "title": "组织架构",
+                "body": [
+                  {
+                    "type": "tpl",
+                    "tpl": "${items | pick:name | join: ' > '}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "service",
+            "id": "appointmentService",
+            "name": "appointmentService",
+            "api": {
+              "method": "get",
+              "url": "/api/organization/employees/${id}/appointments"
+            },
+            "body": [
+              {
+                "type": "fieldset",
+                "title": "任职信息",
+                "body": [
+                  {
+                    "type": "table",
+                    "source": "${items}",
+                    "columns": [
+                      {
+                        "name": "position.name",
+                        "label": "岗位"
+                      },
+                      {
+                        "name": "appointment.type",
+                        "label": "任职类型",
+                        "type": "mapping",
+                        "map": {
+                          "PRIMARY": "<span class='label label-success'>主岗</span>",
+                          "SECONDARY": "<span class='label label-info'>副岗</span>",
+                          "ACTING": "<span class='label label-warning'>代理</span>"
+                        }
+                      },
+                      {
+                        "name": "department.name",
+                        "label": "部门"
+                      },
+                      {
+                        "name": "appointment.startDate",
+                        "label": "开始时间",
+                        "type": "date",
+                        "format": "YYYY-MM-DD"
+                      },
+                      {
+                        "name": "appointment.endDate",
+                        "label": "结束时间",
+                        "type": "date",
+                        "format": "YYYY-MM-DD",
+                        "placeholder": "在职"
+                      },
+                      {
+                        "type": "operation",
+                        "label": "操作",
+                        "buttons": [
+                          {
+                            "type": "button",
+                            "label": "删除",
+                            "level": "link",
+                            "className": "text-danger",
+                            "actionType": "ajax",
+                            "confirmText": "确认要删除该任职关系吗？",
+                            "api": "delete:/api/organization/appointments/${appointment.id}",
+                            "reload": "appointmentService"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "type": "flex",
+            "justify": "flex-end",
+            "items": [
+              {
+                "type": "button",
+                "label": "分配岗位",
+                "level": "primary",
+                "icon": "fa fa-plus",
+                "actionType": "dialog",
+                "reload": "appointmentService",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "分配岗位",
+                  "url": "/system-setting/organization-management/assign-position",
+                  "data": {
+                    "employeeId": "${id}",
+                    "employeeName": "${name}"
+                  }
+                }
+              },
+              {
+                "type": "button",
+                "label": "编辑员工",
+                "level": "default",
+                "icon": "fa fa-pencil",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "编辑员工",
+                  "url": "/system-setting/organization-management/edit-employee",
+                  "data": {
+                    "id": "${id}"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

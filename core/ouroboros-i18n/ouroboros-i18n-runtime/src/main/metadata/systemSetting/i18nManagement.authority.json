@@ -1,0 +1,22 @@
+{
+  "fullName": "systemSetting.i18nManagement",
+  "title": "国际化管理",
+  "apis": [
+    "GET /api/i18n/manage/languages",
+    "GET /api/i18n/manage/languages/*",
+    "GET /api/i18n/manage/languages/*/export",
+    "POST /api/i18n/manage/languages/*/set-default",
+    "DELETE /api/i18n/manage/languages/*",
+    "POST /api/i18n/manage/languages/*/enabled",
+    "GET /api/i18n/manage/template/export",
+    "POST /api/i18n/manage/locale",
+    "POST /api/i18n/manage/import",
+    "POST /api/i18n/manage/sync"
+  ],
+  "uiViews": [
+    "/system-setting/i18n-management"
+  ],
+  "menuItems": [
+    "systemSetting.i18nManagement"
+  ]
+}

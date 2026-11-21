@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/versions/create",
+  "type": "amis",
+  "title": "发布版本"
+}

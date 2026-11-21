@@ -1,0 +1,11 @@
+{
+  "fullName": "notification.channel.employee.bind.info",
+  "title": "通知渠道绑定信息",
+  "apis": [
+    "POST /api/notification/{channel}/employee/bind",
+    "POST /api/notification/{channel}/employee/unbind",
+    "GET /api/notification/{channel}/employee/bind/info"
+  ],
+  "uiViews": [],
+  "menuItems": []
+}

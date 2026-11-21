@@ -1,0 +1,31 @@
+{
+  "fullName": "systemSetting.approvalWorkflowDefinition",
+  "title": "审批流管理",
+  "apis": [
+    "GET /api/approval-workflow/definition",
+    "GET /api/approval-workflow/definition/{flowKey}/versions",
+    "GET /api/approval-workflow/definition/{flowKey}/versions/{version}",
+    "GET /api/approval-workflow/definition/{flowKey}/versions/{version}/diagram",
+    "POST /api/approval-workflow/definition/{id}/deploy",
+    "POST /api/approval-workflow/definition/{id}/offline",
+    "POST /api/approval-workflow/definition/{id}/reset",
+    "DELETE /api/approval-workflow/definition/{id}",
+    "GET /api/approval-workflow/definition/{id}",
+    "GET /api/approval-workflow/base-info/**",
+    "POST /api/approval-workflow/definition",
+    "PUT /api/approval-workflow/definition/{id}",
+    "GET /api/approval-workflow/candidate",
+    "GET /api/approval-workflow/candidate/{type}/items",
+    "GET /api/approval-workflow/candidate/{type}/category",
+    "GET /api/approval-workflow/category"
+  ],
+  "uiViews": [
+    "/system-setting/approval-workflow-definition",
+    "/system-setting/approval-workflow-definition/add",
+    "/system-setting/approval-workflow-definition/version-history",
+    "/system-setting/approval-workflow-definition/version-detail"
+  ],
+  "menuItems": [
+    "systemSetting.approvalWorkflowDefinition"
+  ]
+}

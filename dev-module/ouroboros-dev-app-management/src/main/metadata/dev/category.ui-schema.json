@@ -1,0 +1,84 @@
+{
+  "name": "/dev/category",
+  "schema": {
+    "type": "crud",
+    "syncLocation": false,
+    "api": {
+      "method": "get",
+      "url": "/api/app/category"
+    },
+    "columns": [
+      {
+        "name": "name",
+        "label": "分类名",
+        "type": "wrapper",
+        "className": "flex items-center",
+        "style": {
+          "padding": 0
+        },
+        "body": [
+          {
+            "type": "icon",
+            "icon": "${icon}",
+            "vendor": "",
+            "className": "w-4 mr-1"
+          },
+          {
+            "type": "tpl",
+            "tpl": "${name}"
+          }
+        ]
+      },
+      {
+        "label": "排序",
+        "placeholder": "-",
+        "name": "order"
+      },
+      {
+        "type": "operation",
+        "label": "操作",
+        "buttons": [
+          {
+            "label": "编辑",
+            "type": "button",
+            "actionType": "dialog",
+            "level": "link",
+            "dialog": {
+              "$ref": "editCategoryModal"
+            },
+            "icon": "fa fa-edit"
+          },
+          {
+            "type": "button",
+            "icon": "fa fa-trash",
+            "level": "danger",
+            "label": "删除",
+            "actionType": "ajax",
+            "api": "delete:/api/app/category/${fullPath}",
+            "confirmText": "确定要删除 ${name} 吗？"
+          }
+        ]
+      }
+    ],
+    "headerToolbar": [
+      {
+        "label": "新增",
+        "type": "button",
+        "actionType": "dialog",
+        "level": "primary",
+        "dialog": {
+          "$ref": "addCategoryModal"
+        },
+        "icon": "fa fa-plus"
+      }
+    ],
+    "perPageAvailable": [
+      20
+    ],
+    "primaryField": "fullPath",
+    "loadDataOnce": true,
+    "expandConfig": {
+      "expand": "all"
+    }
+  }
+}

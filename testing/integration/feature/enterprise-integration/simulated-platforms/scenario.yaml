@@ -1,0 +1,5 @@
+id: enterprise-integration-simulated-platforms
+name: 企业集成外部平台仿真验收
+category: feature
+contract: contract.md
+cases: cases.md

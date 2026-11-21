@@ -1,0 +1,75 @@
+{
+  "type": "approval-workflow",
+  "fileSuffix": ".workflow.json",
+  "displayName": "审批流",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.workflow.json",
+    "workflow/**/*.workflow.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/metadata",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.workflow.json",
+    "fields": [
+      {
+        "name": "name",
+        "label": "流程标识",
+        "documentPath": [
+          "name"
+        ],
+        "required": true,
+        "defaultFromPath": "dot-name"
+      },
+      {
+        "name": "title",
+        "label": "流程名称",
+        "documentPath": [
+          "title"
+        ],
+        "required": true,
+        "defaultFromPath": "title"
+      },
+      {
+        "name": "description",
+        "label": "描述",
+        "documentPath": [
+          "description"
+        ]
+      }
+    ],
+    "document": {
+      "formatVersion": 1,
+      "name": "example",
+      "title": "示例审批流",
+      "description": "示例审批流定义",
+      "version": 1,
+      "enabled": false,
+      "form": {
+        "formType": "business-model",
+        "formId": "example.business"
+      },
+      "nodes": [],
+      "edges": []
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": false,
+    "actions": [],
+    "wrapWithPanel": false,
+    "metadataRootField": "__metadataDocument",
+    "body": [
+      {
+        "type": "workflow-editor",
+        "name": "__metadataDocument",
+        "label": false,
+        "candidateSourceApi": "ide://editor-integrations/approval-workflow/candidate",
+        "formFieldSourceApi": "ide://editor-integrations/approval-workflow/form-fields",
+        "className": "metadata-embedded-approval-workflow-editor"
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/approval-workflow.schema.json"
+}

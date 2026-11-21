@@ -1,0 +1,90 @@
+{
+  "name": "/system-setting/approval-workflow-definition/instance-details/detail",
+  "schema": {
+    "type": "page",
+    "body": [
+      {
+        "type": "card",
+        "body": {
+          "type": "property",
+          "mode": "simple",
+          "column": 1,
+          "separator": "：",
+          "items": [
+            {
+              "label": "流程实例ID",
+              "content": "${instanceId}"
+            },
+            {
+              "label": "发起人名称",
+              "content": "${starterName}"
+            },
+            {
+              "label": "当前任务ID",
+              "content": "${taskId}"
+            },
+            {
+              "label": "当前任务名称",
+              "content": "${taskName}"
+            },
+            {
+              "label": "流程实例状态",
+              "content": "${status == 'finished' ? '已结束' : '进行中'}"
+            },
+            {
+              "content": "${startTime|date:YYYY-MM-DD HH\\:mm\\:ss :YYYY-MM-DDTHH\\:mm\\:ssZ}",
+              "label": "开始时间"
+            },
+            {
+              "content": "${endTime ? ${endTime | date:YYYY-MM-DD HH\\:mm\\:ss :YYYY-MM-DDTHH\\:mm\\:ssZ} : '正在进行'}",
+              "label": "结束时间"
+            }
+          ]
+        }
+      },
+      {
+        "type": "button",
+        "label": "打开外部审批",
+        "actionType": "url",
+        "url": "${externalUrl}",
+        "blank": true,
+        "visibleOn": "${!!externalUrl}"
+      },
+      {
+        "type": "card",
+        "header": {
+          "title": "流程图"
+        },
+        "body": {
+          "type": "service",
+          "api": {
+            "method": "GET",
+            "url": "/api/approval-workflow/instance/${instanceId}/diagram"
+          },
+          "body": {
+            "type": "workflow-diagram-viewer",
+            "definition": "${definition}",
+            "activeNodeIds": "${activeNodeIds}",
+            "height": 500
+          }
+        },
+        "visibleOn": "${diagramAvailable === true}"
+      },
+      {
+        "type": "card",
+        "header": {
+          "title": "审批时间线"
+        },
+        "body": {
+          "type": "timeline",
+          "source": {
+            "method": "GET",
+            "url": "/api/approval-workflow/instance/${instanceId}/timeline"
+          }
+        },
+        "visibleOn": "${timelineAvailable === true}"
+      }
+    ],
+    "initApi": "/api/approval-workflow/instance/${instanceId}/info"
+  }
+}

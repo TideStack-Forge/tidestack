@@ -1,0 +1,13 @@
+{
+  "editorId": "micro-web",
+  "editorName": "TideStack Micro Web Metadata Editor",
+  "editorNameKey": "customEditor.microWeb",
+  "metadataType": "micro-web",
+  "schemaName": "micro-web",
+  "viewType": "tidestack.metadataEditor.microWeb",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.microWeb",
+  "fileMatchPatterns": [
+    "*.micro-web.json"
+  ],
+  "priority": "default"
+}

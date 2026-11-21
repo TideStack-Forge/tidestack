@@ -1,0 +1,52 @@
+{
+  "name": "/system-setting/integration-management/applications/settings",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "initApi": "/api/sys/auth-clients/settings",
+    "api": {
+      "method": "put",
+      "url": "/api/sys/auth-clients/settings",
+      "data": {
+        "expectedRevision": "${expectedRevision}",
+        "settings": {
+          "enabled": "${settings.enabled}",
+          "accessTokenTimeToLive": "${settings.accessTokenTimeToLive}",
+          "refreshTokenTimeToLive": "${settings.refreshTokenTimeToLive}"
+        }
+      }
+    },
+    "body": [
+      {
+        "type": "alert",
+        "level": "info",
+        "body": "签发者和签名密钥由部署配置维护。停用不会删除已注册应用。"
+      },
+      {
+        "type": "switch",
+        "name": "settings.enabled",
+        "label": "启用授权服务器"
+      },
+      {
+        "type": "input-text",
+        "name": "settings.accessTokenTimeToLive",
+        "label": "访问令牌有效期",
+        "description": "ISO 8601 时长，例如 PT30M"
+      },
+      {
+        "type": "input-text",
+        "name": "settings.refreshTokenTimeToLive",
+        "label": "刷新令牌有效期",
+        "description": "例如 P7D"
+      }
+    ],
+    "actions": [
+      {
+        "type": "submit",
+        "label": "保存授权服务器设置",
+        "level": "primary",
+        "confirmText": "确认修改授权服务器配置？停用会停止新的授权与令牌请求，请自行处理相关业务。"
+      }
+    ]
+  }
+}

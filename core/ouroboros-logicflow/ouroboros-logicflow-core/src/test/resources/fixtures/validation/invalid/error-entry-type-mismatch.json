@@ -1,0 +1,111 @@
+{
+  "name": "error-entry-type-mismatch",
+  "description": "Error flow entry should consume the standardized error-context map rather than an incompatible type",
+  "isEnabled": true,
+  "inputDataType": "string",
+  "outputDataType": "string",
+  "entryNode": "mainEntry",
+  "exitNode": "mainFailingNode",
+  "errorEntryNode": "errorEntry",
+  "nodes": [
+    {
+      "name": "mainEntry",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    },
+    {
+      "name": "mainFailingNode",
+      "type": "script",
+      "description": "",
+      "language": "groovy",
+      "script": "throw new RuntimeException('boom')",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "string"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    },
+    {
+      "name": "errorEntry",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "error",
+          "description": "",
+          "dataType": "integer"
+        }
+      ]
+    },
+    {
+      "name": "recoverNode",
+      "type": "script",
+      "description": "",
+      "language": "groovy",
+      "script": "return 'recovered'",
+      "inputPorts": [
+        {
+          "name": "error",
+          "description": "",
+          "dataType": "integer"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    },
+    {
+      "name": "errorReturn",
+      "type": "return",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "string"
+        }
+      ],
+      "outputPorts": []
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "mainEntry",
+      "sourceOutputPort": 0,
+      "targetNode": "mainFailingNode",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "errorEntry",
+      "sourceOutputPort": 0,
+      "targetNode": "recoverNode",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "recoverNode",
+      "sourceOutputPort": 0,
+      "targetNode": "errorReturn",
+      "targetInputPort": 0
+    }
+  ]
+}

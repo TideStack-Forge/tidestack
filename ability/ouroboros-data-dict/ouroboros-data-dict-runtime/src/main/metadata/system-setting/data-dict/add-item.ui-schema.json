@@ -1,0 +1,19 @@
+{
+  "name": "/system-setting/data-dict/add-item",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "body": [
+      {
+        "$ref": "dictionaryItem"
+      }
+    ],
+    "mode": "horizontal",
+    "api": {
+      "url": "/api/sys/data-dict-manage/${name}/items",
+      "method": "post",
+      "data": "${items}"
+    },
+    "wrapWithPanel": false
+  }
+}

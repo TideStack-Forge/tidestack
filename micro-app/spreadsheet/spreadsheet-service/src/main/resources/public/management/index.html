@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/amis/sdk/sdk.css" />
+    <link rel="stylesheet" href="https://unpkg.com/amis/sdk/helper.css" />
+    <link rel="stylesheet" href="https://unpkg.com/amis/sdk/iconfont.css" />
+    <title>电子表格服务管理</title>
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <script src="https://unpkg.com/amis/sdk/sdk.js"></script>
+    <script type="text/javascript">
+      ;(function () {
+        var url = new URL(window.location.href)
+        var pathPrefix = url.pathname
+          .replace('index.html', '')
+          .replace('management', '')
+          .split('/')[1]
+        var urlPrefix = pathPrefix ? '/' + pathPrefix : ''
+        var amis = amisRequire('amis/embed')
+        var amisLib = amisRequire('amis')
+        var loginSchema = {
+          type: 'flex',
+          justify: 'center',
+          alignItems: 'center',
+          visibleOn: '!this.token',
+          style: {
+            height: 'calc(100vh - 100px)',
+          },
+          items: [
+            {
+              type: 'form',
+              mode: 'horizontal',
+              api: {
+                url: '/api/management/login',
+                method: 'post',
+                adaptor(payload) {
+                  if (payload.status == 0) {
+                    var token = payload.data.token
+                    window.sessionStorage.setItem('token', token)
+                    payload.msg = '登录成功'
+                  }
+                  return payload
+                },
+              },
+              panelClassName: 'Panel--default w-1/3',
+              reload: 'page?token=$token',
+              submitText: '登录',
+              title: [
+                { type: 'icon', icon: 'lock', className: 'm-0.5 mr-2' },
+                '登录',
+              ],
+              icon: 'fa fa-key',
+              body: [
+                {
+                  label: '管理密码',
+                  type: 'input-password',
+                  name: 'password',
+                  required: true,
+                },
+              ],
+            },
+          ],
+        }
+        var newAppSchema = {
+          type: 'action',
+          label: '新建',
+          actionType: 'dialog',
+          level: 'primary',
+          align: 'right',
+          icon: 'fa fa-plus',
+          dialog: {
+            title: '新建应用',
+            body: [
+              {
+                type: 'form',
+                mode: 'horizontal',
+                api: {
+                  url: '/api/management/apps',
+                  method: 'post',
+                },
+                body: [
+                  {
+                    type: 'wrapper',
+                    visibleOn: 'this.appSecret',
+                    body: [
+                      {
+                        type: 'alert',
+                        body: '请妥善保存 App ID 和 App Secret，以便后续使用。',
+                        level: 'warning',
+                        showIcon: true,
+                        className: 'mb-1',
+                      },
+                      {
+                        label: 'App ID',
+                        name: 'appId',
+                        type: 'static-text',
+                      },
+                      {
+                        label: 'App Secret',
+                        name: 'appSecret',
+                        type: 'static-text',
+                      },
+                    ],
+                  },
+                  {
+                    type: 'wrapper',
+                    visibleOn: '!this.appSecret',
+                    body: [
+                      {
+                        label: '应用名称',
+                        name: 'name',
+                        type: 'input-text',
+                        required: true,
+                      },
+                      {
+                        label: '描述',
+                        name: 'description',
+                        type: 'textarea',
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+            actions: [
+              {
+                type: 'action',
+                actionType: 'close',
+                label: '关闭',
+              },
+              {
+                type: 'action',
+                actionType: 'submit',
+                label: '创建',
+                level: 'primary',
+                close: false,
+                disabledOn: 'this.appSecret',
+              },
+            ],
+          },
+        }
+        var appDrawerSchema = {
+          actionType: 'drawer',
+          drawer: {
+            title: '应用详情',
+            name: 'appDetail',
+            size: 'md',
+            body: [
+              {
+                name: 'app',
+                type: 'form',
+                mode: 'horizontal',
+                initApi: {
+                  url: '/api/management/apps/$id',
+                  method: 'get',
+                },
+                api: {
+                  url: '/api/management/apps/$id',
+                  method: 'put',
+                },
+                title: '应用详情',
+                body: [
+                  {
+                    label: 'App ID',
+                    name: 'id',
+                    type: 'static-text',
+                  },
+                  {
+                    label: '名称',
+                    name: 'name',
+                    type: 'input-text',
+                    required: true,
+                  },
+                  {
+                    label: '描述',
+                    name: 'description',
+                    type: 'textarea',
+                  },
+                  {
+                    label: '创建时间',
+                    name: 'created_at',
+                    type: 'static-date',
+                    format: 'YYYY年MM月DD日 HH时mm分ss秒',
+                  },
+                  {
+                    label: '更新时间',
+                    name: 'updated_at',
+                    type: 'static-date',
+                    format: 'YYYY年MM月DD日 HH时mm分ss秒',
+                  },
+                ],
+              },
+            ],
+            actions: [
+              {
+                type: 'action',
+                actionType: 'close',
+                label: '关闭',
+              },
+              {
+                type: 'action',
+                actionType: 'submit',
+                label: '更新应用信息',
+                icon: 'fa fa-save',
+                level: 'primary',
+              },
+            ],
+          },
+        }
+        var appListSchema = {
+          type: 'wrapper',
+          visibleOn: 'this.token',
+          bodyClassName: 'p-0',
+          body: [
+            {
+              name: 'appList',
+              type: 'crud',
+              api: {
+                url: '/api/management/apps',
+                method: 'get',
+              },
+              syncLocation: false,
+              loadDataOnce: true,
+              headerToolbar: ['<h2>应用列表</h2>', 'reload', newAppSchema],
+              itemAction: appDrawerSchema,
+              columns: [
+                {
+                  label: '应用名称',
+                  name: 'name',
+                },
+                {
+                  label: '应用id',
+                  name: 'id',
+                },
+                {
+                  label: '创建时间',
+                  name: 'created_at',
+                  type: 'static-date',
+                  format: 'YYYY年MM月DD日 HH时mm分ss秒',
+                },
+                {
+                  label: '最后修改',
+                  name: 'updated_at',
+                  type: 'static-date',
+                  format: 'YYYY年MM月DD日 HH时mm分ss秒',
+                },
+                ,
+                {
+                  label: '操作',
+                  type: 'operation',
+                  width: '220px',
+                  buttons: [
+                    {
+                      type: 'action',
+                      actionType: 'ajax',
+                      label: '删除',
+                      level: 'danger',
+                      icon: 'fa fa-trash',
+                      confirmText: '确认删除该应用「$name」？',
+                      api: {
+                        url: '/api/management/apps/$id',
+                        method: 'delete',
+                      },
+                      reload: 'appList',
+                      close: 'appDetail',
+                    },
+                    {
+                      type: 'action',
+                      actionType: 'ajax',
+                      level: 'warning',
+                      label: '重置 App Secret',
+                      icon: 'fa fa-key',
+                      confirmText:
+                        '确定要重置 App Secret 吗？（重置后旧的 App Secret 将立即失效）',
+                      api: {
+                        url: '/api/management/apps/$id/reset-secret',
+                        method: 'post',
+                      },
+                      feedback: {
+                        title: '已重置 App Secret',
+                        body: [
+                          {
+                            type: 'alert',
+                            body: '请妥善保存 App ID 和 App Secret，以便后续使用。',
+                            level: 'warning',
+                            showIcon: true,
+                            className: 'mb-1',
+                          },
+                          {
+                            type: 'static-text',
+                            name: 'appId',
+                            label: 'App ID',
+                          },
+                          {
+                            type: 'static-text',
+                            name: 'appSecret',
+                            label: 'App Secret',
+                          },
+                        ],
+                        actions: [
+                          {
+                            type: 'action',
+                            actionType: 'close',
+                            label: '关闭',
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        }
+        var pageSchema = {
+          type: 'page',
+          title: '电子表格服务管理',
+          name: 'page',
+          toolbar: [
+            {
+              type: 'action',
+              actionType: 'ajax',
+              label: '退出',
+              icon: 'fa fa-sign-out',
+              level: 'link',
+              visibleOn: 'this.token',
+              api: {
+                url: '/api/management/logout',
+                method: 'post',
+                adaptor(payload) {
+                  if (payload.status == 0) {
+                    window.sessionStorage.removeItem('token')
+                    window.location.reload()
+                  }
+                  return payload
+                },
+              },
+            },
+          ],
+          data: {
+            token: '${ss:token}',
+          },
+          body: [loginSchema, appListSchema],
+        }
+        let amisScoped = amis.embed(
+          '#app',
+          pageSchema,
+          {},
+          {
+            notify(type, msg) {
+              switch (type) {
+                case 'error':
+                  amisLib.toast.error(msg, { position: 'top-center' })
+                  break
+                default:
+                  amisLib.toast.success(msg, { position: 'top-center' })
+              }
+            },
+            requestAdaptor: function (api) {
+              var token = api.headers.token || sessionStorage.getItem('token')
+              api.headers = Object.assign({}, api.headers, { token })
+              api.url = urlPrefix + api.url
+              return api
+            },
+            responseAdaptor: function (api, payload, query, request, response) {
+              if (response.status == 401) {
+                window.sessionStorage.removeItem('token')
+                window.location.reload()
+              }
+              return payload
+            },
+          }
+        )
+      })()
+    </script>
+  </body>
+</html>

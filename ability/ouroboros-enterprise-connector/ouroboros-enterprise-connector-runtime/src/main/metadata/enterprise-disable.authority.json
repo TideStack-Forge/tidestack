@@ -1,0 +1,15 @@
+{
+  "fullName": "systemSetting.integrationManagement.connections.enterprise.disable",
+  "title": "停用企业连接",
+  "delegable": false,
+  "apis": [
+    "GET /api/sys/integration-management/sections/{section}",
+    "PUT /api/sys/enterprise-connections"
+  ],
+  "uiViews": [
+    "/system-setting/integration-management"
+  ],
+  "menuItems": [
+    "systemSetting.integrationManagement"
+  ]
+}

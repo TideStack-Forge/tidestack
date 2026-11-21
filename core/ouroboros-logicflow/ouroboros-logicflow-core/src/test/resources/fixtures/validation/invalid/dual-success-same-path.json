@@ -1,0 +1,57 @@
+{
+  "name": "dual-success-same-path",
+  "description": "Invalid flow where exitNode is followed by ReturnNode on the same path",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "constSource",
+  "exitNode": "designatedExit",
+  "nodes": [
+    {
+      "name": "constSource",
+      "type": "const",
+      "description": "",
+      "dataType": "string",
+      "value": "hello"
+    },
+    {
+      "name": "designatedExit",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    },
+    {
+      "name": "lateReturn",
+      "type": "return",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": []
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "constSource",
+      "sourceOutputPort": 0,
+      "targetNode": "designatedExit",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "designatedExit",
+      "sourceOutputPort": 0,
+      "targetNode": "lateReturn",
+      "targetInputPort": 0
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "fullName": "systemSetting.integrationManagement.connections.workbench.view",
+  "title": "查看工作台入口",
+  "apis": ["GET /api/sys/enterprise-workbench"],
+  "uiViews": ["/system-setting/integration-management/enterprise-workbench"],
+  "menuItems": ["systemSetting.integrationManagement"]
+}

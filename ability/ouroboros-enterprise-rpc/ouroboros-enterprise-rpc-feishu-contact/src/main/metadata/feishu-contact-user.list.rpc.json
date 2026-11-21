@@ -1,0 +1,88 @@
+{
+  "name": "feishu.contact.user.list",
+  "title": "飞书读取部门成员",
+  "type": "OpenAPI",
+  "isEnabled": true,
+  "authCredential": "feishu.application-token",
+  "description": "自建应用 tenant_access_token；选择 user_id 以与登录成员映射一致，不能把 open_id 与 user_id 混用；contact:user.base:readonly 或相应通讯录读取权限，手机号/邮箱另需字段权限",
+  "timeout": 10000,
+  "retry": 0,
+  "retrySafe": true,
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "department_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "department_id_type": {
+        "type": "string",
+        "enum": [
+          "department_id",
+          "open_department_id"
+        ],
+        "minLength": 1
+      },
+      "user_id_type": {
+        "type": "string",
+        "enum": [
+          "user_id",
+          "open_id",
+          "union_id"
+        ],
+        "minLength": 1
+      },
+      "page_size": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 50
+      },
+      "page_token": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "department_id",
+      "department_id_type",
+      "user_id_type",
+      "page_size"
+    ]
+  },
+  "request": {
+    "method": "GET",
+    "url": "https://open.feishu.cn/open-apis/contact/v3/users/find_by_department",
+    "parameters": [
+      {
+        "in": "QUERY",
+        "name": "department_id",
+        "value": "${department_id}",
+        "required": true
+      },
+      {
+        "in": "QUERY",
+        "name": "department_id_type",
+        "value": "${department_id_type}",
+        "required": true
+      },
+      {
+        "in": "QUERY",
+        "name": "user_id_type",
+        "value": "${user_id_type}",
+        "required": true
+      },
+      {
+        "in": "QUERY",
+        "name": "page_size",
+        "value": "${page_size}",
+        "required": true
+      },
+      {
+        "in": "QUERY",
+        "name": "page_token",
+        "value": "${page_token}",
+        "required": false
+      }
+    ]
+  },
+  "group": "飞书/通讯录"
+}

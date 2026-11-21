@@ -1,0 +1,16 @@
+{
+  "fullName": "UserDashboard",
+  "title": "个人门户",
+  "apis": [
+    "GET /api/user-dashboard/init",
+    "POST /api/user-dashboard/save",
+    "GET /api/widget-definition",
+    "GET /api/user-dashboard-template/select"
+  ],
+  "uiViews": [
+    "/user-dashboard"
+  ],
+  "menuItems": [
+    "UserDashboard"
+  ]
+}

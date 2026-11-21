@@ -1,0 +1,16 @@
+[
+  {
+    "path": "enterprise",
+    "title": "企业协作设置",
+    "icon": "building",
+    "order": 60,
+    "description": "企业协作平台连接和身份基础配置"
+  },
+  {
+    "path": "enterprise.integration",
+    "title": "企业连接",
+    "icon": "plug",
+    "order": 10,
+    "description": "统一管理钉钉、企业微信和飞书的连接快照；各领域复用连接与凭据"
+  }
+]

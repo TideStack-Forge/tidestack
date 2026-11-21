@@ -1,0 +1,22 @@
+{
+  "name": "wecom.contact.department.list",
+  "title": "企业微信读取部门列表",
+  "type": "OpenAPI",
+  "isEnabled": true,
+  "authCredential": "wecom.application-token",
+  "description": "自建应用；仅返回应用授权范围内部门，不代表全企业通讯录；应用部门查看权限及可见范围",
+  "timeout": 10000,
+  "retry": 0,
+  "retrySafe": true,
+  "inputSchema": {
+    "type": "object",
+    "properties": {},
+    "required": []
+  },
+  "request": {
+    "method": "GET",
+    "url": "https://qyapi.weixin.qq.com/cgi-bin/department/list",
+    "parameters": []
+  },
+  "group": "企业微信/通讯录"
+}

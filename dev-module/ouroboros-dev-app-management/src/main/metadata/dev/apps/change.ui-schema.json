@@ -1,0 +1,29 @@
+{
+  "name": "/dev/apps/change",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "mode": "horizontal",
+    "api": "post:/api/app/${name}/move",
+    "body": [
+      {
+        "type": "hidden",
+        "name": "category"
+      },
+      {
+        "type": "nested-select",
+        "label": "分类",
+        "name": "newCategory",
+        "multiple": false,
+        "source": {
+          "url": "/api/app/category",
+          "method": "get"
+        },
+        "valueField": "fullPath",
+        "labelField": "name",
+        "clearable": true
+      }
+    ],
+    "wrapWithPanel": false
+  }
+}

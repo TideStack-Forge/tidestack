@@ -1,0 +1,126 @@
+{
+  "type": "modules-diff",
+  "fixedFileName": "modules.diff.json",
+  "displayName": "模块树 Diff",
+  "sourcePathPatterns": [
+    "src/main/metadata/modules.diff.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/metadata",
+  "packagedPathPatterns": [
+    "metadata/modules.diff.json",
+    "modules.diff.json"
+  ],
+  "documentShape": "array",
+  "editorKinds": [
+    "form",
+    "table"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "modules.diff.json",
+    "fields": [
+      {
+        "name": "fullName",
+        "label": "完整名称",
+        "documentPath": [
+          "0",
+          "fullName"
+        ],
+        "required": true
+      },
+      {
+        "name": "title",
+        "label": "标题",
+        "documentPath": [
+          "0",
+          "title"
+        ],
+        "required": true
+      }
+    ],
+    "document": [
+      {
+        "diffType": "add",
+        "fullName": "Example.Module",
+        "parent": "Example",
+        "title": "示例模块",
+        "description": "示例模块树 Diff",
+        "icon": "fa fa-cube",
+        "order": 0,
+        "menu": "Example.Module",
+        "subMenus": [],
+        "authorities": []
+      }
+    ]
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "模块树 Diff",
+    "documentShape": "array",
+    "actions": [],
+    "body": [
+      {
+        "type": "combo",
+        "name": "items",
+        "label": "差异列表",
+        "multiple": true,
+        "multiLine": true,
+        "draggable": true,
+        "addButtonText": "新增差异",
+        "items": [
+          {
+            "type": "select",
+            "name": "diffType",
+            "label": "差异类型",
+            "options": [
+              {
+                "label": "新增",
+                "value": "add"
+              },
+              {
+                "label": "删除",
+                "value": "remove"
+              },
+              {
+                "label": "修改",
+                "value": "modify"
+              }
+            ]
+          },
+          {
+            "type": "input-text",
+            "name": "fullName",
+            "label": "完整名称",
+            "required": true
+          },
+          {
+            "type": "input-text",
+            "name": "parent",
+            "label": "父模块"
+          },
+          {
+            "type": "input-text",
+            "name": "title",
+            "label": "标题"
+          },
+          {
+            "type": "input-number",
+            "name": "order",
+            "label": "排序"
+          },
+          {
+            "type": "input-text",
+            "name": "menu",
+            "label": "关联菜单"
+          },
+          {
+            "type": "textarea",
+            "name": "description",
+            "label": "描述",
+            "minRows": 2
+          }
+        ]
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/modules-diff.schema.json"
+}

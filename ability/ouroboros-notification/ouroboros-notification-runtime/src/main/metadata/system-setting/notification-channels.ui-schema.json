@@ -1,0 +1,101 @@
+{
+  "name": "/system-setting/notification-channels",
+  "schema": {
+    "type": "page",
+    "title": "通知渠道",
+    "subTitle": "渠道由已安装的适配器提供；连接参数由统一配置管理维护，独立于模板覆盖。",
+    "body": [
+      {
+        "type": "alert",
+        "level": "danger",
+        "body": "无权访问通知配置，请联系管理员分配权限。",
+        "visibleOn": "${!hasAuth(\"systemSetting.notificationTemplate\")}"
+      },
+      {
+        "type": "container",
+        "visibleOn": "${hasAuth(\"systemSetting.notificationTemplate\")}",
+        "body": {
+          "type": "crud",
+          "api": "/api/notification/adapter-schema/management",
+          "perPage": 20,
+          "primaryField": "id",
+          "headerToolbar": [
+            {
+              "type": "button",
+              "label": "刷新",
+              "actionType": "reload"
+            }
+          ],
+          "columns": [
+            {
+              "name": "title",
+              "label": "渠道"
+            },
+            {
+              "name": "id",
+              "label": "标识"
+            },
+            {
+              "name": "installed",
+              "label": "实现状态",
+              "type": "mapping",
+              "map": {
+                "true": "已安装",
+                "false": "未安装"
+              }
+            },
+            {
+              "name": "manageable",
+              "label": "管理描述",
+              "type": "mapping",
+              "map": {
+                "true": "可配置",
+                "false": "只读诊断"
+              }
+            },
+            {
+              "name": "referenceCount",
+              "label": "引用模板数"
+            },
+            {
+              "name": "configurationGroups",
+              "label": "配置分组",
+              "type": "each",
+              "items": {
+                "type": "plain",
+                "text": "${item}"
+              }
+            },
+            {
+              "type": "operation",
+              "label": "操作",
+              "buttons": [
+                {
+                  "type": "button",
+                  "level": "link",
+                  "label": "配置管理",
+                  "visibleOn": "${configurationGroups && configurationGroups.length}",
+                  "disabledOn": "${!hasAuth(\"systemSetting.configurationManagement\")}",
+                  "tooltip": "连接参数需要独立的配置管理权限；进入后按配置分组路径定位。",
+                  "onEvent": {
+                    "click": {
+                      "actions": [
+                        {
+                          "actionType": "openOrSwitchTab",
+                          "args": {
+                            "url": "/system-setting/configuration-management",
+                            "title": "配置管理"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

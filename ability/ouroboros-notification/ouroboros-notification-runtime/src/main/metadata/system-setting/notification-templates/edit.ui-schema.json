@@ -1,0 +1,32 @@
+{
+  "name": "/system-setting/notification-templates/edit",
+  "schema": {
+    "type": "page",
+    "title": false,
+    "body": [
+      {
+        "type": "alert",
+        "level": "danger",
+        "body": "无权访问通知配置，请联系管理员分配权限。",
+        "visibleOn": "${!hasAuth(\"systemSetting.notificationTemplate\")}"
+      },
+      {
+        "type": "container",
+        "visibleOn": "${hasAuth(\"systemSetting.notificationTemplate\")}",
+        "body": {
+          "type": "form",
+          "wrapWithPanel": false,
+          "actions": [],
+          "body": [
+            {
+              "type": "notification-template-manager",
+              "name": "runtimeTemplate",
+              "label": false,
+              "initialMode": "edit"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

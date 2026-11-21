@@ -1,0 +1,80 @@
+{
+  "name": "/dev/{appName}/data-dict/item-detail",
+  "schema": {
+    "type": "form",
+    "mode": "normal",
+    "title": false,
+    "static": true,
+    "body": [
+      {
+        "name": "code",
+        "label": "编码",
+        "type": "input-text",
+        "placeholder": "字典项编码",
+        "unique": true,
+        "required": true
+      },
+      {
+        "name": "label",
+        "label": "标题",
+        "type": "input-text",
+        "placeholder": "字典项标题",
+        "required": true
+      },
+      {
+        "name": "order",
+        "label": "顺序",
+        "type": "input-number",
+        "min": 0,
+        "placeholder": "字典项顺序",
+        "required": true
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "label": "状态转移配置",
+        "type": "combo",
+        "multiple": true,
+        "multiLine": true,
+        "name": "extraProps.stateTransition",
+        "visibleOn": "${type === 'state_table'}",
+        "items": [
+          {
+            "type": "group",
+            "body": [
+              {
+                "name": "to",
+                "label": "转移状态",
+                "type": "input-text",
+                "required": true
+              },
+              {
+                "name": "condition",
+                "label": "状态转移描述",
+                "type": "input-text",
+                "required": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "input-kv",
+        "name": "extraProps",
+        "label": "扩展配置",
+        "visibleOn": "${type !== 'state_table'}"
+      }
+    ],
+    "wrapWithPanel": false,
+    "actions": [
+      {
+        "type": "button",
+        "label": "确认",
+        "level": "primary",
+        "mergeData": true,
+        "actionType": "confirm"
+      }
+    ]
+  }
+}

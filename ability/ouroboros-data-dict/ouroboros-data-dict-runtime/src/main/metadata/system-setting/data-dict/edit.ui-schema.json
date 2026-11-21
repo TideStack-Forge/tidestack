@@ -1,0 +1,24 @@
+{
+  "name": "/system-setting/data-dict/edit",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "body": [
+      {
+        "$ref": "dictionaryItem"
+      }
+    ],
+    "mode": "horizontal",
+    "api": {
+      "url": "/api/sys/data-dict-manage/${name}/items",
+      "method": "put",
+      "data": "${items}"
+    },
+    "initApi": {
+      "url": "/api/sys/data-dict-manage/${name}/items",
+      "method": "get",
+      "adaptor": "function addHasChildrenToItems(arr) {\r\n  arr.forEach(item => {\r\n    if (item.children && item.children.length > 0) {\r\n      item.hasChildren = true;\r\n      addHasChildrenToItems(item.children);\r\n    } else {\r\n      item.hasChildren = false;\r\n    }\r\n  });\r\n  return arr\r\n}\r\nreturn {\r\n  ...payload,\r\n  data: addHasChildrenToItems(payload.data.items)\r\n}"
+    },
+    "wrapWithPanel": false
+  }
+}

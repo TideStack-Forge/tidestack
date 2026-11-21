@@ -1,0 +1,12 @@
+[
+  {
+    "fullName": "systemSetting.integrationManagement.connections.workbench",
+    "title": "工作台入口",
+    "parent": "systemSetting.integrationManagement.connections",
+    "order": 60,
+    "authorities": [
+      "systemSetting.integrationManagement.connections.workbench.view",
+      "systemSetting.integrationManagement.connections.workbench.configure"
+    ]
+  }
+]

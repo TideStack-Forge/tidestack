@@ -1,0 +1,126 @@
+{
+  "name": "/system-setting/logicflows",
+  "schema": {
+    "type": "page",
+    "title": "逻辑流运行时管理",
+    "subTitle": "查看部署来源、维护持久覆盖，并核对各实例的实际应用状态。",
+    "body": [
+      {
+        "type": "crud",
+        "name": "runtimeFlowList",
+        "api": "/api/runtime/logicflows/models",
+        "primaryField": "name",
+        "perPage": 20,
+        "placeholder": "没有符合条件的已部署逻辑流。",
+        "filter": {
+          "title": false,
+          "body": [
+            {
+              "type": "input-text",
+              "name": "keyword",
+              "label": "搜索",
+              "placeholder": "逻辑流名称或描述",
+              "clearable": true
+            },
+            {
+              "type": "select",
+              "name": "filter",
+              "label": "范围",
+              "value": "all",
+              "options": [
+                {
+                  "label": "全部",
+                  "value": "all"
+                },
+                {
+                  "label": "已有覆盖",
+                  "value": "overridden"
+                },
+                {
+                  "label": "默认已变化",
+                  "value": "default-changed"
+                },
+                {
+                  "label": "仅只读",
+                  "value": "readonly"
+                }
+              ]
+            }
+          ]
+        },
+        "headerToolbar": [
+          "reload",
+          "pagination"
+        ],
+        "columns": [
+          {
+            "name": "name",
+            "label": "逻辑流"
+          },
+          {
+            "name": "description",
+            "label": "描述"
+          },
+          {
+            "name": "defaultSource",
+            "label": "默认来源"
+          },
+          {
+            "name": "overridden",
+            "label": "已有覆盖",
+            "type": "mapping",
+            "map": {
+              "true": "是",
+              "false": "否"
+            }
+          },
+          {
+            "name": "valid",
+            "label": "模型校验",
+            "type": "mapping",
+            "map": {
+              "true": "有效",
+              "false": "无效",
+              "*": "未观察"
+            }
+          },
+          {
+            "name": "state",
+            "label": "当前实例状态",
+            "type": "mapping",
+            "map": {
+              "applied": "已应用",
+              "pending": "待应用",
+              "unobserved": "未精确观察"
+            }
+          },
+          {
+            "name": "defaultChanged",
+            "label": "默认已变化",
+            "type": "mapping",
+            "map": {
+              "true": "是",
+              "false": "否"
+            }
+          },
+          {
+            "name": "actor",
+            "label": "最近操作者"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "buttons": [
+              {
+                "type": "button",
+                "label": "查看详情",
+                "actionType": "url",
+                "url": "/system-setting/logicflows/detail?name=${name | url_encode}"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

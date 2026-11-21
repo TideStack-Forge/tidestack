@@ -1,0 +1,11 @@
+{
+  "fullName": "Integration.RPCModel",
+  "url": "/dev/{appName}/rpc-model",
+  "icon": "fas fa-exchange-alt",
+  "icon2": "icon-rpc-model",
+  "title": "外部接口",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 10
+}

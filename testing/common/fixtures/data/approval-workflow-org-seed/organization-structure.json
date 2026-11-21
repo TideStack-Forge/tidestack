@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "AWF_ORG_SEED_V1",
+  "generatedAt": "2026-01-01T00:00:00Z",
+  "organizations": [
+    {
+      "id": "AWF_ORG_COMPANY",
+      "code": "AWF-COMPANY",
+      "name": "Ouroboros Test Company",
+      "type": "COMPANY",
+      "parentId": null,
+      "sort": 10,
+      "active": true
+    },
+    {
+      "id": "AWF_ORG_DEPT_EXEC",
+      "code": "AWF-DEPT-EXEC",
+      "name": "Executive Office",
+      "type": "DEPARTMENT",
+      "parentId": "AWF_ORG_COMPANY",
+      "sort": 20,
+      "active": true
+    },
+    {
+      "id": "AWF_ORG_DEPT_FINANCE",
+      "code": "AWF-DEPT-FINANCE",
+      "name": "Finance Department",
+      "type": "DEPARTMENT",
+      "parentId": "AWF_ORG_COMPANY",
+      "sort": 30,
+      "active": true
+    },
+    {
+      "id": "AWF_ORG_DEPT_LEGAL",
+      "code": "AWF-DEPT-LEGAL",
+      "name": "Legal Department",
+      "type": "DEPARTMENT",
+      "parentId": "AWF_ORG_COMPANY",
+      "sort": 40,
+      "active": true
+    },
+    {
+      "id": "AWF_ORG_DEPT_ENGINEERING",
+      "code": "AWF-DEPT-ENGINEERING",
+      "name": "Engineering Department",
+      "type": "DEPARTMENT",
+      "parentId": "AWF_ORG_COMPANY",
+      "sort": 50,
+      "active": true
+    },
+    {
+      "id": "AWF_ORG_TEAM_PLATFORM",
+      "code": "AWF-TEAM-PLATFORM",
+      "name": "Platform Team",
+      "type": "TEAM",
+      "parentId": "AWF_ORG_DEPT_ENGINEERING",
+      "sort": 60,
+      "active": true
+    },
+    {
+      "id": "AWF_ORG_TEAM_APPLICATION",
+      "code": "AWF-TEAM-APPLICATION",
+      "name": "Application Team",
+      "type": "TEAM",
+      "parentId": "AWF_ORG_DEPT_ENGINEERING",
+      "sort": 70,
+      "active": true
+    }
+  ]
+}

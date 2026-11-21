@@ -1,0 +1,19 @@
+{
+  "name": "/i18n/import",
+  "schema": {
+    "type": "form",
+    "api": "post:/api/i18n/manage/import",
+    "title": "",
+    "body": [
+      {
+        "type": "input-file",
+        "name": "file",
+        "label": "选择语言文件",
+        "accept": ".json",
+        "required": true,
+        "asBlob": true,
+        "description": "上传 I18n Locale JSON 格式文件"
+      }
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "key": "notification.aliyun.sms.accessKeyId",
+    "label": "阿里云短信通知访问KEY-ID",
+    "groupPath": "notification.sms.aliyun",
+    "order": 10,
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string",
+    "restoreDefaultRemovesOverride": true
+  },
+  {
+    "key": "notification.aliyun.sms.accessKeySecret",
+    "label": "阿里云短信通知访问KEY-SECRET",
+    "groupPath": "notification.sms.aliyun",
+    "order": 20,
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string",
+    "managementAccessPolicyRequired": true,
+    "editorSchema": {
+      "type": "input-password",
+      "placeholder": "留空保留已配置凭据；填写表示替换",
+      "autoComplete": "new-password"
+    },
+    "restoreDefaultRemovesOverride": true
+  },
+  {
+    "key": "notification.aliyun.sms.endpoint",
+    "label": "阿里云短信通知访问域名",
+    "groupPath": "notification.sms.aliyun",
+    "order": 30,
+    "description": "默认为：dysmsapi.aliyuncs.com（如非必要请勿修改）",
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string",
+    "defaultValue": "dysmsapi.aliyuncs.com",
+    "restoreDefaultRemovesOverride": true
+  },
+  {
+    "key": "notification.aliyun.sms.signName",
+    "label": "阿里云短信通知签名",
+    "groupPath": "notification.sms.aliyun",
+    "order": 40,
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string",
+    "restoreDefaultRemovesOverride": true
+  }
+]

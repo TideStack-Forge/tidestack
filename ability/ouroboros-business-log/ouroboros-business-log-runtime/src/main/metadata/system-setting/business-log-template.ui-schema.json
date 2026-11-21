@@ -1,0 +1,233 @@
+{
+  "name": "/system-setting/business-log-template",
+  "schema": {
+    "type": "page",
+    "title": "业务日志模板",
+    "body": [
+      {
+        "type": "crud",
+        "id": "businessLogTemplateList",
+        "name": "businessLogTemplateList",
+        "syncLocation": false,
+        "api": {
+          "method": "get",
+          "url": "/api/sys/business-log-template"
+        },
+        "filter": {
+          "title": "",
+          "body": [
+            {
+              "type": "input-text",
+              "name": "keyword",
+              "label": "关键字",
+              "placeholder": "搜索模板键、模块名、操作名",
+              "clearable": true
+            },
+            {
+              "type": "select",
+              "name": "source",
+              "label": "生效来源",
+              "clearable": true,
+              "options": [
+                {
+                  "label": "数据库",
+                  "value": "DATABASE"
+                },
+                {
+                  "label": "工作区文件",
+                  "value": "FILE"
+                },
+                {
+                  "label": "Jar 内置",
+                  "value": "JAR"
+                }
+              ]
+            },
+            {
+              "type": "select",
+              "name": "httpMethod",
+              "label": "请求方法",
+              "clearable": true,
+              "options": [
+                {
+                  "label": "GET",
+                  "value": "GET"
+                },
+                {
+                  "label": "POST",
+                  "value": "POST"
+                },
+                {
+                  "label": "PUT",
+                  "value": "PUT"
+                },
+                {
+                  "label": "PATCH",
+                  "value": "PATCH"
+                },
+                {
+                  "label": "DELETE",
+                  "value": "DELETE"
+                }
+              ]
+            },
+            {
+              "type": "input-text",
+              "name": "moduleName",
+              "label": "模块名",
+              "clearable": true,
+              "placeholder": "按模块名筛选"
+            }
+          ]
+        },
+        "headerToolbar": [
+          {
+            "type": "button",
+            "label": "新增模版",
+            "icon": "fa fa-plus",
+            "level": "primary",
+            "actionType": "dialog",
+            "dialog": {
+              "type": "dialog",
+              "title": "新增模版",
+              "size": "lg",
+              "url": "/system-setting/business-log-template/add",
+              "showCloseButton": true,
+              "showErrorMsg": true,
+              "showLoading": true,
+              "closeOnEsc": false
+            },
+            "reload": "businessLogTemplateList"
+          },
+          "bulkActions",
+          {
+            "type": "reload",
+            "align": "right"
+          }
+        ],
+        "footerToolbar": [
+          "statistics",
+          "pagination"
+        ],
+        "columns": [
+          {
+            "name": "templateKey",
+            "label": "模板键",
+            "type": "text"
+          },
+          {
+            "name": "moduleName",
+            "label": "模块名",
+            "type": "text",
+            "placeholder": "-"
+          },
+          {
+            "name": "operation",
+            "label": "操作名",
+            "type": "text",
+            "placeholder": "-"
+          },
+          {
+            "name": "level",
+            "label": "级别",
+            "type": "mapping",
+            "placeholder": "-",
+            "map": {
+              "INFO": "一般",
+              "WARN": "警告",
+              "DANGER": "危险"
+            }
+          },
+          {
+            "name": "sourceLabel",
+            "label": "当前生效来源",
+            "type": "text"
+          },
+          {
+            "name": "availableSourcesDisplay",
+            "label": "来源链",
+            "type": "text",
+            "placeholder": "-"
+          },
+          {
+            "name": "overridesSourcesDisplay",
+            "label": "覆盖下层来源",
+            "type": "text",
+            "placeholder": "-"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "buttons": [
+              {
+                "type": "button",
+                "label": "详情",
+                "level": "link",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "业务日志模板详情",
+                  "size": "lg",
+                  "url": "/system-setting/business-log-template/detail",
+                  "showCloseButton": true,
+                  "closeOnEsc": true,
+                  "actions": []
+                }
+              },
+              {
+                "type": "button",
+                "label": "创建数据库覆盖",
+                "level": "link",
+                "actionType": "dialog",
+                "visibleOn": "${source !== 'DATABASE'}",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "创建数据库覆盖",
+                  "size": "lg",
+                  "url": "/system-setting/business-log-template/override",
+                  "showCloseButton": true,
+                  "showErrorMsg": true,
+                  "showLoading": true,
+                  "closeOnEsc": false
+                },
+                "reload": "businessLogTemplateList"
+              },
+              {
+                "type": "button",
+                "label": "编辑",
+                "level": "link",
+                "actionType": "dialog",
+                "visibleOn": "${source === 'DATABASE'}",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "编辑数据库模板",
+                  "size": "lg",
+                  "url": "/system-setting/business-log-template/edit",
+                  "showCloseButton": true,
+                  "showErrorMsg": true,
+                  "showLoading": true,
+                  "closeOnEsc": false
+                },
+                "reload": "businessLogTemplateList"
+              },
+              {
+                "type": "button",
+                "label": "删除",
+                "level": "link",
+                "className": "text-danger",
+                "actionType": "ajax",
+                "visibleOn": "${source === 'DATABASE'}",
+                "confirmText": "删除数据库模板后将自动回退到下层来源，确认继续吗？",
+                "api": {
+                  "method": "delete",
+                  "url": "/api/sys/business-log-template/${id}"
+                },
+                "reload": "businessLogTemplateList"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

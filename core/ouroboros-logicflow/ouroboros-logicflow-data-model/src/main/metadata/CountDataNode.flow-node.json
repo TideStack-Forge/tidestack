@@ -1,0 +1,64 @@
+{
+  "type": "countData",
+  "label": "查询数量",
+  "icon": "count-data",
+  "shape": "rect",
+  "description": "查询数量",
+  "order": 4004,
+  "svgs": {
+    "count-data": "<svg t=\"1694740149187\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"2512\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"200\" height=\"200\"><path d=\"M202.3 345.6h602.4v25.1H202.3zM202.3 521.3h218.1v25.1H202.3zM202.3 697h218.1v25.1H202.3z\" p-id=\"2513\"></path><path d=\"M872.7 880.1l-82.5-82.5c41.4-44 64.8-102.2 64.8-163.3 0-38-9.2-73.9-25.1-105.9V136.2H177.2v736.5h439.3c48.6 0 95.9-15 135.5-42.3l85.2 85.2 35.5-35.5z m-493.3-271h-152V458.5h228.4c-41.8 38.4-70.1 91.2-76.4 150.6z m109-175.7h-261V282.8h552.2v178c-42.7-40.2-100-65-163.2-65-47.1 0-90.9 13.9-128 37.6z m291.3-247v71.3H227.4v-71.3h552.3zM227.4 822.5V634.2H378c0 76.5 36.4 144.6 92.6 188.3H227.4z m200.9-188.3c0-103.8 84.4-188.3 188.3-188.3s188.3 84.4 188.3 188.3c0 55.5-24.3 107.8-66.7 143.7-33.9 28.7-77.1 44.5-121.6 44.5-103.9 0.1-188.3-84.3-188.3-188.2z\" p-id=\"2514\"></path></svg>"
+  },
+  "scaffold": {
+    "type": "countData",
+    "name": "查询数量",
+    "dataModel": "",
+    "plugins": [],
+    "resultWrapperKey": "",
+    "inputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "map"
+      }
+    ],
+    "outputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "number"
+      }
+    ]
+  },
+  "portRules": {
+    "input": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    },
+    "output": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    }
+  },
+  "properties": [
+    {
+      "type": "data-model",
+      "name": "dataModel",
+      "label": "数据模型",
+      "required": true
+    },
+    {
+      "type": "data-model-plugins",
+      "name": "plugins",
+      "label": "插件"
+    },
+    {
+      "type": "input-text",
+      "name": "resultWrapperKey",
+      "label": "结果包裹key",
+      "description": "将结果以Map形式包裹，key为该值，留空则不包裹直接返回结果"
+    }
+  ],
+  "group": "数据库操作"
+}

@@ -1,0 +1,2385 @@
+{
+  "name": "/system-setting/logicflows/detail",
+  "schema": {
+    "type": "page",
+    "title": "",
+    "className": "runtime-flow-ops",
+    "css": {
+      ".runtime-flow-ops": {
+        "background": "#f5f7fb",
+        "color": "#182c49",
+        "font-size": "14px"
+      },
+      ".runtime-flow-ops .flow-heading": {
+        "margin-bottom": "24px"
+      },
+      ".runtime-flow-ops h1": {
+        "font-size": "26px",
+        "font-weight": "600",
+        "margin": "0 0 8px"
+      },
+      ".runtime-flow-ops .flow-subtitle": {
+        "font-size": "13px",
+        "color": "#62738b"
+      },
+      ".runtime-flow-ops .flow-panel": {
+        "background": "#fff",
+        "border": "1px solid #e4e9f1",
+        "border-radius": "6px",
+        "padding": "20px",
+        "margin-bottom": "20px",
+        "overflow": "auto"
+      },
+      ".runtime-flow-ops h2": {
+        "font-size": "16px",
+        "font-weight": "600",
+        "margin": "0 0 20px"
+      },
+      ".runtime-flow-ops .flow-versions": {
+        "display": "grid",
+        "grid-template-columns": "1fr 20px 1fr 20px 1fr",
+        "gap": "8px",
+        "align-items": "center",
+        "margin-bottom": "20px"
+      },
+      ".runtime-flow-ops .flow-versions > div": {
+        "background": "#f7f9fc",
+        "border": "1px solid #e4e9f1",
+        "border-radius": "4px",
+        "padding": "14px",
+        "min-width": "0"
+      },
+      ".runtime-flow-ops .flow-versions .flow-target": {
+        "background": "#f0f5ff",
+        "border-color": "#ccdcfb"
+      },
+      ".runtime-flow-ops .flow-versions span, .runtime-flow-ops .flow-versions small": {
+        "display": "block",
+        "font-size": "12px",
+        "color": "#62738b"
+      },
+      ".runtime-flow-ops .flow-versions strong": {
+        "display": "block",
+        "font-size": "18px",
+        "margin": "8px 0",
+        "overflow-wrap": "anywhere"
+      },
+      ".runtime-flow-ops .flow-versions b": {
+        "color": "#9aabc2",
+        "text-align": "center"
+      },
+      ".runtime-flow-ops .flow-meta": {
+        "display": "flex",
+        "gap": "16px",
+        "font-size": "12px",
+        "color": "#62738b",
+        "margin-bottom": "16px"
+      },
+      ".runtime-flow-ops .flow-policy": {
+        "display": "flex",
+        "justify-content": "space-between",
+        "padding": "8px 0 16px"
+      },
+      ".runtime-flow-ops .flow-metrics": {
+        "display": "flex",
+        "flex-wrap": "wrap",
+        "gap": "30px",
+        "margin-bottom": "20px"
+      },
+      ".runtime-flow-ops .flow-metrics span": {
+        "display": "block",
+        "font-size": "12px",
+        "color": "#62738b"
+      },
+      ".runtime-flow-ops .flow-metrics strong": {
+        "display": "block",
+        "font-size": "25px",
+        "font-weight": "600",
+        "margin-top": "8px"
+      },
+      ".runtime-flow-ops .flow-empty": {
+        "padding": "36px 20px",
+        "text-align": "center",
+        "color": "#62738b"
+      },
+      ".runtime-flow-ops .flow-wrap": {
+        "overflow-wrap": "anywhere",
+        "max-width": "200px"
+      },
+      ".runtime-flow-ops .flow-change": {
+        "padding": "10px 0",
+        "border-bottom": "1px solid #edf0f6",
+        "font-size": "12px"
+      },
+      ".runtime-flow-ops .flow-change strong": {
+        "display": "block",
+        "margin-bottom": "6px"
+      }
+    },
+    "body": {
+      "type": "service",
+      "id": "runtimeFlowDetails",
+      "name": "runtimeFlowDetails",
+      "api": {
+        "url": "/api/runtime/logicflows/models/${name | url_encode}/operations-view",
+        "adaptor": "const d=payload.data; if(!d?.model)return payload; const m=d.model;const label=x=>x?x.slice(0,6)+' · '+x.split(':').pop():'—';const states={applied:'已应用',pending:'待应用',unobserved:'待确认'};return {...payload,data:{...m,state:d.state,stateLabel:states[d.state]||d.state,defaultLabel:m.defaultHash.slice(0,10),targetLabel:label(m.catalogVersion),appliedLabel:label(m.appliedCatalogVersion),observedAt:d.observedAt,instances:d.instances.map(x=>({...x,displayName:x.instance.nodeName+' / '+x.instance.bootId.slice(0,8),targetLabel:label(m.catalogVersion),appliedLabel:label(x.instance.appliedVersion)})),changes:d.changes,recentChanges:d.changes.slice(0,3)}};"
+      },
+      "body": [
+        {
+          "type": "container",
+          "visibleOn": "${loadOk !== false}",
+          "body": [
+            {
+              "type": "flex",
+              "justify": "space-between",
+              "alignItems": "center",
+              "className": "flow-heading",
+              "items": [
+                {
+                  "type": "tpl",
+                  "tpl": "<div><h1>${name | html}</h1><span class=\"flow-subtitle\">${description | html}</span></div>"
+                },
+                {
+                  "type": "button-group",
+                  "buttons": [
+                    {
+                      "type": "button",
+                      "label": "编辑覆盖",
+                      "level": "primary",
+                      "visibleOn": "${ARRAYINCLUDES(availableActions, \"edit\")}",
+                      "actionType": "dialog",
+                      "dialog": {
+                        "title": "编辑运行时覆盖 · ${name}",
+                        "size": "full",
+                        "body": {
+                          "type": "form",
+                          "id": "runtimeFlowEdit",
+                          "name": "runtimeFlowEdit",
+                          "initApi": "/api/runtime/logicflows/models/${name | url_encode}",
+                          "api": {
+                            "method": "put",
+                            "url": "/api/runtime/logicflows/models/${name | url_encode}/override",
+                            "data": {
+                              "operationId": "${operationId}",
+                              "editToken": "${editToken}",
+                              "definition": "${definition}"
+                            }
+                          },
+                          "wrapWithPanel": true,
+                          "body": [
+                            {
+                              "type": "logic-flow-editor",
+                              "name": "definition",
+                              "label": false,
+                              "nodeDefineApi": "/api/runtime/logicflows/catalog/node-definitions",
+                              "logicFlowHost": {
+                                "debug": false,
+                                "lockContract": true,
+                                "intelligenceApi": null,
+                                "referenceApis": {
+                                  "flow": "/api/runtime/logicflows/catalog/references/flow",
+                                  "data-model": "/api/runtime/logicflows/catalog/references/data-model",
+                                  "configuration": "/api/runtime/logicflows/catalog/references/configuration",
+                                  "rpc-model": "/api/runtime/logicflows/catalog/references/rpc-model",
+                                  "notification-template": "/api/runtime/logicflows/catalog/references/notification-template",
+                                  "mq-binding": "/api/runtime/logicflows/catalog/references/mq-binding"
+                                }
+                              },
+                              "readonly": false,
+                              "className": "h-full",
+                              "style": {
+                                "height": "65vh",
+                                "minHeight": "480px"
+                              }
+                            }
+                          ],
+                          "actions": [
+                            {
+                              "type": "button",
+                              "label": "取消",
+                              "actionType": "close"
+                            },
+                            {
+                              "type": "button",
+                              "label": "检查候选",
+                              "actionType": "submit",
+                              "api": {
+                                "method": "post",
+                                "url": "/api/runtime/logicflows/models/${name | url_encode}/validate",
+                                "requestAdaptor": "return {...api, data: {editToken: api.data.editToken, definition: api.data.definition}};"
+                              }
+                            },
+                            {
+                              "type": "submit",
+                              "label": "保存并应用",
+                              "level": "primary",
+                              "confirmText": "保存覆盖并独立刷新本应用的受影响流程？已开始的调用继续使用原版本。"
+                            }
+                          ],
+                          "onEvent": {
+                            "submitSucc": {
+                              "actions": [
+                                {
+                                  "actionType": "dialog",
+                                  "expression": "${event.data.result.data.valid !== undefined}",
+                                  "dialog": {
+                                    "title": "候选检查结果",
+                                    "size": "lg",
+                                    "body": [
+                                      {
+                                        "type": "tpl",
+                                        "tpl": "<strong>${event.data.result.data.valid ? \"检查通过\" : \"检查未通过\"}</strong>"
+                                      },
+                                      {
+                                        "type": "property",
+                                        "items": [
+                                          {
+                                            "label": "影响流程",
+                                            "content": "${event.data.result.data.impact | join:、}"
+                                          },
+                                          {
+                                            "label": "变更数",
+                                            "content": "${event.data.result.data.differences.length}"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "table",
+                                        "source": "${event.data.result.data.differences}",
+                                        "columns": [
+                                          {
+                                            "name": "path",
+                                            "label": "变更路径"
+                                          },
+                                          {
+                                            "name": "kind",
+                                            "label": "类型"
+                                          }
+                                        ],
+                                        "placeholder": "暂无记录",
+                                        "columnsTogglable": false
+                                      },
+                                      {
+                                        "type": "json",
+                                        "source": "${event.data.result.data.report.errors}",
+                                        "levelExpand": 1,
+                                        "visibleOn": "${!event.data.result.data.valid}"
+                                      },
+                                      {
+                                        "type": "collapse-group",
+                                        "body": [
+                                          {
+                                            "type": "collapse",
+                                            "title": "完整结果",
+                                            "body": {
+                                              "type": "json",
+                                              "source": "${event.data.result.data}",
+                                              "levelExpand": 1
+                                            },
+                                            "collapsed": true
+                                          }
+                                        ]
+                                      }
+                                    ],
+                                    "actions": [
+                                      {
+                                        "type": "button",
+                                        "label": "关闭",
+                                        "actionType": "close"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "actionType": "dialog",
+                                  "dialog": {
+                                    "title": "操作回执",
+                                    "size": "lg",
+                                    "body": [
+                                      {
+                                        "type": "property",
+                                        "column": 2,
+                                        "items": [
+                                          {
+                                            "label": "逻辑流",
+                                            "content": "${event.data.result.data.name}"
+                                          },
+                                          {
+                                            "label": "结果",
+                                            "content": "${event.data.result.data.changed ? \"已提交\" : \"定义未变化，已记录\"}"
+                                          },
+                                          {
+                                            "label": "操作者",
+                                            "content": "${event.data.result.data.actor}"
+                                          },
+                                          {
+                                            "label": "提交时间",
+                                            "content": "${event.data.result.data.committedAt}"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "service",
+                                        "id": "runtimeFlowReceiptInstances",
+                                        "name": "runtimeFlowReceiptInstances",
+                                        "api": {
+                                          "url": "/api/runtime/logicflows/models/${name | url_encode}/operations-view",
+                                          "adaptor": "const d=payload.data; if(!d?.model)return payload; const m=d.model;const label=x=>x?x.slice(0,6)+' · '+x.split(':').pop():'—';const states={applied:'已应用',pending:'待应用',unobserved:'待确认'};return {...payload,data:{...m,state:d.state,stateLabel:states[d.state]||d.state,defaultLabel:m.defaultHash.slice(0,10),targetLabel:label(m.catalogVersion),appliedLabel:label(m.appliedCatalogVersion),observedAt:d.observedAt,instances:d.instances.map(x=>({...x,displayName:x.instance.nodeName+' / '+x.instance.bootId.slice(0,8),targetLabel:label(m.catalogVersion),appliedLabel:label(x.instance.appliedVersion)})),changes:d.changes,recentChanges:d.changes.slice(0,3)}};"
+                                        },
+                                        "interval": 5000,
+                                        "data": {
+                                          "loadOk": null
+                                        },
+                                        "onEvent": {
+                                          "fetchInited": {
+                                            "actions": [
+                                              {
+                                                "actionType": "setValue",
+                                                "componentId": "runtimeFlowInstanceOverview",
+                                                "args": {
+                                                  "value": {
+                                                    "loadOk": "${event.data.responseStatus === 0}"
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "body": [
+                                          {
+                                            "type": "table",
+                                            "source": "${instances}",
+                                            "columns": [
+                                              {
+                                                "name": "displayName",
+                                                "label": "实例",
+                                                "type": "tpl",
+                                                "tpl": "${displayName | html}${current ? \" · 当前\" : \"\"}"
+                                              },
+                                              {
+                                                "name": "state",
+                                                "label": "状态",
+                                                "type": "mapping",
+                                                "map": {
+                                                  "applied": "已应用",
+                                                  "pending": "待应用",
+                                                  "failed": "应用失败",
+                                                  "stale": "回报过期",
+                                                  "unobserved": "待确认"
+                                                }
+                                              },
+                                              {
+                                                "name": "targetLabel",
+                                                "label": "目标"
+                                              },
+                                              {
+                                                "name": "appliedLabel",
+                                                "label": "已应用"
+                                              },
+                                              {
+                                                "name": "defaultDiffers",
+                                                "label": "部署默认",
+                                                "type": "mapping",
+                                                "map": {
+                                                  "true": "存在差异",
+                                                  "false": "一致"
+                                                }
+                                              },
+                                              {
+                                                "name": "instance.reportedAt",
+                                                "label": "最近回报",
+                                                "type": "date",
+                                                "format": "MM-DD HH:mm:ss"
+                                              },
+                                              {
+                                                "name": "instance.error",
+                                                "label": "失败诊断",
+                                                "className": "flow-wrap"
+                                              },
+                                              {
+                                                "type": "operation",
+                                                "label": "",
+                                                "buttons": [
+                                                  {
+                                                    "type": "button",
+                                                    "label": "详情",
+                                                    "actionType": "dialog",
+                                                    "dialog": {
+                                                      "title": "实例详情",
+                                                      "size": "lg",
+                                                      "body": [
+                                                        {
+                                                          "type": "json",
+                                                          "source": "${instance}",
+                                                          "levelExpand": 1
+                                                        }
+                                                      ],
+                                                      "actions": [
+                                                        {
+                                                          "type": "button",
+                                                          "label": "关闭",
+                                                          "actionType": "close"
+                                                        }
+                                                      ]
+                                                    },
+                                                    "level": "link"
+                                                  }
+                                                ]
+                                              }
+                                            ],
+                                            "placeholder": "暂无记录",
+                                            "columnsTogglable": false,
+                                            "visibleOn": "${loadOk !== false}"
+                                          },
+                                          {
+                                            "type": "tpl",
+                                            "tpl": "<span class=\"text-danger\">实例回报读取失败</span>",
+                                            "visibleOn": "${loadOk === false}"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "collapse-group",
+                                        "body": [
+                                          {
+                                            "type": "collapse",
+                                            "title": "完整回执",
+                                            "collapsed": true,
+                                            "body": {
+                                              "type": "json",
+                                              "source": "${event.data.result.data}",
+                                              "levelExpand": 1
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    ],
+                                    "onEvent": {
+                                      "confirm": {
+                                        "actions": [
+                                          {
+                                            "actionType": "closeDialog",
+                                            "componentId": "runtimeFlowEditDialog"
+                                          }
+                                        ]
+                                      },
+                                      "cancel": {
+                                        "actions": [
+                                          {
+                                            "actionType": "closeDialog",
+                                            "componentId": "runtimeFlowEditDialog"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "actions": [
+                                      {
+                                        "type": "button",
+                                        "label": "完成",
+                                        "actionType": "confirm",
+                                        "level": "primary"
+                                      }
+                                    ]
+                                  },
+                                  "expression": "${event.data.result.data.valid === undefined}"
+                                },
+                                {
+                                  "actionType": "reload",
+                                  "componentId": "runtimeFlowDetails",
+                                  "expression": "${event.data.result.data.valid === undefined}"
+                                }
+                              ]
+                            }
+                          },
+                          "closeDialogOnSubmit": false,
+                          "title": "",
+                          "panelClassName": "border-0 shadow-none"
+                        },
+                        "actions": [],
+                        "id": "runtimeFlowEditDialog"
+                      }
+                    },
+                    {
+                      "type": "button",
+                      "label": "刷新",
+                      "actionType": "reload",
+                      "target": "runtimeFlowDetails"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "alert",
+              "level": "warning",
+              "visibleOn": "${defaultChanged}",
+              "body": "部署默认已变化"
+            },
+            {
+              "type": "alert",
+              "level": "warning",
+              "visibleOn": "${readOnlyReasons && readOnlyReasons.length}",
+              "body": "${readOnlyReasons | join:；}"
+            },
+            {
+              "type": "alert",
+              "level": "danger",
+              "visibleOn": "${valid === false}",
+              "body": "${diagnostics | join:；}"
+            },
+            {
+              "type": "tabs",
+              "mountOnEnter": true,
+              "unmountOnExit": true,
+              "tabs": [
+                {
+                  "title": "运行概览",
+                  "body": {
+                    "type": "grid",
+                    "columns": [
+                      {
+                        "md": 8,
+                        "body": [
+                          {
+                            "type": "container",
+                            "className": "flow-panel",
+                            "body": [
+                              {
+                                "type": "tpl",
+                                "tpl": "<h2>版本与状态</h2>"
+                              },
+                              {
+                                "type": "tpl",
+                                "tpl": "<div class=\"flow-versions\"><div><span>部署默认</span><strong>${defaultSource | html}</strong><small>${defaultLabel | html}</small></div><b>→</b><div class=\"flow-target\"><span>持久目标</span><strong>${override && override.active ? \"覆盖 r\" + override.version : \"部署默认\"}</strong><small>${targetLabel | html}</small></div><b>→</b><div><span>当前实例</span><strong>${stateLabel | html}</strong><small>${appliedLabel | html}</small></div></div>"
+                              },
+                              {
+                                "type": "tpl",
+                                "tpl": "<div class=\"flow-meta\"><span>最近修改</span><strong>${override.actor || \"—\" | html}</strong><span>${override.updatedAt || \"\" | html}</span></div>"
+                              },
+                              {
+                                "type": "button-group",
+                                "buttons": [
+                                  {
+                                    "type": "button",
+                                    "label": "查看部署默认图",
+                                    "actionType": "dialog",
+                                    "dialog": {
+                                      "title": "查看部署默认图 · ${name}",
+                                      "size": "full",
+                                      "body": {
+                                        "type": "form",
+                                        "wrapWithPanel": false,
+                                        "data": {
+                                          "graph": "${defaultDefinition}"
+                                        },
+                                        "body": [
+                                          {
+                                            "type": "logic-flow-editor",
+                                            "name": "graph",
+                                            "label": false,
+                                            "nodeDefineApi": "/api/runtime/logicflows/catalog/node-definitions",
+                                            "logicFlowHost": {
+                                              "debug": false,
+                                              "lockContract": true,
+                                              "intelligenceApi": null,
+                                              "referenceApis": {
+                                                "flow": "/api/runtime/logicflows/catalog/references/flow",
+                                                "data-model": "/api/runtime/logicflows/catalog/references/data-model",
+                                                "configuration": "/api/runtime/logicflows/catalog/references/configuration",
+                                                "rpc-model": "/api/runtime/logicflows/catalog/references/rpc-model",
+                                                "notification-template": "/api/runtime/logicflows/catalog/references/notification-template",
+                                                "mq-binding": "/api/runtime/logicflows/catalog/references/mq-binding"
+                                              }
+                                            },
+                                            "readonly": true,
+                                            "className": "h-full",
+                                            "style": {
+                                              "height": "65vh",
+                                              "minHeight": "480px"
+                                            }
+                                          }
+                                        ],
+                                        "actions": []
+                                      },
+                                      "actions": [
+                                        {
+                                          "type": "button",
+                                          "label": "关闭",
+                                          "actionType": "close"
+                                        }
+                                      ]
+                                    },
+                                    "visibleOn": "${defaultDefinition}"
+                                  },
+                                  {
+                                    "type": "button",
+                                    "label": "查看当前实例图",
+                                    "actionType": "dialog",
+                                    "dialog": {
+                                      "title": "查看当前实例图 · ${name}",
+                                      "size": "full",
+                                      "body": {
+                                        "type": "form",
+                                        "wrapWithPanel": false,
+                                        "data": {
+                                          "graph": "${publishedDefinition}"
+                                        },
+                                        "body": [
+                                          {
+                                            "type": "logic-flow-editor",
+                                            "name": "graph",
+                                            "label": false,
+                                            "nodeDefineApi": "/api/runtime/logicflows/catalog/node-definitions",
+                                            "logicFlowHost": {
+                                              "debug": false,
+                                              "lockContract": true,
+                                              "intelligenceApi": null,
+                                              "referenceApis": {
+                                                "flow": "/api/runtime/logicflows/catalog/references/flow",
+                                                "data-model": "/api/runtime/logicflows/catalog/references/data-model",
+                                                "configuration": "/api/runtime/logicflows/catalog/references/configuration",
+                                                "rpc-model": "/api/runtime/logicflows/catalog/references/rpc-model",
+                                                "notification-template": "/api/runtime/logicflows/catalog/references/notification-template",
+                                                "mq-binding": "/api/runtime/logicflows/catalog/references/mq-binding"
+                                              }
+                                            },
+                                            "readonly": true,
+                                            "className": "h-full",
+                                            "style": {
+                                              "height": "65vh",
+                                              "minHeight": "480px"
+                                            }
+                                          }
+                                        ],
+                                        "actions": []
+                                      },
+                                      "actions": [
+                                        {
+                                          "type": "button",
+                                          "label": "关闭",
+                                          "actionType": "close"
+                                        }
+                                      ]
+                                    },
+                                    "visibleOn": "${exactMetadata}"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "static-date",
+                                "label": "核对时间",
+                                "value": "${observedAt}",
+                                "valueFormat": "x",
+                                "format": "HH:mm:ss"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "container",
+                            "className": "flow-panel",
+                            "body": [
+                              {
+                                "type": "tpl",
+                                "tpl": "<h2>实例回报</h2>"
+                              },
+                              {
+                                "type": "service",
+                                "id": "runtimeFlowInstanceOverview",
+                                "name": "runtimeFlowInstanceOverview",
+                                "api": {
+                                  "url": "/api/runtime/logicflows/models/${name | url_encode}/operations-view",
+                                  "adaptor": "const d=payload.data; if(!d?.model)return payload; const m=d.model;const label=x=>x?x.slice(0,6)+' · '+x.split(':').pop():'—';const states={applied:'已应用',pending:'待应用',unobserved:'待确认'};return {...payload,data:{...m,state:d.state,stateLabel:states[d.state]||d.state,defaultLabel:m.defaultHash.slice(0,10),targetLabel:label(m.catalogVersion),appliedLabel:label(m.appliedCatalogVersion),observedAt:d.observedAt,instances:d.instances.map(x=>({...x,displayName:x.instance.nodeName+' / '+x.instance.bootId.slice(0,8),targetLabel:label(m.catalogVersion),appliedLabel:label(x.instance.appliedVersion)})),changes:d.changes,recentChanges:d.changes.slice(0,3)}};"
+                                },
+                                "interval": 5000,
+                                "data": {
+                                  "loadOk": null
+                                },
+                                "onEvent": {
+                                  "fetchInited": {
+                                    "actions": [
+                                      {
+                                        "actionType": "setValue",
+                                        "componentId": "runtimeFlowInstanceOverview",
+                                        "args": {
+                                          "value": {
+                                            "loadOk": "${event.data.responseStatus === 0}"
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                "body": [
+                                  {
+                                    "type": "table",
+                                    "source": "${instances}",
+                                    "columns": [
+                                      {
+                                        "name": "displayName",
+                                        "label": "实例",
+                                        "type": "tpl",
+                                        "tpl": "${displayName | html}${current ? \" · 当前\" : \"\"}"
+                                      },
+                                      {
+                                        "name": "state",
+                                        "label": "状态",
+                                        "type": "mapping",
+                                        "map": {
+                                          "applied": "已应用",
+                                          "pending": "待应用",
+                                          "failed": "应用失败",
+                                          "stale": "回报过期",
+                                          "unobserved": "待确认"
+                                        }
+                                      },
+                                      {
+                                        "name": "targetLabel",
+                                        "label": "目标"
+                                      },
+                                      {
+                                        "name": "appliedLabel",
+                                        "label": "已应用"
+                                      },
+                                      {
+                                        "name": "defaultDiffers",
+                                        "label": "部署默认",
+                                        "type": "mapping",
+                                        "map": {
+                                          "true": "存在差异",
+                                          "false": "一致"
+                                        }
+                                      },
+                                      {
+                                        "name": "instance.reportedAt",
+                                        "label": "最近回报",
+                                        "type": "date",
+                                        "format": "MM-DD HH:mm:ss"
+                                      },
+                                      {
+                                        "name": "instance.error",
+                                        "label": "失败诊断",
+                                        "className": "flow-wrap"
+                                      },
+                                      {
+                                        "type": "operation",
+                                        "label": "",
+                                        "buttons": [
+                                          {
+                                            "type": "button",
+                                            "label": "详情",
+                                            "actionType": "dialog",
+                                            "dialog": {
+                                              "title": "实例详情",
+                                              "size": "lg",
+                                              "body": [
+                                                {
+                                                  "type": "json",
+                                                  "source": "${instance}",
+                                                  "levelExpand": 1
+                                                }
+                                              ],
+                                              "actions": [
+                                                {
+                                                  "type": "button",
+                                                  "label": "关闭",
+                                                  "actionType": "close"
+                                                }
+                                              ]
+                                            },
+                                            "level": "link"
+                                          }
+                                        ]
+                                      }
+                                    ],
+                                    "placeholder": "暂无记录",
+                                    "columnsTogglable": false,
+                                    "visibleOn": "${loadOk !== false}"
+                                  },
+                                  {
+                                    "type": "tpl",
+                                    "tpl": "<span class=\"text-danger\">实例回报读取失败</span>",
+                                    "visibleOn": "${loadOk === false}"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "md": 4,
+                        "body": [
+                          {
+                            "type": "container",
+                            "className": "flow-panel",
+                            "body": [
+                              {
+                                "type": "tpl",
+                                "tpl": "<h2>本流程采集</h2>"
+                              },
+                              {
+                                "type": "service",
+                                "id": "runtimeObservationOverview",
+                                "name": "runtimeObservationOverview",
+                                "api": {
+                                  "url": "/api/runtime/logicflows/models/${name | url_encode}/observation-policy",
+                                  "adaptor": "const d=payload.data;return d?{...payload,data:{...d,diagnosticActive:d.policy.diagnosticEnabled&&d.policy.diagnosticExpiresAt>Date.now(),desiredRevision:d.revision}}:payload;"
+                                },
+                                "body": [
+                                  {
+                                    "type": "container",
+                                    "visibleOn": "${loadOk !== false}",
+                                    "body": [
+                                      {
+                                        "type": "tpl",
+                                        "tpl": "<div class=\"flow-policy\"><span>运行监控</span><strong>${policy.monitorEnabled ? \"开启\" : \"关闭\"}</strong></div><div class=\"flow-policy\"><span>详细诊断</span><strong>${diagnosticActive ? \"开启\" : policy.diagnosticEnabled ? \"已到期\" : \"关闭\"}</strong></div>"
+                                      },
+                                      {
+                                        "type": "static-date",
+                                        "value": "${policy.diagnosticExpiresAt}",
+                                        "format": "MM-DD HH:mm:ss",
+                                        "label": "诊断截止",
+                                        "visibleOn": "${policy.diagnosticEnabled}",
+                                        "valueFormat": "x"
+                                      },
+                                      {
+                                        "type": "button",
+                                        "label": "设置采集",
+                                        "actionType": "dialog",
+                                        "visibleOn": "${canManage}",
+                                        "dialog": {
+                                          "title": "采集设置 · ${name}",
+                                          "body": {
+                                            "type": "form",
+                                            "id": "runtimeObservationOverviewForm",
+                                            "initApi": {
+                                              "url": "/api/runtime/logicflows/models/${name | url_encode}/observation-policy",
+                                              "adaptor": "const d=payload.data;return {...payload,data:{...d,monitorEnabled:d.policy.monitorEnabled,diagnosticEnabled:d.policy.diagnosticEnabled && d.policy.diagnosticExpiresAt>Date.now(),reason:\"\"}};"
+                                            },
+                                            "wrapWithPanel": true,
+                                            "api": {
+                                              "method": "put",
+                                              "url": "/api/runtime/logicflows/models/${name | url_encode}/observation-policy",
+                                              "data": {
+                                                "expectedRevision": "${revision}",
+                                                "monitorEnabled": "${monitorEnabled}",
+                                                "diagnosticEnabled": "${monitorEnabled && diagnosticEnabled}",
+                                                "durationMinutes": "${durationMinutes}",
+                                                "reason": "${reason}"
+                                              }
+                                            },
+                                            "body": [
+                                              {
+                                                "type": "switch",
+                                                "name": "monitorEnabled",
+                                                "label": "运行监控"
+                                              },
+                                              {
+                                                "type": "switch",
+                                                "name": "diagnosticEnabled",
+                                                "label": "详细诊断",
+                                                "disabledOn": "${!monitorEnabled}"
+                                              },
+                                              {
+                                                "type": "select",
+                                                "name": "durationMinutes",
+                                                "label": "诊断时长",
+                                                "value": 15,
+                                                "visibleOn": "${diagnosticEnabled}",
+                                                "options": [
+                                                  {
+                                                    "label": "5 分钟",
+                                                    "value": 5
+                                                  },
+                                                  {
+                                                    "label": "15 分钟",
+                                                    "value": 15
+                                                  },
+                                                  {
+                                                    "label": "30 分钟",
+                                                    "value": 30
+                                                  }
+                                                ],
+                                                "clearable": false
+                                              },
+                                              {
+                                                "type": "textarea",
+                                                "name": "reason",
+                                                "label": "操作原因",
+                                                "required": true,
+                                                "maxLength": 200
+                                              }
+                                            ],
+                                            "actions": [
+                                              {
+                                                "type": "button",
+                                                "label": "取消",
+                                                "actionType": "close"
+                                              },
+                                              {
+                                                "type": "submit",
+                                                "label": "保存",
+                                                "level": "primary",
+                                                "confirmText": "应用本流程的采集设置？关闭运行监控会同时关闭详细诊断。"
+                                              }
+                                            ],
+                                            "onEvent": {
+                                              "submitSucc": {
+                                                "actions": [
+                                                  {
+                                                    "actionType": "reload",
+                                                    "componentId": "runtimeObservationOverview"
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            "title": "",
+                                            "panelClassName": "border-0 shadow-none"
+                                          },
+                                          "actions": []
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "tpl",
+                                    "tpl": "<span class=\"text-danger\">采集设置读取失败</span>",
+                                    "visibleOn": "${loadOk === false}"
+                                  }
+                                ],
+                                "data": {
+                                  "loadOk": null
+                                },
+                                "onEvent": {
+                                  "fetchInited": {
+                                    "actions": [
+                                      {
+                                        "actionType": "setValue",
+                                        "componentId": "runtimeObservationOverview",
+                                        "args": {
+                                          "value": {
+                                            "loadOk": "${event.data.responseStatus === 0}"
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                "showErrorMsg": true
+                              }
+                            ]
+                          },
+                          {
+                            "type": "container",
+                            "className": "flow-panel",
+                            "body": [
+                              {
+                                "type": "tpl",
+                                "tpl": "<h2>最近变更</h2>"
+                              },
+                              {
+                                "type": "each",
+                                "name": "recentChanges",
+                                "placeholder": "暂无变更",
+                                "items": {
+                                  "type": "container",
+                                  "className": "flow-change",
+                                  "body": [
+                                    {
+                                      "type": "tpl",
+                                      "tpl": "<strong>${action === \"save\" ? \"保存覆盖\" : action === \"revoke\" ? \"恢复默认\" : \"恢复前态\"} · r${after.version}</strong><span>${actor | html}</span> · <span>${committedAt | date:MM-DD HH\\:mm}</span>"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "type": "container",
+                            "className": "flow-panel",
+                            "body": [
+                              {
+                                "type": "tpl",
+                                "tpl": "<h2>恢复</h2>"
+                              },
+                              {
+                                "type": "button",
+                                "label": "恢复部署默认",
+                                "level": "danger",
+                                "visibleOn": "${override && override.active && (ARRAYINCLUDES(availableActions,\"edit\") || ARRAYINCLUDES(availableActions,\"revoke\"))}",
+                                "actionType": "ajax",
+                                "confirmText": "撤销当前覆盖并独立刷新本应用的受影响流程？已开始的调用继续使用原版本。",
+                                "api": {
+                                  "method": "post",
+                                  "url": "/api/runtime/logicflows/models/${name | url_encode}/revoke",
+                                  "data": {
+                                    "operationId": "${operationId}",
+                                    "editToken": "${editToken}"
+                                  }
+                                },
+                                "reload": "runtimeFlowDetails"
+                              },
+                              {
+                                "type": "button",
+                                "label": "恢复操作前态",
+                                "visibleOn": "${ARRAYINCLUDES(availableActions,\"edit\") && changes.length > 0}",
+                                "actionType": "dialog",
+                                "dialog": {
+                                  "title": "恢复操作前态",
+                                  "body": {
+                                    "type": "form",
+                                    "api": {
+                                      "method": "post",
+                                      "url": "/api/runtime/logicflows/models/${name | url_encode}/restore-previous",
+                                      "data": {
+                                        "operationId": "${operationId}",
+                                        "editToken": "${editToken}",
+                                        "fromChangeId": "${fromChangeId}"
+                                      }
+                                    },
+                                    "body": [
+                                      {
+                                        "type": "input-text",
+                                        "name": "fromChangeId",
+                                        "label": "来源操作 ID",
+                                        "required": true
+                                      }
+                                    ]
+                                  },
+                                  "onEvent": {
+                                    "confirm": {
+                                      "actions": [
+                                        {
+                                          "actionType": "reload",
+                                          "componentId": "runtimeFlowDetails"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              },
+                              {
+                                "type": "button",
+                                "label": "重新核对",
+                                "visibleOn": "${ARRAYINCLUDES(availableActions,\"apply\")}",
+                                "actionType": "ajax",
+                                "api": {
+                                  "method": "post",
+                                  "url": "/api/runtime/logicflows/apply",
+                                  "data": {
+                                    "expectedCatalogVersion": "${catalogVersion}"
+                                  }
+                                },
+                                "reload": "runtimeFlowDetails"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "title": "实例",
+                  "body": {
+                    "type": "container",
+                    "className": "flow-panel",
+                    "body": [
+                      {
+                        "type": "tpl",
+                        "tpl": "<h2>实例应用状态</h2>"
+                      },
+                      {
+                        "type": "service",
+                        "id": "runtimeFlowInstanceTab",
+                        "name": "runtimeFlowInstanceTab",
+                        "api": {
+                          "url": "/api/runtime/logicflows/models/${name | url_encode}/operations-view",
+                          "adaptor": "const d=payload.data; if(!d?.model)return payload; const m=d.model;const label=x=>x?x.slice(0,6)+' · '+x.split(':').pop():'—';const states={applied:'已应用',pending:'待应用',unobserved:'待确认'};return {...payload,data:{...m,state:d.state,stateLabel:states[d.state]||d.state,defaultLabel:m.defaultHash.slice(0,10),targetLabel:label(m.catalogVersion),appliedLabel:label(m.appliedCatalogVersion),observedAt:d.observedAt,instances:d.instances.map(x=>({...x,displayName:x.instance.nodeName+' / '+x.instance.bootId.slice(0,8),targetLabel:label(m.catalogVersion),appliedLabel:label(x.instance.appliedVersion)})),changes:d.changes,recentChanges:d.changes.slice(0,3)}};"
+                        },
+                        "interval": 5000,
+                        "data": {
+                          "loadOk": null
+                        },
+                        "onEvent": {
+                          "fetchInited": {
+                            "actions": [
+                              {
+                                "actionType": "setValue",
+                                "componentId": "runtimeFlowInstanceTab",
+                                "args": {
+                                  "value": {
+                                    "loadOk": "${event.data.responseStatus === 0}"
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "body": [
+                          {
+                            "type": "table",
+                            "source": "${instances}",
+                            "columns": [
+                              {
+                                "name": "displayName",
+                                "label": "实例",
+                                "type": "tpl",
+                                "tpl": "${displayName | html}${current ? \" · 当前\" : \"\"}"
+                              },
+                              {
+                                "name": "state",
+                                "label": "状态",
+                                "type": "mapping",
+                                "map": {
+                                  "applied": "已应用",
+                                  "pending": "待应用",
+                                  "failed": "应用失败",
+                                  "stale": "回报过期",
+                                  "unobserved": "待确认"
+                                }
+                              },
+                              {
+                                "name": "targetLabel",
+                                "label": "目标"
+                              },
+                              {
+                                "name": "appliedLabel",
+                                "label": "已应用"
+                              },
+                              {
+                                "name": "defaultDiffers",
+                                "label": "部署默认",
+                                "type": "mapping",
+                                "map": {
+                                  "true": "存在差异",
+                                  "false": "一致"
+                                }
+                              },
+                              {
+                                "name": "instance.reportedAt",
+                                "label": "最近回报",
+                                "type": "date",
+                                "format": "MM-DD HH:mm:ss"
+                              },
+                              {
+                                "name": "instance.error",
+                                "label": "失败诊断",
+                                "className": "flow-wrap"
+                              },
+                              {
+                                "type": "operation",
+                                "label": "",
+                                "buttons": [
+                                  {
+                                    "type": "button",
+                                    "label": "详情",
+                                    "actionType": "dialog",
+                                    "dialog": {
+                                      "title": "实例详情",
+                                      "size": "lg",
+                                      "body": [
+                                        {
+                                          "type": "json",
+                                          "source": "${instance}",
+                                          "levelExpand": 1
+                                        }
+                                      ],
+                                      "actions": [
+                                        {
+                                          "type": "button",
+                                          "label": "关闭",
+                                          "actionType": "close"
+                                        }
+                                      ]
+                                    },
+                                    "level": "link"
+                                  }
+                                ]
+                              }
+                            ],
+                            "placeholder": "暂无记录",
+                            "columnsTogglable": false,
+                            "visibleOn": "${loadOk !== false}"
+                          },
+                          {
+                            "type": "tpl",
+                            "tpl": "<span class=\"text-danger\">实例回报读取失败</span>",
+                            "visibleOn": "${loadOk === false}"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "title": "监控诊断",
+                  "body": {
+                    "type": "service",
+                    "id": "runtimeObservationMonitor",
+                    "name": "runtimeObservationMonitor",
+                    "api": {
+                      "url": "/api/runtime/logicflows/models/${name | url_encode}/observation-policy",
+                      "adaptor": "const d=payload.data;return d?{...payload,data:{...d,diagnosticActive:d.policy.diagnosticEnabled&&d.policy.diagnosticExpiresAt>Date.now(),desiredRevision:d.revision}}:payload;"
+                    },
+                    "body": [
+                      {
+                        "type": "container",
+                        "visibleOn": "${loadOk !== false}",
+                        "body": [
+                          {
+                            "type": "grid",
+                            "columns": [
+                              {
+                                "md": 8,
+                                "body": [
+                                  {
+                                    "type": "container",
+                                    "visibleOn": "${canRead}",
+                                    "body": [
+                                      {
+                                        "type": "container",
+                                        "className": "flow-panel",
+                                        "body": [
+                                          {
+                                            "type": "tpl",
+                                            "tpl": "<h2>运行统计</h2>"
+                                          },
+                                          {
+                                            "type": "form",
+                                            "wrapWithPanel": false,
+                                            "target": "runtimeObservationMetrics",
+                                            "mode": "inline",
+                                            "body": [
+                                              {
+                                                "type": "select",
+                                                "name": "minutes",
+                                                "label": false,
+                                                "value": 15,
+                                                "clearable": false,
+                                                "options": [
+                                                  {
+                                                    "label": "近 15 分钟",
+                                                    "value": 15
+                                                  },
+                                                  {
+                                                    "label": "近 60 分钟",
+                                                    "value": 60
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "type": "input-text",
+                                                "name": "bootId",
+                                                "label": false,
+                                                "placeholder": "启动实例 ID"
+                                              },
+                                              {
+                                                "type": "input-text",
+                                                "name": "filterRevision",
+                                                "label": false,
+                                                "placeholder": "运行版本"
+                                              },
+                                              {
+                                                "type": "submit",
+                                                "label": "查询"
+                                              }
+                                            ],
+                                            "actions": []
+                                          },
+                                          {
+                                            "type": "service",
+                                            "id": "runtimeObservationMetrics",
+                                            "name": "runtimeObservationMetrics",
+                                            "api": {
+                                              "url": "/api/runtime/logicflows/models/${name | url_encode}/metrics?minutes=${minutes}&bootId=${bootId}&runtimeRevision=${filterRevision}"
+                                            },
+                                            "body": [
+                                              {
+                                                "type": "tpl",
+                                                "tpl": "<div class=\"flow-empty\">尚无采集数据</div>",
+                                                "visibleOn": "${!collected && loadOk !== false}"
+                                              },
+                                              {
+                                                "type": "container",
+                                                "visibleOn": "${collected && loadOk !== false}",
+                                                "body": [
+                                                  {
+                                                    "type": "tpl",
+                                                    "tpl": "<div class=\"flow-metrics\"><div><span>已完成</span><strong>${completed}</strong></div><div><span>失败</span><strong>${failed}</strong></div><div><span>失败率</span><strong>${failureRate == null ? \"—\" : ROUND(failureRate, 2) + \"%\"}</strong></div><div><span>P95 上界</span><strong>${p95Millis == null ? \"—\" : p95Millis + \" ms\"}</strong></div><div><span>未完整</span><strong>${incomplete}</strong></div></div>"
+                                                  },
+                                                  {
+                                                    "type": "tpl",
+                                                    "tpl": "<span class=\"text-warning\">结果达到读取上限</span>",
+                                                    "visibleOn": "${partial}"
+                                                  },
+                                                  {
+                                                    "type": "table",
+                                                    "source": "${windows}",
+                                                    "columns": [
+                                                      {
+                                                        "name": "startedAt",
+                                                        "label": "采集分钟",
+                                                        "type": "date",
+                                                        "valueFormat": "x",
+                                                        "format": "HH:mm"
+                                                      },
+                                                      {
+                                                        "name": "bootId",
+                                                        "label": "启动实例",
+                                                        "type": "tpl",
+                                                        "tpl": "${bootId | truncate:8}"
+                                                      },
+                                                      {
+                                                        "name": "runtimeRevision",
+                                                        "label": "运行版本",
+                                                        "type": "tpl",
+                                                        "tpl": "${runtimeRevision | truncate:10}"
+                                                      },
+                                                      {
+                                                        "name": "completed",
+                                                        "label": "已完成"
+                                                      },
+                                                      {
+                                                        "name": "failed",
+                                                        "label": "失败"
+                                                      },
+                                                      {
+                                                        "name": "incomplete",
+                                                        "label": "未完整"
+                                                      }
+                                                    ],
+                                                    "placeholder": "暂无记录",
+                                                    "columnsTogglable": false
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "type": "tpl",
+                                                "tpl": "<span class=\"text-danger\">统计读取失败</span>",
+                                                "visibleOn": "${loadOk === false}"
+                                              }
+                                            ],
+                                            "data": {
+                                              "loadOk": null,
+                                              "minutes": 15,
+                                              "bootId": "",
+                                              "filterRevision": ""
+                                            },
+                                            "onEvent": {
+                                              "fetchInited": {
+                                                "actions": [
+                                                  {
+                                                    "actionType": "setValue",
+                                                    "componentId": "runtimeObservationMetrics",
+                                                    "args": {
+                                                      "value": {
+                                                        "loadOk": "${event.data.responseStatus === 0}"
+                                                      }
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            "showErrorMsg": true,
+                                            "interval": 5000
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "type": "container",
+                                        "className": "flow-panel",
+                                        "body": [
+                                          {
+                                            "type": "tpl",
+                                            "tpl": "<h2>诊断样本</h2>"
+                                          },
+                                          {
+                                            "type": "service",
+                                            "id": "runtimeDiagnosticRuns",
+                                            "name": "runtimeDiagnosticRuns",
+                                            "api": {
+                                              "url": "/api/runtime/logicflows/models/${name | url_encode}/diagnostic-runs"
+                                            },
+                                            "body": [
+                                              {
+                                                "type": "table",
+                                                "source": "${items}",
+                                                "columns": [
+                                                  {
+                                                    "name": "startedAt",
+                                                    "label": "开始时间",
+                                                    "type": "date",
+                                                    "valueFormat": "x",
+                                                    "format": "MM-DD HH:mm:ss"
+                                                  },
+                                                  {
+                                                    "name": "bootId",
+                                                    "label": "启动实例",
+                                                    "type": "tpl",
+                                                    "tpl": "${bootId | truncate:8}"
+                                                  },
+                                                  {
+                                                    "name": "result",
+                                                    "label": "结果",
+                                                    "type": "mapping",
+                                                    "map": {
+                                                      "completed": "成功",
+                                                      "failed": "失败",
+                                                      "skipped": "跳过",
+                                                      "blocked": "上游失败",
+                                                      "incomplete": "未完整"
+                                                    }
+                                                  },
+                                                  {
+                                                    "name": "durationMillis",
+                                                    "label": "耗时 ms",
+                                                    "type": "tpl",
+                                                    "tpl": "${ROUND(durationMillis, 3)}"
+                                                  },
+                                                  {
+                                                    "name": "exceptionType",
+                                                    "label": "异常类型"
+                                                  },
+                                                  {
+                                                    "type": "operation",
+                                                    "label": "",
+                                                    "buttons": [
+                                                      {
+                                                        "type": "button",
+                                                        "label": "节点时序",
+                                                        "actionType": "dialog",
+                                                        "dialog": {
+                                                          "title": "调用样本",
+                                                          "size": "lg",
+                                                          "body": [
+                                                            {
+                                                              "type": "service",
+                                                              "id": "runtimeDiagnosticRun",
+                                                              "name": "runtimeDiagnosticRun",
+                                                              "api": {
+                                                                "url": "/api/runtime/logicflows/models/${name | url_encode}/diagnostic-runs/${id}"
+                                                              },
+                                                              "body": [
+                                                                {
+                                                                  "type": "property",
+                                                                  "column": 2,
+                                                                  "items": [
+                                                                    {
+                                                                      "label": "结果",
+                                                                      "content": "${result === \"completed\" ? \"成功\" : result === \"failed\" ? \"失败\" : \"未完整\"}"
+                                                                    },
+                                                                    {
+                                                                      "label": "耗时",
+                                                                      "content": "${ROUND(durationMillis, 3)} ms"
+                                                                    },
+                                                                    {
+                                                                      "label": "异常类型",
+                                                                      "content": "${exceptionType || \"—\"}"
+                                                                    },
+                                                                    {
+                                                                      "label": "样本完整",
+                                                                      "content": "${truncated ? \"已截断\" : \"完整\"}"
+                                                                    },
+                                                                    {
+                                                                      "label": "父调用",
+                                                                      "content": "${parentInvocationId || \"—\"}"
+                                                                    }
+                                                                  ]
+                                                                },
+                                                                {
+                                                                  "type": "table",
+                                                                  "source": "${nodes}",
+                                                                  "columns": [
+                                                                    {
+                                                                      "name": "node",
+                                                                      "label": "节点"
+                                                                    },
+                                                                    {
+                                                                      "name": "type",
+                                                                      "label": "类型"
+                                                                    },
+                                                                    {
+                                                                      "name": "scope",
+                                                                      "label": "作用域"
+                                                                    },
+                                                                    {
+                                                                      "name": "startedAt",
+                                                                      "label": "开始时间",
+                                                                      "type": "date",
+                                                                      "valueFormat": "x",
+                                                                      "format": "HH:mm:ss.SSS"
+                                                                    },
+                                                                    {
+                                                                      "name": "durationMillis",
+                                                                      "label": "耗时 ms",
+                                                                      "type": "tpl",
+                                                                      "tpl": "${ROUND(durationMillis, 3)}"
+                                                                    },
+                                                                    {
+                                                                      "name": "result",
+                                                                      "label": "结果",
+                                                                      "type": "mapping",
+                                                                      "map": {
+                                                                        "completed": "成功",
+                                                                        "failed": "失败",
+                                                                        "skipped": "跳过",
+                                                                        "blocked": "上游失败",
+                                                                        "incomplete": "未完整"
+                                                                      }
+                                                                    },
+                                                                    {
+                                                                      "name": "exceptionType",
+                                                                      "label": "异常类型"
+                                                                    }
+                                                                  ],
+                                                                  "placeholder": "暂无记录",
+                                                                  "columnsTogglable": false
+                                                                },
+                                                                {
+                                                                  "type": "collapse-group",
+                                                                  "body": [
+                                                                    {
+                                                                      "type": "collapse",
+                                                                      "title": "版本与标识",
+                                                                      "body": {
+                                                                        "type": "property",
+                                                                        "items": [
+                                                                          {
+                                                                            "label": "调用 ID",
+                                                                            "content": "${id}"
+                                                                          },
+                                                                          {
+                                                                            "label": "启动实例",
+                                                                            "content": "${bootId}"
+                                                                          },
+                                                                          {
+                                                                            "label": "运行版本",
+                                                                            "content": "${runtimeRevision}"
+                                                                          },
+                                                                          {
+                                                                            "label": "策略修订",
+                                                                            "content": "${policyRevision}"
+                                                                          }
+                                                                        ]
+                                                                      },
+                                                                      "collapsed": true
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              ],
+                                                              "data": {
+                                                                "loadOk": null
+                                                              },
+                                                              "onEvent": {
+                                                                "fetchInited": {
+                                                                  "actions": [
+                                                                    {
+                                                                      "actionType": "setValue",
+                                                                      "componentId": "runtimeDiagnosticRun",
+                                                                      "args": {
+                                                                        "value": {
+                                                                          "loadOk": "${event.data.responseStatus === 0}"
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              },
+                                                              "showErrorMsg": true
+                                                            }
+                                                          ],
+                                                          "actions": [
+                                                            {
+                                                              "type": "button",
+                                                              "label": "关闭",
+                                                              "actionType": "close"
+                                                            }
+                                                          ]
+                                                        },
+                                                        "level": "link"
+                                                      }
+                                                    ]
+                                                  }
+                                                ],
+                                                "placeholder": "暂无记录",
+                                                "columnsTogglable": false,
+                                                "visibleOn": "${items && items.length > 0 && loadOk !== false}"
+                                              },
+                                              {
+                                                "type": "tpl",
+                                                "tpl": "<div class=\"flow-empty\">暂无诊断样本</div>",
+                                                "visibleOn": "${(!items || items.length === 0) && loadOk !== false}"
+                                              },
+                                              {
+                                                "type": "tpl",
+                                                "tpl": "<div class=\"text-danger\">诊断样本读取失败</div>",
+                                                "visibleOn": "${loadOk === false}"
+                                              }
+                                            ],
+                                            "data": {
+                                              "loadOk": null
+                                            },
+                                            "onEvent": {
+                                              "fetchInited": {
+                                                "actions": [
+                                                  {
+                                                    "actionType": "setValue",
+                                                    "componentId": "runtimeDiagnosticRuns",
+                                                    "args": {
+                                                      "value": {
+                                                        "loadOk": "${event.data.responseStatus === 0}"
+                                                      }
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            "showErrorMsg": true,
+                                            "interval": 5000
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "tpl",
+                                    "tpl": "<div class=\"flow-empty\">无观测数据查看权限</div>",
+                                    "visibleOn": "${!canRead}"
+                                  }
+                                ]
+                              },
+                              {
+                                "md": 4,
+                                "body": [
+                                  {
+                                    "type": "container",
+                                    "className": "flow-panel",
+                                    "body": [
+                                      {
+                                        "type": "tpl",
+                                        "tpl": "<h2>本流程采集</h2>"
+                                      },
+                                      {
+                                        "type": "service",
+                                        "id": "runtimeObservationSettings",
+                                        "name": "runtimeObservationSettings",
+                                        "api": {
+                                          "url": "/api/runtime/logicflows/models/${name | url_encode}/observation-policy",
+                                          "adaptor": "const d=payload.data;return d?{...payload,data:{...d,diagnosticActive:d.policy.diagnosticEnabled&&d.policy.diagnosticExpiresAt>Date.now(),desiredRevision:d.revision}}:payload;"
+                                        },
+                                        "body": [
+                                          {
+                                            "type": "container",
+                                            "visibleOn": "${loadOk !== false}",
+                                            "body": [
+                                              {
+                                                "type": "tpl",
+                                                "tpl": "<div class=\"flow-policy\"><span>运行监控</span><strong>${policy.monitorEnabled ? \"开启\" : \"关闭\"}</strong></div><div class=\"flow-policy\"><span>详细诊断</span><strong>${diagnosticActive ? \"开启\" : policy.diagnosticEnabled ? \"已到期\" : \"关闭\"}</strong></div>"
+                                              },
+                                              {
+                                                "type": "static-date",
+                                                "value": "${policy.diagnosticExpiresAt}",
+                                                "format": "MM-DD HH:mm:ss",
+                                                "label": "诊断截止",
+                                                "visibleOn": "${policy.diagnosticEnabled}",
+                                                "valueFormat": "x"
+                                              },
+                                              {
+                                                "type": "button",
+                                                "label": "设置采集",
+                                                "actionType": "dialog",
+                                                "visibleOn": "${canManage}",
+                                                "dialog": {
+                                                  "title": "采集设置 · ${name}",
+                                                  "body": {
+                                                    "type": "form",
+                                                    "id": "runtimeObservationSettingsForm",
+                                                    "initApi": {
+                                                      "url": "/api/runtime/logicflows/models/${name | url_encode}/observation-policy",
+                                                      "adaptor": "const d=payload.data;return {...payload,data:{...d,monitorEnabled:d.policy.monitorEnabled,diagnosticEnabled:d.policy.diagnosticEnabled && d.policy.diagnosticExpiresAt>Date.now(),reason:\"\"}};"
+                                                    },
+                                                    "wrapWithPanel": true,
+                                                    "api": {
+                                                      "method": "put",
+                                                      "url": "/api/runtime/logicflows/models/${name | url_encode}/observation-policy",
+                                                      "data": {
+                                                        "expectedRevision": "${revision}",
+                                                        "monitorEnabled": "${monitorEnabled}",
+                                                        "diagnosticEnabled": "${monitorEnabled && diagnosticEnabled}",
+                                                        "durationMinutes": "${durationMinutes}",
+                                                        "reason": "${reason}"
+                                                      }
+                                                    },
+                                                    "body": [
+                                                      {
+                                                        "type": "switch",
+                                                        "name": "monitorEnabled",
+                                                        "label": "运行监控"
+                                                      },
+                                                      {
+                                                        "type": "switch",
+                                                        "name": "diagnosticEnabled",
+                                                        "label": "详细诊断",
+                                                        "disabledOn": "${!monitorEnabled}"
+                                                      },
+                                                      {
+                                                        "type": "select",
+                                                        "name": "durationMinutes",
+                                                        "label": "诊断时长",
+                                                        "value": 15,
+                                                        "visibleOn": "${diagnosticEnabled}",
+                                                        "options": [
+                                                          {
+                                                            "label": "5 分钟",
+                                                            "value": 5
+                                                          },
+                                                          {
+                                                            "label": "15 分钟",
+                                                            "value": 15
+                                                          },
+                                                          {
+                                                            "label": "30 分钟",
+                                                            "value": 30
+                                                          }
+                                                        ],
+                                                        "clearable": false
+                                                      },
+                                                      {
+                                                        "type": "textarea",
+                                                        "name": "reason",
+                                                        "label": "操作原因",
+                                                        "required": true,
+                                                        "maxLength": 200
+                                                      }
+                                                    ],
+                                                    "actions": [
+                                                      {
+                                                        "type": "button",
+                                                        "label": "取消",
+                                                        "actionType": "close"
+                                                      },
+                                                      {
+                                                        "type": "submit",
+                                                        "label": "保存",
+                                                        "level": "primary",
+                                                        "confirmText": "应用本流程的采集设置？关闭运行监控会同时关闭详细诊断。"
+                                                      }
+                                                    ],
+                                                    "onEvent": {
+                                                      "submitSucc": {
+                                                        "actions": [
+                                                          {
+                                                            "actionType": "reload",
+                                                            "componentId": "runtimeObservationSettings"
+                                                          },
+                                                          {
+                                                            "actionType": "reload",
+                                                            "componentId": "runtimeObservationMonitor"
+                                                          }
+                                                        ]
+                                                      }
+                                                    },
+                                                    "title": "",
+                                                    "panelClassName": "border-0 shadow-none"
+                                                  },
+                                                  "actions": []
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "type": "tpl",
+                                            "tpl": "<span class=\"text-danger\">采集设置读取失败</span>",
+                                            "visibleOn": "${loadOk === false}"
+                                          }
+                                        ],
+                                        "data": {
+                                          "loadOk": null
+                                        },
+                                        "onEvent": {
+                                          "fetchInited": {
+                                            "actions": [
+                                              {
+                                                "actionType": "setValue",
+                                                "componentId": "runtimeObservationSettings",
+                                                "args": {
+                                                  "value": {
+                                                    "loadOk": "${event.data.responseStatus === 0}"
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "showErrorMsg": true
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "container",
+                                    "className": "flow-panel",
+                                    "body": [
+                                      {
+                                        "type": "tpl",
+                                        "tpl": "<h2>实例采集回报</h2>"
+                                      },
+                                      {
+                                        "type": "service",
+                                        "id": "runtimeObservationStatus",
+                                        "name": "runtimeObservationStatus",
+                                        "api": {
+                                          "url": "/api/runtime/logicflows/models/${name | url_encode}/observation-status",
+                                          "adaptor": "const d=payload.data||{};const flow=(d.name||'').toLowerCase();return {...payload,data:{...d,items:(d.items||[]).map(x=>({...x,shortBoot:x.bootId.slice(0,8),state:Date.now()-x.reportedAt>30000?'stale':x.error?'failed':x.revision!==d.expectedRevision?'pending':x.diagnostics[flow]||'off'}))}};"
+                                        },
+                                        "body": [
+                                          {
+                                            "type": "container",
+                                            "visibleOn": "${loadOk !== false}",
+                                            "body": [
+                                              {
+                                                "type": "table",
+                                                "source": "${items}",
+                                                "columns": [
+                                                  {
+                                                    "name": "shortBoot",
+                                                    "label": "启动实例"
+                                                  },
+                                                  {
+                                                    "name": "state",
+                                                    "label": "采集状态",
+                                                    "type": "mapping",
+                                                    "map": {
+                                                      "off": "关闭",
+                                                      "monitoring": "仅监控",
+                                                      "recording": "诊断中",
+                                                      "expired": "诊断到期",
+                                                      "capacity": "诊断满额",
+                                                      "pending": "待采用",
+                                                      "failed": "采集故障",
+                                                      "stale": "回报过期"
+                                                    }
+                                                  },
+                                                  {
+                                                    "name": "reportedAt",
+                                                    "label": "最近回报",
+                                                    "type": "date",
+                                                    "format": "HH:mm:ss",
+                                                    "valueFormat": "x"
+                                                  },
+                                                  {
+                                                    "type": "operation",
+                                                    "label": "",
+                                                    "buttons": [
+                                                      {
+                                                        "type": "button",
+                                                        "label": "详情",
+                                                        "level": "link",
+                                                        "actionType": "dialog",
+                                                        "dialog": {
+                                                          "title": "实例采集回报",
+                                                          "body": {
+                                                            "type": "property",
+                                                            "column": 1,
+                                                            "items": [
+                                                              {
+                                                                "label": "启动实例",
+                                                                "content": "${bootId}"
+                                                              },
+                                                              {
+                                                                "label": "采用修订",
+                                                                "content": "${revision}"
+                                                              },
+                                                              {
+                                                                "label": "进行中",
+                                                                "content": "${active}"
+                                                              },
+                                                              {
+                                                                "label": "拒收",
+                                                                "content": "${rejected}"
+                                                              },
+                                                              {
+                                                                "label": "丢弃",
+                                                                "content": "${dropped}"
+                                                              },
+                                                              {
+                                                                "label": "故障",
+                                                                "content": "${error}"
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                ],
+                                                "placeholder": "暂无记录",
+                                                "columnsTogglable": false
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "type": "tpl",
+                                            "tpl": "<span class=\"text-danger\">观测数据读取失败</span>",
+                                            "visibleOn": "${loadOk === false}"
+                                          }
+                                        ],
+                                        "data": {
+                                          "loadOk": null
+                                        },
+                                        "onEvent": {
+                                          "fetchInited": {
+                                            "actions": [
+                                              {
+                                                "actionType": "setValue",
+                                                "componentId": "runtimeObservationStatus",
+                                                "args": {
+                                                  "value": {
+                                                    "loadOk": "${event.data.responseStatus === 0}"
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "showErrorMsg": true,
+                                        "interval": 5000
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "tpl",
+                        "tpl": "<span class=\"text-danger\">观测数据读取失败</span>",
+                        "visibleOn": "${loadOk === false}"
+                      }
+                    ],
+                    "data": {
+                      "loadOk": null
+                    },
+                    "onEvent": {
+                      "fetchInited": {
+                        "actions": [
+                          {
+                            "actionType": "setValue",
+                            "componentId": "runtimeObservationMonitor",
+                            "args": {
+                              "value": {
+                                "loadOk": "${event.data.responseStatus === 0}"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "showErrorMsg": true
+                  }
+                },
+                {
+                  "title": "变更",
+                  "body": [
+                    {
+                      "type": "container",
+                      "className": "flow-panel",
+                      "body": [
+                        {
+                          "type": "tpl",
+                          "tpl": "<h2>模型变更</h2>"
+                        },
+                        {
+                          "type": "table",
+                          "source": "${changes}",
+                          "columns": [
+                            {
+                              "name": "committedAt",
+                              "label": "时间",
+                              "type": "date",
+                              "format": "MM-DD HH:mm:ss"
+                            },
+                            {
+                              "name": "actor",
+                              "label": "操作者"
+                            },
+                            {
+                              "name": "action",
+                              "label": "变更",
+                              "type": "mapping",
+                              "map": {
+                                "save": "保存覆盖",
+                                "revoke": "恢复默认",
+                                "restore": "恢复前态"
+                              }
+                            },
+                            {
+                              "name": "after.version",
+                              "label": "覆盖版本"
+                            },
+                            {
+                              "type": "operation",
+                              "label": "",
+                              "buttons": [
+                                {
+                                  "type": "button",
+                                  "label": "详情",
+                                  "actionType": "dialog",
+                                  "dialog": {
+                                    "title": "变更详情",
+                                    "size": "lg",
+                                    "body": [
+                                      {
+                                        "type": "json",
+                                        "source": "${&}",
+                                        "levelExpand": 1
+                                      }
+                                    ],
+                                    "actions": [
+                                      {
+                                        "type": "button",
+                                        "label": "关闭",
+                                        "actionType": "close"
+                                      }
+                                    ]
+                                  },
+                                  "level": "link"
+                                }
+                              ]
+                            }
+                          ],
+                          "placeholder": "暂无记录",
+                          "columnsTogglable": false
+                        }
+                      ]
+                    },
+                    {
+                      "type": "service",
+                      "id": "runtimeObservationHistoryAccess",
+                      "name": "runtimeObservationHistoryAccess",
+                      "api": {
+                        "url": "/api/runtime/logicflows/models/${name | url_encode}/observation-policy",
+                        "adaptor": "const d=payload.data;return d?{...payload,data:{...d,diagnosticActive:d.policy.diagnosticEnabled&&d.policy.diagnosticExpiresAt>Date.now(),desiredRevision:d.revision}}:payload;"
+                      },
+                      "body": [
+                        {
+                          "type": "container",
+                          "visibleOn": "${loadOk !== false}",
+                          "body": [
+                            {
+                              "type": "container",
+                              "visibleOn": "${canRead}",
+                              "body": [
+                                {
+                                  "type": "container",
+                                  "className": "flow-panel",
+                                  "body": [
+                                    {
+                                      "type": "tpl",
+                                      "tpl": "<h2>采集设置变更</h2>"
+                                    },
+                                    {
+                                      "type": "service",
+                                      "id": "runtimeObservationChanges",
+                                      "name": "runtimeObservationChanges",
+                                      "api": {
+                                        "url": "/api/runtime/logicflows/models/${name | url_encode}/observation-changes"
+                                      },
+                                      "body": [
+                                        {
+                                          "type": "container",
+                                          "visibleOn": "${loadOk !== false}",
+                                          "body": [
+                                            {
+                                              "type": "table",
+                                              "source": "${items}",
+                                              "columns": [
+                                                {
+                                                  "name": "after.updatedAt",
+                                                  "label": "时间",
+                                                  "type": "date",
+                                                  "valueFormat": "x",
+                                                  "format": "MM-DD HH:mm:ss"
+                                                },
+                                                {
+                                                  "name": "after.actor",
+                                                  "label": "操作者"
+                                                },
+                                                {
+                                                  "name": "after.reason",
+                                                  "label": "操作原因"
+                                                },
+                                                {
+                                                  "name": "after.monitorEnabled",
+                                                  "label": "运行监控",
+                                                  "type": "mapping",
+                                                  "map": {
+                                                    "true": "开启",
+                                                    "false": "关闭"
+                                                  }
+                                                },
+                                                {
+                                                  "name": "after.diagnosticEnabled",
+                                                  "label": "详细诊断",
+                                                  "type": "mapping",
+                                                  "map": {
+                                                    "true": "开启",
+                                                    "false": "关闭"
+                                                  }
+                                                }
+                                              ],
+                                              "placeholder": "暂无记录",
+                                              "columnsTogglable": false
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "tpl",
+                                          "tpl": "<span class=\"text-danger\">观测数据读取失败</span>",
+                                          "visibleOn": "${loadOk === false}"
+                                        }
+                                      ],
+                                      "data": {
+                                        "loadOk": null
+                                      },
+                                      "onEvent": {
+                                        "fetchInited": {
+                                          "actions": [
+                                            {
+                                              "actionType": "setValue",
+                                              "componentId": "runtimeObservationChanges",
+                                              "args": {
+                                                "value": {
+                                                  "loadOk": "${event.data.responseStatus === 0}"
+                                                }
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "showErrorMsg": true
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "tpl",
+                          "tpl": "<span class=\"text-danger\">观测数据读取失败</span>",
+                          "visibleOn": "${loadOk === false}"
+                        }
+                      ],
+                      "data": {
+                        "loadOk": null
+                      },
+                      "onEvent": {
+                        "fetchInited": {
+                          "actions": [
+                            {
+                              "actionType": "setValue",
+                              "componentId": "runtimeObservationHistoryAccess",
+                              "args": {
+                                "value": {
+                                  "loadOk": "${event.data.responseStatus === 0}"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "showErrorMsg": true
+                    }
+                  ]
+                },
+                {
+                  "title": "模型来源",
+                  "body": [
+                    {
+                      "type": "container",
+                      "className": "flow-panel",
+                      "body": [
+                        {
+                          "type": "tpl",
+                          "tpl": "<h2>模型来源</h2>"
+                        },
+                        {
+                          "type": "table",
+                          "source": "${sources}",
+                          "columns": [
+                            {
+                              "name": "id",
+                              "label": "来源"
+                            },
+                            {
+                              "name": "priority",
+                              "label": "优先级"
+                            },
+                            {
+                              "name": "selectedDefault",
+                              "label": "部署默认",
+                              "type": "mapping",
+                              "map": {
+                                "true": "是",
+                                "false": "否"
+                              }
+                            },
+                            {
+                              "name": "enabled",
+                              "label": "启用",
+                              "type": "mapping",
+                              "map": {
+                                "true": "是",
+                                "false": "否"
+                              }
+                            },
+                            {
+                              "name": "complete",
+                              "label": "完整",
+                              "type": "mapping",
+                              "map": {
+                                "true": "是",
+                                "false": "否"
+                              }
+                            },
+                            {
+                              "name": "diagnostics",
+                              "label": "诊断",
+                              "type": "each",
+                              "items": {
+                                "type": "tpl",
+                                "tpl": "${item | html}"
+                              }
+                            }
+                          ],
+                          "placeholder": "暂无记录",
+                          "columnsTogglable": false
+                        }
+                      ]
+                    },
+                    {
+                      "type": "collapse-group",
+                      "body": [
+                        {
+                          "type": "collapse",
+                          "title": "版本与标识",
+                          "body": {
+                            "type": "property",
+                            "column": 1,
+                            "items": [
+                              {
+                                "label": "当前启动实例",
+                                "content": "${instanceId}"
+                              },
+                              {
+                                "label": "目标集合",
+                                "content": "${catalogVersion}"
+                              },
+                              {
+                                "label": "当前实例集合",
+                                "content": "${appliedCatalogVersion}"
+                              },
+                              {
+                                "label": "运行版本",
+                                "content": "${runtimeRevision}"
+                              },
+                              {
+                                "label": "发布标识",
+                                "content": "${publicationId}"
+                              },
+                              {
+                                "label": "部署默认摘要",
+                                "content": "${defaultHash}"
+                              }
+                            ]
+                          },
+                          "collapsed": true
+                        },
+                        {
+                          "type": "collapse",
+                          "title": "模型正文",
+                          "body": [
+                            {
+                              "type": "json",
+                              "source": "${defaultDefinition}",
+                              "levelExpand": 1
+                            },
+                            {
+                              "type": "json",
+                              "source": "${override}",
+                              "levelExpand": 1
+                            }
+                          ],
+                          "collapsed": true
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "visibleOn": "${loadOk === false}",
+          "body": [
+            {
+              "type": "tpl",
+              "tpl": "<div class=\"flow-empty text-danger\">模型详情读取失败</div>"
+            },
+            {
+              "type": "button",
+              "label": "重试",
+              "actionType": "reload",
+              "target": "runtimeFlowDetails"
+            }
+          ]
+        }
+      ],
+      "data": {
+        "loadOk": null
+      },
+      "onEvent": {
+        "fetchInited": {
+          "actions": [
+            {
+              "actionType": "setValue",
+              "componentId": "runtimeFlowDetails",
+              "args": {
+                "value": {
+                  "loadOk": "${event.data.responseStatus === 0}"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "showErrorMsg": true
+    },
+    "mobileCSS": {
+      ".runtime-flow-ops .flow-versions": {
+        "grid-template-columns": "1fr"
+      },
+      ".runtime-flow-ops .flow-versions > div": {
+        "display": "grid",
+        "grid-template-columns": "80px 1fr",
+        "padding": "12px",
+        "gap": "3px 8px"
+      },
+      ".runtime-flow-ops .flow-versions strong": {
+        "font-size": "16px",
+        "margin": "0"
+      },
+      ".runtime-flow-ops .flow-versions small": {
+        "grid-column": "2"
+      },
+      ".runtime-flow-ops .flow-versions b": {
+        "display": "none"
+      }
+    }
+  }
+}

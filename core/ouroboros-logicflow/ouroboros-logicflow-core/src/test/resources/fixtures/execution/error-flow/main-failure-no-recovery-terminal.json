@@ -1,0 +1,109 @@
+{
+  "name": "main-failure-no-recovery-terminal",
+  "description": "Main flow failure enters error flow, but the error flow reaches no successful terminal",
+  "isEnabled": true,
+  "inputDataType": "string",
+  "outputDataType": "any",
+  "entryNode": "mainEntry",
+  "exitNode": "failingScript",
+  "errorEntryNode": "errorEntry",
+  "nodes": [
+    {
+      "name": "mainEntry",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    },
+    {
+      "name": "failingScript",
+      "type": "script",
+      "description": "",
+      "language": "groovy",
+      "script": "throw new RuntimeException('boom')",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "string"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    },
+    {
+      "name": "errorEntry",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "error",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    },
+    {
+      "name": "errorSwitch",
+      "type": "switch",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "error",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "conditions": [
+        {
+          "name": "recover",
+          "description": "",
+          "expression": "nodeName == 'recover'"
+        }
+      ]
+    },
+    {
+      "name": "errorReturn",
+      "type": "return",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": []
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "mainEntry",
+      "sourceOutputPort": 0,
+      "targetNode": "failingScript",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "errorEntry",
+      "sourceOutputPort": 0,
+      "targetNode": "errorSwitch",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "errorSwitch",
+      "sourceOutputPort": 0,
+      "targetNode": "errorReturn",
+      "targetInputPort": 0
+    }
+  ]
+}

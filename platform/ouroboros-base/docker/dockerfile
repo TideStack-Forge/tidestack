@@ -1,0 +1,25 @@
+# Docker image for ouroboros-develop run
+
+ARG BASE_IMAGE=registry.cn-hangzhou.aliyuncs.com/ouroboros/openjdk
+ARG BASE_IMAGE_VERSION=8-jre-slim
+ARG WEB_IMAGE=registry.cn-hangzhou.aliyuncs.com/ouroboros/ouroboros-web
+ARG WEB_IMAGE_VERSION=latest
+FROM $WEB_IMAGE:$WEB_IMAGE_VERSION AS ouroboros-web
+FROM $BASE_IMAGE:$BASE_IMAGE_VERSION
+
+# 安装需要的工具
+RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list; apt update; apt install -y --no-install-recommends nginx; rm -rf /var/lib/apt/lists/*
+
+# 设置时区
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+# 配置nginx
+COPY ./nginx/nginx.conf                      /etc/nginx/nginx.conf
+
+# 把 ouroboros-web 中的 /web 目录复制到 /home/private/application/web 目录
+COPY --from=ouroboros-web /web /home/private/application/web
+
+# 将资源包添加到容器中源目录
+COPY ./colorlog.sh                           /home/private/application/colorlog.sh
+COPY ./start.sh                              /home/private/application/start.sh
+COPY ./third-party-lib                       /home/private/application/service/third-party-lib

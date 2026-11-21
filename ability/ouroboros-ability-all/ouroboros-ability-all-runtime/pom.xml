@@ -1,0 +1,461 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>ouroboros-ability-all</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ouroboros-ability-all-runtime</artifactId>
+    <packaging>jar</packaging>
+    <name>ouroboros-ability-all-runtime</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-logicflow-runtime-manage</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-storage-filesystem</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-integration-management-runtime</artifactId>
+        </dependency>
+        <!-- 测试相关 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+<!-- 启用Java 21 编译基线 -->
+
+        <!-- 核心依赖 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-ability-all-core</artifactId>
+        </dependency>
+
+        <!-- 核心层：动态数据模型 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-data-platform-adapter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-data-typed-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-data-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-data-sql-druid-datasource</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-data-pkgen-coding</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-statistics-reporting-runtime</artifactId>
+        </dependency>
+
+        <!-- 核心层：字段类型 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-field-type-default-types</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-field-type-runtime</artifactId>
+        </dependency>
+
+        <!-- 核心层：UI模型 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-ui-model-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-ui-model-schema-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-ui-model-lowcode</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-ui-model-microweb-nginx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-ui-model-microweb-lowcode</artifactId>
+        </dependency>
+
+        <!-- 核心层：菜单模型 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-menu-model-runtime</artifactId>
+        </dependency>
+
+        <!-- 核心层：错误码与运行时资源管理 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-error-code-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-resource-runtime-manage</artifactId>
+        </dependency>
+
+        <!-- 核心层：国际化 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-i18n-runtime</artifactId>
+        </dependency>
+
+        <!-- 核心层：业务模型 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-business-model-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-business-model-default</artifactId>
+        </dependency>
+
+        <!-- 核心层：逻辑流引擎 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-logicflow-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-logicflow-data-model</artifactId>
+        </dependency>
+
+        <!-- 核心层：Webapi 模型 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-webapi-runtime</artifactId>
+        </dependency>
+
+        <!-- 核心层：应用模块模型 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-app-module-model-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-app-module-model-procode</artifactId>
+        </dependency>
+
+        <!-- 安全层：安全框架 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-web-security-runtime</artifactId>
+        </dependency>
+
+        <!-- 能力层：外部认证配置与 OIDC IdP -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-external-auth-configuration</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-oidc-server</artifactId>
+        </dependency>
+
+        <!-- 能力层：统一配置 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-configuration-runtime</artifactId>
+        </dependency>
+
+        <!-- 能力层：审批流外部流程引擎对接 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-enterprise-connector-manage</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-organization-structure-enterprise-dingtalk</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-organization-structure-enterprise-wecom</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-organization-structure-enterprise-feishu</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-approval-workflow-external-integration-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-approval-workflow-external-integration-dingtalk</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-approval-workflow-external-integration-wecom</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-approval-workflow-external-integration-feishu</artifactId>
+        </dependency>
+
+        <!-- 能力层：组织架构 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-organization-structure-runtime</artifactId>
+        </dependency>
+
+        <!-- 能力层：数据字典 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-data-dict-runtime</artifactId>
+        </dependency>
+
+        <!-- 能力层：文件上传 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-file-upload-runtime</artifactId>
+        </dependency>
+
+        <!-- 能力层：通知模块 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-notification-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-notification-channel-all</artifactId>
+            <type>pom</type>
+        </dependency>
+
+        <!-- 能力层：RPC模型 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-rpc-model-runtime</artifactId>
+        </dependency>
+
+        <!-- 能力层：AI能力包 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-ai-starter-runtime</artifactId>
+        </dependency>
+
+        <!-- 能力层：消息队列 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-message-queue-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-message-queue-rabbitmq</artifactId>
+        </dependency>
+
+        <!-- 能力层：计划任务 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-scheduler-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-scheduler-quartz</artifactId>
+        </dependency>
+
+        <!-- 能力层：用户设置 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-user-setting-runtime</artifactId>
+        </dependency>
+
+        <!-- 能力层：WebSocket -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-websocket-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-websocket-broker-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-websocket-broker-rabbitmq</artifactId>
+        </dependency>
+
+        <!-- 能力层：应用运行时 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-app-runtime</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-cache-management</artifactId>
+        </dependency>
+
+        <!-- 能力层：平台组件库 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-platform-component-lib</artifactId>
+        </dependency>
+
+        <!-- 逻辑流节点扩展 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-web-security-logicflow-node</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-configuration-logicflow-node</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-notification-logicflow-node</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-rpc-model-logicflow-node</artifactId>
+        </dependency>
+
+        <!-- 小组件 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-widget-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-widget-manage</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-widget-user-dashboard</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-widget-user-profile</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-widget-shortcut</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-widget-common</artifactId>
+        </dependency>
+
+        <!-- 应用模块依赖已移至 platform 基座 (2026-04-13) -->
+        <!-- 原因: ability 层不应依赖 app-module 层，违反架构分层约束 -->
+        <!-- 已移至: platform/ouroboros-mothership/pom.xml 和 platform/ouroboros-develop/pom.xml -->
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- groovy 测试编译阶段生效（如果没有此插件groovy不会编译） -->
+            <plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compileTests</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Java 21 编译基线 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <!-- Java 21 compile baseline -->
+                    <release>21</release>
+                    <source>21</source>
+                    <target>21</target>
+                    <!-- The following setting can be avoided on Java 14 and higher -->
+                    <compilerArgs>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!-- 防止在IDEA中build失败-->
+        <profile>
+            <id>intellij-idea-only</id>
+            <activation>
+                <property>
+                    <name>idea.maven.embedder.version</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <release>21</release>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <!-- JDK21 -->
+        <profile>
+            <id>jdk21</id>
+            <properties>
+                <maven.compiler.source>21</maven.compiler.source>
+                <maven.compiler.target>21</maven.compiler.target>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <release>21</release>
+                            <source>21</source>
+                            <target>21</target>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

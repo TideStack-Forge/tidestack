@@ -1,0 +1,73 @@
+{
+  "type": "syncChildCollections",
+  "label": "同步业务模型子表",
+  "icon": "sync-child-collections",
+  "shape": "rect",
+  "description": "按业务模型 submitTogether 计划同步主模型从属集合",
+  "group": "业务模型",
+  "order": 4100,
+  "scaffold": {
+    "type": "syncChildCollections",
+    "name": "同步业务模型子表",
+    "mode": "replace",
+    "plans": [],
+    "inputPorts": [
+      {
+        "name": "persistedOwner",
+        "description": "主模型写入后的权威记录",
+        "dataType": "object"
+      },
+      {
+        "name": "submittedOwner",
+        "description": "主模型 before script 处理后的提交数据",
+        "dataType": "object"
+      }
+    ],
+    "outputPorts": [
+      {
+        "name": "",
+        "description": "按关系名返回的权威子表数据",
+        "dataType": "object"
+      }
+    ]
+  },
+  "portRules": {
+    "input": {
+      "ruleType": "limit",
+      "min": 2,
+      "max": 2
+    },
+    "output": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    }
+  },
+  "properties": [
+    {
+      "type": "select",
+      "name": "mode",
+      "label": "根同步模式",
+      "required": true,
+      "options": [
+        {
+          "label": "新增",
+          "value": "create"
+        },
+        {
+          "label": "替换",
+          "value": "replace"
+        }
+      ]
+    },
+    {
+      "type": "json-editor",
+      "name": "plans",
+      "label": "子表同步计划",
+      "required": true
+    }
+  ],
+  "svgs": {
+    "sync-child-collections": "<svg viewBox=\"0 0 1024 1024\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M192 224h256v96H192v384h256v96H160c-35.3 0-64-28.7-64-64V288c0-35.3 28.7-64 64-64h32zm384 0h288c35.3 0 64 28.7 64 64v448c0 35.3-28.7 64-64 64H576v-96h256V320H576v-96z\"/><path d=\"M384 352h256v96H384v-96zm0 224h256v96H384v-96zM288 464h448v96H288v-96z\"/></svg>"
+  }
+}

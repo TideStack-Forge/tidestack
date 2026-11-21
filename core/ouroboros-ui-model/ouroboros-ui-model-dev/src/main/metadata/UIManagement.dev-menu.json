@@ -1,0 +1,10 @@
+{
+  "fullName": "UIDesign.UIManagement",
+  "url": "/dev/{appName}/ui",
+  "icon": "fas fa-window-restore",
+  "title": "前端页面",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 10
+}

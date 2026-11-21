@@ -1,0 +1,186 @@
+{
+  "name": "/system-setting/configuration-management",
+  "schema": {
+    "type": "page",
+    "asideResizor": false,
+    "body": [
+      {
+        "type": "form",
+        "title": false,
+        "wrapWithPanel": false,
+        "id": "configurationWorkbenchPage",
+        "className": "configuration-workbench-page h-full",
+        "data": {
+          "selectedWorkbenchNode": "",
+          "selectedPath": ""
+        },
+        "body": [
+          {
+            "type": "flex",
+            "className": "configuration-workbench-layout w-full",
+            "style": {
+              "height": "calc(100vh - 210px)",
+              "minHeight": "560px",
+              "overflow": "hidden"
+            },
+            "items": [
+              {
+                "type": "wrapper",
+                "className": "configuration-workbench-nav flex-shrink-0 flex-grow-0 h-full flex flex-col",
+                "style": {
+                  "width": "320px",
+                  "minWidth": "280px",
+                  "maxWidth": "400px",
+                  "borderRight": "1px solid #e8e8e8",
+                  "padding": "12px",
+                  "overflow": "hidden"
+                },
+                "body": [
+                  {
+                    "type": "flex",
+                    "justify": "space-between",
+                    "alignItems": "center",
+                    "className": "flex-shrink-0 flex-grow-0",
+                    "style": {
+                      "margin": "0 0 12px 0",
+                      "padding": "0 8px"
+                    },
+                    "items": [
+                      {
+                        "type": "tpl",
+                        "tpl": "<h4 style='margin: 0;'>配置管理</h4>"
+                      },
+                      {
+                        "type": "button",
+                        "icon": "fa fa-refresh",
+                        "level": "link",
+                        "size": "sm",
+                        "onEvent": {
+                          "click": {
+                            "actions": [
+                              {
+                                "actionType": "reload",
+                                "componentName": "configurationWorkbenchTree"
+                              },
+                              {
+                                "actionType": "reload",
+                                "componentId": "configurationWorkbenchGroupPanelService"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "container",
+                    "className": "flex-grow",
+                    "style": {
+                      "minHeight": "0",
+                      "overflowY": "auto"
+                    },
+                    "body": [
+                      {
+                        "type": "input-tree",
+                        "label": "",
+                        "name": "selectedWorkbenchNode",
+                        "id": "configurationWorkbenchTree",
+                        "className": "configuration-tree-nav mb-0",
+                        "inputClassName": "h-full",
+                        "heightAuto": true,
+                        "showIcon": false,
+                        "showOutline": true,
+                        "searchable": true,
+                        "multiple": false,
+                        "creatable": false,
+                        "removable": false,
+                        "editable": false,
+                        "draggable": false,
+                        "hideRoot": true,
+                        "enableNodePath": false,
+                        "initiallyOpen": true,
+                        "unfoldedLevel": 2,
+                        "onlyLeaf": false,
+                        "labelField": "label",
+                        "valueField": "id",
+                        "iconField": "icon",
+                        "childrenField": "children",
+                        "source": {
+                          "method": "get",
+                          "url": "/api/sys/configuration/workbench/tree",
+                          "responseData": {
+                            "items": "${items}"
+                          }
+                        },
+                        "menuTpl": "<span style='display:flex;align-items:center;gap:8px;'><i class='${icon}' aria-hidden='true'></i><span>${label}</span></span>",
+                        "onEvent": {
+                          "change": {
+                            "actions": [
+                              {
+                                "actionType": "broadcast",
+                                "args": {
+                                  "eventName": "configurationNodeChange"
+                                },
+                                "data": {
+                                  "nodeId": "${event.data.value}",
+                                  "path": "${item.path || ''}"
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "wrapper",
+                "className": "configuration-workbench-main flex-grow h-full",
+                "style": {
+                  "padding": "16px 20px",
+                  "minHeight": "0",
+                  "overflowY": "auto"
+                },
+                "body": [
+                  {
+                    "type": "service",
+                    "id": "configurationWorkbenchGroupPanelService",
+                    "initFetch": true,
+                    "api": {
+                      "method": "get",
+                      "url": "/api/sys/configuration/workbench/group?path=${selectedPath}"
+                    },
+                    "body": {
+                      "type": "ui-schema",
+                      "schemaId": "/system-setting/configuration-management/group-panel"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "onEvent": {
+          "configurationNodeChange": {
+            "actions": [
+              {
+                "actionType": "setValue",
+                "args": {
+                  "value": {
+                    "selectedWorkbenchNode": "${nodeId}",
+                    "selectedPath": "${path}"
+                  }
+                }
+              },
+              {
+                "actionType": "reload",
+                "componentId": "configurationWorkbenchGroupPanelService"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

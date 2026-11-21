@@ -1,0 +1,20 @@
+{
+  "fullName": "systemSetting.integrationManagement.connections.login.configure",
+  "title": "配置外部登录",
+  "delegable": false,
+  "apis": [
+    "GET /api/sys/integration-management/sections/{section}",
+    "GET /api/sys/external-auth/ldap",
+    "PUT /api/sys/external-auth/ldap",
+    "GET /api/sys/external-auth/oauth2",
+    "PUT /api/sys/external-auth/oauth2",
+    "GET /api/sys/external-auth/cas",
+    "PUT /api/sys/external-auth/cas"
+  ],
+  "uiViews": [
+    "/system-setting/integration-management"
+  ],
+  "menuItems": [
+    "systemSetting.integrationManagement"
+  ]
+}

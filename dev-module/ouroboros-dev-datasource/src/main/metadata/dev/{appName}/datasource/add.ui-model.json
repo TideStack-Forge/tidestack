@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/datasource/add",
+  "type": "amis",
+  "title": "添加数据源"
+}

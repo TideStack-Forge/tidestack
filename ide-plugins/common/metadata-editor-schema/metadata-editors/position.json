@@ -1,0 +1,13 @@
+{
+  "editorId": "position",
+  "editorName": "TideStack Position Metadata Editor",
+  "editorNameKey": "customEditor.position",
+  "metadataType": "position",
+  "schemaName": "position",
+  "viewType": "tidestack.metadataEditor.position",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.position",
+  "fileMatchPatterns": [
+    "*.position.json"
+  ],
+  "priority": "default"
+}

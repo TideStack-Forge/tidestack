@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>ouroboros-root</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>dev-module</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>ouroboros-dev-groovy-language-server</module>
+        <module>ouroboros-dev-code-intelligence</module>
+        <module>ouroboros-dev-editor-service</module>
+        <module>ouroboros-dev-model-manage-webapi-scaffold</module>
+        <module>ouroboros-dev-version-control-system</module>
+        <module>ouroboros-dev-app-management</module>
+        <module>ouroboros-dev-project-generation</module>
+        <module>ouroboros-dev-container</module>
+        <module>ouroboros-dev-runtime</module>
+        <module>ouroboros-dev-module-all</module>
+        <module>ouroboros-dev-helper</module>
+        <module>ouroboros-dev-environment</module>
+        <module>ouroboros-dev-datasource</module>
+        <module>ouroboros-dev-platform-component-lib</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

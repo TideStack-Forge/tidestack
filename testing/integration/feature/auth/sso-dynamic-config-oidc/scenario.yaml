@@ -1,0 +1,47 @@
+{
+  "id": "auth/sso-dynamic-config-oidc",
+  "title": "统一认证动态配置与 OAuth2/OIDC",
+  "domain": "auth",
+  "testType": "integration",
+  "suite": "feature",
+  "risk": "p0",
+  "modes": [
+    "harness",
+    "automated"
+  ],
+  "fixtures": {
+    "services": [
+      "mysql",
+      "redis",
+      "smtp-sink"
+    ],
+    "runtimes": [
+      "isolated-mothership"
+    ],
+    "frontends": [
+      "main-app-production"
+    ],
+    "identities": [
+      "fixture-admin",
+      "ordinary-user"
+    ]
+  },
+  "entrypoints": {
+    "backendBaseUrlEnv": "SSO_BACKEND_URL",
+    "frontendBaseUrlEnv": "SSO_BASE_URL"
+  },
+  "caseTable": "cases.md",
+  "artifacts": {
+    "contract": "contract.md",
+    "harness": "harness.playbook.md"
+  },
+  "reporting": {
+    "summaryFormat": "markdown",
+    "evidenceRoot": "tmp/testing-evidence/sso-dynamic-config-oidc"
+  },
+  "exclusions": [
+    "Client Credentials",
+    "Back/Front-Channel Logout",
+    "签名密钥热轮换"
+  ]
+}

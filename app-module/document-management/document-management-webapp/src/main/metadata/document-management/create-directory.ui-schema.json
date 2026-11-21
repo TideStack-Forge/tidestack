@@ -1,0 +1,55 @@
+{
+  "name": "/document-management/create-directory",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "api": {
+      "method": "post",
+      "url": "/api/document-libraries/${libraryId}/directories",
+      "messages": {
+        "success": "目录创建成功"
+      }
+    },
+    "body": [
+      {
+        "type": "input-text",
+        "name": "directoryName",
+        "label": "目录名称",
+        "required": true,
+        "placeholder": "请输入目录名称"
+      },
+      {
+        "type": "checkbox",
+        "name": "enterNewDirectory",
+        "mode": "inline",
+        "label": "创建后进入新目录",
+        "value": false
+      },
+      {
+        "type": "hidden",
+        "name": "parentDirectoryId",
+        "value": "${directoryId}"
+      }
+    ],
+    "onEvent": {
+      "submitSucc": {
+        "actions": [
+          {
+            "actionType": "closeDialog"
+          },
+          {
+            "actionType": "broadcast",
+            "args": {
+              "eventName": "directoryChange"
+            },
+            "data": {
+              "type": "${isRoot && !enterNewDirectory ? 'LIBRARY' : 'DIRECTORY'}",
+              "libraryId": "${libraryId}",
+              "directoryId": "${enterNewDirectory ? result.data.id : directoryId}"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

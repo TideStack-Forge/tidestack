@@ -1,0 +1,12 @@
+[
+  {
+    "fullName": "systemSetting.resourceManagement",
+    "title": "资源管理",
+    "menu": "systemSetting.resourceManagement",
+    "authorities": [
+      "systemSetting.resourceManagement"
+    ],
+    "order": 20,
+    "parent": "systemSetting.operationsManagement"
+  }
+]

@@ -1,0 +1,88 @@
+{
+  "name": "/dev/{appName}/business-model/add",
+  "schema": {
+    "type": "form",
+    "mode": "horizontal",
+    "api": {
+      "method": "POST",
+      "url": "/api/dev/${appName}/business-model",
+      "data": {
+        "&": "$$",
+        "namespace": "${ namespace || module }"
+      }
+    },
+    "initApi": "GET:/api/dev/${appName}/business-model/init-form",
+    "body": [
+      {
+        "name": "modelType",
+        "type": "list-select",
+        "label": "模型类型",
+        "options": [
+          {
+            "label": "默认",
+            "value": "default"
+          },
+          {
+            "label": "仪表板",
+            "value": "dashboard"
+          }
+        ],
+        "value": "default"
+      },
+      {
+        "type": "nested-select",
+        "name": "namespace",
+        "label": "模块",
+        "value": "${ namespace || module }",
+        "source": {
+          "method": "get",
+          "url": "/api/dev/${appName}/business-model/module-tree"
+        },
+        "labelField": "title",
+        "valueField": "fullName",
+        "searchable": true,
+        "onlyChildren": true,
+        "onlyLeaf": false,
+        "clearable": true,
+        "multiple": false
+      },
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "模型名",
+        "required": true,
+        "validations": {
+          "matchRegexp": "^[A-Za-z]+[A-Za-z0-9]*$"
+        },
+        "validationErrors": {
+          "matchRegexp": "模型名必须以字母开头，且只能包含字母、数字"
+        },
+        "placeholder": "请输入模型名（须符合变量命名规范）"
+      },
+      {
+        "type": "input-text",
+        "name": "title",
+        "label": "模型标题",
+        "required": true,
+        "placeholder": "请输入模型标题"
+      },
+      {
+        "type": "ouroboros-icon-picker",
+        "label": "图标",
+        "name": "icon",
+        "placeholder": "请输入图标名或地址"
+      },
+      {
+        "type": "textarea",
+        "name": "description",
+        "label": "模型描述",
+        "placeholder": "请输入模型描述"
+      }
+    ],
+    "wrapWithPanel": false,
+    "reload": "modelList",
+    "messages": {
+      "success": "模型已添加"
+    }
+  }
+}

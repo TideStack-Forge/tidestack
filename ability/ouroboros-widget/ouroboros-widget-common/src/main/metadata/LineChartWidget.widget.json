@@ -1,0 +1,274 @@
+{
+  "name": "LineChartWidget",
+  "title": "折线图",
+  "description": "折线图小组件,展示数据趋势变化",
+  "category": "图表",
+  "allowHeader": true,
+  "sizeConstraints": {
+    "min": {
+      "cols": 6,
+      "rows": 8
+    },
+    "max": {
+      "cols": 24,
+      "rows": 30
+    }
+  },
+  "defaultSize": {
+    "cols": 12,
+    "rows": 12
+  },
+  "defaultConfig": {
+    "api": "",
+    "intervalTime": 0,
+    "chartTitle": {
+      "text": "折线图",
+      "left": "center"
+    },
+    "xAxis": {
+      "type": "category",
+      "data": "${items | pick:name}",
+      "boundaryGap": false
+    },
+    "yAxis": {
+      "type": "value"
+    },
+    "series": [
+      {
+        "type": "line",
+        "name": "系列1",
+        "data": "${items | pick:value}",
+        "smooth": false
+      }
+    ],
+    "tooltip": {
+      "trigger": "axis"
+    },
+    "legend": {
+      "show": false
+    }
+  },
+  "defaultStyleConfig": {
+    "showBorder": true,
+    "showShadow": true
+  },
+  "configFormItems": [
+    {
+      "type": "fieldSet",
+      "title": "数据源配置",
+      "body": [
+        {
+          "type": "ae-apiControl",
+          "name": "api",
+          "label": "数据接口",
+          "required": true,
+          "description": "接口返回对象数组"
+        },
+        {
+          "type": "input-number",
+          "name": "intervalTime",
+          "label": "刷新间隔",
+          "value": 0,
+          "min": 0,
+          "description": "单位为毫秒，0 表示不自动刷新"
+        }
+      ]
+    },
+    {
+      "type": "fieldSet",
+      "title": "图表配置",
+      "body": [
+        {
+          "type": "input-text",
+          "name": "chartTitle.text",
+          "label": "图表标题",
+          "placeholder": "请输入图表标题"
+        },
+        {
+          "type": "select",
+          "name": "chartTitle.left",
+          "label": "标题位置",
+          "value": "center",
+          "options": [
+            {"label": "左对齐", "value": "left"},
+            {"label": "居中", "value": "center"},
+            {"label": "右对齐", "value": "right"}
+          ]
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "switch",
+          "name": "legend.show",
+          "label": "显示图例",
+          "value": true
+        },
+        {
+          "type": "select",
+          "name": "legend.orient",
+          "label": "图例方向",
+          "value": "vertical",
+          "options": [
+            {"label": "垂直", "value": "vertical"},
+            {"label": "水平", "value": "horizontal"}
+          ],
+          "visibleOn": "this.legend && this.legend.show !== false"
+        },
+        {
+          "type": "select",
+          "name": "legend.left",
+          "label": "图例位置",
+          "value": "left",
+          "options": [
+            {"label": "左", "value": "left"},
+            {"label": "中", "value": "center"},
+            {"label": "右", "value": "right"}
+          ],
+          "visibleOn": "this.legend && this.legend.show !== false"
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "select",
+          "name": "xAxis.type",
+          "label": "X轴类型",
+          "value": "category",
+          "options": [
+            {"label": "类目轴", "value": "category"},
+            {"label": "数值轴", "value": "value"},
+            {"label": "时间轴", "value": "time"}
+          ]
+        },
+        {
+          "type": "input-text",
+          "name": "xAxis.data",
+          "label": "X轴数据",
+          "placeholder": "如: ${items | pick:name}",
+          "description": "支持数据映射表达式",
+          "visibleOn": "this.xAxis && this.xAxis.type === 'category'"
+        },
+        {
+          "type": "input-text",
+          "name": "xAxis.name",
+          "label": "X轴名称",
+          "placeholder": "请输入X轴名称"
+        },
+        {
+          "type": "switch",
+          "name": "xAxis.boundaryGap",
+          "label": "X轴留白",
+          "value": false,
+          "description": "坐标轴两边是否留白"
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "select",
+          "name": "yAxis.type",
+          "label": "Y轴类型",
+          "value": "value",
+          "options": [
+            {"label": "数值轴", "value": "value"},
+            {"label": "类目轴", "value": "category"}
+          ]
+        },
+        {
+          "type": "input-text",
+          "name": "yAxis.name",
+          "label": "Y轴名称",
+          "placeholder": "请输入Y轴名称"
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "combo",
+          "name": "series",
+          "label": "数据系列",
+          "multiple": true,
+          "addable": true,
+          "removable": true,
+          "draggable": true,
+          "multiLine": true,
+          "minLength": 1,
+          "items": [
+            {
+              "type": "input-text",
+              "name": "name",
+              "label": "系列名称",
+              "placeholder": "如: 访问量"
+            },
+            {
+              "type": "input-text",
+              "name": "data",
+              "label": "系列数据",
+              "required": true,
+              "placeholder": "如: ${items | pick:views}",
+              "description": "支持数据映射表达式"
+            },
+            {
+              "type": "switch",
+              "name": "smooth",
+              "label": "平滑曲线",
+              "value": false
+            },
+            {
+              "type": "select",
+              "name": "type",
+              "label": "系列类型",
+              "value": "line",
+              "options": [
+                {"label": "折线图", "value": "line"},
+                {"label": "柱状图", "value": "bar"}
+              ]
+            }
+          ],
+          "description": "配置图表的数据系列"
+        }
+      ]
+    }
+  ],
+  "thumbSchema": {
+    "type": "chart",
+    "config": {
+      "xAxis": {
+        "type": "category",
+        "data": ["周一", "周二", "周三"],
+        "boundaryGap": false
+      },
+      "yAxis": {
+        "type": "value"
+      },
+      "series": [
+        {
+          "type": "line",
+          "data": [120, 200, 150],
+          "smooth": true
+        }
+      ]
+    }
+  },
+  "schemaTpl": {
+    "type": "chart",
+    "api": "#{api}",
+    "interval": "#{intervalTime}",
+    "config": {
+      "title": "#{chartTitle}",
+      "xAxis": "#{xAxis}",
+      "yAxis": "#{yAxis}",
+      "series": "#{series}",
+      "tooltip": "#{tooltip}",
+      "legend": "#{legend}"
+    }
+  },
+  "exampleData": {
+    "items": [
+      {"name": "周一", "value": 120, "views": 120, "downloads": 50},
+      {"name": "周二", "value": 200, "views": 200, "downloads": 80},
+      {"name": "周三", "value": 150, "views": 150, "downloads": 60}
+    ]
+  }
+}

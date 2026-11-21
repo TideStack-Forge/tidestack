@@ -1,0 +1,13 @@
+{
+  "editorId": "data-dict",
+  "editorName": "TideStack Data Dictionary Metadata Editor",
+  "editorNameKey": "customEditor.dataDict",
+  "metadataType": "data-dict",
+  "schemaName": "data-dict",
+  "viewType": "tidestack.metadataEditor.dataDict",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.dataDict",
+  "fileMatchPatterns": [
+    "*.dict.json"
+  ],
+  "priority": "default"
+}

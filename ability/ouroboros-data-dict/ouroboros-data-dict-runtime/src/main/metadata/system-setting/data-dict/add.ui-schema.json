@@ -1,0 +1,68 @@
+{
+  "name": "/system-setting/data-dict/add",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "body": [
+      {
+        "label": "字典名",
+        "type": "input-text",
+        "name": "name",
+        "required": true,
+        "placeholder": "请输入字典名（须符合变量命名规范且唯一）"
+      },
+      {
+        "label": "字典标题",
+        "type": "input-text",
+        "name": "title",
+        "required": true,
+        "placeholder": "请输入字典标题"
+      },
+      {
+        "name": "type",
+        "type": "list-select",
+        "label": "字典类型",
+        "multiple": false,
+        "required": true,
+        "options": [
+          {
+            "label": "代码表",
+            "value": "code_table"
+          },
+          {
+            "label": "枚举值",
+            "value": "enum"
+          },
+          {
+            "label": "状态表",
+            "value": "state_table"
+          }
+        ]
+      },
+      {
+        "name": "editable",
+        "type": "switch",
+        "label": "是否可编辑",
+        "value": "${type !== 'code_table' ? false: true}",
+        "required": true
+      },
+      {
+        "name": "treeMode",
+        "type": "switch",
+        "label": "树形模式",
+        "value": "${type !== 'code_table' ? false: true}",
+        "required": true,
+        "disabledOn": "${type !== 'code_table'}"
+      },
+      {
+        "$ref": "dictionaryItem"
+      }
+    ],
+    "mode": "horizontal",
+    "api": {
+      "url": "/api/sys/data-dict-manage",
+      "method": "post"
+    },
+    "wrapWithPanel": false
+  }
+}

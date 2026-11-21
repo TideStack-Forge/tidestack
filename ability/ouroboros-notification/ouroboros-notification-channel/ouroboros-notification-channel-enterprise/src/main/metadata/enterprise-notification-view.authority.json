@@ -1,0 +1,7 @@
+{
+  "fullName": "systemSetting.integrationManagement.connections.notification.view",
+  "title": "查看企业通知接入",
+  "apis": ["GET /api/sys/enterprise-notifications"],
+  "uiViews": ["/system-setting/integration-management/enterprise-notifications"],
+  "menuItems": ["systemSetting.integrationManagement"]
+}

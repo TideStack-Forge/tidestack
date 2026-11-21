@@ -1,0 +1,8 @@
+{
+  "url": "/app-templates",
+  "fullName": "AppTemplates",
+  "icon": "fa-solid fa-file-code",
+  "title": "应用模版",
+  "placement": "main",
+  "order": -90
+}

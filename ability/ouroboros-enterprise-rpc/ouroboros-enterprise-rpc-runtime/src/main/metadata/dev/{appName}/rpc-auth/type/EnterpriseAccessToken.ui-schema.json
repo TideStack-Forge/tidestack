@@ -1,0 +1,85 @@
+{
+  "name": "/dev/{appName}/rpc-auth/type/EnterpriseAccessToken",
+  "schema": {
+    "type": "fieldSet",
+    "title": "企业应用令牌",
+    "body": [
+      {
+        "type": "alert",
+        "level": "info",
+        "body": "使用已配置的渠道唯一企业连接。此处只定义应用令牌协议；企业身份与密钥在集成管理中维护，调用与测试均需企业 API 使用权限。"
+      },
+      {
+        "type": "input-text",
+        "name": "enterprise.provider",
+        "label": "渠道标识",
+        "required": true,
+        "description": "与已安装能力包的渠道标识一致。"
+      },
+      {
+        "type": "input-text",
+        "name": "enterprise.tokenKind",
+        "label": "应用令牌种类",
+        "required": true,
+        "description": "使用能力包声明的应用令牌种类，不接受用户 OAuth 令牌。"
+      },
+      {
+        "type": "select",
+        "name": "accessToken.tokenPlacement",
+        "label": "令牌位置",
+        "required": true,
+        "value": "Authorization",
+        "options": [
+          {
+            "label": "Authorization: Bearer",
+            "value": "Authorization"
+          },
+          {
+            "label": "自定义位置",
+            "value": "custom"
+          }
+        ]
+      },
+      {
+        "type": "input-table",
+        "name": "accessToken.customPlacement",
+        "label": "协议指定的位置",
+        "visibleOn": "${accessToken.tokenPlacement === 'custom'}",
+        "minLength": 1,
+        "maxLength": 1,
+        "columns": [
+          {
+            "type": "select",
+            "name": "in",
+            "label": "位置",
+            "required": true,
+            "options": [
+              {
+                "label": "请求头",
+                "value": "HEADER"
+              },
+              {
+                "label": "查询参数",
+                "value": "QUERY"
+              }
+            ]
+          },
+          {
+            "type": "input-text",
+            "name": "name",
+            "label": "参数名",
+            "required": true
+          },
+          {
+            "type": "input-text",
+            "name": "value",
+            "label": "表达式",
+            "value": "${accessToken}",
+            "required": true
+          }
+        ],
+        "description": "位置必须符合供应商令牌协议，执行时服务端再次核对；不支持任意复制令牌。"
+      }
+    ]
+  }
+}

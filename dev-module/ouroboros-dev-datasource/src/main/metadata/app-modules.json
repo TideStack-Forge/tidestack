@@ -1,0 +1,12 @@
+[
+  {
+    "fullName": "platformDatasource",
+    "title": "平台数据源",
+    "icon": "fa fa-database",
+    "menu": "platformDatasource",
+    "authorities": [
+      "platformDatasource"
+    ],
+    "order": 10
+  }
+]

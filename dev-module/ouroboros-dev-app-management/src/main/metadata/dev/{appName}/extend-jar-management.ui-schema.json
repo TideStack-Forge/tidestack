@@ -1,0 +1,135 @@
+{
+  "name": "/dev/{appName}/extend-jar-management",
+  "schema": {
+    "type": "page",
+    "title": "Jar包管理",
+    "initApi": {
+      "method": "get",
+      "url": "/api/app/${appName}/edit-access-entry"
+    },
+    "toolbar": [
+      {
+        "type": "button",
+        "actionType": "dialog",
+        "label": "生成项目",
+        "icon": "fa fa-download",
+        "level": "enhance",
+        "visibleOn": "${currentUserCanEdit}",
+        "dialog": {
+          "type": "dialog",
+          "title": "创建后端扩展包项目",
+          "size": "lg",
+          "body": {
+            "type": "ui-schema",
+            "source": {
+              "method": "get",
+              "url": "/api/dev/${appName}/project-generation-form",
+              "data": {
+                "scope": "BACKEND_EXTENSION"
+              }
+            }
+          }
+        }
+      },
+      {
+        "type": "button",
+        "actionType": "dialog",
+        "label": "上传",
+        "icon": "fas fa-upload",
+        "level": "primary",
+        "dialog": {
+          "type": "dialog",
+          "title": "上传Jar包",
+          "name": "uploadJarDialog",
+          "url": "/dev/${appName}/extend-jar-management/add",
+          "actions": []
+        }
+      }
+    ],
+    "body": {
+      "type": "crud",
+      "name": "extendJarList",
+      "api": "/api/dev/${appName}/extend-jar",
+      "headerToolbar": [
+        "reload"
+      ],
+      "affixHeader": false,
+      "columns": [
+        {
+          "type": "container",
+          "label": "名称",
+          "body": [
+            {
+              "type": "icon",
+              "vendor": "",
+              "icon": "fa-brands fa-java",
+              "className": "text-info text-2xl w-8"
+            },
+            {
+              "type": "tpl",
+              "tpl": "${fileName}"
+            }
+          ]
+        },
+        {
+          "label": "文件大小",
+          "type": "tpl",
+          "tpl": "${ size | bytes }"
+        },
+        {
+          "name": "creationTime",
+          "type": "datetime",
+          "format": "YYYY-MM-DD HH:mm:ss",
+          "label": "创建时间"
+        },
+        {
+          "name": "lastModifiedTime",
+          "type": "datetime",
+          "format": "YYYY-MM-DD HH:mm:ss",
+          "label": "更新时间"
+        },
+        {
+          "type": "operation",
+          "label": "操作",
+          "buttons": [
+            {
+              "type": "button",
+              "label": "更新",
+              "icon": "fas fa-upload",
+              "level": "primary",
+              "actionType": "dialog",
+              "dialog": {
+                "type": "dialog",
+                "title": "更新Jar包",
+                "url": "/dev/${appName}/extend-jar-management/update",
+                "actions": []
+              }
+            },
+            {
+              "type": "button",
+              "actionType": "ajax",
+              "label": "删除",
+              "icon": "fa fa-times",
+              "level": "link",
+              "className": "text-danger",
+              "confirmText": "您确认要删除${fileName}?",
+              "api": "delete:/api/dev/${appName}/extend-jar/${fileName}"
+            }
+          ]
+        }
+      ],
+      "footerToolbar": [
+        "statistics",
+        "pagination",
+        "switch-per-page"
+      ],
+      "perPageAvailable": [
+        10,
+        20,
+        50
+      ],
+      "loadDataOnce": true,
+      "alwaysShowPagination": true
+    }
+  }
+}

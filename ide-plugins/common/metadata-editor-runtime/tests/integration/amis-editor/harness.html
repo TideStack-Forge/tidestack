@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    {{CSP_META}}
+    <link rel="stylesheet" href="{{AMIS_SDK_CSS_URI}}">
+    {{AMIS_EDITOR_CSS_LINK}}
+  </head>
+  <body>
+    <div id="root" style="height: 900px"></div>
+    {{AMIS_EDITOR_RUNTIME_SCRIPT_TAG}}
+    <script{{NONCE_ATTRIBUTE}}>
+      window.openEditor = value => {
+        window.changes = []
+        window.editor = window.OuroborosAmisEditorRuntime.mount({
+          root: document.getElementById('root'), value, theme: 'cxd', locale: 'zh-CN',
+          onChange: next => window.changes.push(next),
+        })
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "editorId": "business",
+  "editorName": "TideStack Business Model Metadata Editor",
+  "editorNameKey": "customEditor.business",
+  "metadataType": "business",
+  "schemaName": "business",
+  "viewType": "tidestack.metadataEditor.business",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.business",
+  "fileMatchPatterns": [
+    "*.business.json"
+  ],
+  "priority": "default"
+}

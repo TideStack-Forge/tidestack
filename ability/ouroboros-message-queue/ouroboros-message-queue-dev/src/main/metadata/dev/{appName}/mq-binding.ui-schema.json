@@ -1,0 +1,220 @@
+{
+  "name": "/dev/{appName}/mq-binding",
+  "schema": {
+    "type": "page",
+    "title": "管理消息队列",
+    "body": [
+      {
+        "name": "crud",
+        "type": "crud",
+        "model": "table",
+        "api": "get:/api/dev/${appName}/mq-binding",
+        "headerToolbar": [
+          "reload",
+          {
+            "type": "action",
+            "actionType": "dialog",
+            "level": "primary",
+            "label": "新建",
+            "icon": "fa fa-plus",
+            "dialog": {
+              "size": "lg",
+              "title": "新建MQ绑定",
+              "url": "/dev/${appName}/mq-binding/add"
+            },
+            "align": "right"
+          }
+        ],
+        "rowClassNameExpr": "${lockState == 'LOCKED' ? 'bg-red-50' : lockState == 'OWNED' ? 'bg-green-50' : ''}",
+        "columns": [
+          {
+            "type": "container",
+            "name": "model.bindingName",
+            "label": "名称",
+            "bodyClassName": "flex items-center",
+            "body": [
+              {
+                "type": "icon",
+                "icon": "${icon || 'fa fa-link'}",
+                "vendor": "",
+                "className": "w-11 mr-3 text-center text-3xl text-secondary"
+              },
+              {
+                "type": "container",
+                "body": [
+                  {
+                    "type": "container",
+                    "bodyClassName": "flex flex-row",
+                    "body": [
+                      {
+                        "type": "tpl",
+                        "tpl": "${model.bindingName}",
+                        "hiddenOn": "${ isChanged }"
+                      },
+                      {
+                        "type": "tooltip-wrapper",
+                        "content": "存在未提交的修改",
+                        "body": "${model.bindingName}&nbsp;*",
+                        "className": "font-bold italic",
+                        "visibleOn": "${ isChanged }"
+                      },
+                      {
+                        "type": "tooltip-wrapper",
+                        "title": "${lockState == 'OWNED' ? '' : 'MQ绑定已被锁定'}",
+                        "content": "${lockState == 'OWNED' ? '你正在编辑该MQ绑定' : '该MQ绑定正在被 ' + lockUserName + ' 编辑'}",
+                        "body": {
+                          "type": "icon",
+                          "icon": "fa fa-lock ml-1",
+                          "className": {
+                            "text-danger": "${ lockState == 'LOCKED' }",
+                            "text-success": "${ lockState == 'OWNED' }"
+                          },
+                          "vendor": ""
+                        },
+                        "visibleOn": "${isLocked}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "model.bindingType",
+            "label": "绑定类型",
+            "type": "mapping",
+            "map": {
+              "consumer": "消费者",
+              "producer": "生产者"
+            }
+          },
+          {
+            "name": "model.destination",
+            "label": "主题"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "width": 130,
+            "buttons": [
+              {
+                "$ref": "editModelButton",
+                "level": "primary",
+                "hiddenOn": "${lockState == 'OWNED'}"
+              },
+              {
+                "type": "button-group",
+                "buttons": [
+                  {
+                    "$ref": "editModelButton",
+                    "label": false,
+                    "level": "success",
+                    "tooltip": "继续编辑"
+                  },
+                  {
+                    "type": "button",
+                    "actionType": "ajax",
+                    "label": false,
+                    "icon": "fa fa-undo",
+                    "level": "warning",
+                    "tooltipPlacement": "top",
+                    "tooltip": "放弃变更并解锁",
+                    "api": {
+                      "method": "post",
+                      "url": "/api/dev/${appName}/mq-binding/${model.bindingName}/rollback"
+                    },
+                    "confirmText": "确认要放弃变更吗？该操作无法撤销！"
+                  }
+                ],
+                "visibleOn": "${lockState == 'OWNED'}"
+              },
+              {
+                "type": "dropdown-button",
+                "label": "",
+                "icon": "fa fa-ellipsis-v text-secondary hover:text-primary",
+                "align": "right",
+                "buttons": [
+                  {
+                    "actionType": "ajax",
+                    "icon": "fa fa-trash text-danger text-center w-4 mr-2",
+                    "className": "hover:text-danger",
+                    "label": "删除",
+                    "confirmText": "确定要删除「${model.bindingName}」吗？",
+                    "api": {
+                      "method": "delete",
+                      "messages": {
+                        "success": "保存成功"
+                      },
+                      "url": "/api/dev/${appName}/mq-binding/${model.bindingName}"
+                    }
+                  }
+                ],
+                "hideCaret": true,
+                "closeOnClick": true,
+                "menuClassName": "shadow-md"
+              }
+            ]
+          }
+        ],
+        "itemAction": {
+          "type": "action",
+          "actionType": "dialog",
+          "dialog": {
+            "size": "lg",
+            "title": "查看 「${name}」",
+            "closeOnEsc": true,
+            "closeOnOutside": true,
+            "url": "/dev/${appName}/mq-binding/detail",
+            "data": {
+              "&": "${model}",
+              "appName": "${appName}"
+            }
+          }
+        },
+        "footerToolbar": [
+          "statistics",
+          "pagination",
+          "switch-per-page"
+        ],
+        "perPageAvailable": [
+          10,
+          20,
+          50
+        ],
+        "loadDataOnce": true,
+        "alwaysShowPagination": true
+      }
+    ],
+    "definitions": {
+      "editModelButton": {
+        "type": "button",
+        "icon": "fa fa-edit",
+        "level": "primary",
+        "label": "编辑",
+        "disabledOn": "${ lockState == 'LOCKED' }",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "ajax",
+                "args": {
+                  "api": {
+                    "method": "post",
+                    "url": "/api/dev/${appName}/mq-binding/${model.bindingName}/lock"
+                  }
+                }
+              },
+              {
+                "actionType": "openOrSwitchTab",
+                "args": {
+                  "title": "编辑MQ绑定「${model.bindingName}」",
+                  "url": "/dev/${appName}/mq-binding/${model.bindingName}"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

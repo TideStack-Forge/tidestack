@@ -1,0 +1,29 @@
+id: services/example-fixture
+title: Example Fixture
+class: services
+capabilities: []
+lifecycle:
+  up: ""
+  check: ""
+  reset: ""
+  down: ""
+inputs:
+  - name: exampleInput
+    required: false
+    description: ""
+    sources:
+      - kind: env
+        name: EXAMPLE_INPUT
+outputs:
+  - name: exampleOutput
+    value: ""
+  - name: exampleDerivedOutput
+    fromInput: exampleInput
+  - name: exampleNestedPath
+    fromOutput: exampleDerivedOutput
+    join: nested/path
+healthChecks:
+  - name: example-check
+    expect: ""
+prerequisites: []
+notes: []

@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/resource/content-upload",
+  "type": "amis",
+  "title": "上传资源内容"
+}

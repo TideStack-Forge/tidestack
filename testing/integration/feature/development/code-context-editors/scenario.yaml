@@ -1,0 +1,14 @@
+id: development/code-context-editors
+title: 后端代码上下文与真实编辑器联动
+domain: development
+testType: integration
+suite: feature
+risk: p1
+modes: [harness]
+caseTable: cases.md
+artifacts:
+  contract: contract.md
+  harness: harness.playbook.md
+reporting:
+  summaryFormat: json
+  evidenceRoot: tmp/code-intelligence-completion

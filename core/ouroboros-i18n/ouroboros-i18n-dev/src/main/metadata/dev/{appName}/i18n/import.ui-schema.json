@@ -1,0 +1,54 @@
+{
+  "name": "/dev/{appName}/i18n/import",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "api": {
+      "method": "post",
+      "url": "/api/dev/${appName}/i18n/import"
+    },
+    "body": [
+      {
+        "type": "input-file",
+        "name": "file",
+        "label": "选择语言文件",
+        "accept": ".json",
+        "required": true,
+        "asBlob": true,
+        "description": "上传工作区语言文件 JSON，若语言已存在则会保留启用/默认标记并覆盖文案内容"
+      }
+    ],
+    "actions": [
+      {
+        "type": "button",
+        "label": "取消",
+        "actionType": "cancel"
+      },
+      {
+        "type": "submit",
+        "label": "导入",
+        "level": "primary"
+      }
+    ],
+    "onEvent": {
+      "submitSucc": {
+        "actions": [
+          {
+            "actionType": "toast",
+            "args": {
+              "msgType": "success",
+              "msg": "语言文件导入成功"
+            }
+          },
+          {
+            "actionType": "reload",
+            "componentId": "i18nLocaleList"
+          },
+          {
+            "actionType": "closeDialog"
+          }
+        ]
+      }
+    }
+  }
+}

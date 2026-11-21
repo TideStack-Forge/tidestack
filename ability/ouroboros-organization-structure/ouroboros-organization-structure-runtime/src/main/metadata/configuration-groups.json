@@ -1,0 +1,9 @@
+[
+  {
+    "path": "organizationManagement",
+    "title": "组织管理",
+    "icon": "fa-sitemap",
+    "order": 100,
+    "description": "组织架构相关配置。"
+  }
+]

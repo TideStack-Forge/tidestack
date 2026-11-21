@@ -1,0 +1,13 @@
+{
+  "name": "feishu.application-token",
+  "title": "feishu 企业应用令牌",
+  "type": "EnterpriseAccessToken",
+  "isEnabled": true,
+  "enterprise": {
+    "provider": "feishu",
+    "tokenKind": "tenant_access_token"
+  },
+  "accessToken": {
+    "tokenPlacement": "Authorization"
+  }
+}

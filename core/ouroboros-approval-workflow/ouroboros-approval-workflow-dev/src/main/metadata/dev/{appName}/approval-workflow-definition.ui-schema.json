@@ -1,0 +1,387 @@
+{
+  "name": "/dev/{appName}/approval-workflow-definition",
+  "schema": {
+    "type": "page",
+    "body": [
+      {
+        "type": "crud",
+        "id": "modelList",
+        "name": "审批流",
+        "placeholder": "没有符合条件的流程定义",
+        "api": {
+          "url": "/api/dev/${appName}/approval-workflow-definition",
+          "method": "get",
+          "responseData": {
+            "items": {
+              "$items": {
+                "&": "$model",
+                "creationTime": "$creationTime",
+                "lastModifiedTime": "$lastModifiedTime",
+                "lastCommittedTime": "$lastCommittedTime",
+                "isLocked": "$isLocked",
+                "lockUser": "$lockUser",
+                "lockUserName": "$lockUserName",
+                "isChanged": "$isChanged",
+                "lockState": "$lockState",
+                "versionState": "$versionState",
+                "size": "${ size | bytes }"
+              }
+            }
+          }
+        },
+        "perPageAvailable": [
+          10
+        ],
+        "syncLocation": false,
+        "filter": {
+          "title": "",
+          "body": [
+            {
+              "type": "group",
+              "body": [
+                {
+                  "type": "input-text",
+                  "name": "keyword",
+                  "label": "名称或标识",
+                  "clearable": true,
+                  "placeholder": "请输入流程名称或标识",
+                  "size": "md"
+                }
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "type": "reset",
+              "label": "重置"
+            },
+            {
+              "type": "submit",
+              "level": "primary",
+              "label": "查询"
+            }
+          ]
+        },
+        "headerToolbar": [
+          {
+            "label": "刷新",
+            "icon": "fa fa-repeat",
+            "type": "button",
+            "actionType": "reload"
+          },
+          {
+            "type": "button",
+            "tooltip": "点击后创建新的流程定义",
+            "level": "primary",
+            "align": "right",
+            "label": "新建",
+            "icon": "fa fa-plus",
+            "actionType": "dialog",
+            "dialog": {
+              "title": "新建流程定义",
+              "closeOnEsc": true,
+              "closeOnOutside": false,
+              "body": {
+                "type": "form",
+                "name": "create-workflow-definition-management-form",
+                "title": false,
+                "wrapWithPanel": false,
+                "mode": "horizontal",
+                "api": {
+                  "url": "/api/dev/${appName}/approval-workflow-definition",
+                  "method": "post",
+                  "messages": {},
+                  "silent": true,
+                  "data": {
+                    "formatVersion": 1,
+                    "name": "${name}",
+                    "title": "${title}",
+                    "description": "${description || ''}",
+                    "version": 1,
+                    "enabled": true,
+                    "form": {
+                      "formType": "${formType}",
+                      "formId": "${formId}"
+                    },
+                    "nodes": [
+                      {
+                        "type": "StartNode",
+                        "name": "发起节点",
+                        "id": "${name}-start",
+                        "permission": []
+                      },
+                      {
+                        "type": "ApprovalNode",
+                        "name": "审批节点",
+                        "id": "${name}-approve",
+                        "subType": "单签",
+                        "candidates": [],
+                        "permission": [],
+                        "actions": []
+                      },
+                      {
+                        "type": "EndNode",
+                        "name": "结束",
+                        "id": "${name}-end"
+                      }
+                    ],
+                    "edges": [
+                      {
+                        "id": "${name}-edge-start-approve",
+                        "type": "SEQUENCE",
+                        "sourceId": "${name}-start",
+                        "targetId": "${name}-approve"
+                      },
+                      {
+                        "id": "${name}-edge-approve-end",
+                        "type": "SEQUENCE",
+                        "sourceId": "${name}-approve",
+                        "targetId": "${name}-end"
+                      }
+                    ]
+                  }
+                },
+                "body": [
+                  {
+                    "type": "hidden",
+                    "name": "appName",
+                    "value": "${appName}"
+                  },
+                  {
+                    "type": "input-text",
+                    "name": "name",
+                    "label": "流程标识",
+                    "required": true,
+                    "clearable": false,
+                    "description": "创建前先明确指定 name；创建成功后该标识作为流程定义资产的稳定标识。"
+                  },
+                  {
+                    "type": "input-text",
+                    "name": "title",
+                    "label": "流程名称",
+                    "required": true
+                  },
+                  {
+                    "type": "textarea",
+                    "name": "description",
+                    "label": "流程描述",
+                    "minRows": 3,
+                    "maxRows": 6
+                  },
+                  {
+                    "type": "button-group-select",
+                    "name": "formType",
+                    "label": "表单类型",
+                    "value": "business-model",
+                    "source": {
+                      "method": "get",
+                      "url": "/api/dev/${appName}/approval-workflow/base-info/form-types",
+                      "data": {
+                        "value": "${formType}"
+                      }
+                    },
+                    "required": true,
+                    "onEvent": {
+                      "change": {
+                        "actions": [
+                          {
+                            "actionType": "setValue",
+                            "args": {
+                              "value": {
+                                "formId": ""
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "type": "select",
+                    "name": "formId",
+                    "label": "关联表单",
+                    "source": {
+                      "method": "get",
+                      "url": "/api/dev/${appName}/approval-workflow/base-info/form/${formType}",
+                      "sendOn": "${!!formType}"
+                    },
+                    "labelField": "title",
+                    "valueField": "name",
+                    "menuTpl": "${title} <span class=\"text-muted\">(${name})</span>",
+                    "searchable": true,
+                    "clearable": true,
+                    "required": true,
+                    "placeholder": "请选择关联表单"
+                  }
+                ],
+                "actions": []
+              },
+              "actions": [
+                {
+                  "type": "button",
+                  "actionType": "close",
+                  "label": "取消"
+                },
+                {
+                  "type": "button",
+                  "label": "创建并编辑",
+                  "level": "primary",
+                  "mergeData": true,
+                  "onEvent": {
+                    "click": {
+                      "actions": [
+                        {
+                          "actionType": "validate",
+                          "componentName": "create-workflow-definition-management-form",
+                          "outputVar": "validateResult"
+                        },
+                        {
+                          "actionType": "stopPropagation",
+                          "expression": "${validateResult.error}"
+                        },
+                        {
+                          "actionType": "submit",
+                          "componentName": "create-workflow-definition-management-form",
+                          "outputVar": "createResult"
+                        },
+                        {
+                          "actionType": "toast",
+                          "expression": "${createResult.error}",
+                          "args": {
+                            "msgType": "error",
+                            "msg": "流程定义创建失败"
+                          }
+                        },
+                        {
+                          "actionType": "stopPropagation",
+                          "expression": "${createResult.error}"
+                        },
+                        {
+                          "actionType": "openOrSwitchTab",
+                          "args": {
+                            "url": "/dev/${appName}/approval-workflow-definition/${name}",
+                            "title": "新建流程定义",
+                            "reloadOnReceive": true,
+                            "params": {
+                              "formType": "${formType}",
+                              "formId": "${formId}",
+                              "formName": "${formName}",
+                              "sourceLayer": "${sourceLayer}",
+                              "returnTarget": "${returnTarget}"
+                            }
+                          }
+                        },
+                        {
+                          "actionType": "closeDialog"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "footerToolbar": [
+          "switch-per-page",
+          "pagination"
+        ],
+        "alwaysShowPagination": true,
+        "hideQuickSaveBtn": true,
+        "columns": [
+          {
+            "name": "title",
+            "label": "流程名称"
+          },
+          {
+            "name": "name",
+            "label": "流程标识"
+          },
+          {
+            "name": "description",
+            "label": "流程描述"
+          },
+          {
+            "type": "service",
+            "label": "关联表单",
+            "api": {
+              "method": "get",
+              "url": "/api/dev/${appName}/approval-workflow/base-info/workflow-field",
+              "data": {
+                "formType": "${form.formType}",
+                "formKey": "${form.formId}",
+                "definitionId": "${name}"
+              }
+            },
+            "body": {
+              "type": "tpl",
+              "tpl": "${boundFormSummary || '尚未关联表单'}"
+            }
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "width": 130,
+            "buttons": [
+              {
+                "label": "编辑",
+                "icon": "fa fa-edit",
+                "type": "button",
+                "level": "primary",
+                "tooltip": "编辑流程定义",
+                "disabledTip": "编辑流程定义",
+                "onEvent": {
+                  "click": {
+                    "actions": [
+                      {
+                        "actionType": "openTab",
+                        "args": {
+                          "url": "/dev/${appName}/approval-workflow-definition/${id}",
+                          "title": "编辑审批流「${title || name || id}」",
+                          "reloadOnReceive": true
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "dropdown-button",
+                "label": "",
+                "icon": "fa fa-ellipsis-v text-secondary hover:text-primary",
+                "className": "ml-2",
+                "hideCaret": true,
+                "closeOnClick": true,
+                "menuClassName": "shadow-md",
+                "buttons": [
+                  {
+                    "type": "button",
+                    "label": "查看",
+                    "icon": "fa fa-eye text-center w-4 mr-2",
+                    "actionType": "link",
+                    "link": "/dev/${appName}/approval-workflow-definition/${id}?mode=preview",
+                    "tooltip": "查看流程定义",
+                    "disabledTip": "查看流程定义"
+                  },
+                  {
+                    "type": "button",
+                    "label": "删除",
+                    "icon": "fa fa-trash text-danger text-center w-4 mr-2",
+                    "className": "hover:text-danger",
+                    "id": "u:d9907c0b1db9",
+                    "actionType": "ajax",
+                    "confirmText": "确认要删除这一个流程定义吗？将会删除该定义及其配置",
+                    "api": "delete:/api/dev/${appName}/approval-workflow-definition/${id}",
+                    "disabledOn": "false",
+                    "tooltip": "删除流程定义",
+                    "disabledTip": "删除流程定义资产"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

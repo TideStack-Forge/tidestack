@@ -1,0 +1,199 @@
+{
+  "name": "/system-setting/dynamic-form",
+  "schema": {
+    "type": "page",
+    "title": "管理动态表单",
+    "body": [
+      {
+        "type": "crud",
+        "model": "table",
+        "name": "dynamic-form-crud",
+        "api": "/api/dynamic-form",
+        "headerToolbar": [
+          "reload",
+          {
+            "type": "action",
+            "actionType": "dialog",
+            "align": "right",
+            "label": "新增",
+            "level": "primary",
+            "dialog": {
+              "title": "新建动态表单",
+              "size": "xl",
+              "url": "/system-setting/dynamic-form/add"
+            }
+          }
+        ],
+        "filter": {
+          "body": [
+            {
+              "name": "name.contains",
+              "label": "表单名",
+              "type": "input-text"
+            },
+            {
+              "name": "title.contains",
+              "label": "表单标题",
+              "type": "input-text"
+            }
+          ]
+        },
+        "columns": [
+          {
+            "name": "name",
+            "label": "表单名"
+          },
+          {
+            "name": "title",
+            "label": "标题"
+          },
+          {
+            "name": "status",
+            "label": "状态"
+          },
+          {
+            "name": "createdAt",
+            "label": "创建时间",
+            "type": "static-date",
+            "format": "YYYY-MM-DD HH:mm:ss"
+          },
+          {
+            "name": "updatedAt",
+            "label": "更新时间",
+            "type": "static-date",
+            "format": "YYYY-MM-DD HH:mm:ss"
+          },
+          {
+            "label": "操作",
+            "type": "operation",
+            "buttons": [
+              {
+                "label": "编辑",
+                "actionType": "dialog",
+                "dialog": {
+                  "title": "编辑",
+                  "size": "xl",
+                  "url": "/system-setting/dynamic-form/edit"
+                },
+                "visibleOn": "${status == '未部署' || status == '已下线'}"
+              },
+              {
+                "label": "部署",
+                "level": "primary",
+                "confirmText": "确定要部署「${title}」吗？",
+                "visibleOn": "${status == '未部署'}",
+                "onEvent": {
+                  "click": {
+                    "actions": [
+                      {
+                        "actionType": "ajax",
+                        "api": "post:/api/dynamic-form/${id}/deploy"
+                      },
+                      {
+                        "actionType": "reload",
+                        "componentName": "dynamic-form-crud"
+                      },
+                      {
+                        "actionType": "confirmDialog",
+                        "dialog": {
+                          "title": "提示",
+                          "msg": "部署成功，需要刷新浏览器后生效，是否现在刷新？"
+                        }
+                      },
+                      {
+                        "actionType": "refresh"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "label": "下线",
+                "confirmText": "确定下线「${title}」吗？",
+                "visibleOn": "${status == '已部署'}",
+                "onEvent": {
+                  "click": {
+                    "actions": [
+                      {
+                        "actionType": "ajax",
+                        "api": "post:/api/dynamic-form/${id}/take-down"
+                      },
+                      {
+                        "actionType": "reload",
+                        "componentName": "dynamic-form-crud"
+                      },
+                      {
+                        "actionType": "confirmDialog",
+                        "dialog": {
+                          "title": "提示",
+                          "msg": "下线成功，需要刷新浏览器后生效，是否现在刷新？"
+                        }
+                      },
+                      {
+                        "actionType": "refresh"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "label": "归档",
+                "actionType": "ajax",
+                "level": "warning",
+                "confirmText": "确定要归档「${title}」吗？",
+                "api": "post:/api/dynamic-form/${id}/archive",
+                "visibleOn": "${status == '已部署'}"
+              },
+              {
+                "label": "重部署",
+                "level": "primary",
+                "confirmText": "确定部署「${title}」吗？",
+                "visibleOn": "${status == '已下线'}",
+                "onEvent": {
+                  "click": {
+                    "actions": [
+                      {
+                        "actionType": "ajax",
+                        "api": "post:/api/dynamic-form/${id}/re-deploy"
+                      },
+                      {
+                        "actionType": "reload",
+                        "componentName": "dynamic-form-crud"
+                      },
+                      {
+                        "actionType": "confirmDialog",
+                        "dialog": {
+                          "title": "提示",
+                          "msg": "重部署成功，需要刷新浏览器后生效，是否现在刷新？"
+                        }
+                      },
+                      {
+                        "actionType": "refresh"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "label": "打开",
+                "type": "action",
+                "level": "success",
+                "actionType": "link",
+                "link": "/dynamic-form/table-page/${name}",
+                "visibleOn": "${status == '已部署' || status == '已归档'}"
+              },
+              {
+                "label": "删除",
+                "actionType": "ajax",
+                "level": "danger",
+                "confirmText": "确定要删除「${title}」吗？",
+                "api": "delete:/api/dynamic-form/${id}",
+                "visibleOn": "${status == '未部署'}"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

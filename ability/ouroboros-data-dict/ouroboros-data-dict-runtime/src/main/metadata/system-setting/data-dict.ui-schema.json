@@ -1,0 +1,292 @@
+{
+  "name": "/system-setting/data-dict",
+  "schema": {
+    "type": "page",
+    "definitions": {
+      "defineDataDictItemsForm": {
+        "type": "combo",
+        "id": "dataDictItem",
+        "label": false,
+        "name": "items",
+        "multiple": true,
+        "multiLine": true,
+        "canAccessSuperData": true,
+        "strictMode": false,
+        "syncFields": [
+          "type"
+        ],
+        "scaffold": {
+          "code": "",
+          "label": "",
+          "hasChildren": false,
+          "order": 0,
+          "extraProps": {},
+          "new": true,
+          "children": []
+        },
+        "items": [
+          {
+            "type": "group",
+            "body": [
+              {
+                "name": "code",
+                "label": "编码",
+                "type": "input-text",
+                "placeholder": "字典项编码",
+                "required": true,
+                "unique": true,
+                "disabledOn": "${code && !new?true:false}"
+              },
+              {
+                "name": "label",
+                "label": "标题",
+                "type": "input-text",
+                "placeholder": "字典项标题",
+                "required": true
+              },
+              {
+                "name": "order",
+                "label": "排序",
+                "type": "input-number",
+                "min": 0,
+                "placeholder": "字典项顺序",
+                "required": true
+              },
+              {
+                "type": "button",
+                "icon": "fa fa-gear",
+                "columnClassName": "flex-grow-0 mt-6",
+                "actionType": "drawer",
+                "drawer": {
+                  "type": "drawer",
+                  "title": "字典项配置",
+                  "url": "/system-setting/data-dict/item-configuration"
+                }
+              }
+            ]
+          },
+          {
+            "label": "包含子选项",
+            "type": "switch",
+            "name": "hasChildren",
+            "mode": "inline",
+            "className": "block",
+            "visibleOn": "${treeMode}"
+          },
+          {
+            "$ref": "defineDataDictItemsForm",
+            "label": "子选项",
+            "name": "children",
+            "visibleOn": "${hasChildren}",
+            "addButtonText": "新增子选项"
+          }
+        ]
+      },
+      "dictionaryItem": {
+        "type": "tabs",
+        "tabs": [
+          {
+            "title": "字典项",
+            "tab": [
+              {
+                "$ref": "uploadItems"
+              },
+              {
+                "$ref": "defineDataDictItemsForm"
+              }
+            ]
+          },
+          {
+            "title": "状态转移表",
+            "tab": [
+              {
+                "type": "table",
+                "source": "$items",
+                "columns": [
+                  {
+                    "name": "code",
+                    "label": "当前状态",
+                    "type": "text"
+                  },
+                  {
+                    "name": "extraProps.stateTransition",
+                    "type": "list",
+                    "source": "$rows",
+                    "label": "状态转移描述",
+                    "placeholder": "-",
+                    "listItem": {
+                      "title": "转移状态:${to}",
+                      "titleClassName": "mb-2 ",
+                      "body": "状态转移描述:${condition}"
+                    }
+                  }
+                ]
+              }
+            ],
+            "visibleOn": "${type === 'state_table'}"
+          }
+        ]
+      },
+      "uploadItems": {
+        "label": "导入字典项",
+        "type": "button",
+        "tooltip": "导入excel数据会覆盖之前的数据",
+        "level": "primary",
+        "actionType": "dialog",
+        "className": "mb-2.5",
+        "dialog": {
+          "title": false,
+          "type": "dialog",
+          "url": "/system-setting/data-dict/upload-items"
+        }
+      }
+    },
+    "pullRefresh": {
+      "disabled": true
+    },
+    "body": [
+      {
+        "syncLocation": false,
+        "perPageAvailable": [
+          10,
+          20,
+          50
+        ],
+        "filter": {
+          "title": "条件搜索",
+          "body": [
+            {
+              "type": "group",
+              "body": [
+                {
+                  "type": "input-text",
+                  "name": "title",
+                  "label": "标题",
+                  "clearable": true,
+                  "placeholder": "请输入",
+                  "size": "sm"
+                }
+              ]
+            }
+          ]
+        },
+        "type": "crud",
+        "columns": [
+          {
+            "type": "text",
+            "label": "字典名",
+            "name": "name"
+          },
+          {
+            "type": "text",
+            "label": "标题",
+            "name": "title"
+          },
+          {
+            "type": "mapping",
+            "label": "类型",
+            "name": "type",
+            "map": {
+              "code_table": "<span class='label label-info'>代码表</span>",
+              "enum": "<span class='label label-success'>枚举值</span>",
+              "state_table": "<span class='label label-warning'>状态表</span>"
+            }
+          },
+          {
+            "type": "tpl",
+            "label": "是否可编辑",
+            "name": "editable",
+            "tpl": "${editable==true?'允许':'不允许'}"
+          },
+          {
+            "type": "tpl",
+            "label": "树形模式",
+            "name": "treeMode",
+            "tpl": "${treeMode==true?'是':'否'}"
+          },
+          {
+            "type": "operation",
+            "label": "操作",
+            "buttons": [
+              {
+                "type": "button",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "${name} - 字典项详情",
+                  "size": "xl",
+                  "url": "/system-setting/data-dict/item-detail",
+                  "actions": []
+                },
+                "icon": "fa fa-eye"
+              },
+              {
+                "type": "button",
+                "actionType": "dialog",
+                "disabledOn": "${editable == false}",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "${name} - 添加字典项",
+                  "size": "xl",
+                  "url": "/system-setting/data-dict/add-item"
+                },
+                "icon": "fa fa-plus"
+              },
+              {
+                "type": "button",
+                "actionType": "dialog",
+                "disabledOn": "${editable == false}",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "${name} - 编辑字典项",
+                  "size": "xl",
+                  "url": "/system-setting/data-dict/edit"
+                },
+                "icon": "fa fa-pencil"
+              }
+            ]
+          }
+        ],
+        "headerToolbar": [
+          "bulkActions",
+          {
+            "type": "button",
+            "icon": "fa fa-refresh",
+            "actionType": "reload"
+          },
+          {
+            "type": "button",
+            "label": "新增",
+            "actionType": "dialog",
+            "level": "primary",
+            "align": "right",
+            "dialog": {
+              "data": {
+                "&": "$$",
+                "items": []
+              },
+              "url": "/system-setting/data-dict/add",
+              "type": "dialog",
+              "showCloseButton": true,
+              "closeOnEsc": false,
+              "showErrorMsg": true,
+              "showLoading": true,
+              "size": "xl",
+              "title": "新增数据字典"
+            }
+          }
+        ],
+        "footerToolbar": [
+          "statistics",
+          "switch-per-page",
+          "pagination"
+        ],
+        "autoFillHeight": true,
+        "api": {
+          "method": "get",
+          "url": "/api/sys/data-dict-manage"
+        }
+      }
+    ]
+  }
+}

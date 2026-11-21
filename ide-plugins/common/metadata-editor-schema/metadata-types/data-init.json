@@ -1,0 +1,67 @@
+{
+  "type": "data-init",
+  "fileSuffix": ".data-init.json",
+  "displayName": "数据初始化",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.data-init.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/metadata",
+  "editorKinds": [
+    "form"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.data-init.json",
+    "fields": [
+      {
+        "name": "id",
+        "label": "名称",
+        "documentPath": [
+          "id"
+        ],
+        "required": true,
+        "defaultFromPath": "camel-name"
+      },
+      {
+        "name": "version",
+        "label": "初始化版本",
+        "documentPath": [
+          "version"
+        ],
+        "required": true
+      }
+    ],
+    "document": {
+      "id": "example",
+      "version": "v1",
+      "blocks": [
+        {
+          "id": "example-records",
+          "targetModel": "ExampleModel",
+          "matchFields": [
+            "code"
+          ],
+          "records": []
+        }
+      ]
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "数据初始化",
+    "actions": [],
+    "body": [
+      {
+        "type": "input-text",
+        "name": "id",
+        "label": "名称",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "version",
+        "label": "初始化版本"
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/data-init.schema.json"
+}

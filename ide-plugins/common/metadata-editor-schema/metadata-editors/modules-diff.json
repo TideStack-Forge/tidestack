@@ -1,0 +1,16 @@
+{
+  "editorId": "modules-diff",
+  "editorName": "TideStack Module Tree Diff Metadata Editor",
+  "editorNameKey": "customEditor.modulesDiff",
+  "metadataType": "modules-diff",
+  "schemaName": "modules-diff",
+  "viewType": "tidestack.metadataEditor.modulesDiff",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.modulesDiff",
+  "fileMatchPatterns": [
+    "modules.diff.json",
+    "**/src/main/metadata/modules.diff.json",
+    "**/resources/META-INF/ouroboros/metadata/modules.diff.json",
+    "**/resources/META-INF/ouroboros/modules.diff.json"
+  ],
+  "priority": "default"
+}

@@ -1,0 +1,44 @@
+{
+  "name": "error-entry-missing-node",
+  "description": "Invalid flow whose errorEntryNode does not resolve",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "mainEntry",
+  "exitNode": "mainExit",
+  "errorEntryNode": "missingErrorEntry",
+  "nodes": [
+    {
+      "name": "mainEntry",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    },
+    {
+      "name": "mainExit",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "mainEntry",
+      "sourceOutputPort": 0,
+      "targetNode": "mainExit",
+      "targetInputPort": 0
+    }
+  ]
+}

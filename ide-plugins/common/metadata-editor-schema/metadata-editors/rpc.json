@@ -1,0 +1,14 @@
+{
+  "editorId": "rpc",
+  "editorName": "TideStack RPC Metadata Editor",
+  "editorNameKey": "customEditor.rpc",
+  "metadataType": "rpc",
+  "schemaName": "rpc",
+  "viewType": "tidestack.metadataEditor.rpc",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.rpc",
+  "fileMatchPatterns": [
+    "*.rpc.json",
+    "**/resources/META-INF/ouroboros/rpc-model/**/*.rpc.json"
+  ],
+  "priority": "default"
+}

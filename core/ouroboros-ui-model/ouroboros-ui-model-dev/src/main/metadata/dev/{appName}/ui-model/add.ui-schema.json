@@ -1,0 +1,72 @@
+{
+  "name": "/dev/{appName}/ui-model/add",
+  "schema": {
+    "type": "form",
+    "api": "post:/api/dev/${appName}/ui-model",
+    "wrapWithPanel": false,
+    "body": [
+      {
+        "type": "input-text",
+        "name": "path",
+        "label": "path",
+        "required": true,
+        "description": "${ !!path ? '模型名: ' : '创建后不支持修改'}${ path | upperCamelCase }"
+      },
+      {
+        "type": "input-text",
+        "name": "title",
+        "label": "标题",
+        "required": true
+      },
+      {
+        "type": "ouroboros-icon-picker",
+        "name": "icon",
+        "label": "图标"
+      },
+      {
+        "type": "list-select",
+        "name": "type",
+        "label": "类型",
+        "required": true,
+        "options": [
+          {
+            "label": "UI Schema",
+            "value": "amis"
+          },
+          {
+            "label": "微前端",
+            "value": "micro"
+          },
+          {
+            "label": "内部页面",
+            "value": "internal"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "name": "microWebName",
+        "label": "微前端入口",
+        "required": true,
+        "visibleOn": "this.type === 'micro'",
+        "labelField": "name",
+        "valueField": "name",
+        "source": {
+          "method": "get",
+          "url": "/api/dev/${appName}/micro-web?type=app"
+        },
+        "value": "",
+        "clearValueOnHidden": true
+      },
+      {
+        "type": "input-text",
+        "name": "schemaId",
+        "label": "Schema名",
+        "visibleOn": "this.type === 'amis'",
+        "value": "",
+        "placeholder": "不填写则使用路径作为Schema ID",
+        "clearValueOnHidden": true
+      }
+    ]
+  }
+}

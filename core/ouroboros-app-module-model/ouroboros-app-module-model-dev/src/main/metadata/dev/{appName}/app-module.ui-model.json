@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/app-module",
+  "type": "amis",
+  "title": "模块树"
+}

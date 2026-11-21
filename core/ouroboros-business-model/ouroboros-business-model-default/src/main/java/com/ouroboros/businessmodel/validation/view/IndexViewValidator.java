@@ -1,0 +1,120 @@
+package com.ouroboros.businessmodel.validation.view;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.ObjectUtils;
+
+import com.ouroboros.businessmodel.BusinessModelField;
+import com.ouroboros.businessmodel.DefaultBusinessModel;
+import com.ouroboros.businessmodel.validation.ModelDetailValidator;
+import com.ouroboros.businessmodel.validation.ValidationContext;
+import com.ouroboros.businessmodel.validation.exception.BusinessDefineViewError;
+
+public class IndexViewValidator implements ModelDetailValidator<DefaultBusinessModel> {
+
+  @Override
+  public void doValidate(ValidationContext<DefaultBusinessModel> context) {
+    DefaultBusinessModel model = context.getModel();
+    List<BusinessModelField> fields = model.getFields();
+
+    // 当模型没有字段时，不进行校验
+    if (ObjectUtils.isEmpty(model.getFields()) && ObjectUtils.isEmpty(model.getRelations())) {
+      return;
+    }
+
+    if (!model.getExtraPropDeep(Boolean.class, "views.index.isEnabled").orElse(false)) {
+      return;
+    }
+
+    // 已选择的字段
+    List<Map<String, Object>> useFields = model.getExtraPropDeep(List.class, "views", "index", "displayColumns")
+        .orElse(Collections.emptyList());
+
+    // 自定义字段
+    List<Map<String, Object>> customFields = useFields.stream()
+        .filter(field -> Objects.equals(field.get("type"), "field"))
+        .collect(Collectors.toList());
+    List<Map<String, Object>> invalidCustomFields = customFields.stream()
+        .filter(field -> fields.stream().noneMatch(f -> Objects.equals(field.get("name"), f.getName())))
+        .collect(Collectors.toList());
+    if (!invalidCustomFields.isEmpty()) {
+      context.addError(new BusinessDefineViewError(
+          "视图配置定义错误: 索引页 -> 表格配置 -> 显示列: 选择了不存在的字段: " + String.join(",",
+              invalidCustomFields.stream()
+                  .map(field -> (String) field.get("name"))
+                  .collect(Collectors.toList()))
+      ));
+    }
+
+    // 关联字段
+    List<Map<String, Object>> relationFields = useFields.stream()
+        .filter(field -> Objects.equals(field.get("type"), "relation"))
+        .collect(Collectors.toList());
+    List<Map<String, Object>> invalidRelationFields = relationFields.stream()
+        .filter(field -> !model.getRelation((String) field.get("name")).isPresent())
+        .collect(Collectors.toList());
+    if (!invalidRelationFields.isEmpty()) {
+      context.addError(new BusinessDefineViewError(
+          "视图配置定义错误: 索引页 -> 表格配置 -> 显示列: 选择了不存在的关联模型: " + String.join(",",
+              invalidRelationFields.stream()
+                  .map(field -> (String) field.get("name"))
+                  .collect(Collectors.toList()))
+      ));
+    }
+
+    // 审计字段
+    Boolean isEnabledAuditFields = model.getExtraPropDeep(Boolean.class, "features", "isEnabledAuditFields")
+        .orElse(false);
+    List<Map<String, Object>> builtinAuditFields = useFields.stream()
+        .filter(field -> Objects.equals(field.get("type"), "builtin"))
+        .collect(Collectors.toList());
+    if (!isEnabledAuditFields && !builtinAuditFields.isEmpty()) {
+      context.addError(new BusinessDefineViewError(
+          "视图配置定义错误: 索引页 -> 表格配置 -> 显示列: 未开启基本审计字段但选择了内置字段: " + String.join(",",
+              builtinAuditFields.stream()
+                  .map(field -> (String) field.get("name"))
+                  .collect(Collectors.toList()))
+      ));
+    }
+
+    // 已选择的过滤器字段
+    List<Map<String, Object>> filters = model.getExtraPropDeep(List.class, "view", "index", "defaultFilters")
+        .orElse(Collections.emptyList());
+
+    // 字段过滤器
+    List<Map<String, Object>> fieldFilters = filters.stream()
+        .filter(field -> Objects.equals(field.get("type"), "field"))
+        .collect(Collectors.toList());
+    List<Map<String, Object>> invalidFiltersFields = fieldFilters.stream()
+        .filter(field -> fields.stream().noneMatch(f -> Objects.equals(field.get("fieldName"), f.getName())))
+        .collect(Collectors.toList());
+    if (!invalidFiltersFields.isEmpty()) {
+      context.addError(new BusinessDefineViewError(
+          "视图配置定义错误: 索引页 -> 表格配置 -> 过滤器: 选择了不存在的字段: " + String.join(",",
+              invalidFiltersFields.stream()
+                  .map(field -> (String) field.get("fieldName"))
+                  .collect(Collectors.toList()))
+      ));
+    }
+
+    // 关系过滤器
+    List<Map<String, Object>> relationFilters = filters.stream()
+        .filter(field -> Objects.equals(field.get("type"), "relation"))
+        .collect(Collectors.toList());
+    List<Map<String, Object>> invalidFiltersRelations = relationFilters.stream()
+        .filter(field -> !model.getRelation((String) field.get("relation")).isPresent())
+        .collect(Collectors.toList());
+    if (!invalidFiltersRelations.isEmpty()) {
+      context.addError(new BusinessDefineViewError(
+          "视图配置定义错误: 索引页 -> 表格配置 -> 过滤器: 选择了不存在的关联关系: " + String.join(",",
+              invalidFiltersRelations.stream()
+                  .map(field -> (String) field.get("fieldName"))
+                  .collect(Collectors.toList()))
+      ));
+    }
+  }
+}

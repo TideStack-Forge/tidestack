@@ -1,0 +1,70 @@
+{
+  "name": "/system-setting/organization-management/add-company",
+  "schema": {
+    "type": "form",
+    "mode": "horizontal",
+    "title": "",
+    "api": {
+      "url": "/api/organization/companies",
+      "method": "post"
+    },
+    "body": [
+      {
+        "type": "hidden",
+        "name": "type",
+        "value": "company"
+      },
+      {
+        "label": "组织名称",
+        "type": "input-text",
+        "name": "name",
+        "placeholder": "请输入组织名称",
+        "clearable": true,
+        "required": true,
+        "validations": {
+          "maxLength": 100,
+          "minLength": 1
+        }
+      },
+      {
+        "label": "行政级别",
+        "type": "select",
+        "name": "adminLevel",
+        "required": true,
+        "clearable": true,
+        "labelField": "name",
+        "valueField": "code",
+        "source": {
+          "method": "get",
+          "url": "/api/admin-level?scope=ORG&enabled=true"
+        }
+      },
+      {
+        "label": "描述",
+        "type": "textarea",
+        "name": "description",
+        "placeholder": "请输入组织描述信息",
+        "clearable": true,
+        "required": false
+      },
+      {
+        "label": "上级组织",
+        "name": "parentId",
+        "type": "tree-select",
+        "multiple": false,
+        "enableNodePath": false,
+        "hideRoot": true,
+        "showIcon": true,
+        "initiallyOpen": true,
+        "searchable": true,
+        "valueField": "id",
+        "labelField": "name",
+        "source": {
+          "method": "get",
+          "url": "/api/organization/tree?types=company"
+        }
+      }
+    ],
+    "wrapWithPanel": false
+  }
+}

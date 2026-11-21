@@ -1,0 +1,8 @@
+{
+  "url": "/system-setting/platform-cache",
+  "fullName": "systemSetting.platformCache",
+  "icon": "fa fa-database",
+  "title": "平台缓存管理",
+  "placement": "main",
+  "order": -9
+}

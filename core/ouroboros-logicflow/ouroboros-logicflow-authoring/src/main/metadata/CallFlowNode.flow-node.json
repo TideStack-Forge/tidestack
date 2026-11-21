@@ -1,0 +1,65 @@
+{
+  "type": "callFlow",
+  "label": "调用流程",
+  "icon": "call-flow",
+  "shape": "rect",
+  "description": "调用流程",
+  "group": "功能节点",
+  "order": 3001,
+  "svgs": {
+    "call-flow": "<svg t=\"1705926931032\" class=\"icon\" viewBox=\"0 0 1035 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"28870\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"303.22265625\" height=\"300\"><path d=\"M251.627368 0H10.035292v241.592076h241.592076z m-46.105358 195.486718H56.14065V46.105358h149.38136zM815.956949 488.255741h-89.444394v46.105358h89.444394a218.539397 218.539397 0 0 0 0-436.61774H335.539119v46.105358h480.41783a172.434039 172.434039 0 0 1 0 344.407024zM56.14065 707.256191a172.434039 172.434039 0 0 1 172.434039-171.972985h88.983341v-46.105358H228.574689a218.539397 218.539397 0 1 0 0 436.61774h479.956776v-46.105358H228.574689A172.895092 172.895092 0 0 1 56.14065 707.256191z\" p-id=\"28871\"></path><path d=\"M406.541371 396.506078h230.526789v230.52679h-230.526789zM793.826377 1024h241.592076V783.791085H793.826377zM839.931735 829.896443h149.38136v149.38136H839.931735z\" p-id=\"28872\"></path></svg>"
+  },
+  "scaffold": {
+    "type": "callFlow",
+    "name": "调用流程",
+    "authorityName": "",
+    "resultWrapperKey": "",
+    "inputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "any"
+      }
+    ],
+    "outputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "any"
+      }
+    ]
+  },
+  "portRules": {
+    "input": {
+      "ruleType": "limit",
+      "max": 1,
+      "min": 1
+    },
+    "output": {
+      "ruleType": "limit",
+      "max": 1,
+      "min": 1
+    }
+  },
+  "properties": [
+    {
+      "type": "switch",
+      "name": "executeForEachItem",
+      "label": "为每项执行",
+      "description": "当输入为集合时，为每一项执行流程，并将每一项的执行结果作为集合返回",
+      "value": false
+    },
+    {
+      "type": "flow-select",
+      "name": "flowName",
+      "label": "流程名称",
+      "required": true
+    },
+    {
+      "type": "input-text",
+      "name": "resultWrapperKey",
+      "label": "结果包裹key",
+      "description": "将结果以Map形式包裹，key为该值，留空则不包裹直接返回结果"
+    }
+  ]
+}

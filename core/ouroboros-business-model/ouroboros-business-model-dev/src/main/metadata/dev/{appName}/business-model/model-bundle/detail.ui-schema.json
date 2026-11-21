@@ -1,0 +1,7 @@
+{
+  "name": "/dev/{appName}/business-model/model-bundle/detail",
+  "schema": {
+    "type": "amis-schema",
+    "schemaId": "/dev/{appName}/business-model/model-bundle"
+  }
+}

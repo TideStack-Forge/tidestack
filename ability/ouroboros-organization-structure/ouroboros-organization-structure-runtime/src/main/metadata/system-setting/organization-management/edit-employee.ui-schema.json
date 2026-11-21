@@ -1,0 +1,23 @@
+{
+  "name": "/system-setting/organization-management/edit-employee",
+  "schema": {
+    "type": "form",
+    "title": "",
+    "mode": "horizontal",
+    "initApi": {
+      "url": "/api/organization/employees/${id}",
+      "method": "get"
+    },
+    "api": {
+      "url": "/api/organization/employees/${id}",
+      "method": "put"
+    },
+    "reload": "employeeList",
+    "body": [
+      {
+        "type": "personnel-profile-layout"
+      }
+    ],
+    "wrapWithPanel": false
+  }
+}

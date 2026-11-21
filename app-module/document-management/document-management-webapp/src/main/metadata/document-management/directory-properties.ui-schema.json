@@ -1,0 +1,194 @@
+{
+  "name": "/document-management/directory-properties",
+  "schema": {
+    "type": "service",
+    "name": "directory-properties-service",
+    "api": {
+      "method": "get",
+      "url": "/api/document-libraries/${libraryId}/directories/${directoryId}"
+    },
+    "body": {
+      "type": "tabs",
+      "tabs": [
+        {
+          "title": "目录信息",
+          "body": [
+            {
+              "type": "container",
+              "body": [
+                {
+                  "type": "each",
+                  "name": "path",
+                  "className": "breadcrumb-custom",
+                  "style": {
+                    "marginBottom": "20px",
+                    "display": "flex",
+                    "alignItems": "center",
+                    "flexWrap": "wrap",
+                    "fontSize": "14px",
+                    "color": "#666"
+                  },
+                  "items": {
+                    "type": "container",
+                    "body": [
+                      {
+                        "type": "tpl",
+                        "tpl": "${index === 0 ? '根目录' : name}",
+                        "className": "${index === path.length - 1 ? 'font-bold text-dark' : 'text-muted'}"
+                      },
+                      {
+                        "type": "tpl",
+                        "tpl": "/",
+                        "className": "text-muted mx-2",
+                        "visibleOn": "${index < path.length - 1}"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "property",
+                  "column": 1,
+                  "items": [
+                    {
+                      "label": "目录名称",
+                      "content": {
+                        "type": "flex",
+                        "justify": "space-between",
+                        "alignItems": "center",
+                        "items": [
+                          {
+                            "type": "tpl",
+                            "tpl": "${name}"
+                          },
+                          {
+                            "type": "button",
+                            "label": "重命名",
+                            "icon": "fa fa-edit",
+                            "level": "link",
+                            "size": "sm",
+                            "visibleOn": "${permissions.canRenameMove}",
+                            "hiddenOn": "${path.length == 1}",
+                            "actionType": "dialog",
+                            "reload": "directory-properties-service",
+                            "dialog": {
+                              "title": "重命名目录",
+                              "size": "sm",
+                              "url": "/document-management/rename-directory",
+                              "data": {
+                                "id": "${id}",
+                                "libraryId": "${libraryId}",
+                                "newName": "${name}"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "label": "目录ID",
+                      "content": "${id}"
+                    },
+                    {
+                      "label": "描述",
+                      "content": "${description || '暂无描述'}"
+                    },
+                    {
+                      "label": "创建者",
+                      "content": "${createdByDisplayName}"
+                    },
+                    {
+                      "label": "创建时间",
+                      "content": {
+                        "type": "static-datetime",
+                        "name": "createdAt",
+                        "displayFormat": "YYYY-MM-DD HH:mm:ss"
+                      }
+                    },
+                    {
+                      "label": "最后修改者",
+                      "content": "${updatedByDisplayName || '-'}"
+                    },
+                    {
+                      "label": "最后修改时间",
+                      "content": {
+                        "type": "static-datetime",
+                        "name": "updatedAt",
+                        "displayFormat": "YYYY-MM-DD HH:mm:ss"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "flex",
+                  "justify": "flex-end",
+                  "items": [
+                    {
+                      "type": "button",
+                      "label": "删除目录",
+                      "level": "danger",
+                      "icon": "fa fa-trash",
+                      "visibleOn": "${permissions.canDeleteDir}",
+                      "hiddenOn": "${path.length == 1}",
+                      "onEvent": {
+                        "click": {
+                          "actions": [
+                            {
+                              "actionType": "confirmDialog",
+                              "args": {
+                                "title": "删除确认",
+                                "msg": "确定要删除该目录吗？该操作不可撤销！"
+                              }
+                            },
+                            {
+                              "actionType": "ajax",
+                              "args": {
+                                "api": {
+                                  "method": "delete",
+                                  "url": "/api/document-libraries/${libraryId}/directories/${directoryId}",
+                                  "messages": {
+                                    "success": "目录删除成功"
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "actionType": "closeDialog"
+                            },
+                            {
+                              "actionType": "broadcast",
+                              "args": {
+                                "eventName": "directoryChange"
+                              },
+                              "data": {
+                                "libraryId": "${libraryId}",
+                                "directoryId": "${parentId || ''}",
+                                "type": "${path.length > 2 ? 'DIRECTORY' : 'LIBRARY'}"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "权限管理",
+          "disabledOn": "${!permissions.canManage}",
+          "body": [
+            {
+              "type": "ui-schema",
+              "schemaId": "/document-management/directory-acl-entries"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

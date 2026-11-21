@@ -1,0 +1,49 @@
+{
+  "id": "lowcode/rpc-model-testing",
+  "title": "RPC 工作区保存、测试与显式提交",
+  "domain": "lowcode",
+  "testType": "integration",
+  "suite": "feature",
+  "risk": "p1",
+  "modes": [
+    "harness",
+    "deployment"
+  ],
+  "fixtures": {
+    "services": [
+      "mysql",
+      "local-http-stub"
+    ],
+    "runtimes": [
+      "develop"
+    ],
+    "frontends": [
+      "main-app"
+    ],
+    "data": [
+      "isolated-rpc-testing-app"
+    ],
+    "identities": [
+      "admin",
+      "app-viewer"
+    ]
+  },
+  "entrypoints": {
+    "backendBaseUrlEnv": "RPC_TESTING_BACKEND_URL",
+    "frontendBaseUrlEnv": "RPC_TESTING_FRONTEND_URL",
+    "targetStubBaseUrlEnv": "RPC_TESTING_TARGET_STUB_URL"
+  },
+  "caseTable": "cases.md",
+  "artifacts": {
+    "contract": "contract.md"
+  },
+  "reporting": {
+    "summaryFormat": "markdown",
+    "evidenceRoot": "tmp/testing-evidence/rpc-model-testing"
+  },
+  "exclusions": [],
+  "notes": [
+    "主应用 mock harness 只验证界面交互；部署模式必须使用当前工作区构建的真实后端和独立应用。",
+    "用例实现复用 Java 模块测试、Vitest 和 Playwright；场景目录只维护合同与映射。"
+  ]
+}

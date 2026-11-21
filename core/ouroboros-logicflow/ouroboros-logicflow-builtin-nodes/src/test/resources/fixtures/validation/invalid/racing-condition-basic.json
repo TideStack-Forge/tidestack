@@ -1,0 +1,83 @@
+{
+  "name": "racing-condition-basic",
+  "description": "Switch branches target different input ports on the same merge node",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "source",
+  "exitNode": "targetMerge",
+  "nodes": [
+    {
+      "name": "source",
+      "type": "const",
+      "description": "",
+      "dataType": "map",
+      "value": {
+        "route": "left"
+      }
+    },
+    {
+      "name": "branchSwitch",
+      "type": "switch",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "map"
+        }
+      ],
+      "conditions": [
+        {
+          "name": "left",
+          "description": "",
+          "expression": "route == 'left'"
+        }
+      ]
+    },
+    {
+      "name": "targetMerge",
+      "type": "merge",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "left",
+          "description": "",
+          "dataType": "map"
+        },
+        {
+          "name": "right",
+          "description": "",
+          "dataType": "map"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "merged",
+          "description": "",
+          "dataType": "map"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "source",
+      "sourceOutputPort": 0,
+      "targetNode": "branchSwitch",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "branchSwitch",
+      "sourceOutputPort": 0,
+      "targetNode": "targetMerge",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "branchSwitch",
+      "sourceOutputPort": 1,
+      "targetNode": "targetMerge",
+      "targetInputPort": 1
+    }
+  ]
+}

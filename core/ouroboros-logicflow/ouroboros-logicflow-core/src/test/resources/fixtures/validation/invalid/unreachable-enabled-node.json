@@ -1,0 +1,45 @@
+{
+  "name": "unreachable-enabled-node",
+  "description": "Invalid ordinary flow with one enabled node unreachable from the main entry",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "mainEntry",
+  "exitNode": "mainExit",
+  "nodes": [
+    {
+      "name": "mainEntry",
+      "type": "const",
+      "description": "",
+      "dataType": "string",
+      "value": "ok"
+    },
+    {
+      "name": "mainExit",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    },
+    {
+      "name": "orphanConst",
+      "type": "const",
+      "description": "",
+      "dataType": "string",
+      "value": "orphan"
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "mainEntry",
+      "sourceOutputPort": 0,
+      "targetNode": "mainExit",
+      "targetInputPort": 0
+    }
+  ]
+}

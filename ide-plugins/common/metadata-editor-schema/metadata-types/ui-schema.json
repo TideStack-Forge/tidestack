@@ -1,0 +1,144 @@
+{
+  "type": "ui-schema",
+  "fileSuffix": ".ui-schema.json",
+  "displayName": "UI Schema",
+  "sourcePathPatterns": [
+    "src/main/metadata/**/*.ui-schema.json"
+  ],
+  "packagedPathPrefix": "META-INF/ouroboros/ui-schema",
+  "editorKind": "amis-editor",
+  "editorKinds": [
+    "amis-editor"
+  ],
+  "fileTemplate": {
+    "defaultFileName": "example.ui-schema.json",
+    "fields": [
+      {
+        "name": "name",
+        "label": "名称",
+        "labelRemark": "按低代码页面命名习惯填写点分名称，例如 Admin.UserList；系统运行时会映射成 /admin/user-list。",
+        "documentPath": [
+          "name"
+        ],
+        "required": true,
+        "defaultFromPath": "dot-name"
+      },
+      {
+        "name": "title",
+        "label": "标题",
+        "documentPath": [
+          "title"
+        ],
+        "required": true,
+        "defaultFromPath": "title"
+      },
+      {
+        "name": "description",
+        "label": "描述",
+        "documentPath": [
+          "description"
+        ]
+      }
+    ],
+    "document": {
+      "name": "Example",
+      "title": "示例页面",
+      "description": "示例 UI Schema",
+      "schema": {
+        "type": "page",
+        "body": []
+      }
+    }
+  },
+  "editorSchema": {
+    "type": "form",
+    "title": "UI Schema",
+    "actions": [],
+    "body": [
+      {
+        "type": "input-text",
+        "name": "type",
+        "label": "组件类型",
+        "required": true
+      },
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "字段名称"
+      },
+      {
+        "type": "input-text",
+        "name": "id",
+        "label": "组件 ID"
+      },
+      {
+        "type": "input-text",
+        "name": "title",
+        "label": "中文标题"
+      },
+      {
+        "type": "input-text",
+        "name": "className",
+        "label": "样式类名"
+      },
+      {
+        "type": "switch",
+        "name": "visible",
+        "label": "可见"
+      },
+      {
+        "type": "switch",
+        "name": "hidden",
+        "label": "隐藏"
+      },
+      {
+        "type": "input-text",
+        "name": "visibleOn",
+        "label": "显示条件"
+      },
+      {
+        "type": "input-text",
+        "name": "hiddenOn",
+        "label": "隐藏条件"
+      },
+      {
+        "type": "json-editor",
+        "name": "body",
+        "label": "主体内容",
+        "allowClear": true
+      },
+      {
+        "type": "json-editor",
+        "name": "actions",
+        "label": "动作配置",
+        "allowClear": true
+      },
+      {
+        "type": "json-editor",
+        "name": "data",
+        "label": "数据配置",
+        "allowClear": true
+      },
+      {
+        "type": "json-editor",
+        "name": "api",
+        "label": "提交接口",
+        "allowClear": true
+      },
+      {
+        "type": "json-editor",
+        "name": "initApi",
+        "label": "初始化接口",
+        "allowClear": true
+      },
+      {
+        "type": "json-editor",
+        "name": "onEvent",
+        "label": "事件配置",
+        "allowClear": true
+      }
+    ]
+  },
+  "jsonSchemaFile": "schemas/ui-schema.schema.json",
+  "legacyJsonSchemaFile": "schemas/ui-schema-content.schema.json"
+}

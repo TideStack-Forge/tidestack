@@ -1,0 +1,10 @@
+{
+  "fullName": "BasicConfiguration.I18nManagement",
+  "url": "/dev/{appName}/i18n",
+  "icon": "fa fa-language",
+  "title": "多语言",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 40
+}

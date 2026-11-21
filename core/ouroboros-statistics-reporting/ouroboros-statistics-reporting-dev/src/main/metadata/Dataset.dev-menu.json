@@ -1,0 +1,10 @@
+{
+  "fullName": "Dataset",
+  "url": "/dev/{appName}/dataset",
+  "icon": "fa fa-database",
+  "title": "数据集",
+  "showMode": "tab",
+  "scope": "main",
+  "stage": "dev",
+  "order": 595
+}

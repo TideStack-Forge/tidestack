@@ -1,0 +1,57 @@
+{
+  "type": "startProcess",
+  "label": "发起审批流程",
+  "icon": "approval-start-process",
+  "svgs": {
+    "approval-start-process": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><g fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m9 5 10 7-10 7z\"/><path d=\"M4 4v16\"/></g></svg>"
+  },
+  "shape": "rect",
+  "description": "通过审批流运行时服务发起流程实例",
+  "group": "审批流",
+  "order": 5001,
+  "scaffold": {
+    "type": "startProcess",
+    "name": "发起流程",
+    "moduleName": "",
+    "processId": "",
+    "inputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "any"
+      }
+    ],
+    "outputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "string"
+      }
+    ]
+  },
+  "portRules": {
+    "input": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    },
+    "output": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    }
+  },
+  "properties": [
+    {
+      "type": "input-text",
+      "name": "processId",
+      "label": "流程定义 ID",
+      "required": true
+    },
+    {
+      "type": "input-text",
+      "name": "moduleName",
+      "label": "业务模块"
+    }
+  ]
+}

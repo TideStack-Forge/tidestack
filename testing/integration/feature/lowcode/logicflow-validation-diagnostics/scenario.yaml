@@ -1,0 +1,46 @@
+{
+  "id": "lowcode/logicflow-validation-diagnostics",
+  "title": "Logicflow Validation Diagnostics",
+  "domain": "lowcode",
+  "testType": "integration",
+  "suite": "feature",
+  "risk": "p1",
+  "modes": [
+    "harness"
+  ],
+  "fixtures": {
+    "services": [],
+    "runtimes": [
+      "develop"
+    ],
+    "frontends": [
+      "develop-shell",
+      "logicflow-editor-static"
+    ],
+    "data": [
+      "logicflow-validation-diagnostics"
+    ],
+    "identities": [
+      "admin"
+    ]
+  },
+  "entrypoints": {
+    "backendBaseUrlEnv": "OB_TEST_BASE_URL",
+    "frontendBaseUrlEnv": "OB_TEST_FRONTEND_BASE_URL",
+    "logicflowEditorHostBaseUrlEnv": "SMOKE_LOGICFLOW_EDITOR_HOST_BASE_URL"
+  },
+  "caseTable": "cases.md",
+  "artifacts": {
+    "contract": "contract.md",
+    "harness": "harness.playbook.md"
+  },
+  "reporting": {
+    "summaryFormat": "markdown",
+    "evidenceRoot": "tmp/testing-evidence/lowcode-logicflow-validation-diagnostics"
+  },
+  "exclusions": [],
+  "notes": [
+    "This scenario focuses on the develop-side logicflow editor path where backend validation diagnostics stay visible after save and can navigate back to a related node.",
+    "The old .runtime smoke scenario has been collapsed into canonical testing/ fixtures plus this feature-level scenario so future browser automation can attach to the same source of truth."
+  ]
+}

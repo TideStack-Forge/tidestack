@@ -1,0 +1,43 @@
+{
+  "id": "identities/first-login-binding-user",
+  "title": "First Login Binding Identity",
+  "class": "identities",
+  "capabilities": [
+    "authenticated-user",
+    "directory-provider-user",
+    "first-login-binding-path"
+  ],
+  "lifecycle": {
+    "up": "",
+    "check": "first LDAP login should enter account binding flow instead of direct success",
+    "reset": "",
+    "down": ""
+  },
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "identityKind",
+      "value": "first-login-binding"
+    },
+    {
+      "name": "accountEnv",
+      "value": "OB_TEST_LDAP_BINDING_ACCOUNT"
+    },
+    {
+      "name": "passwordEnv",
+      "value": "OB_TEST_LDAP_BINDING_PASSWORD"
+    }
+  ],
+  "healthChecks": [
+    {
+      "name": "first-login-binding-path",
+      "expect": "directory user reaches binding UI or binding API branch on first login"
+    }
+  ],
+  "prerequisites": [
+    "A directory user exists but is not pre-mapped in the platform under test"
+  ],
+  "notes": [
+    "This fixture is intentionally separate from ldap-user so binding-path failures are not confused with steady-state login regressions."
+  ]
+}

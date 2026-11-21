@@ -1,0 +1,69 @@
+{
+  "name": "exclusive-return-vs-exit",
+  "description": "Valid flow where ReturnNode and exitNode are on mutually exclusive branches",
+  "isEnabled": true,
+  "inputDataType": "string",
+  "outputDataType": "any",
+  "entryNode": "routeSwitch",
+  "exitNode": "normalExit",
+  "nodes": [
+    {
+      "name": "routeSwitch",
+      "type": "switch",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "route",
+          "description": "",
+          "dataType": "string"
+        }
+      ],
+      "conditions": [
+        {
+          "name": "returnEarly",
+          "description": "Return branch",
+          "expression": "$route == 'return'"
+        }
+      ]
+    },
+    {
+      "name": "earlyReturn",
+      "type": "return",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "string"
+        }
+      ],
+      "outputPorts": []
+    },
+    {
+      "name": "normalExit",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "routeSwitch",
+      "sourceOutputPort": 0,
+      "targetNode": "earlyReturn",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "routeSwitch",
+      "sourceOutputPort": 1,
+      "targetNode": "normalExit",
+      "targetInputPort": 0
+    }
+  ]
+}

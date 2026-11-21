@@ -1,0 +1,8 @@
+{
+  "fullName": "notification",
+  "title": "消息通知",
+  "url": "/notification",
+  "icon": "fa fa-bell",
+  "placement": "main",
+  "order": -90
+}

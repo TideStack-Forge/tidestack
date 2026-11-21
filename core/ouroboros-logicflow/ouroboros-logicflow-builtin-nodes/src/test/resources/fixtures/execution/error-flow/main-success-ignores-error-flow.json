@@ -1,0 +1,102 @@
+{
+  "name": "main-success-ignores-error-flow",
+  "description": "Main flow success should not auto-start the error flow scope",
+  "isEnabled": true,
+  "inputDataType": "string",
+  "outputDataType": "string",
+  "entryNode": "mainEntry",
+  "errorEntryNode": "errorEntry",
+  "nodes": [
+    {
+      "name": "mainEntry",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    },
+    {
+      "name": "mainReturn",
+      "type": "return",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "string"
+        }
+      ],
+      "outputPorts": []
+    },
+    {
+      "name": "errorEntry",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "error",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    },
+    {
+      "name": "errorHandler",
+      "type": "script",
+      "description": "",
+      "language": "groovy",
+      "script": "throw new RuntimeException('error-flow-should-not-run:' + $0.nodeName)",
+      "inputPorts": [
+        {
+          "name": "error",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    },
+    {
+      "name": "errorReturn",
+      "type": "return",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "string"
+        }
+      ],
+      "outputPorts": []
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "mainEntry",
+      "sourceOutputPort": 0,
+      "targetNode": "mainReturn",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "errorEntry",
+      "sourceOutputPort": 0,
+      "targetNode": "errorHandler",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "errorHandler",
+      "sourceOutputPort": 0,
+      "targetNode": "errorReturn",
+      "targetInputPort": 0
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "name": "/approval-workflow/engine-adapter-catalog",
+  "schema": {
+    "type": "page",
+    "title": "引擎适配器目录",
+    "body": {
+      "type": "crud",
+      "api": "/api/approval-workflow/engine-adapters",
+      "columns": [
+        {"name": "provider", "label": "流程引擎"},
+        {"name": "adapterId", "label": "适配器 ID"},
+        {"name": "displayName", "label": "名称"},
+        {"name": "version", "label": "版本"},
+        {"name": "canonicalActions", "label": "规范动作"},
+        {"name": "disabledActions", "label": "禁用动作"},
+        {"name": "capabilities", "label": "能力"},
+        {
+          "name": "actions",
+          "label": "操作",
+          "type": "operation",
+          "buttons": [
+            {
+              "label": "连接健康检查",
+              "type": "button",
+              "actionType": "dialog",
+              "dialog": {
+                "title": "连接健康检查",
+                "body": {
+                  "type": "form",
+                  "controls": [
+                    {"type": "input-text", "name": "connectionId", "label": "连接 ID", "required": true}
+                  ],
+                  "api": "post:/api/approval-workflow/engine-adapters/${adapterId}/connections/${connectionId}/health"
+                }
+              }
+            },
+            {
+              "label": "外部流程定义",
+              "type": "button",
+              "actionType": "dialog",
+              "dialog": {
+                "title": "外部流程定义",
+                "body": {
+                  "type": "service",
+                  "api": "get:/api/approval-workflow/engine-adapters/${adapterId}/connections/${connectionId}/definitions"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

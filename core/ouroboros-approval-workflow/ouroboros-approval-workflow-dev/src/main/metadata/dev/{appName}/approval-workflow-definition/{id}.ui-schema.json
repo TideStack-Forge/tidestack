@@ -1,0 +1,231 @@
+{
+  "name": "/dev/{appName}/approval-workflow-definition/{id}",
+  "schema": {
+    "type": "page",
+    "title": "编辑审批流「${id}」",
+    "css": {
+      ".editor-panel-body": {
+        "padding": "0",
+        "height": "100%"
+      },
+      ".cxd-Page-body": {
+        "flex-grow": 1,
+        "flex-shrink": 1,
+        "height": "500px"
+      }
+    },
+    "bodyClassName": "p-0",
+    "toolbar": [
+      {
+        "type": "amis-schema",
+        "source": {
+          "method": "get",
+          "url": "/api/dev-fragment-schema/vcs-buttons",
+          "data": {
+            "apiPath": "approval-workflow-definition/${id}",
+            "statusId": "approvalWorkflowStatus",
+            "formId": "edit-workflow-model-form",
+            "actionType": "static",
+            "editDisabledOn": "mode === 'preview'"
+          }
+        }
+      }
+    ],
+    "body": [
+      {
+        "type": "form",
+        "name": "edit-workflow-model-form",
+        "initApi": {
+          "url": "/api/dev/${appName}/approval-workflow-definition/${id}",
+          "method": "get",
+          "responseData": {
+            "flowDefinition": "$flowDefinition",
+            "version": "$version"
+          },
+          "sendOn": "${id}"
+        },
+        "api": {
+          "url": "/api/dev/${appName}/approval-workflow-definition/${id}",
+          "method": "put",
+          "data": "${flowDefinition}",
+          "messages": {
+            "success": "操作成功"
+          }
+        },
+        "wrapWithPanel": false,
+        "className": "h-full",
+        "bodyClassName": "h-full flex flex-col",
+        "mode": "horizontal",
+        "title": false,
+        "onEvent": {
+          "inited": {
+            "actions": [
+              {
+                "actionType": "updateTabTitle",
+                "args": {
+                  "title": "编辑审批流「${flowDefinition.title || flowDefinition.name || id}」"
+                }
+              }
+            ]
+          },
+          "submitSucc": {
+            "actions": [
+              {
+                "actionType": "setValue",
+                "componentId": "edit-workflow-model-form",
+                "args": {
+                  "value": {
+                    "flowDefinition": "${result.data.flowDefinition}",
+                    "version": "${result.data.version}"
+                  }
+                }
+              },
+              {
+                "actionType": "sendToOpenerTab",
+                "args": {
+                  "msg": {
+                    "definitionId": "${result.data.name || flowDefinition.name || id}",
+                    "definitionName": "${result.data.title || flowDefinition.title}",
+                    "bindingWritebackSuggested": false
+                  }
+                }
+              },
+              {
+                "actionType": "updateTabTitle",
+                "args": {
+                  "title": "编辑审批流「${result.data.title || flowDefinition.title || flowDefinition.name || id}」"
+                }
+              }
+            ]
+          }
+        },
+        "body": [
+          {
+            "type": "workflow-editor",
+            "label": false,
+            "appName": "${appName}",
+            "source": {
+              "method": "get",
+              "url": "/api/dev/${appName}/approval-workflow-definition/${id}/init-form"
+            },
+            "coreCapabilities": {
+              "allowHistoryCommands": true
+            },
+            "formFieldSourceApi": {
+              "method": "get",
+              "url": "/api/dev/${appName}/approval-workflow/base-info/workflow-field",
+              "data": {
+                "formType": "${flowDefinition.form.formType}",
+                "formKey": "${flowDefinition.form.formId}",
+                "definitionId": "${flowDefinition.name}"
+              }
+            },
+            "candidateSourceApi": {
+              "list": {
+                "method": "get",
+                "url": "/api/dev/${appName}/approval-workflow/candidate"
+              },
+              "items": {
+                "method": "get",
+                "url": "/api/dev/${appName}/approval-workflow/candidate/${candidateName}/items",
+                "data": {
+                  "category": "${category}",
+                  "value": "${value}"
+                }
+              },
+              "category": {
+                "method": "get",
+                "url": "/api/dev/${appName}/approval-workflow/candidate/${candidateName}/category"
+              }
+            },
+            "basicInfoDataSourceApi": {
+              "method": "get",
+              "url": "/api/dev/${appName}/approval-workflow/base-info/workflow-field",
+              "data": {
+                "formType": "${flowDefinition.form.formType}",
+                "formKey": "${flowDefinition.form.formId}",
+                "definitionId": "${flowDefinition.name}"
+              }
+            },
+            "basicInfoFormItems": [
+              {
+                "type": "input-text",
+                "name": "name",
+                "label": "流程标识",
+                "required": true
+              },
+              {
+                "type": "input-text",
+                "name": "title",
+                "label": "流程名称",
+                "required": true
+              },
+              {
+                "type": "textarea",
+                "name": "description",
+                "label": "流程描述",
+                "minRows": 3,
+                "maxRows": 6
+              },
+              {
+                "type": "divider"
+              },
+              {
+                "type": "button-group-select",
+                "name": "formType",
+                "label": "表单类型",
+                "value": "business-model",
+                "source": {
+                  "method": "get",
+                  "url": "/api/dev/${appName}/approval-workflow/base-info/form-types",
+                  "data": {
+                    "value": "${formType}"
+                  }
+                },
+                "required": true,
+                "onEvent": {
+                  "change": {
+                    "actions": [
+                      {
+                        "actionType": "setValue",
+                        "args": {
+                          "value": {
+                            "formId": ""
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "disabledOn": "${!!formKey}"
+              },
+              {
+                "type": "select",
+                "name": "formId",
+                "label": "关联表单",
+                "source": {
+                  "method": "get",
+                  "url": "/api/dev/${appName}/approval-workflow/base-info/form/${formType}",
+                  "sendOn": "${!!formType}"
+                },
+                "labelField": "title",
+                "valueField": "name",
+                "menuTpl": "${title} <span class=\"text-muted\">(${name})</span>",
+                "searchable": true,
+                "clearable": true,
+                "required": true,
+                "placeholder": "请选择关联表单",
+                "disabledOn": "${!!formKey}"
+              }
+            ],
+            "name": "flowDefinition",
+            "className": "h-full flex-grow",
+            "inputClassName": "h-full flex-grow"
+          }
+        ],
+        "actions": [],
+        "id": "edit-workflow-model-form"
+      }
+    ]
+  }
+}

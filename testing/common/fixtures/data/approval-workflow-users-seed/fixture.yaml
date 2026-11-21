@@ -1,0 +1,55 @@
+{
+  "id": "data/approval-workflow-users-seed",
+  "title": "Approval Workflow Users Seed",
+  "class": "data",
+  "capabilities": [
+    "user-seed",
+    "user-role-mapping",
+    "user-org-mapping"
+  ],
+  "lifecycle": {
+    "up": "shell: bash testing/common/fixtures/data/approval-workflow-users-seed/prepare.sh",
+    "check": "shell: bash testing/common/fixtures/data/approval-workflow-users-seed/prepare.sh --check",
+    "reset": "shell: bash testing/common/fixtures/data/approval-workflow-users-seed/prepare.sh",
+    "down": ""
+  },
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "seedType",
+      "value": "users-and-mappings"
+    },
+    {
+      "name": "usersSeedFile",
+      "value": "testing/common/fixtures/data/approval-workflow-users-seed/users-and-mappings.json"
+    },
+    {
+      "name": "defaultSubmitterAccount",
+      "value": "awf.submitter"
+    },
+    {
+      "name": "deterministicPassword",
+      "value": "AwfRegression@2026!"
+    },
+    {
+      "name": "runtimeIdentitiesFile",
+      "value": "tmp/testing-evidence/workflow-approval-flow/approval-workflow-identities.json"
+    }
+  ],
+  "healthChecks": [
+    {
+      "name": "user-links-complete",
+      "expect": "all users reference valid deterministic role IDs and organization IDs"
+    }
+  ],
+  "prerequisites": [
+    "A running develop/runtime backend must be reachable via OB_TEST_BASE_URL or OB_TEST_RUNTIME_FRONTEND_BASE_URL before executing the lifecycle script",
+    "The lifecycle script recreates AWF test users through backend APIs so passwords are encoded by the platform password encoder rather than stored as hashes in fixture JSON"
+  ],
+  "notes": [
+    "Users map to organization and role IDs defined by approval-workflow-org-seed and approval-workflow-roles-seed.",
+    "Accounts are deterministic test identities and do not represent production credentials.",
+    "The raw test password defaults to AwfRegression@2026! and can be overridden for a run with OB_TEST_AWF_PASSWORD.",
+    "Because approval-workflow runtime User candidates use employee.user/login identity as task actors, prepare.sh writes userIdentity for candidates and employeeId for organization evidence to runtimeIdentitiesFile."
+  ]
+}

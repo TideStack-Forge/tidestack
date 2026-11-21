@@ -1,0 +1,40 @@
+ARG BASE_IMAGE=registry.cn-hangzhou.aliyuncs.com/ouroboros/eclipse-temurin:21-jdk-noble
+ARG WEB_IMAGE=registry.cn-hangzhou.aliyuncs.com/ouroboros/ouroboros-web:latest
+
+FROM $WEB_IMAGE AS web
+FROM $BASE_IMAGE
+
+# 元信息
+LABEL name=ouroboros-mothership
+LABEL maintainer=Xinpai
+# LABEL 和 ENV 都不支持 ARG 参数
+# LABEL mothership-version=$VERSION
+
+# ENV MOTHERSHIP_VERSION=${VERSION}
+
+# 安装 Nginx
+RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list; apt update; apt install -y --no-install-recommends nginx; rm -rf /var/lib/apt/lists/*
+
+# 静态层
+COPY root /
+
+# 前端层
+COPY --from=web /app /app
+
+# 公共层（第三方库等）
+COPY ./common-layer /
+
+# 构建层
+COPY ./build-layer /
+
+# 赋予相关脚本执行权限
+RUN mkdir -p /app/deploy/nginx/conf.d \
+    && chmod +x /app/init.sh /app/base/service/start.sh
+
+# 暴露端口
+EXPOSE 80
+EXPOSE 8080
+EXPOSE 5005
+
+# 设置容器启动时执行的命令
+ENTRYPOINT ["sh", "/app/init.sh"]

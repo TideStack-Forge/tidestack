@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>ouroboros-approval-workflow</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ouroboros-approval-workflow-qb-spring-boot-starter</artifactId>
+
+    <dependencies>
+        <!-- 审批流 候选人接口相关依赖 -->
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-approval-workflow-flowable</artifactId>
+        </dependency>
+
+        <!-- 审批流管理功能包 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-approval-workflow-manage</artifactId>
+        </dependency>
+
+        <!-- 审批流 web api 包 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-approval-workflow-web</artifactId>
+        </dependency>
+
+        <!-- 审批流动态表单包 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-approval-workflow-dynamic-form</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-data-typed-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>dynamic-form-runtime</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

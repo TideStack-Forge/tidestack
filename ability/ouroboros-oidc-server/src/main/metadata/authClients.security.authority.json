@@ -1,0 +1,27 @@
+{
+  "fullName": "systemSetting.integrationManagement.applications.security",
+  "title": "接入应用安全管理",
+  "delegable": false,
+  "apis": [
+    "GET /api/sys/auth-clients",
+    "GET /api/sys/auth-clients/{clientId}",
+    "PATCH /api/sys/auth-clients/{clientId}",
+    "POST /api/sys/auth-clients/{clientId}/restore-defaults",
+    "POST /api/sys/auth-clients",
+    "DELETE /api/sys/auth-clients/{clientId}",
+    "POST /api/sys/auth-clients/{clientId}/secret/generate",
+    "GET /api/sys/auth-clients/permissions",
+    "GET /api/sys/auth-clients/registration",
+    "PUT /api/sys/auth-clients/registration",
+    "POST /api/sys/auth-clients/registration/credentials",
+    "DELETE /api/sys/auth-clients/registration/credentials/{id}",
+    "GET /api/sys/integration-management/sections/{section}"
+  ],
+  "uiViews": [
+    "/system-setting/integration-management",
+    "/system-setting/auth-clients"
+  ],
+  "menuItems": [
+    "systemSetting.integrationManagement"
+  ]
+}

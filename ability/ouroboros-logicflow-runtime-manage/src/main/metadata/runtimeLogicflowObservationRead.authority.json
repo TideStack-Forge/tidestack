@@ -1,0 +1,10 @@
+{
+  "fullName": "systemSetting.logicflow.observation.read",
+  "title": "查看运行监控与诊断",
+  "apis": [
+    "GET /api/runtime/logicflows/models/{name}/metrics",
+    "GET /api/runtime/logicflows/models/{name}/diagnostic-runs",
+    "GET /api/runtime/logicflows/models/{name}/diagnostic-runs/{id}",
+    "GET /api/runtime/logicflows/models/{name}/observation-changes"
+  ]
+}

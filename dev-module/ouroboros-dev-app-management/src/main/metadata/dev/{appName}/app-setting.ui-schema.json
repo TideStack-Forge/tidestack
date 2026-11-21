@@ -1,0 +1,210 @@
+{
+  "name": "/dev/{appName}/app-setting",
+  "schema": {
+    "type": "page",
+    "title": "应用配置",
+    "toolbar": [
+      {
+        "type": "amis-schema",
+        "source": {
+          "method": "get",
+          "url": "/api/dev-fragment-schema/vcs-buttons",
+          "data": {
+            "apiPath": "setting",
+            "statusId": "settingStatus",
+            "formId": "settingForm"
+          }
+        },
+        "mergeProps": {
+          "onEvent": {
+            "fetchInited": {
+              "actions": [
+                {},
+                {},
+                {
+                  "actionType": "enabled",
+                  "componentId": "clearLogoButton",
+                  "expression": "${event.data.responseData.lockState == 'OWNED'}"
+                },
+                {
+                  "actionType": "disabled",
+                  "componentId": "clearLogoButton",
+                  "expression": "${event.data.responseData.lockState != 'OWNED'}"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "body": [
+      {
+        "type": "form",
+        "title": "",
+        "name": "settingForm",
+        "id": "settingForm",
+        "initApi": "/api/dev/${appName}/setting/init-form",
+        "api": "put:/api/dev/${appName}/setting",
+        "mode": "horizontal",
+        "static": true,
+        "body": [
+          {
+            "type": "input-image",
+            "name": "logo",
+            "label": "Logo",
+            "receiver": "/api/dev/${appName}/setting/upload-logo",
+            "accept": ".jpg,.jpeg,.png,.gif",
+            "crop": {
+              "aspectRatio": 1,
+              "rotatable": true,
+              "scalable": true
+            },
+            "hiddenOn": "${ STARTSWITH(logo, 'logo.') }"
+          },
+          {
+            "type": "input-group",
+            "label": "Logo",
+            "body": [
+              {
+                "type": "static-image",
+                "label": false,
+                "src": "/api/dev/${appName}/setting/logo?logoFile=${ logo }"
+              },
+              {
+                "type": "button",
+                "level": "danger",
+                "icon": "fa fa-times",
+                "className": "mt-2",
+                "staticSchema": "",
+                "id": "clearLogoButton",
+                "disabled": true,
+                "onEvent": {
+                  "click": {
+                    "actions": [
+                      {
+                        "actionType": "setValue",
+                        "componentId": "settingForm",
+                        "args": {
+                          "value": {
+                            "logo": null
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "inline": true,
+            "visibleOn": "${ STARTSWITH(logo, 'logo.') }"
+          },
+          {
+            "type": "input-text",
+            "name": "title",
+            "label": "标题"
+          },
+          {
+            "type": "ouroboros-icon-picker",
+            "label": "图标",
+            "name": "icon",
+            "inputClassName": "w-96"
+          },
+          {
+            "type": "textarea",
+            "name": "description",
+            "label": "描述"
+          },
+          {
+            "type": "list-select",
+            "name": "defaultTheme",
+            "label": "默认主题",
+            "options": [
+              {
+                "label": "深色",
+                "value": "deep"
+              },
+              {
+                "label": "浅色",
+                "value": "shallow"
+              }
+            ],
+            "value": "deep"
+          },
+          {
+            "name": "homePage",
+            "type": "input-text",
+            "label": "首页地址",
+            "description": "用户登录后默认打开的页面地址"
+          },
+          {
+            "type": "fieldSet",
+            "title": "自定义布局",
+            "collapsable": true,
+            "collapsed": true,
+            "body": [
+              {
+                "type": "select",
+                "name": "custom.loginMicroWeb",
+                "label": "自定义登陆页",
+                "labelField": "name",
+                "valueField": "name",
+                "source": {
+                  "method": "get",
+                  "url": "/api/dev/${appName}/micro-web?type=app"
+                },
+                "value": "",
+                "clearable": true,
+                "searchable": true,
+                "clearValueOnHidden": true
+              },
+              {
+                "type": "select",
+                "name": "custom.topBarMicroWeb",
+                "label": "自定义顶栏",
+                "labelField": "name",
+                "valueField": "name",
+                "source": {
+                  "method": "get",
+                  "url": "/api/dev/${appName}/micro-web?type=parcels"
+                },
+                "value": "",
+                "clearable": true,
+                "searchable": true,
+                "clearValueOnHidden": true
+              },
+              {
+                "type": "select",
+                "name": "custom.sideBarMicroWeb",
+                "label": "自定义侧边栏",
+                "labelField": "name",
+                "valueField": "name",
+                "source": {
+                  "method": "get",
+                  "url": "/api/dev/${appName}/micro-web?type=parcels"
+                },
+                "value": "",
+                "clearable": true,
+                "searchable": true,
+                "clearValueOnHidden": true
+              }
+            ]
+          }
+        ],
+        "actions": [],
+        "onEvent": {
+          "submitSucc": {
+            "actions": [
+              {
+                "actionType": "toast",
+                "args": {
+                  "msgType": "success",
+                  "msg": "保存成功"
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

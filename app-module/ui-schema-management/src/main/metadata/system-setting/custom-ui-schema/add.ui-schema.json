@@ -1,0 +1,90 @@
+{
+  "name": "/system-setting/custom-ui-schema/add",
+  "schema": {
+    "api": {
+      "method": "post",
+      "url": "/api/sys/custom-ui-schema",
+      "data": {
+        "schema": "${schema|toJson}",
+        "&": "$$"
+      },
+      "messages": {
+        "success": "保存成功"
+      }
+    },
+    "type": "form",
+    "wrapWithPanel": false,
+    "title": false,
+    "wrapperComponent": "div",
+    "className": "h-full flex flex-col",
+    "body": [
+      {
+        "type": "flex",
+        "alignItems": "stretch",
+        "justify": "flex-start",
+        "direction": "row",
+        "items": [
+          {
+            "style": {
+              "flexGrow": 1,
+              "flex": "1 1 auto",
+              "display": "block",
+              "flexBasis": "auto"
+            },
+            "className": "mx-2 mb-0",
+            "type": "container",
+            "body": [
+              {
+                "name": "path",
+                "label": "",
+                "placeholder": "UI Schema 路径",
+                "type": "input-text",
+                "required": true
+              }
+            ]
+          },
+          {
+            "style": {
+              "overflowX": "auto",
+              "flex": "0 0 auto",
+              "display": "block",
+              "position": "static"
+            },
+            "type": "container",
+            "body": [
+              {
+                "actionType": "ajax",
+                "disabledOn": "${!path}",
+                "label": "拉取页面",
+                "api": {
+                  "method": "get",
+                  "data": {
+                    "path": "${path}"
+                  },
+                  "messages": {
+                    "success": "获取成功"
+                  },
+                  "responseData": {
+                    "schema": "$$"
+                  },
+                  "url": "/api/amis-schema"
+                },
+                "type": "action"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "amis-editor",
+        "name": "schema",
+        "label": "",
+        "className": "flex-grow relative",
+        "required": true,
+        "value": {
+          "type": "page"
+        }
+      }
+    ]
+  }
+}

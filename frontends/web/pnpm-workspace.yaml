@@ -1,0 +1,16 @@
+packages:
+  - .
+  - main-app
+  - ouroboros-amis-runtime
+  - ouroboros-sdk
+  - script-editor-intelligence-mock-server
+  - ouroboros-debug-console-topbar
+  - ouroboros-approval-workflow-designer
+  - ouroboros-logicflow-editor
+
+overrides:
+  react-frame-component: 5.2.7
+  webworkify-webpack: 2.1.5
+
+patchedDependencies:
+  amis-ui: patches/amis-ui.patch

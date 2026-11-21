@@ -1,0 +1,116 @@
+{
+  "name": "TableWidget",
+  "title": "通用表格",
+  "description": "通用的数据表格小组件，支持 CRUD 操作",
+  "category": "数据展示",
+  "allowHeader": true,
+  "sizeConstraints": {
+    "min": {
+      "cols": 6,
+      "rows": 8
+    },
+    "max": {
+      "cols": 24,
+      "rows": 30
+    }
+  },
+  "defaultSize": {
+    "cols": 12,
+    "rows": 12
+  },
+  "defaultConfig": {
+    "crudSchema": {
+      "type": "crud",
+      "syncLocation": false,
+      "bodyClassName": "h-full",
+      "tableContentClassName": "h-full",
+      "api": "",
+      "columns": [
+        {
+          "name": "id",
+          "label": "ID",
+          "type": "text"
+        },
+        {
+          "name": "name",
+          "label": "名称",
+          "type": "text"
+        }
+      ]
+    }
+  },
+  "defaultStyleConfig": {
+    "showBorder": true,
+    "showShadow": true
+  },
+  "configFormItems": [
+    {
+      "type": "fieldSet",
+      "title": "表格配置",
+      "body": [
+        {
+          "type": "ae-apiControl",
+          "name": "crudSchema.api",
+          "label": "数据接口",
+          "required": true,
+          "description": "支持分页查询，接口需返回标准 CRUD 格式"
+        },
+        {
+          "type": "combo",
+          "name": "crudSchema.columns",
+          "label": "列配置",
+          "multiple": true,
+          "addable": true,
+          "removable": true,
+          "draggable": true,
+          "items": [
+            {
+              "type": "input-text",
+              "name": "name",
+              "label": "字段名",
+              "required": true,
+              "placeholder": "数据字段名"
+            },
+            {
+              "type": "input-text",
+              "name": "label",
+              "label": "列标题",
+              "required": true,
+              "placeholder": "显示的列标题"
+            },
+            {
+              "type": "select",
+              "name": "type",
+              "label": "列类型",
+              "value": "text",
+              "options": [
+                {"label": "文本", "value": "text"},
+                {"label": "日期", "value": "date"},
+                {"label": "日期时间", "value": "datetime"},
+                {"label": "映射", "value": "mapping"},
+                {"label": "图片", "value": "image"},
+                {"label": "链接", "value": "link"}
+              ]
+            }
+          ],
+          "description": "配置表格的列定义，可拖拽调整顺序"
+        }
+      ]
+    }
+  ],
+  "thumbSchema": {
+    "type": "table",
+    "data": {
+      "items": [
+        {"id": 1, "name": "示例数据1", "status": "正常"},
+        {"id": 2, "name": "示例数据2", "status": "正常"}
+      ]
+    },
+    "columns": [
+      {"name": "id", "label": "ID"},
+      {"name": "name", "label": "名称"},
+      {"name": "status", "label": "状态"}
+    ]
+  },
+  "schemaTpl": "#{crudSchema}"
+}

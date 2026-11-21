@@ -1,0 +1,3 @@
+com.ouroboros.businessmodel.DefaultBusinessModel$Builder
+com.ouroboros.businessmodel.CompositeViewBusinessModel$Builder
+com.ouroboros.businessmodel.DashboardBusinessModel$Builder

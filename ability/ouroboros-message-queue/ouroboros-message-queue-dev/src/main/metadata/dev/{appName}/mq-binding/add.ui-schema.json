@@ -1,0 +1,13 @@
+{
+  "name": "/dev/{appName}/mq-binding/add",
+  "schema": {
+    "type": "amis-schema",
+    "schemaId": "dev/{appName}/mq-binding/form",
+    "title": "",
+    "wrapWithPanel": false,
+    "api": {
+      "method": "post",
+      "url": "/api/dev/${appName}/mq-binding"
+    }
+  }
+}

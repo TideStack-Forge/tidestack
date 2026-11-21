@@ -1,0 +1,64 @@
+{
+  "type": "insertData",
+  "label": "插入数据",
+  "icon": "insert-data",
+  "shape": "rect",
+  "description": "插入数据，默认返回插入的数据",
+  "order": 4005,
+  "svgs": {
+    "insert-data": "<svg t=\"1694739402777\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"2550\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"200\" height=\"200\"><path d=\"M255.89 128.17m36 0l632 0q36 0 36 36l0 0q0 36-36 36l-632 0q-36 0-36-36l0 0q0-36 36-36Z\" p-id=\"2551\"></path><path d=\"M108.25 468h573.93l-60.48-60.46a44 44 0 0 1 62.23-62.22l135.76 135.76a44 44 0 0 1 0 62.23L683.93 679.07a44 44 0 0 1-62.23-62.23L682.53 556H108.25a44 44 0 0 1-44-44 44 44 0 0 1 44-44zM923.89 823.83h-632a36 36 0 0 0-36 36 36 36 0 0 0 36 36h632a36 36 0 0 0 36-36 36 36 0 0 0-36-36z\" p-id=\"2552\"></path></svg>"
+  },
+  "scaffold": {
+    "type": "insertData",
+    "name": "插入数据",
+    "dataModel": "",
+    "plugins": [],
+    "resultWrapperKey": "",
+    "inputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "map"
+      }
+    ],
+    "outputPorts": [
+      {
+        "name": "",
+        "description": "",
+        "dataType": "map"
+      }
+    ]
+  },
+  "portRules": {
+    "input": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    },
+    "output": {
+      "ruleType": "limit",
+      "min": 1,
+      "max": 1
+    }
+  },
+  "properties": [
+    {
+      "type": "data-model",
+      "name": "dataModel",
+      "label": "数据模型",
+      "required": true
+    },
+    {
+      "type": "data-model-plugins",
+      "name": "plugins",
+      "label": "插件"
+    },
+    {
+      "type": "input-text",
+      "name": "resultWrapperKey",
+      "label": "结果包裹key",
+      "description": "将结果以Map形式包裹，key为该值，留空则不包裹直接返回结果"
+    }
+  ],
+  "group": "数据库操作"
+}

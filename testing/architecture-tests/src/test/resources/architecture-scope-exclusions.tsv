@@ -1,0 +1,2 @@
+# scope_glob	state	owner	reason	exit_condition
+micro-app/**	legacy-pending-migration	@arch-team	Legacy subtree; migration to the new architecture is not yet decided, so architecture/design/quality governance is deferred for now.	Remove this exclusion once the migration strategy for micro-app/** is decided and the subtree enters formal architecture governance.

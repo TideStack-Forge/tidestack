@@ -1,0 +1,125 @@
+{
+  "name": "/system-setting/dynamic-form/edit",
+  "schema": {
+    "type": "form",
+    "mode": "horizontal",
+    "title": false,
+    "body": [
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "名称",
+        "required": true,
+        "disabledOn": "${status && status !== '未部署'}",
+        "validateOnChange": true,
+        "validations": {
+          "matchRegexp": "^[^\\.]*$"
+        },
+        "validationErrors": {
+          "matchRegexp": "名称不能带."
+        }
+      },
+      {
+        "type": "input-text",
+        "name": "title",
+        "label": "标题",
+        "required": true
+      },
+      {
+        "type": "combo",
+        "name": "fields",
+        "label": "字段列表",
+        "multiple": true,
+        "multiLine": true,
+        "minLength": 1,
+        "draggable": true,
+        "items": [
+          {
+            "type": "group",
+            "body": [
+              {
+                "name": "name",
+                "label": "字段名（英文）",
+                "type": "input-text",
+                "unique": true,
+                "required": true,
+                "validateApi": "post:/api/dynamic-form/validate-field-name",
+                "disabledOn": "${deployed}"
+              },
+              {
+                "name": "label",
+                "label": "显示名",
+                "unique": true,
+                "type": "input-text",
+                "required": true
+              },
+              {
+                "name": "type",
+                "label": "类型",
+                "type": "select",
+                "required": true,
+                "source": {
+                  "method": "get",
+                  "url": "/api/dynamic-form/field-types",
+                  "cache": 3000
+                },
+                "disabledOn": "${deployed}"
+              },
+              {
+                "name": "required",
+                "label": "必填",
+                "type": "switch",
+                "columnRatio": 2
+              },
+              {
+                "name": "filterable",
+                "label": "作为过滤条件",
+                "type": "switch",
+                "columnRatio": 2
+              }
+            ]
+          },
+          {
+            "type": "service",
+            "schemaApi": {
+              "method": "get",
+              "url": "/api/dynamic-form/field-types/${type}/params-schema",
+              "sendOn": "${ type }",
+              "responseData": [
+                {
+                  "type": "divider",
+                  "visible": "${!!items && !!items.length}"
+                },
+                {
+                  "type": "fieldSet",
+                  "title": "展开更多设置",
+                  "collapseTitle": "收起设置",
+                  "titlePosition": "bottom",
+                  "collapsable": true,
+                  "collapsed": false,
+                  "visible": "${!!items && !!items.length}",
+                  "body": {
+                    "type": "combo",
+                    "name": "params",
+                    "multiLine": true,
+                    "items": "$items"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "itemRemovableOn": "${!deployed}"
+      }
+    ],
+    "api": {
+      "method": "put",
+      "url": "/api/dynamic-form/${id}",
+      "messages": {
+        "success": "表单定义保存成功"
+      }
+    },
+    "initApi": "get:/api/dynamic-form/${id}",
+    "wrapWithPanel": false
+  }
+}

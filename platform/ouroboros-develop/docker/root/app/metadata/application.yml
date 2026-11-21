@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: ouroboros-develop
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+  mvc:
+    async:
+      request-timeout: -1
+
+ouroboros:
+  platform:
+    cache:
+      token:
+        secret: ${OUROBOROS_PLATFORM_CACHE_TOKEN_SECRET:ouroboros-develop-platform-cache-token}
+  dev:
+    workspaceRoot: /app/deploy/workspace
+    debugSupportFilesDir: /app/debug-support
+    developSupportFilesDir: /app/develop-support
+    project-generation:
+      local-template-catalog:
+        enabled: true
+        root: /app/project-templates
+        catalog: /app/project-templates/catalog/stable-catalog.json
+        artifact-root: /app/project-templates/artifacts
+        cache: /app/runtime/project-generation-template-cache
+        template-origin: https://templates.example.invalid
+        target-platform-version: 2.0.0
+    runtime:
+      default-backend: docker
+      kubernetes:
+        namespace: ouroboros-dev
+        mounted-workspace-root: /workspace
+        helper-ready-timeout: 30s
+    container:
+      dockerApi:
+        host: tcp://host.docker.internal:2375

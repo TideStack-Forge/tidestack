@@ -1,0 +1,33 @@
+# Ouroboros @SuppressWarnings Allowlist
+#
+# 格式：file_path	line	type	reason	owner	exit_date
+#
+# 说明：
+# - file_path: 文件相对路径
+# - line: 行号
+# - type: @SuppressWarnings 类型（unchecked, unused, rawtypes, deprecation 等）
+# - reason: 抑制原因说明
+# - owner: 负责修复的团队或个人
+# - exit_date: 计划修复日期（YYYY-MM-DD）
+#
+# Ratchet 策略：
+# - 此文件记录所有存量 @SuppressWarnings
+# - 新代码不得引入新的 @SuppressWarnings
+# - 每两周审查一次，尝试移除已修复的条目
+# - 只能减少，不能增加
+#
+# 当前基线（Task 0.3 scoped）：379 个 @SuppressWarnings("unchecked"|"rawtypes")（主代码，不含 worktrees）
+# 分类统计：
+#   - unchecked: 357
+#   - rawtypes: 49（含与 unchecked 组合抑制）
+#
+# 最后更新：2026-04-13
+#
+file_path	line	type	reason	owner	exit_date
+# 基线数据待扫描脚本自动生成
+# 使用命令：scripts/quality/scan-suppresswarnings-baseline.sh
+#
+# 热点文件（优先修复）：
+# libs/util/ouroboros-util/src/main/java/com/ouroboros/util/Maps.java	*	unchecked	泛型类型擦除	libs	2026-06-30
+# core/ouroboros-logicflow/ouroboros-logicflow-core/src/main/java/com/ouroboros/logicflow/nodes/MappingNode.java	*	unchecked	泛型类型擦除	core	2026-06-30
+# micro-app/spreadsheet/spreadsheet-service/src/main/java/com/xinpai/spreadsheet/service/WriteSpreadsheetService.java	*	unchecked	泛型类型擦除	micro-app	2026-06-30

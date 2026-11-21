@@ -1,0 +1,43 @@
+[
+  {
+    "key": "enterprise.connections",
+    "label": "企业协作连接",
+    "groupPath": "enterprise.integration",
+    "order": 10,
+    "description": "钉钉、企业微信和飞书连接；字段由企业连接 provider 提供，凭据只填写安全存储引用",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "list",
+    "defaultValue": [],
+    "managementEntry": "/system-setting/integration-management",
+    "managementAccessPolicyRequired": true,
+    "scope": "backend"
+  },
+  {
+    "key": "enterprise.credentials",
+    "label": "企业应用凭据",
+    "groupPath": "enterprise.integration",
+    "order": 20,
+    "description": "仅通过集成管理受控替换，数据库只保存加密记录",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "map",
+    "defaultValue": {},
+    "scope": "backend",
+    "managementEntry": "/system-setting/integration-management",
+    "managementAccessPolicyRequired": true
+  },
+  {
+    "key": "enterprise.api-budgets",
+    "label": "企业渠道部署总调用预算",
+    "groupPath": "enterprise.integration",
+    "description": "按渠道配置核实后的每秒请求总数，例如 {\"feishu\":5}。所有能力共享，按执行节点数保守分配；未配置的渠道拒绝开放 API 调用。请取当前启用接口中最严格的总速率。",
+    "modifiable": true,
+    "nullable": false,
+    "valueType": "map",
+    "defaultValue": {},
+    "scope": "backend",
+    "managementEntry": "/system-setting/integration-management",
+    "managementAccessPolicyRequired": true
+  }
+]

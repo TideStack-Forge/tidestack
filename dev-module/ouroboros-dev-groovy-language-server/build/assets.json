@@ -1,0 +1,489 @@
+{
+  "description": "Isolated editor compiler train: pinned GE 6.0/e4.38 core with all Groovy 4.0.30 compiler override and trace sources rebuilt. Product runtime is unchanged; this is an Ouroboros assembly, not an upstream release.",
+  "baselineCommit": "757cc9196c27073dac8ec9c0d09edf3fce968530",
+  "compilerCommit": "bcdfa60231f1fb5ca396f124936aecb2e1299dba",
+  "files": [
+    {
+      "path": "ge-core/groovy-eclipse-core.jar",
+      "url": "https://groovy.jfrog.io/artifactory/plugins-release/org/codehaus/groovy/groovy-eclipse-integration/6.0.0/e4.38/plugins/org.codehaus.groovy.eclipse.core_6.0.0.v202512311652-e2512.jar",
+      "sha256": "743ba3b009e2ed4888e5027ce19cd60985f0d9d199098834e9495c0640721d58",
+      "size": 76020
+    },
+    {
+      "path": "ge-core/jdt-groovy-core.jar",
+      "url": "https://groovy.jfrog.io/artifactory/plugins-release/org/codehaus/groovy/groovy-eclipse-integration/6.0.0/e4.38/plugins/org.eclipse.jdt.groovy.core_6.0.0.v202512311652-e2512.jar",
+      "sha256": "919380d0e5444a096251f164280128b01c7197080ab2c64b13e1ea1537ec6705",
+      "size": 518890
+    },
+    {
+      "path": "ge-core/org.codehaus.groovy.eclipse.compilerResolver_6.0.0.v202512311652-e2512.jar",
+      "url": "https://groovy.jfrog.io/artifactory/plugins-release/org/codehaus/groovy/groovy-eclipse-integration/6.0.0/e4.38/plugins/org.codehaus.groovy.eclipse.compilerResolver_6.0.0.v202512311652-e2512.jar",
+      "sha256": "6086b67dc4747027fa2f9e41c58d7793afcf564a2518a262c805ce473057b980",
+      "size": 15547
+    },
+    {
+      "path": "ge-core/org.codehaus.groovy.eclipse.frameworkAdapter_6.0.0.v202512311652-e2512.jar",
+      "url": "https://groovy.jfrog.io/artifactory/plugins-release/org/codehaus/groovy/groovy-eclipse-integration/6.0.0/e4.38/plugins/org.codehaus.groovy.eclipse.frameworkAdapter_6.0.0.v202512311652-e2512.jar",
+      "sha256": "c3157dce07992a5c759946affeffbbc65cd0825226751d4ee8eb6f665b21518b",
+      "size": 7951
+    },
+    {
+      "path": "ge-core/org.codehaus.groovy_4.0.29.v202512311652-e2512.jar",
+      "url": "https://groovy.jfrog.io/artifactory/plugins-release/org/codehaus/groovy/groovy-eclipse-integration/6.0.0/e4.38/plugins/org.codehaus.groovy_4.0.29.v202512311652-e2512.jar",
+      "sha256": "733e21c637982b0e495ad19e1618202e1c39cf81842ce9bdae494f8a15799915",
+      "size": 25566596
+    },
+    {
+      "path": "ge-core/org.eclipse.jdt.core.compiler.batch_3.44.0.v202512311652-e2512.jar",
+      "url": "https://groovy.jfrog.io/artifactory/plugins-release/org/codehaus/groovy/groovy-eclipse-integration/6.0.0/e4.38/plugins/org.eclipse.jdt.core.compiler.batch_3.44.0.v202512311652-e2512.jar",
+      "sha256": "4d98f296436b1f1e11e16173f09e476e8da360576c99ab64ff3ef8bb9f25f01d",
+      "size": 3235061
+    },
+    {
+      "path": "ge-core/org.eclipse.jdt.core_3.44.0.v202512311652-e2512.jar",
+      "url": "https://groovy.jfrog.io/artifactory/plugins-release/org/codehaus/groovy/groovy-eclipse-integration/6.0.0/e4.38/plugins/org.eclipse.jdt.core_3.44.0.v202512311652-e2512.jar",
+      "sha256": "b6625a0957b13e35e86482b9db569f91e2b00ff0afb9c65798eb534c33ac1230",
+      "size": 4348791
+    },
+    {
+      "path": "ge430-libs/groovy-4.0.30.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/groovy/groovy/4.0.30/groovy-4.0.30.jar",
+      "sha256": "7f1c5221a9350642391c1468e8ed83856f760597980fdf90300dbd69930d6d1b",
+      "size": 7715295
+    },
+    {
+      "path": "ge430-libs/groovy-test-4.0.30.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/groovy/groovy-test/4.0.30/groovy-test-4.0.30.jar",
+      "sha256": "830f72cf9132f151e5eba3e18bffa36ce0ffe5b9865853f81c6f66db368b2027",
+      "size": 70515
+    }
+  ],
+  "sources": [
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/META-INF/MANIFEST.MF",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/META-INF/MANIFEST.MF",
+      "gitBlobSha1": "16d4971aa869fe1725f912eea4eb709458d05713"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src-trace/org/codehaus/groovy/eclipse/DefaultGroovyLogger.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src-trace/org/codehaus/groovy/eclipse/DefaultGroovyLogger.java",
+      "gitBlobSha1": "fb4b18bf28fe9f22d462254de0f9913429ccad71"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src-trace/org/codehaus/groovy/eclipse/GroovyLogManager.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src-trace/org/codehaus/groovy/eclipse/GroovyLogManager.java",
+      "gitBlobSha1": "8c527f7dcbaee5295214542f6a5dc1f8690b7ddb"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src-trace/org/codehaus/groovy/eclipse/IGroovyLogger.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src-trace/org/codehaus/groovy/eclipse/IGroovyLogger.java",
+      "gitBlobSha1": "c0fd8991a9cea54d8486e0818c6c6b0ed0171b74"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src-trace/org/codehaus/groovy/eclipse/TraceCategory.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src-trace/org/codehaus/groovy/eclipse/TraceCategory.java",
+      "gitBlobSha1": "3d17af6a017d5af70e21d5cbb1357de348316950"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/groovy/grape/GrabAnnotationTransformation.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/groovy/grape/GrabAnnotationTransformation.java",
+      "gitBlobSha1": "d819fe803183b70f8d753e50aaaf848a4aeefc87"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/apache/groovy/ast/tools/ExpressionUtils.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/apache/groovy/ast/tools/ExpressionUtils.java",
+      "gitBlobSha1": "b01bdebb1cc2fafd12bbf6f2d41d823e5553fe26"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/apache/groovy/parser/antlr4/AstBuilder.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/apache/groovy/parser/antlr4/AstBuilder.java",
+      "gitBlobSha1": "0d90294b99d7b76ea19ed95f7e6d61125cb0010c"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/apache/groovy/parser/antlr4/GroovyLexer.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/apache/groovy/parser/antlr4/GroovyLexer.java",
+      "gitBlobSha1": "ce42b269ca33a5cd686e101b9c192a8dfc93dca1"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/apache/groovy/parser/antlr4/GroovyParser.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/apache/groovy/parser/antlr4/GroovyParser.java",
+      "gitBlobSha1": "7378ce8b949ce31ee6f88c2567b9a0bac115f863"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/apache/groovy/parser/antlr4/GroovyParserBaseVisitor.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/apache/groovy/parser/antlr4/GroovyParserBaseVisitor.java",
+      "gitBlobSha1": "14f2a528c9680fcd96512bd8deb9d9c2ccd727ea"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/apache/groovy/parser/antlr4/GroovyParserVisitor.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/apache/groovy/parser/antlr4/GroovyParserVisitor.java",
+      "gitBlobSha1": "bb8b303d3e475ccb613c598b4c936efbeac7059c"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/antlr/AntlrParserPlugin.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/antlr/AntlrParserPlugin.java",
+      "gitBlobSha1": "692680a2a2ff5e05773bf5b3bddcd6c985f7d345"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/antlr/GroovyTokenTypeBridge.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/antlr/GroovyTokenTypeBridge.java",
+      "gitBlobSha1": "1b5550ceac53ab73405539489ab71c0d9ab1490f"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/antlr/LocationSupport.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/antlr/LocationSupport.java",
+      "gitBlobSha1": "f95a12562e935d34f88bb74332b8eb777e28238f"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/antlr/SourceBuffer.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/antlr/SourceBuffer.java",
+      "gitBlobSha1": "931a3301817858ebefc8c41b1fdac7506e78a52a"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/antlr/UnicodeEscapingReader.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/antlr/UnicodeEscapingReader.java",
+      "gitBlobSha1": "a711932776d23efc146491b9ed71189f1467aa54"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/antlr/parser/GroovyLexer.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/antlr/parser/GroovyLexer.java",
+      "gitBlobSha1": "31bf70c7199a83117bde39e5f7b160e09501f99f"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/antlr/parser/GroovyRecognizer.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/antlr/parser/GroovyRecognizer.java",
+      "gitBlobSha1": "749cb38baf4325b03834238878bc8ca630e0fea8"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/antlr/parser/GroovyTokenTypes.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/antlr/parser/GroovyTokenTypes.java",
+      "gitBlobSha1": "f32822cb6464732d77ac69ad4e2161959e0b7543"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/ASTNode.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/ASTNode.java",
+      "gitBlobSha1": "ce2870f5ddafb14bc4ab265aa05a4ad22c9889a0"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/AnnotatedNode.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/AnnotatedNode.java",
+      "gitBlobSha1": "43d2a4742f5ad80249efc924f4a30dac6d9f4341"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/ClassCodeVisitorSupport.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/ClassCodeVisitorSupport.java",
+      "gitBlobSha1": "20d3459ccd08623ce17655d70b7ded1c42467081"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/ClassHelper.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/ClassHelper.java",
+      "gitBlobSha1": "3a9f40d2e0d68ae846cf8a1a04ca5d653ff61e22"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/ClassNode.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/ClassNode.java",
+      "gitBlobSha1": "c31c2b51b244278ab3567527afbaf4ef5bcfb811"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/Comment.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/Comment.java",
+      "gitBlobSha1": "e7b1457b14030f685ea515b836f52123b2f7291b"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/CompileUnit.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/CompileUnit.java",
+      "gitBlobSha1": "6c0bf755badd1e9f08a3dd7c3533cb39a338fea9"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/GenericsType.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/GenericsType.java",
+      "gitBlobSha1": "d9eeeb1dd2107ff6eec4f34bf1fa325822f68981"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/GroovyCodeVisitor.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/GroovyCodeVisitor.java",
+      "gitBlobSha1": "5e57f815525c544f7526d92eca9f6a116a3c4d17"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/ImmutableClassNode.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/ImmutableClassNode.java",
+      "gitBlobSha1": "048fe07b4ce2d5e763442ddc2c6962f3c8570995"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/ImportNode.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/ImportNode.java",
+      "gitBlobSha1": "90b668818552cdcc2a2fc2e766c3487d6a9318ae"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/MethodNode.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/MethodNode.java",
+      "gitBlobSha1": "bee00d60df85832a5209e839851a88eb4954b874"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/ModuleNode.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/ModuleNode.java",
+      "gitBlobSha1": "472c093d9976e1e7c3fd9c26fb468e9f14d57ee3"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/NodeMetaDataHandler.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/NodeMetaDataHandler.java",
+      "gitBlobSha1": "07f77e8205e788b8ba616d05d405d9ef1c5d7877"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/Parameter.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/Parameter.java",
+      "gitBlobSha1": "c0df67a0c0f6d73cb7ea474c81c5106befe2c871"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/TaskEntry.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/TaskEntry.java",
+      "gitBlobSha1": "5be0bcdafb85eb253a6fdb4ed57cc2a4cf133d3d"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/expr/ClassExpression.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/expr/ClassExpression.java",
+      "gitBlobSha1": "92e5ef9f058686be7a140c67489183dd1e9098db"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/expr/ConstantExpression.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/expr/ConstantExpression.java",
+      "gitBlobSha1": "fde44f6c1afb3b65a2768f28067be34e2398a1fc"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/expr/MethodCallExpression.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/expr/MethodCallExpression.java",
+      "gitBlobSha1": "1dd101214c134fa46fe72441e5d91e8399a27262"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/expr/StaticMethodCallExpression.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/expr/StaticMethodCallExpression.java",
+      "gitBlobSha1": "85b5abc234efd40798f0eeac17183f30845d0347"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/stmt/ForStatement.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/stmt/ForStatement.java",
+      "gitBlobSha1": "f623442b21a959a52dadb9002ce30cfb74abf02c"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/tools/WideningCategories.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/ast/tools/WideningCategories.java",
+      "gitBlobSha1": "7b275fd3164474f94bcab6d67fe6044fcc65da00"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/AnnotationVisitor.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/AnnotationVisitor.java",
+      "gitBlobSha1": "b9a2511c1a2ad060acc11333b2aa1212d50e7148"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/AsmClassGenerator.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/AsmClassGenerator.java",
+      "gitBlobSha1": "d0999d8abc40c8099771f7045a5c025db9f1a40e"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/EnumVisitor.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/EnumVisitor.java",
+      "gitBlobSha1": "a8f22ced3346b6bdf41af722d33a4dda9959424f"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/ExtendedVerifier.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/ExtendedVerifier.java",
+      "gitBlobSha1": "5029529370754ee25774fcd1b9eaab7c187b0d5f"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/GeneratorContext.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/GeneratorContext.java",
+      "gitBlobSha1": "211531c0dbf46bef762c351c63c8d9eff78b9983"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/Verifier.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/Verifier.java",
+      "gitBlobSha1": "4a7c6c3cdbbaea181ff823454118429204e278e7"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/asm/WriterController.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/asm/WriterController.java",
+      "gitBlobSha1": "eac85bfe7763221aa9f9cafc4e3aba40dd7b0319"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/asm/sc/StaticInvocationWriter.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/asm/sc/StaticInvocationWriter.java",
+      "gitBlobSha1": "be05be93bf53606abfc147aaf08f90c9ff160293"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/asm/sc/StaticPropertyAccessHelper.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/asm/sc/StaticPropertyAccessHelper.java",
+      "gitBlobSha1": "b3a9eeff916a0e826fafc1f022c592e23f5892f8"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/asm/sc/StaticTypesCallSiteWriter.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/classgen/asm/sc/StaticTypesCallSiteWriter.java",
+      "gitBlobSha1": "ef1658e00036e5331b4caee25d6b3dcca91ae4ad"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/control/CompilationUnit.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/control/CompilationUnit.java",
+      "gitBlobSha1": "cfc160dd2c6351c2df45dd827deec3fc22fabd24"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/control/CompilerConfiguration.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/control/CompilerConfiguration.java",
+      "gitBlobSha1": "7f6ae382a38bf6ac9374f94c606d4a5168dc451e"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/control/ErrorCollector.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/control/ErrorCollector.java",
+      "gitBlobSha1": "7cef19c5fc3ff5e4612f4c67da00e7adc7319482"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/control/ProcessingUnit.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/control/ProcessingUnit.java",
+      "gitBlobSha1": "065e3efafe66556602ab0530a0cb53792c46ff9d"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/control/ResolveVisitor.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/control/ResolveVisitor.java",
+      "gitBlobSha1": "4b20dc1a6def1fffb847e89bf286f765873137f0"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/control/SourceUnit.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/control/SourceUnit.java",
+      "gitBlobSha1": "3d6daee0ba16ed74b651e56c63ef832dc0a3741d"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/control/StaticImportVisitor.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/control/StaticImportVisitor.java",
+      "gitBlobSha1": "baa6b082aaa50a3d8c2c61fddbc0cd355da22b75"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/runtime/m12n/MetaInfExtensionModule.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/runtime/m12n/MetaInfExtensionModule.java",
+      "gitBlobSha1": "a6dc72318b89d58cabbc09d345f9818cdcb32a93"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/syntax/PreciseSyntaxException.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/syntax/PreciseSyntaxException.java",
+      "gitBlobSha1": "872167932c972769e371ca6f24b51fc6088e7a83"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/tools/GroovyClass.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/tools/GroovyClass.java",
+      "gitBlobSha1": "0f4abc874428e228859ffe6a576cbc43a70edfd4"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/ASTTransformationCollectorCodeVisitor.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/ASTTransformationCollectorCodeVisitor.java",
+      "gitBlobSha1": "9f606b3c2edfd9de27cb8e8ed52792da16c5ccb1"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/ASTTransformationVisitor.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/ASTTransformationVisitor.java",
+      "gitBlobSha1": "fe29223087333e427e551a8693ddeee91ad879d3"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/AnnotationCollectorTransform.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/AnnotationCollectorTransform.java",
+      "gitBlobSha1": "218630754dc6d9b2d760d06518a3d4222fa0acf7"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/CategoryASTTransformation.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/CategoryASTTransformation.java",
+      "gitBlobSha1": "ff21b6aefe075541ac18ed405cb3b8156d13bebc"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/FieldASTTransformation.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/FieldASTTransformation.java",
+      "gitBlobSha1": "f722018b2dfa9658a46dcc636fcb7ac9ec36c578"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/LogASTTransformation.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/LogASTTransformation.java",
+      "gitBlobSha1": "18642ebedbf4fb528fd9a40779c4fed6271314f0"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/NamedVariantASTTransformation.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/NamedVariantASTTransformation.java",
+      "gitBlobSha1": "dd7ef630a3661e64372115e73a2c8480eed1bc74"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/TupleConstructorASTTransformation.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/TupleConstructorASTTransformation.java",
+      "gitBlobSha1": "4e799c223b968fdd8b0b7a7db7fbf9a7dc3f3f2f"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/sc/transformers/BinaryExpressionTransformer.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/sc/transformers/BinaryExpressionTransformer.java",
+      "gitBlobSha1": "ce2176e9be2e6f51172af0f2e0852ccebf8caca5"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/sc/transformers/MethodCallExpressionTransformer.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/sc/transformers/MethodCallExpressionTransformer.java",
+      "gitBlobSha1": "ce93cf79e64dc1f3c5bcfe04970f15c112fbc5b2"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/sc/transformers/PropertyExpressionTransformer.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/sc/transformers/PropertyExpressionTransformer.java",
+      "gitBlobSha1": "8e1f7561c4d5b3168f1dce2d331b1968e40ebf01"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/sc/transformers/VariableExpressionTransformer.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/sc/transformers/VariableExpressionTransformer.java",
+      "gitBlobSha1": "64d6da5578cfe787af6ed17c726427411f139000"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/stc/StaticTypeCheckingSupport.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/stc/StaticTypeCheckingSupport.java",
+      "gitBlobSha1": "62dbe52fedff8cd5f6c1d8b2ecd4b8b8d930406a"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/stc/StaticTypeCheckingVisitor.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/stc/StaticTypeCheckingVisitor.java",
+      "gitBlobSha1": "97ac76bf36d1d972e4293c113904868821cd99a7"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/stc/TraitTypeCheckingExtension.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/stc/TraitTypeCheckingExtension.java",
+      "gitBlobSha1": "8ac3ef55b6106333938181977559327e866b9302"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/trait/TraitASTTransformation.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/trait/TraitASTTransformation.java",
+      "gitBlobSha1": "22fb02e3776f0c88a5582d2bec91ade41ff13a9a"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/trait/TraitComposer.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/trait/TraitComposer.java",
+      "gitBlobSha1": "781f986c711c39feb8b9a40226a13584ef6548a6"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/trait/TraitReceiverTransformer.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/trait/TraitReceiverTransformer.java",
+      "gitBlobSha1": "bd2fefaae96fbce2d8bc1aa8efc17efc6e79317e"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/trait/Traits.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/transform/trait/Traits.java",
+      "gitBlobSha1": "21882f60e2526f7dacc4b7a1c389bc5e4c8b4dfb"
+    },
+    {
+      "path": "ge430-src/base/org.codehaus.groovy40/src/org/codehaus/groovy/vmplugin/v8/Java8.java",
+      "url": "https://raw.githubusercontent.com/groovy/groovy-eclipse/bcdfa60231f1fb5ca396f124936aecb2e1299dba/base/org.codehaus.groovy40/src/org/codehaus/groovy/vmplugin/v8/Java8.java",
+      "gitBlobSha1": "13bde49593f8f4646c0468b7f6d57b3ae55d3586"
+    }
+  ],
+  "removedOverrides": [
+    "org/codehaus/groovy/classgen/ClassCompletionVerifier"
+  ],
+  "unchangedTraceTree": "15029a36ea4144b3d691e210a4e2b622042b8d44",
+  "unchangedParserBlob": "2e3e3aa2a6b2c22c0e3e1e1cd366a819af1ebdca",
+  "sourceTreeDelta": [
+    "org/apache/groovy/ast/tools/ExpressionUtils.java",
+    "org/apache/groovy/parser/antlr4/AstBuilder.java",
+    "org/codehaus/groovy/ast/ClassNode.java",
+    "org/codehaus/groovy/classgen/AsmClassGenerator.java",
+    "org/codehaus/groovy/classgen/ClassCompletionVerifier.java",
+    "org/codehaus/groovy/classgen/asm/sc/StaticInvocationWriter.java",
+    "org/codehaus/groovy/control/ResolveVisitor.java",
+    "org/codehaus/groovy/vmplugin/v8/Java8.java"
+  ],
+  "buildMode": "complete-compiler-overrides"
+}

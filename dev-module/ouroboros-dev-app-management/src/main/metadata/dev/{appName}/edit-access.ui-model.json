@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/edit-access",
+  "type": "amis",
+  "title": "编辑权限"
+}

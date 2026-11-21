@@ -1,0 +1,47 @@
+{
+  "name": "call-flow-result-wrapper",
+  "description": "Caller flow that wraps the child flow result",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "map",
+  "entryNode": "source",
+  "exitNode": "callChild",
+  "nodes": [
+    {
+      "name": "source",
+      "type": "const",
+      "description": "",
+      "dataType": "string",
+      "value": "ignored-input"
+    },
+    {
+      "name": "callChild",
+      "type": "callFlow",
+      "description": "",
+      "flowName": "child-return-const",
+      "resultWrapperKey": "wrapped",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "map"
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "source",
+      "sourceOutputPort": 0,
+      "targetNode": "callChild",
+      "targetInputPort": 0
+    }
+  ]
+}

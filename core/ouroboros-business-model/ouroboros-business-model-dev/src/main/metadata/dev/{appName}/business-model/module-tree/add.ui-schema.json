@@ -1,0 +1,69 @@
+{
+  "name": "/dev/{appName}/business-model/module-tree/add",
+  "schema": {
+    "api": {
+      "method": "post",
+      "url": "/api/dev/${appName}/business-model/module-tree"
+    },
+    "type": "form",
+    "mode": "horizontal",
+    "title": false,
+    "wrapWithPanel": false,
+    "body": [
+      {
+        "type": "nested-select",
+        "name": "parentName",
+        "label": "上级模块",
+        "source": {
+          "method": "get",
+          "url": "/api/dev/${appName}/business-model/module-tree"
+        },
+        "valueField": "fullName",
+        "labelField": "title",
+        "searchable": false,
+        "onlyChildren": true,
+        "multiple": false,
+        "onlyLeaf": false,
+        "clearable": true
+      },
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "模块名",
+        "required": true,
+        "validations": {
+          "matchRegexp": "^[A-Za-z]+[A-Za-z0-9]*$"
+        },
+        "validationErrors": {
+          "matchRegexp": "模块名必须以字母开头，且只能包含字母、数字"
+        }
+      },
+      {
+        "type": "input-text",
+        "name": "title",
+        "label": "显示名",
+        "required": true,
+        "validations": {
+          "matchRegexp": "^[\\u4e00-\\u9fa5\\w\\-]+[\\u4e00-\\u9fa5\\w\\-\\d]*$"
+        },
+        "validationErrors": {
+          "matchRegexp": "模块显示名只能包含中文、字母、数字、下划线、中划线，且不能以数字开头"
+        }
+      },
+      {
+        "type": "ouroboros-icon-picker",
+        "name": "icon",
+        "label": "图标"
+      },
+      {
+        "type": "input-number",
+        "label": "排序",
+        "name": "order",
+        "precision": 0,
+        "step": 1,
+        "value": 0,
+        "required": true
+      }
+    ]
+  }
+}

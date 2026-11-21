@@ -1,0 +1,117 @@
+.custom-top-navbar {
+  height: var(--topbar-height);
+  background: var(--topbar-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+  transition: all var(--animation-duration) ease;
+  margin: var(--topbar-margin);
+  color: var(--topbar-color);
+  .left {
+    .title {
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .left-content {
+      display: flex;
+      align-items: center;
+    }
+    .log-right-btn {
+      min-width: 1.3rem;
+    }
+    .image-version {
+      svg {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+    }
+
+    .log-wrapper {
+      min-width: 100px;
+    }
+  }
+  .right {
+    display: flex;
+    align-items: center;
+    margin-right: 1.5rem;
+    .helper-btn {
+      padding: 0;
+      svg {
+        width: 1.6rem;
+        height: 1.6rem;
+      }
+    }
+    .helper-uncreated {
+      svg {
+        fill: #7f7f7f;
+      }
+      &:hover {
+        svg {
+          fill: #2468f2;
+        }
+      }
+    }
+    .helper-exited {
+      svg {
+        fill: #b51601;
+      }
+    }
+    .helper-running {
+      svg {
+        fill: #00860e;
+      }
+    }
+    .helper-dropDown {
+      a {
+        display: flex;
+        align-items: center;
+        svg {
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+    .user-container {
+      border-radius: 4px;
+      font-size: var(--ouroboros-fontSizeSm);
+      button.user-wrapper {
+        padding: var(--topbar-avatar-padding);
+        background-color: inherit;
+        color: var(--topbar-color);
+        &:hover,
+        &:active,
+        &:hover:active {
+          background: var(--topbar-right-item-onHover-bg);
+          border: none;
+        }
+      }
+      .menu-ul {
+        li {
+          border-top: 1px solid #e6ebf5;
+          &:hover {
+            background: var(--topbar-list-item-hover-bg);
+            color: var(--topbar-list-item-hover-color);
+          }
+        }
+        li:first-child {
+          border-top: none;
+        }
+      }
+    }
+  }
+  .image-version {
+    display: flex;
+    align-items: center;
+  }
+
+  .helper-dropDown,
+  .container-dropDown {
+    a {
+      i {
+        font-size: 14px;
+        margin-right: 0.25rem;
+      }
+    }
+  }
+}

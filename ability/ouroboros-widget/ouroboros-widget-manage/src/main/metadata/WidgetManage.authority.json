@@ -1,0 +1,18 @@
+{
+  "fullName": "systemSetting.WidgetManage",
+  "title": "门户栏目管理",
+  "apis": [
+    "GET /api/widget-schema",
+    "POST /api/widget-schema",
+    "PUT /api/widget-schema/{id}",
+    "GET /api/widget-schema/{id}",
+    "GET /api/widget-schema/generators",
+    "GET /api/widget-schema/generators/{generatorName}/form-items"
+  ],
+  "uiViews": [
+    "/system-setting/widget-manage"
+  ],
+  "menuItems": [
+    "systemSetting.WidgetManage"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "name": "unreachable-return-terminal",
+  "description": "Invalid ordinary flow whose ReturnNode exists but is unreachable from the main entry",
+  "isEnabled": true,
+  "inputDataType": "any",
+  "outputDataType": "any",
+  "entryNode": "entry",
+  "nodes": [
+    {
+      "name": "entry",
+      "type": "const",
+      "description": "",
+      "dataType": "string",
+      "value": "ok"
+    },
+    {
+      "name": "livePass",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    },
+    {
+      "name": "deadReturn",
+      "type": "return",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": []
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "entry",
+      "sourceOutputPort": 0,
+      "targetNode": "livePass",
+      "targetInputPort": 0
+    }
+  ]
+}

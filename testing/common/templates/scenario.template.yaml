@@ -1,0 +1,24 @@
+id: domain/example-scenario
+title: Example Scenario
+domain: example
+risk: p1
+modes:
+  - harness
+fixtures:
+  services: []
+  runtimes: []
+  frontends: []
+  data: []
+  identities: []
+entrypoints:
+  backendBaseUrl: ""
+  frontendBaseUrl: ""
+caseTable: cases.md
+artifacts:
+  contract: contract.md
+  harness: harness.playbook.md
+  e2e: e2e.yaml
+reporting:
+  summaryFormat: markdown
+  evidenceRoot: tmp/testing-evidence
+exclusions: []

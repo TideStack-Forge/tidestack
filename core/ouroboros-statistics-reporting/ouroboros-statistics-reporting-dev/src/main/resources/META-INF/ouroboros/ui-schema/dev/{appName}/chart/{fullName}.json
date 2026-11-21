@@ -1,0 +1,389 @@
+{
+  "type": "page",
+  "title": "编辑图表「${title || fullName}」",
+  "toolbar": [
+    {
+      "type": "service",
+      "name": "chart-editor-form-status",
+      "data": { "dirty": false, "submitting": false },
+      "body": [
+        {
+          "type": "button",
+          "label": "取消",
+          "onEvent": {
+            "click": {
+              "actions": [
+                {
+                  "actionType": "confirmDialog",
+                  "args": { "title": "确认", "msg": "确定要取消编辑吗？未保存的图表内容将会丢失！" },
+                  "expression": "${dirty}"
+                },
+                { "actionType": "closeCurrentTab" }
+              ]
+            }
+          }
+        },
+        {
+          "type": "button",
+          "label": "保存",
+          "level": "primary",
+          "icon": "fa fa-save",
+          "hotKey": "ctrl+s,command+s",
+          "disabledOn": "${!dirty || submitting}",
+          "loadingOn": "${submitting}",
+          "onEvent": {
+            "click": {
+              "actions": [
+                { "actionType": "validate", "componentName": "chartEditorForm" },
+                {
+                  "actionType": "setValue",
+                  "componentName": "chart-editor-form-status",
+                  "expression": "${!validateResult.error}",
+                  "args": { "value": { "submitting": true } }
+                },
+                {
+                  "actionType": "submit",
+                  "componentName": "chartEditorForm",
+                  "expression": "${!validateResult.error}"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "body": {
+    "type": "form",
+    "id": "chartEditorForm",
+    "name": "chartEditorForm",
+    "wrapWithPanel": false,
+    "initApi": { "method": "get", "url": "/api/dev/${appName}/chart/${fullName}" },
+    "api": {
+      "method": "put",
+      "url": "/api/dev/${appName}/chart/${fullName}",
+      "data": {
+        "type": "chart",
+        "name": "$name",
+        "title": "$title",
+        "description": "$description",
+        "tags": "${tags || []}",
+        "datasetName": "$datasetName",
+        "isEnabled": "$isEnabled",
+        "chartType": "$chartType",
+        "params": "$params"
+      },
+      "messages": { "success": "图表已保存" }
+    },
+    "onEvent": {
+      "inited": {
+        "actions": [
+          {
+            "actionType": "setValue",
+            "componentName": "chart-editor-form-status",
+            "args": { "value": { "dirty": false, "submitting": false } }
+          }
+        ]
+      },
+      "change": {
+        "actions": [
+          {
+            "actionType": "setValue",
+            "componentName": "chart-editor-form-status",
+            "args": { "value": { "dirty": true } }
+          },
+          {
+            "actionType": "publish",
+            "args": {
+              "eventName": "statisticsReporting.chartEditor.changed",
+              "eventData": { "chartName": "${name}" }
+            }
+          }
+        ]
+      },
+      "submitSucc": {
+        "actions": [
+          {
+            "actionType": "setValue",
+            "componentName": "chart-editor-form-status",
+            "args": { "value": { "dirty": false, "submitting": false } }
+          },
+          {
+            "actionType": "publish",
+            "args": {
+              "eventName": "statisticsReporting.chartEditor.saved",
+              "eventData": { "chartName": "${name}" }
+            }
+          },
+          { "actionType": "sendToOpenerTab", "args": { "msg": "${result.data || $$}" } },
+          {
+            "actionType": "updateTabTitle",
+            "args": { "title": "编辑图表「${(result.data && result.data.title) || title || name}」" }
+          }
+        ]
+      },
+      "submitFail": {
+        "actions": [
+          {
+            "actionType": "setValue",
+            "componentName": "chart-editor-form-status",
+            "args": { "value": { "submitting": false } }
+          }
+        ]
+      }
+    },
+    "actions": [],
+    "body": [
+      { "type": "hidden", "name": "type", "value": "chart" },
+      {
+        "type": "grid",
+        "className": "statistics-chart-editor-layout",
+        "columns": [
+          {
+            "md": 4,
+            "body": {
+              "type": "container",
+              "className": "statistics-chart-editor-controls",
+              "body": [
+              {
+                "type": "collapse",
+                "header": "基本信息",
+                "collapsed": true,
+                "mountOnEnter": false,
+                "unmountOnExit": false,
+                "className": "statistics-chart-editor-section statistics-chart-editor-metadata",
+                "body": [
+                  { "type": "input-text", "name": "name", "label": "名称", "required": true, "disabled": true },
+                  { "type": "input-text", "name": "title", "label": "标题", "required": true },
+                  { "type": "textarea", "name": "description", "label": "描述", "minRows": 2, "maxRows": 4 },
+                  { "type": "input-tag", "name": "tags", "label": "标签", "value": [], "clearable": true, "joinValues": false, "extractValue": true },
+                  { "type": "switch", "name": "isEnabled", "label": "启用", "value": true }
+                ]
+              },
+              {
+                "type": "collapse",
+                "header": "数据与字段",
+                "collapsed": false,
+                "mountOnEnter": false,
+                "unmountOnExit": false,
+                "className": "statistics-chart-editor-section statistics-chart-editor-data-fields",
+                "body": [
+                  {
+                    "type": "select",
+                    "name": "datasetName",
+                    "label": "数据集",
+                    "required": true,
+                    "source": { "method": "get", "url": "/api/dev/${appName}/dataset" },
+                    "labelField": "title",
+                    "valueField": "name",
+                    "searchable": true,
+                    "onEvent": {
+                      "change": {
+                        "actions": [
+                          { "actionType": "toast", "args": { "msgType": "info", "msg": "数据集已改变，请重新绑定图表字段" } },
+                          { "actionType": "setValue", "componentId": "chartEditorForm", "args": { "value": { "params": {} } } }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "type": "select",
+                    "name": "chartType",
+                    "label": "图表类型",
+                    "required": true,
+                    "onEvent": {
+                      "change": {
+                        "actions": [
+                          { "actionType": "toast", "args": { "msgType": "info", "msg": "图表类型已改变，请重新绑定类型所需字段" } },
+                          { "actionType": "setValue", "componentId": "chartEditorForm", "args": { "value": { "params": {} } } }
+                        ]
+                      }
+                    },
+                    "options": [
+                      { "label": "指标卡", "value": "metric-card" },
+                      { "label": "折线图", "value": "line" },
+                      { "label": "柱状图", "value": "bar" },
+                      { "label": "面积图", "value": "area" },
+                      { "label": "饼图", "value": "pie" },
+                      { "label": "环图", "value": "donut" },
+                      { "label": "散点图", "value": "scatter" },
+                      { "label": "桑基图", "value": "sankey" },
+                      { "label": "交叉表", "value": "crosstab" },
+                      { "label": "明细表", "value": "table" },
+                      { "label": "组合图", "value": "combo" }
+                    ]
+                  },
+                  {
+                    "type": "container",
+                    "visibleOn": "${chartType == 'line' || chartType == 'bar' || chartType == 'area'}",
+                    "body": [
+                      { "type": "select", "name": "params.xField", "label": "横轴字段", "required": true, "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=${chartType}&param=xField", "searchable": true },
+                      { "type": "select", "name": "params.yFields", "label": "数值字段", "required": true, "multiple": true, "joinValues": false, "extractValue": true, "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=${chartType}&param=yFields", "searchable": true },
+                      { "type": "select", "name": "params.seriesField", "label": "系列字段", "clearable": true, "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=${chartType}&param=seriesField", "searchable": true }
+                    ]
+                  },
+                  {
+                    "type": "container",
+                    "visibleOn": "${chartType == 'pie' || chartType == 'donut'}",
+                    "body": [
+                      { "type": "select", "name": "params.categoryField", "label": "分类字段", "required": true, "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=${chartType}&param=categoryField", "searchable": true },
+                      { "type": "select", "name": "params.valueField", "label": "数值字段", "required": true, "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=${chartType}&param=valueField", "searchable": true }
+                    ]
+                  },
+                  {
+                    "type": "container",
+                    "visibleOn": "${chartType == 'scatter'}",
+                    "body": [
+                      { "type": "select", "name": "params.xField", "label": "X 轴字段", "required": true, "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=scatter&param=xField", "searchable": true },
+                      { "type": "select", "name": "params.yField", "label": "Y 轴字段", "required": true, "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=scatter&param=yField", "searchable": true },
+                      { "type": "select", "name": "params.colorField", "label": "颜色分组字段", "clearable": true, "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=scatter&param=colorField", "searchable": true },
+                      { "type": "select", "name": "params.sizeField", "label": "气泡大小字段", "clearable": true, "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=scatter&param=sizeField", "searchable": true }
+                    ]
+                  },
+                  {
+                    "type": "container",
+                    "visibleOn": "${chartType == 'sankey'}",
+                    "body": [
+                      { "type": "select", "name": "params.sourceField", "label": "来源字段", "required": true, "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=sankey&param=sourceField", "searchable": true },
+                      { "type": "select", "name": "params.targetField", "label": "目标字段", "required": true, "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=sankey&param=targetField", "searchable": true },
+                      { "type": "select", "name": "params.valueField", "label": "流量字段", "required": true, "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=sankey&param=valueField", "searchable": true }
+                    ]
+                  },
+                  {
+                    "type": "select",
+                    "name": "params.valueFields",
+                    "label": "指标字段",
+                    "required": true,
+                    "multiple": true, "joinValues": false, "extractValue": true,
+                    "clearValueOnHidden": true, "visibleOn": "${chartType == 'metric-card'}",
+                    "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=metric-card&param=valueFields",
+                    "searchable": true
+                  },
+                  {
+                    "type": "container",
+                    "visibleOn": "${chartType == 'crosstab'}",
+                    "body": [
+                      { "type": "select", "name": "params.rowField", "label": "行字段", "required": true, "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=crosstab&param=rowField", "searchable": true },
+                      { "type": "select", "name": "params.columnField", "label": "列字段", "required": true, "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=crosstab&param=columnField", "searchable": true },
+                      { "type": "select", "name": "params.valueField", "label": "数值字段", "required": true, "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=crosstab&param=valueField", "searchable": true }
+                    ]
+                  },
+                  {
+                    "type": "select",
+                    "name": "params.columns",
+                    "label": "展示字段",
+                    "required": true,
+                    "multiple": true, "joinValues": false, "extractValue": true,
+                    "clearValueOnHidden": true, "visibleOn": "${chartType == 'table'}",
+                    "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=table&param=columns",
+                    "searchable": true
+                  },
+                  {
+                    "type": "container",
+                    "visibleOn": "${chartType == 'combo'}",
+                    "body": [
+                      { "type": "select", "name": "params.xField", "label": "横轴字段", "required": true, "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=combo&param=xField", "searchable": true },
+                      {
+                        "type": "input-table",
+                        "name": "params.series",
+                        "label": "系列",
+                        "required": true,
+                        "addable": true,
+                        "removable": true,
+                        "draggable": true,
+                        "needConfirm": false,
+                        "columns": [
+                          { "type": "select", "name": "type", "label": "类型", "required": true, "options": [{ "label": "折线", "value": "line" }, { "label": "柱状", "value": "bar" }, { "label": "面积", "value": "area" }] },
+                          { "type": "select", "name": "field", "label": "数值字段", "required": true, "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=combo&param=series.field", "searchable": true },
+                          { "type": "input-text", "name": "name", "label": "系列名称" },
+                          { "type": "select", "name": "yAxisIndex", "label": "数值轴", "value": 0, "options": [{ "label": "左轴", "value": 0 }, { "label": "右轴", "value": 1 }] },
+                          { "type": "switch", "name": "smooth", "label": "平滑 (仅折线/面积)", "value": false, "disabledOn": "${type == 'bar'}" },
+                          { "type": "switch", "name": "stacked", "label": "堆叠", "value": false }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "tabs",
+                "tabsMode": "line",
+                "tabs": [
+                  {
+                    "title": "呈现",
+                    "body": [
+                      { "type": "input-text", "name": "params.titleText", "label": "图表内标题" },
+                      { "type": "input-text", "name": "params.subtitleText", "label": "副标题", "clearValueOnHidden": true, "visibleOn": "${chartType != 'crosstab' && chartType != 'table'}" },
+                      { "type": "switch", "name": "params.showLegend", "label": "显示图例", "value": true, "clearValueOnHidden": true, "visibleOn": "${chartType == 'line' || chartType == 'bar' || chartType == 'area' || chartType == 'pie' || chartType == 'donut' || chartType == 'scatter' || chartType == 'combo'}" },
+                      { "type": "switch", "name": "params.showLabel", "label": "显示数据标签", "value": false, "clearValueOnHidden": true, "visibleOn": "${chartType == 'line' || chartType == 'bar' || chartType == 'area' || chartType == 'pie' || chartType == 'donut' || chartType == 'scatter' || chartType == 'combo'}" }
+                    ]
+                  },
+                  {
+                    "title": "图形",
+                    "body": [
+                      { "type": "input-text", "name": "params.xAxisName", "label": "X 轴名称", "clearValueOnHidden": true, "visibleOn": "${chartType == 'line' || chartType == 'bar' || chartType == 'area' || chartType == 'scatter' || chartType == 'combo'}" },
+                      { "type": "input-text", "name": "params.yAxisName", "label": "Y 轴名称", "clearValueOnHidden": true, "visibleOn": "${chartType == 'line' || chartType == 'bar' || chartType == 'area' || chartType == 'scatter' || chartType == 'combo'}" },
+                      { "type": "switch", "name": "params.smooth", "label": "平滑曲线", "value": false, "clearValueOnHidden": true, "visibleOn": "${chartType == 'line' || chartType == 'area'}" },
+                      { "type": "switch", "name": "params.stacked", "label": "堆叠展示", "value": false, "visibleOn": "${chartType == 'line' || chartType == 'bar' || chartType == 'area'}" },
+                      { "type": "input-text", "name": "params.radius", "label": "饼图半径", "visibleOn": "${chartType == 'pie' || chartType == 'donut'}" }
+                    ]
+                  },
+                  {
+                    "title": "排序",
+                    "body": [
+                      { "type": "select", "name": "params.sortField", "label": "排序字段", "clearable": true, "clearValueOnHidden": true, "visibleOn": "${chartType == 'line' || chartType == 'bar' || chartType == 'area' || chartType == 'pie' || chartType == 'donut' || chartType == 'combo'}", "source": "/api/dev/${appName}/chart/field-options/${datasetName}?chartType=${chartType}&param=sortField", "searchable": true },
+                      { "type": "select", "name": "params.sortOrder", "label": "排序方向", "value": "asc", "clearValueOnHidden": true, "visibleOn": "${chartType == 'line' || chartType == 'bar' || chartType == 'area' || chartType == 'pie' || chartType == 'donut' || chartType == 'combo'}", "options": [{ "label": "升序", "value": "asc" }, { "label": "降序", "value": "desc" }] },
+                      { "type": "input-number", "name": "params.limit", "label": "最多展示", "min": 1, "max": 1000, "step": 1, "clearValueOnHidden": true, "visibleOn": "${chartType != 'metric-card'}" }
+                    ]
+                  }
+                ]
+              }
+              ]
+            }
+          },
+          {
+            "md": 8,
+            "body": {
+              "type": "container",
+              "className": "statistics-chart-editor-canvas",
+              "body": {
+                "type": "container",
+                "className": "statistics-chart-editor-preview-shell",
+                "body": [
+                  { "type": "tpl", "tpl": "图表预览", "className": "statistics-chart-editor-preview-title" },
+                  {
+                    "type": "container",
+                    "className": "statistics-chart-editor-preview-body",
+                    "body": {
+                      "type": "chart-runtime",
+                      "visibleOn": "${!!datasetName && !!chartType && !!name}",
+                      "mode": "visualization",
+                      "api": {
+                        "method": "post",
+                        "url": "/api/dev/${appName}/chart/preview",
+                        "data": {
+                          "datasetName": "${datasetName}",
+                          "chart": {
+                            "type": "chart",
+                            "name": "$name",
+                            "title": "$title",
+                            "description": "$description",
+                            "tags": "${tags || []}",
+                            "datasetName": "$datasetName",
+                            "isEnabled": "$isEnabled",
+                            "chartType": "$chartType",
+                            "params": "$params"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

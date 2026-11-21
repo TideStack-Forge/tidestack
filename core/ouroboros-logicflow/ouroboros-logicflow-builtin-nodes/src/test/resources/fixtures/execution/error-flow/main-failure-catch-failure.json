@@ -1,0 +1,111 @@
+{
+  "name": "main-failure-catch-failure",
+  "description": "Main flow failure enters error flow and the error flow fails again",
+  "isEnabled": true,
+  "inputDataType": "string",
+  "outputDataType": "string",
+  "entryNode": "mainEntry",
+  "exitNode": "failingScript",
+  "errorEntryNode": "errorEntry",
+  "nodes": [
+    {
+      "name": "mainEntry",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    },
+    {
+      "name": "failingScript",
+      "type": "script",
+      "description": "",
+      "language": "groovy",
+      "script": "throw new RuntimeException('boom')",
+      "inputPorts": [
+        {
+          "name": "input",
+          "description": "",
+          "dataType": "string"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    },
+    {
+      "name": "errorEntry",
+      "type": "mutex",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "error",
+          "description": "",
+          "dataType": "any"
+        }
+      ]
+    },
+    {
+      "name": "errorHandler",
+      "type": "script",
+      "description": "",
+      "language": "groovy",
+      "script": "throw new RuntimeException('catch-boom:' + $0.nodeName)",
+      "inputPorts": [
+        {
+          "name": "error",
+          "description": "",
+          "dataType": "any"
+        }
+      ],
+      "outputPorts": [
+        {
+          "name": "output",
+          "description": "",
+          "dataType": "string"
+        }
+      ]
+    },
+    {
+      "name": "errorReturn",
+      "type": "return",
+      "description": "",
+      "inputPorts": [
+        {
+          "name": "value",
+          "description": "",
+          "dataType": "string"
+        }
+      ],
+      "outputPorts": []
+    }
+  ],
+  "connections": [
+    {
+      "sourceNode": "mainEntry",
+      "sourceOutputPort": 0,
+      "targetNode": "failingScript",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "errorEntry",
+      "sourceOutputPort": 0,
+      "targetNode": "errorHandler",
+      "targetInputPort": 0
+    },
+    {
+      "sourceNode": "errorHandler",
+      "sourceOutputPort": 0,
+      "targetNode": "errorReturn",
+      "targetInputPort": 0
+    }
+  ]
+}

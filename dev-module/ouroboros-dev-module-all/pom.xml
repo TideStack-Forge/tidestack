@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>dev-module</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>ouroboros-dev-module-all</artifactId>
+    <packaging>pom</packaging>
+
+    <dependencies>
+        <!-- 后端脚本与表达式上下文 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-dev-code-intelligence</artifactId>
+        </dependency>
+
+        <!-- 容器控制 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-dev-container-docker</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-dev-runtime-broker</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-dev-runtime-docker</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-dev-runtime-kubernetes</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-dev-runtime-gateway-apisix</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- 模块树管理 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-app-module-model-dev</artifactId>
+        </dependency>
+
+        <!-- 应用管理 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-dev-app-management</artifactId>
+        </dependency>
+
+        <!-- 项目生成器 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-dev-project-generation</artifactId>
+        </dependency>
+
+        <!-- 配置管理 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-configuration-dev</artifactId>
+        </dependency>
+
+        <!-- 字段类型管理 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-field-type-dev</artifactId>
+        </dependency>
+
+        <!-- 业务模型管理 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-business-model-dev</artifactId>
+        </dependency>
+
+        <!-- 数据模型管理 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-data-dev</artifactId>
+        </dependency>
+
+        <!-- 统计分析与综合查询管理 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-statistics-reporting-dev</artifactId>
+        </dependency>
+
+        <!-- UI模型管理 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-ui-model-dev</artifactId>
+        </dependency>
+
+        <!-- 微前端管理 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-ui-model-microweb-dev</artifactId>
+        </dependency>
+
+        <!-- UISchema模型管理 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-ui-model-schema-dev</artifactId>
+        </dependency>
+
+        <!-- 通知管理 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-notification-dev</artifactId>
+        </dependency>
+
+        <!-- 数据字典管理 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-data-dict-dev</artifactId>
+        </dependency>
+
+        <!-- 国际化文件管理 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-i18n-dev</artifactId>
+        </dependency>
+
+        <!-- 错误码与应用资源管理 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-error-code-dev</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-resource-dev</artifactId>
+        </dependency>
+
+        <!-- 逻辑流管理 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-logicflow-dev</artifactId>
+        </dependency>
+
+        <!-- 审批流设计 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-approval-workflow-dev</artifactId>
+        </dependency>
+
+        <!-- RPC模型管理 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-rpc-model-dev</artifactId>
+        </dependency>
+
+        <!-- WebAPI模型管理 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-webapi-model-dev</artifactId>
+        </dependency>
+
+        <!-- 消息队列 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-message-queue-dev</artifactId>
+        </dependency>
+
+        <!-- 计划任务 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-scheduler-dev</artifactId>
+        </dependency>
+
+        <!-- 业务日志模板 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-business-log-dev</artifactId>
+        </dependency>
+
+        <!-- 环境 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-dev-environment</artifactId>
+        </dependency>
+
+        <!-- 数据源 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-dev-datasource</artifactId>
+        </dependency>
+
+        <!-- 平台组件库 -->
+        <dependency>
+            <groupId>com.ouroboros</groupId>
+            <artifactId>ouroboros-dev-platform-component-lib</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

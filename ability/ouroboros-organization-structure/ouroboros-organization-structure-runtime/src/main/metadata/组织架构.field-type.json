@@ -1,0 +1,76 @@
+{
+  "name": "组织架构",
+  "label": "组织架构",
+  "order": 330,
+  "dataType": {
+    "type": "Organization",
+    "size": "20"
+  },
+  "ui": {
+    "input": {
+      "type": "organization-picker",
+      "multiple": false,
+      "showCompany": true,
+      "pickCompany": "${company}",
+      "showDepartment": "${department}",
+      "pickDepartment": "${department}",
+      "defaultCurrentCompany": "${company && defaultCurrentCompany}",
+      "defaultCurrentDepartment": "${department && defaultCurrentDepartment}"
+    }
+  },
+  "validations": {},
+  "paramsUiSchema": [
+    {
+      "type": "switch",
+      "name": "department",
+      "label": "部门",
+      "value": true,
+      "onEvent": {
+        "change": {
+          "actions": [
+            {
+              "actionType": "setValue",
+              "componentName": "company",
+              "args": {
+                "value": "${!value}"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "switch",
+      "name": "company",
+      "label": "公司",
+      "value": true,
+      "onEvent": {
+        "change": {
+          "actions": [
+            {
+              "actionType": "setValue",
+              "componentName": "department",
+              "args": {
+                "value": "${!value}"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "switch",
+      "name": "defaultCurrentCompany",
+      "label": "默认当前公司",
+      "value": false,
+      "visibleOn": "${company}"
+    },
+    {
+      "type": "switch",
+      "name": "defaultCurrentDepartment",
+      "label": "默认当前部门",
+      "value": false,
+      "visibleOn": "${department}"
+    }
+  ]
+}

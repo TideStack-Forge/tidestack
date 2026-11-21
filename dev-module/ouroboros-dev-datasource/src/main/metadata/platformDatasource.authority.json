@@ -1,0 +1,17 @@
+{
+  "fullName": "platformDatasource",
+  "title": "平台数据源管理",
+  "apis": [
+    "POST /api/platform-datasource",
+    "DELETE /api/platform-datasource/{id}",
+    "PUT /api/platform-datasource/{id}",
+    "GET /api/platform-datasource/{id}",
+    "GET /api/platform-datasource"
+  ],
+  "uiViews": [
+    "/platform-datasource"
+  ],
+  "menuItems": [
+    "platformDatasource"
+  ]
+}

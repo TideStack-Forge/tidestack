@@ -1,0 +1,30 @@
+# Ouroboros @Disabled 测试 Allowlist
+#
+# 格式：file_path	test_method	reason	issue	owner	exit_date
+#
+# 说明：
+# - file_path: 测试文件相对路径
+# - test_method: 测试方法名
+# - reason: 禁用原因说明
+# - issue: 关联 issue 链接
+# - owner: 负责修复的团队或个人
+# - exit_date: 计划修复日期（YYYY-MM-DD）
+#
+# Ratchet 策略：
+# - 此文件记录所有存量 @Disabled 测试
+# - 新代码不得引入新的 @Disabled 测试
+# - 每两周审查一次，尝试移除已修复的条目
+# - 只能减少，不能增加
+#
+# 当前基线：25 个 @Disabled 测试（7 个文件）
+# 最后更新：2026-04-13
+#
+file_path	test_method	reason	issue	owner	exit_date
+# 基线数据（集中在 core/ouroboros-data 测试）
+core/ouroboros-data/ouroboros-data-test/src/test/groovy/com/ouroboros/data/dsl/DesignOnlyFeatureTest.groovy	*	设计阶段功能测试	TBD	core/ouroboros-data	2026-06-30
+core/ouroboros-data/ouroboros-data-test/src/test/groovy/com/ouroboros/data/dsl/RelationOperatorIntegrationTest.groovy	*	关系操作符集成测试	TBD	core/ouroboros-data	2026-06-30
+core/ouroboros-data/ouroboros-data-test/src/test/groovy/com/ouroboros/data/dsl/UnionCteIntegrationTest.groovy	*	Union/CTE 集成测试	TBD	core/ouroboros-data	2026-06-30
+core/ouroboros-data/ouroboros-data-core/src/test/groovy/com/ouroboros/data/dsl/normalize/SubQueryNormalizeTest.groovy	*	子查询规范化测试	TBD	core/ouroboros-data	2026-06-30
+core/ouroboros-data/ouroboros-data-test/src/test/groovy/com/ouroboros/data/dsl/SubQueryIntegrationTest.groovy	*	子查询集成测试	TBD	core/ouroboros-data	2026-06-30
+core/ouroboros-data/ouroboros-data-test/src/test/groovy/com/ouroboros/data/dsl/DslGoldenCaseIntegrationTest.groovy	*	DSL 黄金用例测试	TBD	core/ouroboros-data	2026-06-30
+core/ouroboros-data/ouroboros-data-test/src/test/groovy/com/ouroboros/data/dsl/PairwiseCombinationIntegrationTest.groovy	*	成对组合测试	TBD	core/ouroboros-data	2026-06-30

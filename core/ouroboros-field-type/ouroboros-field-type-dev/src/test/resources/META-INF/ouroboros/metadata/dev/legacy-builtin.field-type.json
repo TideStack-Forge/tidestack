@@ -1,0 +1,10 @@
+{
+  "name": "legacyDevBuiltin",
+  "label": "Legacy Dev Builtin",
+  "paramsUiSchema": [
+    {
+      "name": "size",
+      "value": 12
+    }
+  ]
+}

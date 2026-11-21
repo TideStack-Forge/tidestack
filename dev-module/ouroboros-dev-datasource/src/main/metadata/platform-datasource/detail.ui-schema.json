@@ -1,0 +1,116 @@
+{
+  "name": "/platform-datasource/detail",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "static": true,
+    "wrapWithPanel": false,
+    "body": [
+      {
+        "type": "input-text",
+        "name": "name",
+        "label": "数据源名称",
+        "required": true,
+        "description": "唯一标识（英文）"
+      },
+      {
+        "type": "input-text",
+        "name": "title",
+        "label": "数据源标题",
+        "required": true
+      },
+      {
+        "type": "input-kvs",
+        "name": "definition",
+        "label": "数据源定义",
+        "required": true,
+        "keyItem": {
+          "label": "环境名称",
+          "type": "select",
+          "placeholder": "环境名称（dev/test/prod）",
+          "source": "/api/dev-environment",
+          "valueField": "name",
+          "labelField": "title",
+          "menuTpl": "${title} <span class='text-secondary'>(${name})</span>"
+        },
+        "valueItems": [
+          {
+            "type": "button-group-select",
+            "name": "type",
+            "label": "数据源类型",
+            "value": "jdbc",
+            "options": [
+              {
+                "label": "JDBC",
+                "value": "jdbc"
+              }
+            ],
+            "required": true
+          },
+          {
+            "type": "select",
+            "name": "driverClassName",
+            "label": "JDBC驱动",
+            "placeholder": "请选择驱动",
+            "menuTpl": "${label} <span class='text-secondary'>(${value})</span>",
+            "options": [
+              {
+                "label": "MySQL",
+                "value": "com.mysql.cj.jdbc.Driver"
+              },
+              {
+                "label": "Oracle",
+                "value": "oracle.jdbc.OracleDriver"
+              },
+              {
+                "label": "PostgreSQL",
+                "value": "org.postgresql.Driver"
+              },
+              {
+                "label": "KingbaseES / 人大金仓",
+                "value": "com.kingbase8.Driver"
+              },
+              {
+                "label": "SQLServer",
+                "value": "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+              }
+            ],
+            "required": true,
+            "clearable": true
+          },
+          {
+            "type": "input-text",
+            "name": "url",
+            "label": "URL",
+            "placeholder": "jdbc:mysql://host:3306/dbname",
+            "required": true
+          },
+          {
+            "type": "group",
+            "body": [
+              {
+                "type": "input-text",
+                "name": "username",
+                "required": true,
+                "label": "用户名"
+              },
+              {
+                "type": "input-password",
+                "name": "password",
+                "required": true,
+                "label": "密码"
+              }
+            ]
+          }
+        ],
+        "static": false,
+        "disabled": true
+      }
+    ],
+    "mode": "horizontal",
+    "initApi": {
+      "url": "/api/platform-datasource/${id}",
+      "method": "get"
+    }
+  }
+}

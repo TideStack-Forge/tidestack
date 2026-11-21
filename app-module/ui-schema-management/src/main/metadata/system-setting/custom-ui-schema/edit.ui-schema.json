@@ -1,0 +1,56 @@
+{
+  "name": "/system-setting/custom-ui-schema/edit",
+  "schema": {
+    "type": "form",
+    "initApi": "get:/api/sys/custom-ui-schema/${id}",
+    "title": false,
+    "mode": "horizontal",
+    "wrapperComponent": "div",
+    "className": "h-full flex flex-col",
+    "body": [
+      {
+        "type": "amis-editor",
+        "name": "schema",
+        "label": "",
+        "className": "flex-grow relative",
+        "required": true,
+        "value": {
+          "type": "page"
+        }
+      }
+    ],
+    "api": {
+      "method": "put",
+      "data": {
+        "schema": "${schema|toJson}",
+        "&": "$$"
+      },
+      "messages": {
+        "success": "保存成功"
+      },
+      "url": "/api/sys/custom-ui-schema/${id}"
+    },
+    "actions": [
+      {
+        "type": "button",
+        "label": "取消",
+        "actionType": "close"
+      },
+      {
+        "type": "button",
+        "label": "保存",
+        "level": "success",
+        "actionType": "submit",
+        "close": false,
+        "primary": true
+      },
+      {
+        "type": "button",
+        "label": "确定",
+        "actionType": "submit",
+        "level": "primary"
+      }
+    ],
+    "wrapWithPanel": false
+  }
+}

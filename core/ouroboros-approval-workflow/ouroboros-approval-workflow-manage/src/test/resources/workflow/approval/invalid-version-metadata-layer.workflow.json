@@ -1,0 +1,19 @@
+{
+  "formatVersion": 1,
+  "name": "invalid-version-metadata-layer",
+  "title": "无效版本预设",
+  "description": "Should be skipped because version is invalid",
+  "version": 0,
+  "enabled": true,
+  "form": {
+    "formType": "default",
+    "formId": "invalid-version-form"
+  },
+  "nodes": [
+    { "type": "发起节点", "name": "发起节点", "id": "start", "permission": [] },
+    { "type": "结束节点", "name": "结束", "id": "end" }
+  ],
+  "edges": [
+    { "id": "e1", "type": "SEQUENCE", "sourceId": "start", "targetId": "end" }
+  ]
+}

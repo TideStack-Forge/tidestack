@@ -1,0 +1,75 @@
+{
+  "name": "/system-setting/configuration-management/group-panel",
+  "schema": {
+    "type": "form",
+    "title": false,
+    "wrapWithPanel": false,
+    "className": "configuration-group-panel",
+    "api": {
+      "method": "put",
+      "url": "/api/sys/configuration",
+      "messages": {
+        "success": "配置已保存"
+      },
+      "requestAdaptor": "const flatten = groups => (Array.isArray(groups) ? groups : []).flatMap(group => [...(Array.isArray(group.items) ? group.items : []), ...flatten(group.childGroups)]);\nconst groups = [{ items: api.data.items, childGroups: api.data.childGroups }];\nconst mutations = flatten(groups).filter(item => item && item.key && item.modifiable !== false && !item.metadata?.managementEntry).filter(item => item.restoreDefault || (item.value !== undefined && item.value !== null && (!item.metadata?.managementAccessPolicyRequired || item.value !== ''))).map(item => item.restoreDefault ? { key: item.key, operation: 'RESTORE_DEFAULT', expectedRevision: item.revision } : { key: item.key, operation: 'SET', value: item.value, expectedRevision: item.revision });\nif (!mutations.length) throw new Error('没有可提交的修改；凭据留空会保留原值。');\nreturn { ...api, data: mutations };"
+    },
+    "body": [
+      {
+        "type": "container",
+        "style": {
+          "marginBottom": "24px"
+        },
+        "body": [
+          {
+            "type": "tpl",
+            "tpl": "<div style='font-size: 24px; font-weight: 600;'>${title}</div>"
+          },
+          {
+            "type": "tpl",
+            "visibleOn": "${description}",
+            "tpl": "<div style='margin-top: 8px; color: #595959;'>${description}</div>"
+          }
+        ]
+      },
+      {
+        "type": "ui-schema",
+        "schemaId": "/system-setting/configuration-management/group-section"
+      },
+      {
+        "type": "alert",
+        "level": "info",
+        "showIcon": true,
+        "visibleOn": "${(!childGroups || !childGroups.length) && (!items || !items.length)}",
+        "body": "当前分组还没有直属配置项。"
+      },
+      {
+        "type": "button-toolbar",
+        "style": {
+          "marginTop": "24px"
+        },
+        "visibleOn": "${(items && items.length) || (childGroups && childGroups.length)}",
+        "buttons": [
+          {
+            "type": "submit",
+            "label": "保存",
+            "level": "primary"
+          }
+        ]
+      }
+    ],
+    "onEvent": {
+      "submitSucc": {
+        "actions": [
+          {
+            "actionType": "reload",
+            "componentName": "configurationWorkbenchTree"
+          },
+          {
+            "actionType": "reload",
+            "componentId": "configurationWorkbenchGroupPanelService"
+          }
+        ]
+      }
+    }
+  }
+}

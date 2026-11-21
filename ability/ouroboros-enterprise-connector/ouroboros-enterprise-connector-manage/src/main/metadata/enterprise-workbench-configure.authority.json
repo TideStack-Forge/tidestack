@@ -1,0 +1,6 @@
+{
+  "fullName": "systemSetting.integrationManagement.connections.workbench.configure",
+  "title": "配置工作台入口",
+  "apis": ["GET /api/sys/enterprise-workbench/{connectionId}/entry-url"],
+  "menuItems": ["systemSetting.integrationManagement"]
+}

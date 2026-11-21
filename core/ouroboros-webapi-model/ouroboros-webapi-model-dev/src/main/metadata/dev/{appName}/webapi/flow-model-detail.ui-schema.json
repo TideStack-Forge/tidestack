@@ -1,0 +1,131 @@
+{
+  "name": "/dev/{appName}/webapi/flow-model-detail",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "className": "h-full relative overflow-y-hidden",
+    "initApi": {
+      "url": "/api/dev/${appName}/all-channel/logic-flow/${currentModel.logicFlowName}",
+      "method": "get",
+      "responseData": {
+        "flowModel": "$$"
+      }
+    },
+    "body": [
+      {
+        "type": "logic-flow-editor",
+        "id": "logicFlowEditor",
+        "className": "h-full",
+        "label": false,
+        "name": "flowModel",
+        "static": true,
+        "nodeDefineApi": "/api/dev/${appName}/logicflow/node-define"
+      }
+    ],
+    "actions": [
+      {
+        "visibleOn": "${currentModel.isChanged}",
+        "type": "button",
+        "level": "danger",
+        "label": "复原",
+        "icon": "fa fa-trash",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "confirmDialog",
+                "dialog": {
+                  "title": "系统提示",
+                  "msg": "您确认要复原"
+                }
+              },
+              {
+                "actionType": "ajax",
+                "api": {
+                  "method": "delete",
+                  "url": "/api/dev/${appName}/logic-flow/${currentModel.logicFlowName}"
+                }
+              },
+              {
+                "expression": "responseResult.responseStatus == 0",
+                "actionType": "closeDialog"
+              },
+              {
+                "actionType": "reload",
+                "componentName": "webapiList"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "button",
+        "label": "编辑",
+        "icon": "fa fa-edit",
+        "level": "primary",
+        "visibleOn": "${currentModel.isChanged}",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "openOrSwitchTab",
+                "args": {
+                  "title": "编辑逻辑流「${currentModel.logicFlowName}」",
+                  "url": "/dev/${appName}/logicflow-model/${currentModel.logicFlowName}",
+                  "reloadOnReceive": true
+                }
+              },
+              {
+                "actionType": "closeDialog"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "button",
+        "label": "克隆并编辑",
+        "icon": "fas fa-clone",
+        "level": "success",
+        "visibleOn": "${!currentModel.isChanged}",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "ajax",
+                "api": {
+                  "method": "post",
+                  "url": "/api/dev/${appName}/logic-flow",
+                  "data": "${flowModel}",
+                  "stopPropagation": "!this.event.data"
+                }
+              },
+              {
+                "expression": "responseResult.responseStatus == 0",
+                "actionType": "closeDialog"
+              },
+              {
+                "expression": "responseResult.responseStatus == 0",
+                "actionType": "openOrSwitchTab",
+                "args": {
+                  "title": "编辑逻辑流「${currentModel.logicFlowName}」",
+                  "url": "/dev/${appName}/logicflow-model/${currentModel.logicFlowName}",
+                  "reloadOnReceive": true
+                }
+              },
+              {
+                "actionType": "reload",
+                "componentName": "webapiList"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "type": "button",
+        "actionType": "close",
+        "label": "关闭"
+      }
+    ]
+  }
+}

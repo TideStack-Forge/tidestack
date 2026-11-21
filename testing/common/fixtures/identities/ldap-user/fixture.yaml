@@ -1,0 +1,43 @@
+{
+  "id": "identities/ldap-user",
+  "title": "LDAP User Identity",
+  "class": "identities",
+  "capabilities": [
+    "authenticated-user",
+    "directory-provider-user",
+    "ldap-success-path"
+  ],
+  "lifecycle": {
+    "up": "",
+    "check": "LDAP-backed login should succeed for a mapped directory user",
+    "reset": "",
+    "down": ""
+  },
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "identityKind",
+      "value": "ldap-user"
+    },
+    {
+      "name": "accountEnv",
+      "value": "OB_TEST_LDAP_USER_ACCOUNT"
+    },
+    {
+      "name": "passwordEnv",
+      "value": "OB_TEST_LDAP_USER_PASSWORD"
+    }
+  ],
+  "healthChecks": [
+    {
+      "name": "ldap-login-success",
+      "expect": "mapped LDAP user completes login flow successfully"
+    }
+  ],
+  "prerequisites": [
+    "Real LDAP account credentials are injected via environment or CI secret"
+  ],
+  "notes": [
+    "No loginPayload is embedded on purpose; credential material must stay external."
+  ]
+}

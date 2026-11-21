@@ -1,0 +1,23 @@
+[
+  {
+    "path": "security",
+    "title": "安全设置",
+    "icon": "shield",
+    "order": 10,
+    "description": "安全相关配置"
+  },
+  {
+    "path": "security.session",
+    "title": "会话",
+    "icon": "clock",
+    "order": 20,
+    "description": "基础说明"
+  },
+  {
+    "path": "security.auth",
+    "title": "认证",
+    "icon": "lock",
+    "order": 40,
+    "description": "认证相关配置"
+  }
+]

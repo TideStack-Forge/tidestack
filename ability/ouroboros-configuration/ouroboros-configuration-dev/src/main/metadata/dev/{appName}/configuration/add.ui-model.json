@@ -1,0 +1,5 @@
+{
+  "path": "/dev/{appName}/configuration/add",
+  "type": "amis",
+  "title": "新增配置项定义"
+}

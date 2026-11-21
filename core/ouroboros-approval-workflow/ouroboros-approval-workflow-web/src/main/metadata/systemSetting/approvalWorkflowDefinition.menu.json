@@ -1,0 +1,7 @@
+{
+  "url": "/system-setting/approval-workflow-definition",
+  "fullName": "systemSetting.approvalWorkflowDefinition",
+  "title": "审批流",
+  "icon": "icon-approval-workflow",
+  "order": 100
+}

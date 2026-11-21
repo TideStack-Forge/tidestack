@@ -1,0 +1,7 @@
+{
+  "fullName": "systemSetting.logicflow.reload",
+  "title": "重新加载逻辑流",
+  "apis": [
+    "POST /api/runtime/logicflows/apply"
+  ]
+}

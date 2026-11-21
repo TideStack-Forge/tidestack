@@ -1,0 +1,194 @@
+{
+  "name": "/dev/container-control-buttons",
+  "schema": {
+    "type": "service",
+    "name": "containerControlButtons",
+    "api": "/api/app/container/${appName}/status",
+    "initFetchOn": "${appName}",
+    "stomp": "/user/queue/app/${appName}/status",
+    "showErrorMsg": false,
+    "body": [
+      {
+        "type": "flex",
+        "justify": "space-between",
+        "alignItems": "center",
+        "className": "h-full",
+        "items": [
+          {
+            "type": "flex",
+            "alignItems": "center",
+            "items": [
+              {
+                "type": "service",
+                "name": "consoleInit",
+                "body": [
+                  {
+                    "type": "button-group",
+                    "buttons": [
+                      {
+                        "type": "button",
+                        "label": "创建运行容器",
+                        "icon": "fa-solid fa-asterisk",
+                        "disabledOn": "${status == 'launching'}",
+                        "level": "primary",
+                        "visibleOn": "${status == 'notFound'}",
+                        "actionType": "dialog",
+                        "dialog": {
+                          "title": "创建运行容器",
+                          "size": "lg",
+                          "url": "/dev/container/create"
+                        }
+                      },
+                      {
+                        "type": "button",
+                        "label": "",
+                        "tooltip": "打开应用页面",
+                        "disabledOn": "${status == 'launching' || status == 'stopped' || !webEndpoint}",
+                        "visibleOn": "${status !== 'notFound'}",
+                        "icon": "fa-solid fa-up-right-from-square",
+                        "className": "text-info",
+                        "actionType": "url",
+                        "url": "${webEndpoint}",
+                        "blank": true
+                      },
+                      {
+                        "type": "button",
+                        "label": "",
+                        "tooltip": "启动应用",
+                        "icon": "fa-solid fa-play",
+                        "className": "text-success",
+                        "visibleOn": "${status == 'stopped'}",
+                        "actionType": "ajax",
+                        "api": {
+                          "method": "post",
+                          "url": "/api/app/container/${containerId}/start"
+                        }
+                      },
+                      {
+                        "type": "button",
+                        "label": "",
+                        "tooltip": "恢复应用",
+                        "icon": "fa-solid fa-play",
+                        "className": "text-success",
+                        "visibleOn": "${status === 'paused'}",
+                        "actionType": "ajax",
+                        "api": {
+                          "method": "post",
+                          "url": "/api/app/container/${containerId}/unpause"
+                        }
+                      },
+                      {
+                        "type": "button",
+                        "label": "",
+                        "tooltip": "停止应用",
+                        "icon": "fa-solid fa-power-off",
+                        "className": "text-danger",
+                        "disabledOn": "${status == 'launching'}",
+                        "visibleOn": "${status == 'running' || status == 'launching'}",
+                        "actionType": "ajax",
+                        "api": {
+                          "method": "post",
+                          "url": "/api/app/container/${containerId}/kill"
+                        }
+                      },
+                      {
+                        "type": "button",
+                        "label": "",
+                        "tooltip": "热刷新应用",
+                        "icon": "fa-solid fa-arrows-rotate",
+                        "className": "text-success",
+                        "visibleOn": "${status !== 'notFound'}",
+                        "disabledOn": "${status == 'launching' || status == 'stopped'}",
+                        "actionType": "ajax",
+                        "api": "post:/api/app/container/${containerId}/reload"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "dropdown-button",
+                    "level": "link",
+                    "icon": "fa fa-ellipsis-v",
+                    "hideCaret": true,
+                    "menuClassName": "container-dropDown",
+                    "btnClassName": "text-gray-900 pr-0 pl-2",
+                    "align": "left",
+                    "trigger": "click",
+                    "hiddenOn": "${status === 'notFound'}",
+                    "buttons": [
+                      {
+                        "type": "action",
+                        "label": "重启",
+                        "icon": "fa fa-repeat text-success",
+                        "iconClassName": "w-4",
+                        "disabledOn": "${status == 'launching'}",
+                        "actionType": "ajax",
+                        "confirmText": "确定要重启吗？",
+                        "api": {
+                          "method": "post",
+                          "url": "/api/app/container/${containerId}/restart"
+                        }
+                      },
+                      {
+                        "type": "action",
+                        "label": "停止并删除容器",
+                        "icon": "fa fa-trash text-danger",
+                        "iconClassName": "w-4",
+                        "disabledOn": "${status == 'launching'}",
+                        "actionType": "ajax",
+                        "confirmText": "确定要停止并删除该容器吗？",
+                        "api": {
+                          "method": "delete",
+                          "url": "/api/app/container/${containerId}"
+                        }
+                      },
+                      {
+                        "type": "button",
+                        "label": "更新镜像",
+                        "icon": "fa-solid fa-anchor-circle-exclamation",
+                        "iconClassName": "w-4",
+                        "visibleOn": "${status !== 'notFound' && imageState && imageState.updateRecommended}",
+                        "disabledOn": "${status == 'launching'}",
+                        "actionType": "ajax",
+                        "api": "post:/api/app/container/${containerId}/update-image"
+                      },
+                      {
+                        "type": "button",
+                        "icon": "fa fa-info-circle",
+                        "iconClassName": "w-4",
+                        "label": "${TRUNCATE(imageState.reference,18)}",
+                        "visibleOn": "${imageState && imageState.reference}",
+                        "disabledTip": "${imageState && LEN(imageState.reference) > 18 ? imageState.reference : ''}",
+                        "disabled": true
+                      }
+                    ]
+                  },
+                  {
+                    "type": "tpl",
+                    "tpl": "容器状态异常",
+                    "className": "text-warning",
+                    "visibleOn": "${status == 'unknown'}"
+                  }
+                ],
+                "dsType": "api"
+              },
+              {
+                "type": "tooltip-wrapper",
+                "content": "基座镜像已过期，请更新镜像",
+                "placement": "bottom",
+                "className": "ml-3 image-version",
+                "visibleOn": "${status !== 'notFound' && imageState && imageState.updateRecommended}",
+                "body": [
+                  {
+                    "type": "icon",
+                    "icon": "danger-solid-info",
+                    "className": "w-5 text-danger"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

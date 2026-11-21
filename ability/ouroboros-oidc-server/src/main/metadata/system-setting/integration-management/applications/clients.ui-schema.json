@@ -1,0 +1,682 @@
+{
+  "name": "/system-setting/integration-management/applications/clients",
+  "schema": {
+    "type": "container",
+    "body": {
+      "type": "crud",
+      "name": "auth-clients-list",
+      "syncLocation": false,
+      "api": {
+        "url": "/api/sys/auth-clients",
+        "method": "get",
+        "adaptor": "const data = payload.data || {}; return { ...payload, data: { ...data, items: (data.clients || []).map(client => ({ ...client, registrationSource: client.registration?.source || 'MANUAL', registeredAt: client.registration?.createdAt, expectedRevision: data.revision, canManageSecurity: data.canCreate })) } };"
+      },
+      "headerToolbar": [
+        {
+          "type": "button",
+          "label": "新增应用",
+          "level": "primary",
+          "visibleOn": "${canCreate}",
+          "actionType": "dialog",
+          "dialog": {
+            "title": "新增接入应用",
+            "size": "lg",
+            "body": {
+              "type": "form",
+              "id": "auth-client-form",
+              "wrapWithPanel": false,
+              "persistData": false,
+              "data": {
+                "creating": true,
+                "expectedRevision": "${revision}",
+                "clientType": "CONFIDENTIAL",
+                "enabled": true,
+                "canManageSecurity": true,
+                "oidc": {
+                  "enabled": true,
+                  "scopes": [
+                    "openid",
+                    "profile",
+                    "email"
+                  ],
+                  "postLogoutRedirectUris": []
+                },
+                "apiAuthorization": {
+                  "enabled": false,
+                  "allowedBoundary": {
+                    "permissions": []
+                  }
+                },
+                "consentPolicy": {
+                  "mode": "EXPLICIT"
+                },
+                "introspectionResources": []
+              },
+              "body": [
+                {
+                  "type": "tabs",
+                  "tabs": [
+                    {
+                      "title": "基本信息",
+                      "body": [
+                        {
+                          "type": "input-text",
+                          "name": "clientId",
+                          "label": "客户端标识",
+                          "required": true,
+                          "disabledOn": "${!creating}",
+                          "maxLength": 128
+                        },
+                        {
+                          "type": "input-text",
+                          "name": "clientName",
+                          "label": "应用名称",
+                          "required": true,
+                          "maxLength": 200,
+                          "disabledOn": "${!canManageSecurity && (!writableFields || writableFields.indexOf('clientName') < 0)}"
+                        },
+                        {
+                          "type": "switch",
+                          "name": "enabled",
+                          "label": "启用应用",
+                          "disabledOn": "${!canManageSecurity}"
+                        },
+                        {
+                          "type": "select",
+                          "name": "clientType",
+                          "label": "客户端类型",
+                          "options": [
+                            {
+                              "label": "机密客户端",
+                              "value": "CONFIDENTIAL"
+                            },
+                            {
+                              "label": "公共客户端",
+                              "value": "PUBLIC"
+                            }
+                          ],
+                          "disabledOn": "${!canManageSecurity}",
+                          "required": true
+                        },
+                        {
+                          "type": "checkboxes",
+                          "name": "grantTypes",
+                          "label": "授权方式",
+                          "joinValues": false,
+                          "extractValue": true,
+                          "disabledOn": "${!canManageSecurity}",
+                          "options": [
+                            {
+                              "label": "授权码",
+                              "value": "authorization_code"
+                            },
+                            {
+                              "label": "刷新令牌",
+                              "value": "refresh_token"
+                            }
+                          ],
+                          "description": "旧应用未配置时沿用原规则：公共客户端仅授权码，机密客户端同时允许刷新。"
+                        },
+                        {
+                          "type": "input-group",
+                          "label": "客户端密钥",
+                          "visibleOn": "${clientType === 'CONFIDENTIAL' && canManageSecurity}",
+                          "description": "已保存的密钥不回显；留空保留现有密钥。新密钥保存后生效。",
+                          "body": [
+                            {
+                              "type": "input-password",
+                              "name": "newClientSecret",
+                              "showReveal": true
+                            },
+                            {
+                              "type": "button",
+                              "label": "重新生成",
+                              "level": "default",
+                              "onEvent": {
+                                "click": {
+                                  "actions": [
+                                    {
+                                      "actionType": "ajax",
+                                      "api": {
+                                        "url": "/api/sys/auth-clients/${clientId || \"new\"}/secret/generate",
+                                        "method": "post"
+                                      }
+                                    },
+                                    {
+                                      "actionType": "setValue",
+                                      "componentId": "auth-client-form",
+                                      "args": {
+                                        "value": {
+                                          "newClientSecret": "${event.data.responseData.clientSecret}"
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "input-tag",
+                          "name": "redirectUris",
+                          "label": "登录回调地址",
+                          "multiple": true,
+                          "joinValues": false,
+                          "extractValue": true,
+                          "required": true,
+                          "disabledOn": "${!canManageSecurity}"
+                        },
+                        {
+                          "type": "switch",
+                          "name": "oidc.enabled",
+                          "label": "OIDC 身份认证",
+                          "disabledOn": "${!canManageSecurity}"
+                        },
+                        {
+                          "type": "switch",
+                          "name": "apiAuthorization.enabled",
+                          "label": "允许访问平台 API",
+                          "disabledOn": "${!canManageSecurity}"
+                        },
+                        {
+                          "type": "select",
+                          "name": "consentPolicy.mode",
+                          "label": "用户确认方式",
+                          "options": [
+                            {
+                              "label": "用户逐次确认",
+                              "value": "EXPLICIT"
+                            },
+                            {
+                              "label": "管理员预批准",
+                              "value": "ADMIN_APPROVED"
+                            }
+                          ],
+                          "disabledOn": "${!canManageSecurity}",
+                          "required": true
+                        },
+                        {
+                          "type": "input-tag",
+                          "name": "introspectionResources",
+                          "label": "可内省资源",
+                          "joinValues": false,
+                          "extractValue": true,
+                          "disabledOn": "${!canManageSecurity || clientType !== \"CONFIDENTIAL\"}",
+                          "description": "仅安全管理员可分配；留空表示不允许查询令牌状态。平台业务资源为 platform-api。"
+                        }
+                      ]
+                    },
+                    {
+                      "title": "OIDC 身份认证",
+                      "visibleOn": "${oidc.enabled}",
+                      "body": [
+                        {
+                          "type": "checkboxes",
+                          "name": "oidc.scopes",
+                          "label": "身份范围",
+                          "joinValues": false,
+                          "extractValue": true,
+                          "disabledOn": "${!canManageSecurity && (!writableFields || writableFields.indexOf('oidc.scopes') < 0)}",
+                          "options": [
+                            {
+                              "label": "基本身份",
+                              "value": "openid"
+                            },
+                            {
+                              "label": "个人资料",
+                              "value": "profile"
+                            },
+                            {
+                              "label": "电子邮箱",
+                              "value": "email"
+                            },
+                            {
+                              "label": "手机号码",
+                              "value": "phone"
+                            },
+                            {
+                              "label": "持续访问",
+                              "value": "offline_access"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "input-tag",
+                          "name": "oidc.postLogoutRedirectUris",
+                          "label": "退出回调地址",
+                          "joinValues": false,
+                          "extractValue": true,
+                          "disabledOn": "${!canManageSecurity}"
+                        }
+                      ]
+                    },
+                    {
+                      "title": "平台 API 权限",
+                      "visibleOn": "${apiAuthorization.enabled}",
+                      "body": [
+                        {
+                          "type": "select",
+                          "name": "apiAuthorization.allowedBoundary.permissions",
+                          "label": "可授权权限",
+                          "multiple": true,
+                          "searchable": true,
+                          "joinValues": false,
+                          "extractValue": true,
+                          "disabledOn": "${!canManageSecurity && (!writableFields || writableFields.indexOf('apiAuthorization.allowedBoundary.permissions') < 0)}",
+                          "source": {
+                            "url": "/api/sys/auth-clients/permissions?clientId=${clientId}",
+                            "method": "get"
+                          }
+                        },
+                        {
+                          "type": "alert",
+                          "level": "info",
+                          "body": "用户确认时，业务功能作为一组授权。实际权限同时受用户角色和本次授权范围约束。"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "api": {
+                "url": "/api/sys/auth-clients",
+                "method": "post",
+                "data": {
+                  "expectedRevision": "${expectedRevision}",
+                  "client": {
+                    "clientId": "${clientId}",
+                    "clientName": "${clientName}",
+                    "clientType": "${clientType}",
+                    "enabled": "${enabled}",
+                    "redirectUris": "${redirectUris}",
+                    "oidc": "${oidc}",
+                    "apiAuthorization": "${apiAuthorization}",
+                    "consentPolicy": "${consentPolicy}"
+                  },
+                  "newClientSecret": "${newClientSecret}",
+                  "grantTypes": "${grantTypes}"
+                },
+                "requestAdaptor": "const data = {...api.data}; const key = data.client ? 'client' : 'changes'; data[key] = {...data[key]}; if (Array.isArray(data.grantTypes) && data.grantTypes.length) data[key].grantTypes = data.grantTypes; delete data.grantTypes; return {...api, data};"
+              },
+              "reload": "auth-clients-list",
+              "initApi": {
+                "url": "/api/sys/auth-clients/new/secret/generate",
+                "method": "post",
+                "responseData": {
+                  "newClientSecret": "${clientSecret}"
+                }
+              }
+            }
+          }
+        },
+        "reload"
+      ],
+      "columns": [
+        {
+          "name": "clientName",
+          "label": "应用名称"
+        },
+        {
+          "name": "clientId",
+          "label": "客户端标识"
+        },
+        {
+          "name": "registrationSource",
+          "label": "注册来源",
+          "type": "mapping",
+          "map": {
+            "MANUAL": "手工配置",
+            "DCR_OPEN": "开放注册",
+            "DCR_INITIAL_ACCESS_TOKEN": "凭证注册"
+          }
+        },
+        {
+          "name": "registeredAt",
+          "label": "注册时间",
+          "type": "datetime",
+          "placeholder": "—"
+        },
+        {
+          "name": "enabled",
+          "label": "启用",
+          "type": "status"
+        },
+        {
+          "name": "oidc.enabled",
+          "label": "身份认证",
+          "type": "status"
+        },
+        {
+          "name": "apiAuthorization.enabled",
+          "label": "平台 API",
+          "type": "status"
+        },
+        {
+          "type": "operation",
+          "label": "操作",
+          "buttons": [
+            {
+              "type": "button",
+              "label": "配置",
+              "level": "link",
+              "actionType": "dialog",
+              "dialog": {
+                "title": "配置接入应用",
+                "size": "lg",
+                "body": {
+                  "type": "form",
+                  "id": "auth-client-form",
+                  "wrapWithPanel": false,
+                  "persistData": false,
+                  "data": {
+                    "creating": false
+                  },
+                  "body": [
+                    {
+                      "type": "tabs",
+                      "tabs": [
+                        {
+                          "title": "基本信息",
+                          "body": [
+                            {
+                              "type": "input-text",
+                              "name": "clientId",
+                              "label": "客户端标识",
+                              "required": true,
+                              "disabledOn": "${!creating}",
+                              "maxLength": 128
+                            },
+                            {
+                              "type": "input-text",
+                              "name": "clientName",
+                              "label": "应用名称",
+                              "required": true,
+                              "maxLength": 200,
+                              "disabledOn": "${!canManageSecurity && (!writableFields || writableFields.indexOf('clientName') < 0)}"
+                            },
+                            {
+                              "type": "switch",
+                              "name": "enabled",
+                              "label": "启用应用",
+                              "disabledOn": "${!canManageSecurity}"
+                            },
+                            {
+                              "type": "select",
+                              "name": "clientType",
+                              "label": "客户端类型",
+                              "options": [
+                                {
+                                  "label": "机密客户端",
+                                  "value": "CONFIDENTIAL"
+                                },
+                                {
+                                  "label": "公共客户端",
+                                  "value": "PUBLIC"
+                                }
+                              ],
+                              "disabledOn": "${!canManageSecurity}",
+                              "required": true
+                            },
+                            {
+                              "type": "checkboxes",
+                              "name": "grantTypes",
+                              "label": "授权方式",
+                              "joinValues": false,
+                              "extractValue": true,
+                              "disabledOn": "${!canManageSecurity}",
+                              "options": [
+                                {
+                                  "label": "授权码",
+                                  "value": "authorization_code"
+                                },
+                                {
+                                  "label": "刷新令牌",
+                                  "value": "refresh_token"
+                                }
+                              ],
+                              "description": "旧应用未配置时沿用原规则：公共客户端仅授权码，机密客户端同时允许刷新。"
+                            },
+                            {
+                              "type": "input-group",
+                              "label": "客户端密钥",
+                              "visibleOn": "${clientType === 'CONFIDENTIAL' && canManageSecurity}",
+                              "description": "已保存的密钥不回显；留空保留现有密钥。新密钥保存后生效。",
+                              "body": [
+                                {
+                                  "type": "input-password",
+                                  "name": "newClientSecret",
+                                  "showReveal": true
+                                },
+                                {
+                                  "type": "button",
+                                  "label": "重新生成",
+                                  "level": "default",
+                                  "onEvent": {
+                                    "click": {
+                                      "actions": [
+                                        {
+                                          "actionType": "ajax",
+                                          "api": {
+                                            "url": "/api/sys/auth-clients/${clientId || \"new\"}/secret/generate",
+                                            "method": "post"
+                                          }
+                                        },
+                                        {
+                                          "actionType": "setValue",
+                                          "componentId": "auth-client-form",
+                                          "args": {
+                                            "value": {
+                                              "newClientSecret": "${event.data.responseData.clientSecret}"
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "input-tag",
+                              "name": "redirectUris",
+                              "label": "登录回调地址",
+                              "multiple": true,
+                              "joinValues": false,
+                              "extractValue": true,
+                              "required": true,
+                              "disabledOn": "${!canManageSecurity}"
+                            },
+                            {
+                              "type": "switch",
+                              "name": "oidc.enabled",
+                              "label": "OIDC 身份认证",
+                              "disabledOn": "${!canManageSecurity}"
+                            },
+                            {
+                              "type": "switch",
+                              "name": "apiAuthorization.enabled",
+                              "label": "允许访问平台 API",
+                              "disabledOn": "${!canManageSecurity}"
+                            },
+                            {
+                              "type": "select",
+                              "name": "consentPolicy.mode",
+                              "label": "用户确认方式",
+                              "options": [
+                                {
+                                  "label": "用户逐次确认",
+                                  "value": "EXPLICIT"
+                                },
+                                {
+                                  "label": "管理员预批准",
+                                  "value": "ADMIN_APPROVED"
+                                }
+                              ],
+                              "disabledOn": "${!canManageSecurity}",
+                              "required": true
+                            },
+                            {
+                              "type": "input-tag",
+                              "name": "introspectionResources",
+                              "label": "可内省资源",
+                              "joinValues": false,
+                              "extractValue": true,
+                              "disabledOn": "${!canManageSecurity || clientType !== \"CONFIDENTIAL\"}",
+                              "description": "仅安全管理员可分配；留空表示不允许查询令牌状态。平台业务资源为 platform-api。"
+                            }
+                          ]
+                        },
+                        {
+                          "title": "OIDC 身份认证",
+                          "visibleOn": "${oidc.enabled}",
+                          "body": [
+                            {
+                              "type": "checkboxes",
+                              "name": "oidc.scopes",
+                              "label": "身份范围",
+                              "joinValues": false,
+                              "extractValue": true,
+                              "disabledOn": "${!canManageSecurity && (!writableFields || writableFields.indexOf('oidc.scopes') < 0)}",
+                              "options": [
+                                {
+                                  "label": "基本身份",
+                                  "value": "openid"
+                                },
+                                {
+                                  "label": "个人资料",
+                                  "value": "profile"
+                                },
+                                {
+                                  "label": "电子邮箱",
+                                  "value": "email"
+                                },
+                                {
+                                  "label": "手机号码",
+                                  "value": "phone"
+                                },
+                                {
+                                  "label": "持续访问",
+                                  "value": "offline_access"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "input-tag",
+                              "name": "oidc.postLogoutRedirectUris",
+                              "label": "退出回调地址",
+                              "joinValues": false,
+                              "extractValue": true,
+                              "disabledOn": "${!canManageSecurity}"
+                            }
+                          ]
+                        },
+                        {
+                          "title": "平台 API 权限",
+                          "visibleOn": "${apiAuthorization.enabled}",
+                          "body": [
+                            {
+                              "type": "select",
+                              "name": "apiAuthorization.allowedBoundary.permissions",
+                              "label": "可授权权限",
+                              "multiple": true,
+                              "searchable": true,
+                              "joinValues": false,
+                              "extractValue": true,
+                              "disabledOn": "${!canManageSecurity && (!writableFields || writableFields.indexOf('apiAuthorization.allowedBoundary.permissions') < 0)}",
+                              "source": {
+                                "url": "/api/sys/auth-clients/permissions?clientId=${clientId}",
+                                "method": "get"
+                              }
+                            },
+                            {
+                              "type": "alert",
+                              "level": "info",
+                              "body": "用户确认时，业务功能作为一组授权。实际权限同时受用户角色和本次授权范围约束。"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "api": {
+                    "url": "/api/sys/auth-clients/${clientId}",
+                    "method": "patch",
+                    "data": {
+                      "expectedRevision": "${expectedRevision}",
+                      "changes": {
+                        "clientName": "${clientName}",
+                        "clientType": "${clientType}",
+                        "enabled": "${enabled}",
+                        "redirectUris": "${redirectUris}",
+                        "oidc": "${oidc}",
+                        "apiAuthorization": "${apiAuthorization}",
+                        "consentPolicy": "${consentPolicy}",
+                        "introspectionResources": "${introspectionResources || []}"
+                      },
+                      "newClientSecret": "${newClientSecret}",
+                      "grantTypes": "${grantTypes}"
+                    },
+                    "requestAdaptor": "const data = {...api.data}; const key = data.client ? 'client' : 'changes'; data[key] = {...data[key]}; if (Array.isArray(data.grantTypes) && data.grantTypes.length) data[key].grantTypes = data.grantTypes; delete data.grantTypes; return {...api, data};"
+                  },
+                  "reload": "auth-clients-list",
+                  "initApi": {
+                    "url": "/api/sys/auth-clients/${clientId}",
+                    "method": "get",
+                    "responseData": {
+                      "&": "${client}",
+                      "expectedRevision": "${revision}",
+                      "canManageSecurity": "${canManageSecurity}",
+                      "writableFields": "${writableFields}"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "type": "button",
+              "label": "删除",
+              "level": "link",
+              "visibleOn": "${canManageSecurity}",
+              "actionType": "ajax",
+              "confirmText": "删除此接入应用并使其后续授权失效？",
+              "api": {
+                "url": "/api/sys/auth-clients/${clientId}",
+                "method": "delete",
+                "data": {
+                  "expectedRevision": "${expectedRevision}"
+                }
+              },
+              "reload": "auth-clients-list"
+            }
+          ]
+        }
+      ],
+      "filter": {
+        "title": "筛选应用",
+        "body": [
+          {
+            "type": "select",
+            "name": "source",
+            "label": "注册来源",
+            "clearable": true,
+            "options": [
+              {
+                "label": "手工配置",
+                "value": "MANUAL"
+              },
+              {
+                "label": "开放注册",
+                "value": "DCR_OPEN"
+              },
+              {
+                "label": "凭证注册",
+                "value": "DCR_INITIAL_ACCESS_TOKEN"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "多文件",
+  "label": "文件（多选）",
+  "order": 132,
+  "dataType": {
+    "type": "UploadFiles"
+  },
+  "ui": {
+    "input": {
+      "type": "input-file",
+      "receiver": {
+        "method": "POST",
+        "url": "/api/upload/file",
+        "headers": {
+          "dirCode": "${dirCode}"
+        }
+      },
+      "accept": "${accept}",
+      "multiple": true,
+      "joinValues": false,
+      "extractValue": false
+    }
+  },
+  "paramsUiSchema": [
+    {
+      "type": "input-text",
+      "name": "accept",
+      "label": "文件类型",
+      "description": "例如：.txt,.zip"
+    },
+    {
+      "type": "input-text",
+      "name": "dirCode",
+      "label": "目录编码",
+      "description": "文件存储目录编码",
+      "required": true
+    }
+  ]
+}

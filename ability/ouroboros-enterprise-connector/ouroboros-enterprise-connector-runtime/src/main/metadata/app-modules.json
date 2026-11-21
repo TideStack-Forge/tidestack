@@ -1,0 +1,15 @@
+[
+  {
+    "fullName": "systemSetting.integrationManagement.connections.enterprise",
+    "title": "企业连接",
+    "parent": "systemSetting.integrationManagement.connections",
+    "order": 5,
+    "authorities": [
+      "systemSetting.integrationManagement.connections.enterprise.view",
+      "systemSetting.integrationManagement.connections.enterprise.configure",
+      "systemSetting.integrationManagement.connections.enterprise.rotate",
+      "systemSetting.integrationManagement.connections.enterprise.disable",
+      "systemSetting.integrationManagement.connections.enterprise.verify"
+    ]
+  }
+]

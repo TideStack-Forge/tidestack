@@ -1,0 +1,55 @@
+{
+  "id": "statistics-reporting/runtime-query-and-bi",
+  "title": "Statistics Reporting Runtime Dataset Chart And Dashboard Regression",
+  "domain": "statistics-reporting",
+  "testType": "integration",
+  "suite": "regression",
+  "risk": "p0",
+  "modes": [
+    "harness",
+    "e2e"
+  ],
+  "fixtures": {
+    "services": [],
+    "runtimes": [
+      "develop",
+      "mothership"
+    ],
+    "frontends": [
+      "develop-shell",
+      "runtime-shell"
+    ],
+    "data": [
+      "app-metadata-root",
+      "statistics-reporting-runtime-seed"
+    ],
+    "identities": [
+      "admin",
+      "permission-boundary-user"
+    ]
+  },
+  "entrypoints": {
+    "backendBaseUrlEnv": "OB_TEST_BASE_URL",
+    "appBackendBaseUrlEnv": "OB_TEST_APP_BASE_URL",
+    "frontendBaseUrlEnv": "OB_TEST_FRONTEND_BASE_URL",
+    "runtimeFrontendBaseUrlEnv": "OB_TEST_RUNTIME_FRONTEND_BASE_URL"
+  },
+  "caseTable": "cases.md",
+  "artifacts": {
+    "contract": "contract.md",
+    "harness": "harness.playbook.md",
+    "e2e": "testing/e2e/regression/statistics-reporting/runtime-query-and-bi/e2e.yaml"
+  },
+  "reporting": {
+    "summaryFormat": "markdown",
+    "evidenceRoot": "tmp/testing-evidence/statistics-reporting-runtime-query-and-bi"
+  },
+  "exclusions": [],
+  "notes": [
+    "This scenario is the truth source for final-user runtime delivery of Dataset, Chart, and Dashboard pages.",
+    "The runtime contract uses Dataset-backed Chart execute/export endpoints and a Dashboard business model structure surface.",
+    "The initial regression suite targets SQL V1 datasets only; DataModel query execution is explicitly out of scope.",
+    "Evidence must distinguish runtime contract gaps, authority gaps, frontend route gaps, and fixture/environment failures.",
+    "Composite-view authoring, private query, configurable execution limits and Excel download cases are defined in the same case table. Browser HTTP fixtures and live platform/database evidence must be distinguished."
+  ]
+}

@@ -1,0 +1,528 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "AWF_FLOW_SEED_V1",
+  "generatedAt": "2026-01-01T00:00:00Z",
+  "actionContract": {
+    "actionNames": [
+      "approve",
+      "reject",
+      "rollback",
+      "addSign",
+      "transfer",
+      "freeReject",
+      "freeApprove"
+    ],
+    "voFields": [
+      "transfer",
+      "addSign",
+      "freeReject",
+      "freeApproval"
+    ],
+    "notes": [
+      "freeApprove is the runtime action name",
+      "freeApproval is the SubmitTaskVO field"
+    ]
+  },
+  "flows": [
+    {
+      "id": "AWF_FLOW_SINGLE_L1",
+      "flowKey": "awf.single.l1",
+      "name": "AWF Single Approval",
+      "description": "Single-level approval flow for baseline action verification",
+      "formModelId": "AWF_BM_EXPENSE_REQUEST",
+      "nodes": [
+        {
+          "id": "AWF_NODE_START_01",
+          "type": "发起节点",
+          "name": "发起"
+        },
+        {
+          "id": "AWF_NODE_APPROVAL_L1",
+          "type": "审批节点",
+          "name": "一级审批",
+          "subType": "单签",
+          "candidates": [
+            "AWF_USER_APPROVER_1"
+          ],
+          "actions": [
+            "approve",
+            "reject",
+            "rollback"
+          ]
+        },
+        {
+          "id": "AWF_NODE_END_01",
+          "type": "结束节点",
+          "name": "结束"
+        }
+      ],
+      "edges": [
+        {
+          "id": "AWF_EDGE_S1",
+          "sourceId": "AWF_NODE_START_01",
+          "targetId": "AWF_NODE_APPROVAL_L1",
+          "condition": {
+            "left": {
+              "type": "field",
+              "field": "amount"
+            },
+            "op": "greater_or_equal",
+            "right": 0
+          }
+        },
+        {
+          "id": "AWF_EDGE_S2",
+          "sourceId": "AWF_NODE_APPROVAL_L1",
+          "targetId": "AWF_NODE_END_01"
+        }
+      ]
+    },
+    {
+      "id": "AWF_FLOW_SERIAL_MULTI",
+      "flowKey": "awf.serial.multi",
+      "name": "AWF Serial Multi Approval",
+      "description": "Two-level serial approval flow with addSign and transfer options",
+      "formModelId": "AWF_BM_EXPENSE_REQUEST",
+      "nodes": [
+        {
+          "id": "AWF_NODE_START_02",
+          "type": "发起节点",
+          "name": "发起"
+        },
+        {
+          "id": "AWF_NODE_SERIAL_L1",
+          "type": "审批节点",
+          "name": "部门负责人审批",
+          "subType": "单签",
+          "candidates": [
+            "AWF_USER_APPROVER_1"
+          ],
+          "actions": [
+            "approve",
+            "reject",
+            "rollback",
+            "addSign"
+          ]
+        },
+        {
+          "id": "AWF_NODE_SERIAL_L2",
+          "type": "审批节点",
+          "name": "财务审批",
+          "subType": "单签",
+          "candidates": [
+            "AWF_USER_APPROVER_2"
+          ],
+          "actions": [
+            "approve",
+            "reject",
+            "rollback",
+            "addSign",
+            "transfer",
+            "freeReject"
+          ],
+          "advancedOptions": {
+            "transfer": true
+          }
+        },
+        {
+          "id": "AWF_NODE_END_02",
+          "type": "结束节点",
+          "name": "结束"
+        }
+      ],
+      "edges": [
+        {
+          "id": "AWF_EDGE_M1",
+          "sourceId": "AWF_NODE_START_02",
+          "targetId": "AWF_NODE_SERIAL_L1"
+        },
+        {
+          "id": "AWF_EDGE_M2",
+          "sourceId": "AWF_NODE_SERIAL_L1",
+          "targetId": "AWF_NODE_SERIAL_L2"
+        },
+        {
+          "id": "AWF_EDGE_M3",
+          "sourceId": "AWF_NODE_SERIAL_L2",
+          "targetId": "AWF_NODE_END_02"
+        }
+      ]
+    },
+    {
+      "id": "AWF_FLOW_PARALLEL_ADVANCED",
+      "flowKey": "awf.parallel.advanced",
+      "name": "AWF Parallel Advanced Actions",
+      "description": "Parallel sign-off flow covering freeApprove and freeReject paths",
+      "formModelId": "AWF_BM_EXPENSE_REQUEST",
+      "nodes": [
+        {
+          "id": "AWF_NODE_START_03",
+          "type": "发起节点",
+          "name": "发起"
+        },
+        {
+          "id": "AWF_NODE_PARALLEL_SIGN",
+          "type": "审批节点",
+          "name": "并行会签",
+          "subType": "会签",
+          "multipleMode": "并行",
+          "percentage": 100,
+          "candidates": [
+            "AWF_USER_APPROVER_2",
+            "AWF_USER_APPROVER_3"
+          ],
+          "actions": [
+            "approve",
+            "reject",
+            "freeReject",
+            "freeApprove"
+          ],
+          "advancedOptions": {
+            "freeReject": true,
+            "freeApproval": true
+          }
+        },
+        {
+          "id": "AWF_NODE_END_03",
+          "type": "结束节点",
+          "name": "结束"
+        }
+      ],
+      "edges": [
+        {
+          "id": "AWF_EDGE_P1",
+          "sourceId": "AWF_NODE_START_03",
+          "targetId": "AWF_NODE_PARALLEL_SIGN"
+        },
+        {
+          "id": "AWF_EDGE_P2",
+          "sourceId": "AWF_NODE_PARALLEL_SIGN",
+          "targetId": "AWF_NODE_END_03"
+        }
+      ]
+    },
+    {
+      "id": "AWF_FLOW_CONDITION_XOR",
+      "flowKey": "awf.condition.xor",
+      "name": "AWF Condition XOR",
+      "description": "Amount-based XOR branch flow without explicit gateway nodes",
+      "formModelId": "AWF_BM_EXPENSE_REQUEST",
+      "nodes": [
+        {
+          "id": "AWF_NODE_CONDITION_START",
+          "type": "StartNode",
+          "name": "发起"
+        },
+        {
+          "id": "AWF_NODE_CONDITION_LOW_APPROVAL",
+          "type": "ApprovalNode",
+          "name": "低额审批",
+          "subType": "单签",
+          "candidates": [
+            "AWF_USER_APPROVER_1"
+          ],
+          "actions": [
+            "approve",
+            "reject",
+            "rollback"
+          ]
+        },
+        {
+          "id": "AWF_NODE_CONDITION_HIGH_APPROVAL",
+          "type": "ApprovalNode",
+          "name": "高额审批",
+          "subType": "单签",
+          "candidates": [
+            "AWF_USER_APPROVER_2"
+          ],
+          "actions": [
+            "approve",
+            "reject",
+            "rollback"
+          ]
+        },
+        {
+          "id": "AWF_NODE_CONDITION_END",
+          "type": "EndNode",
+          "name": "结束"
+        }
+      ],
+      "edges": [
+        {
+          "id": "AWF_EDGE_CONDITION_LOW",
+          "sourceId": "AWF_NODE_CONDITION_START",
+          "targetId": "AWF_NODE_CONDITION_LOW_APPROVAL",
+          "order": 1,
+          "condition": {
+            "left": {
+              "type": "field",
+              "field": "amount"
+            },
+            "op": "less_or_equal",
+            "right": 1000
+          }
+        },
+        {
+          "id": "AWF_EDGE_CONDITION_HIGH",
+          "sourceId": "AWF_NODE_CONDITION_START",
+          "targetId": "AWF_NODE_CONDITION_HIGH_APPROVAL",
+          "order": 2,
+          "condition": {
+            "left": {
+              "type": "field",
+              "field": "amount"
+            },
+            "op": "greater",
+            "right": 1000
+          }
+        },
+        {
+          "id": "AWF_EDGE_CONDITION_LOW_END",
+          "sourceId": "AWF_NODE_CONDITION_LOW_APPROVAL",
+          "targetId": "AWF_NODE_CONDITION_END"
+        },
+        {
+          "id": "AWF_EDGE_CONDITION_HIGH_END",
+          "sourceId": "AWF_NODE_CONDITION_HIGH_APPROVAL",
+          "targetId": "AWF_NODE_CONDITION_END"
+        }
+      ]
+    },
+    {
+      "id": "AWF_FLOW_OR_JOIN",
+      "flowKey": "awf.or.join",
+      "name": "AWF OR Join",
+      "description": "OR split inferred from branches that converge on JoinNode(joinType=OR)",
+      "formModelId": "AWF_BM_EXPENSE_REQUEST",
+      "nodes": [
+        {
+          "id": "AWF_NODE_OR_START",
+          "type": "StartNode",
+          "name": "发起"
+        },
+        {
+          "id": "AWF_NODE_OR_APPROVAL_A",
+          "type": "ApprovalNode",
+          "name": "分支A审批",
+          "subType": "单签",
+          "candidates": [
+            "AWF_USER_APPROVER_1"
+          ],
+          "actions": [
+            "approve",
+            "reject",
+            "rollback"
+          ]
+        },
+        {
+          "id": "AWF_NODE_OR_APPROVAL_B",
+          "type": "ApprovalNode",
+          "name": "分支B审批",
+          "subType": "单签",
+          "candidates": [
+            "AWF_USER_APPROVER_2"
+          ],
+          "actions": [
+            "approve",
+            "reject",
+            "rollback"
+          ]
+        },
+        {
+          "id": "AWF_NODE_OR_JOIN",
+          "type": "JoinNode",
+          "name": "OR汇聚",
+          "joinType": "OR"
+        },
+        {
+          "id": "AWF_NODE_OR_END",
+          "type": "EndNode",
+          "name": "结束"
+        }
+      ],
+      "edges": [
+        {
+          "id": "AWF_EDGE_OR_A",
+          "sourceId": "AWF_NODE_OR_START",
+          "targetId": "AWF_NODE_OR_APPROVAL_A",
+          "order": 1
+        },
+        {
+          "id": "AWF_EDGE_OR_B",
+          "sourceId": "AWF_NODE_OR_START",
+          "targetId": "AWF_NODE_OR_APPROVAL_B",
+          "order": 2
+        },
+        {
+          "id": "AWF_EDGE_OR_A_JOIN",
+          "sourceId": "AWF_NODE_OR_APPROVAL_A",
+          "targetId": "AWF_NODE_OR_JOIN"
+        },
+        {
+          "id": "AWF_EDGE_OR_B_JOIN",
+          "sourceId": "AWF_NODE_OR_APPROVAL_B",
+          "targetId": "AWF_NODE_OR_JOIN"
+        },
+        {
+          "id": "AWF_EDGE_OR_JOIN_END",
+          "sourceId": "AWF_NODE_OR_JOIN",
+          "targetId": "AWF_NODE_OR_END"
+        }
+      ]
+    },
+    {
+      "id": "AWF_FLOW_NODE_TYPES",
+      "flowKey": "awf.node.types",
+      "name": "AWF Node Types",
+      "description": "Stable V2 node coverage for HandleNode and CcNode before approval completion",
+      "formModelId": "AWF_BM_EXPENSE_REQUEST",
+      "nodes": [
+        {
+          "id": "AWF_NODE_TYPES_START",
+          "type": "StartNode",
+          "name": "发起"
+        },
+        {
+          "id": "AWF_NODE_TYPES_HANDLE",
+          "type": "HandleNode",
+          "name": "办理节点",
+          "candidates": [
+            "AWF_USER_APPROVER_1"
+          ]
+        },
+        {
+          "id": "AWF_NODE_TYPES_CC",
+          "type": "CcNode",
+          "name": "抄送节点",
+          "candidates": [
+            "AWF_USER_AUDITOR"
+          ]
+        },
+        {
+          "id": "AWF_NODE_TYPES_APPROVAL",
+          "type": "ApprovalNode",
+          "name": "审批节点",
+          "subType": "单签",
+          "candidates": [
+            "AWF_USER_APPROVER_2"
+          ],
+          "actions": [
+            "approve",
+            "reject",
+            "rollback"
+          ]
+        },
+        {
+          "id": "AWF_NODE_TYPES_END",
+          "type": "EndNode",
+          "name": "结束"
+        }
+      ],
+      "edges": [
+        {
+          "id": "AWF_EDGE_NODE_TYPES_1",
+          "sourceId": "AWF_NODE_TYPES_START",
+          "targetId": "AWF_NODE_TYPES_HANDLE"
+        },
+        {
+          "id": "AWF_EDGE_NODE_TYPES_2",
+          "sourceId": "AWF_NODE_TYPES_HANDLE",
+          "targetId": "AWF_NODE_TYPES_CC"
+        },
+        {
+          "id": "AWF_EDGE_NODE_TYPES_3",
+          "sourceId": "AWF_NODE_TYPES_CC",
+          "targetId": "AWF_NODE_TYPES_APPROVAL"
+        },
+        {
+          "id": "AWF_EDGE_NODE_TYPES_4",
+          "sourceId": "AWF_NODE_TYPES_APPROVAL",
+          "targetId": "AWF_NODE_TYPES_END"
+        }
+      ]
+    },
+    {
+      "id": "AWF_FLOW_SUBFLOW_CHILD",
+      "flowKey": "awf.subflow.child",
+      "name": "AWF Subflow Child",
+      "description": "Child approval flow invoked by a SubflowNode parent",
+      "formModelId": "AWF_BM_EXPENSE_REQUEST",
+      "nodes": [
+        {
+          "id": "AWF_NODE_SUBFLOW_CHILD_START",
+          "type": "StartNode",
+          "name": "发起"
+        },
+        {
+          "id": "AWF_NODE_SUBFLOW_CHILD_APPROVAL",
+          "type": "ApprovalNode",
+          "name": "子流程审批",
+          "subType": "单签",
+          "candidates": [
+            "AWF_USER_APPROVER_3"
+          ],
+          "actions": [
+            "approve",
+            "reject",
+            "rollback"
+          ]
+        },
+        {
+          "id": "AWF_NODE_SUBFLOW_CHILD_END",
+          "type": "EndNode",
+          "name": "结束"
+        }
+      ],
+      "edges": [
+        {
+          "id": "AWF_EDGE_SUBFLOW_CHILD_1",
+          "sourceId": "AWF_NODE_SUBFLOW_CHILD_START",
+          "targetId": "AWF_NODE_SUBFLOW_CHILD_APPROVAL"
+        },
+        {
+          "id": "AWF_EDGE_SUBFLOW_CHILD_2",
+          "sourceId": "AWF_NODE_SUBFLOW_CHILD_APPROVAL",
+          "targetId": "AWF_NODE_SUBFLOW_CHILD_END"
+        }
+      ]
+    },
+    {
+      "id": "AWF_FLOW_SUBFLOW_PARENT",
+      "flowKey": "awf.subflow.parent",
+      "name": "AWF Subflow Parent",
+      "description": "Parent flow invoking the child flow through SubflowNode",
+      "formModelId": "AWF_BM_EXPENSE_REQUEST",
+      "nodes": [
+        {
+          "id": "AWF_NODE_SUBFLOW_PARENT_START",
+          "type": "StartNode",
+          "name": "发起"
+        },
+        {
+          "id": "AWF_NODE_SUBFLOW_PARENT_CALL",
+          "type": "SubflowNode",
+          "name": "调用子流程",
+          "subFlowKey": "awf.subflow.child",
+          "rejectAction": "reject"
+        },
+        {
+          "id": "AWF_NODE_SUBFLOW_PARENT_END",
+          "type": "EndNode",
+          "name": "结束"
+        }
+      ],
+      "edges": [
+        {
+          "id": "AWF_EDGE_SUBFLOW_PARENT_1",
+          "sourceId": "AWF_NODE_SUBFLOW_PARENT_START",
+          "targetId": "AWF_NODE_SUBFLOW_PARENT_CALL"
+        },
+        {
+          "id": "AWF_EDGE_SUBFLOW_PARENT_2",
+          "sourceId": "AWF_NODE_SUBFLOW_PARENT_CALL",
+          "targetId": "AWF_NODE_SUBFLOW_PARENT_END"
+        }
+      ]
+    }
+  ]
+}

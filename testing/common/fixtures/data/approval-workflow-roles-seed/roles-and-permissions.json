@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "AWF_ROLE_SEED_V1",
+  "generatedAt": "2026-01-01T00:00:00Z",
+  "permissions": [
+    {
+      "id": "AWF_PERM_FORM_SUBMIT",
+      "code": "approval.form.submit",
+      "name": "Submit Approval Form"
+    },
+    {
+      "id": "AWF_PERM_TASK_APPROVE",
+      "code": "approval.task.approve",
+      "name": "Execute approve action",
+      "actionName": "approve"
+    },
+    {
+      "id": "AWF_PERM_TASK_REJECT",
+      "code": "approval.task.reject",
+      "name": "Execute reject action",
+      "actionName": "reject"
+    },
+    {
+      "id": "AWF_PERM_TASK_ROLLBACK",
+      "code": "approval.task.rollback",
+      "name": "Execute rollback action",
+      "actionName": "rollback"
+    },
+    {
+      "id": "AWF_PERM_TASK_TRANSFER",
+      "code": "approval.task.transfer",
+      "name": "Execute transfer action",
+      "actionName": "transfer",
+      "voField": "transfer"
+    },
+    {
+      "id": "AWF_PERM_TASK_ADDSIGN",
+      "code": "approval.task.add-sign",
+      "name": "Execute addSign action",
+      "actionName": "addSign",
+      "voField": "addSign"
+    },
+    {
+      "id": "AWF_PERM_TASK_FREE_REJECT",
+      "code": "approval.task.free-reject",
+      "name": "Execute freeReject action",
+      "actionName": "freeReject",
+      "voField": "freeReject"
+    },
+    {
+      "id": "AWF_PERM_TASK_FREE_APPROVE",
+      "code": "approval.task.free-approve",
+      "name": "Execute freeApprove action",
+      "actionName": "freeApprove",
+      "voField": "freeApproval"
+    },
+    {
+      "id": "AWF_PERM_AUDIT_VIEW",
+      "code": "approval.audit.view",
+      "name": "View approval history"
+    }
+  ],
+  "roles": [
+    {
+      "id": "AWF_ROLE_SUBMITTER",
+      "code": "AWF-SUBMITTER",
+      "name": "Approval Submitter"
+    },
+    {
+      "id": "AWF_ROLE_APPROVER_L1",
+      "code": "AWF-APPROVER-L1",
+      "name": "Level 1 Approver"
+    },
+    {
+      "id": "AWF_ROLE_APPROVER_L2",
+      "code": "AWF-APPROVER-L2",
+      "name": "Level 2 Approver"
+    },
+    {
+      "id": "AWF_ROLE_PARALLEL_APPROVER",
+      "code": "AWF-PARALLEL-APPROVER",
+      "name": "Parallel Approver"
+    },
+    {
+      "id": "AWF_ROLE_FLOW_ADMIN",
+      "code": "AWF-FLOW-ADMIN",
+      "name": "Approval Flow Admin"
+    },
+    {
+      "id": "AWF_ROLE_AUDITOR",
+      "code": "AWF-AUDITOR",
+      "name": "Approval Auditor"
+    }
+  ],
+  "rolePermissions": [
+    {
+      "roleId": "AWF_ROLE_SUBMITTER",
+      "permissionIds": [
+        "AWF_PERM_FORM_SUBMIT",
+        "AWF_PERM_AUDIT_VIEW"
+      ]
+    },
+    {
+      "roleId": "AWF_ROLE_APPROVER_L1",
+      "permissionIds": [
+        "AWF_PERM_TASK_APPROVE",
+        "AWF_PERM_TASK_REJECT",
+        "AWF_PERM_TASK_ROLLBACK",
+        "AWF_PERM_AUDIT_VIEW"
+      ]
+    },
+    {
+      "roleId": "AWF_ROLE_APPROVER_L2",
+      "permissionIds": [
+        "AWF_PERM_TASK_APPROVE",
+        "AWF_PERM_TASK_REJECT",
+        "AWF_PERM_TASK_ROLLBACK",
+        "AWF_PERM_TASK_TRANSFER",
+        "AWF_PERM_TASK_ADDSIGN",
+        "AWF_PERM_AUDIT_VIEW"
+      ]
+    },
+    {
+      "roleId": "AWF_ROLE_PARALLEL_APPROVER",
+      "permissionIds": [
+        "AWF_PERM_TASK_APPROVE",
+        "AWF_PERM_TASK_REJECT",
+        "AWF_PERM_TASK_FREE_APPROVE",
+        "AWF_PERM_TASK_FREE_REJECT",
+        "AWF_PERM_AUDIT_VIEW"
+      ]
+    },
+    {
+      "roleId": "AWF_ROLE_FLOW_ADMIN",
+      "permissionIds": [
+        "AWF_PERM_FORM_SUBMIT",
+        "AWF_PERM_TASK_APPROVE",
+        "AWF_PERM_TASK_REJECT",
+        "AWF_PERM_TASK_ROLLBACK",
+        "AWF_PERM_TASK_TRANSFER",
+        "AWF_PERM_TASK_ADDSIGN",
+        "AWF_PERM_TASK_FREE_REJECT",
+        "AWF_PERM_TASK_FREE_APPROVE",
+        "AWF_PERM_AUDIT_VIEW"
+      ]
+    },
+    {
+      "roleId": "AWF_ROLE_AUDITOR",
+      "permissionIds": [
+        "AWF_PERM_AUDIT_VIEW"
+      ]
+    }
+  ]
+}

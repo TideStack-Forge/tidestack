@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ouroboros</groupId>
+        <artifactId>ouroboros-root</artifactId>
+        <version>2.0.0-rc.1-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>architecture-tests</artifactId>
+    <packaging>jar</packaging>
+    <name>Ouroboros Architecture Tests</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit-junit5</artifactId>
+            <version>1.2.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.resolver</groupId>
+                        <artifactId>maven-resolver-util</artifactId>
+                        <version>1.9.27</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>architecture-reactor-manifest</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <scripts>
+                                <script>${project.basedir}/src/test/scripts/write-reactor-manifest.groovy</script>
+                            </scripts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                        <include>**/ArchitectureTestWithAllowlist.java</include>
+                    </includes>
+                    <systemPropertyVariables>
+                        <architecture.reactorManifest>${project.build.directory}/architecture-reactor.tsv</architecture.reactorManifest>
+                        <archunit.freeze.store.default.path>${project.basedir}/src/test/resources/archunit-freeze</archunit.freeze.store.default.path>
+                        <maven.multiModuleProjectDirectory>${maven.multiModuleProjectDirectory}</maven.multiModuleProjectDirectory>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

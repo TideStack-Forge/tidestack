@@ -1,0 +1,27 @@
+{
+  "name": "/platform-component-lib/upload",
+  "schema": {
+    "type": "form",
+    "wrapWithPanel": false,
+    "api": {
+      "method": "post",
+      "url": "/api/platform-component-lib"
+    },
+    "body": [
+      {
+        "type": "input-file",
+        "name": "file",
+        "label": "组件库包",
+        "required": true,
+        "accept": ".zip",
+        "asBlob": true,
+        "description": "请上传ZIP格式的组件库包，包内需包含 components.manifest.json 文件"
+      },
+      {
+        "type": "alert",
+        "level": "info",
+        "body": "组件库包结构说明：<br/>1. components.manifest.json - 组件库清单文件<br/>2. index.html - 组件库微前端入口<br/>3. 其他"
+      }
+    ]
+  }
+}

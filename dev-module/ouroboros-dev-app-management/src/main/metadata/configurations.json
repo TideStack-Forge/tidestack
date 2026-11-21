@@ -1,0 +1,76 @@
+[
+  {
+    "key": "dev-app-management.dev-helper.container.image",
+    "label": "开发助手基座镜像名",
+    "modifiable": true,
+    "nullable": false,
+    "defaultValue": "registry.cn-hangzhou.aliyuncs.com/ouroboros/ouroboros-mothership:1.0.0.M2-SNAPSHOT",
+    "valueType": "string"
+  },
+  {
+    "key": "dev-app-management.test-app.container.image",
+    "label": "测试应用基座镜像名",
+    "modifiable": true,
+    "nullable": false,
+    "defaultValue": "registry.cn-hangzhou.aliyuncs.com/ouroboros/ouroboros-mothership:1.0.0.M2-SNAPSHOT",
+    "valueType": "string"
+  },
+  {
+    "key": "dev-app-management.test-app.port-range",
+    "label": "测试应用容器自动分配端口段",
+    "description": "示例：8000-9000，一个测试容器需要占用3个端口号",
+    "modifiable": true,
+    "nullable": false,
+    "defaultValue": "8000-9000",
+    "valueType": "string"
+  },
+  {
+    "key": "dev-app-management.test-app.default-datasource.driver-class-name",
+    "label": "测试应用默认数据源驱动类",
+    "description": "默认：com.mysql.cj.jdbc.Driver",
+    "modifiable": true,
+    "defaultValue": "com.mysql.cj.jdbc.Driver",
+    "nullable": true,
+    "valueType": "string"
+  },
+  {
+    "key": "dev-app-management.test-app.default-datasource.url-template",
+    "label": "测试应用默认数据源连接字符串模版",
+    "description": "JDBC连接字符串模版，示例：jdbc:xxx://host:port/${dbName}",
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string"
+  },
+  {
+    "key": "dev-app-management.test-app.default-datasource.username",
+    "label": "测试应用默认数据源用户名",
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string"
+  },
+  {
+    "key": "dev-app-management.test-app.default-datasource.password",
+    "label": "测试应用默认数据源密码",
+    "modifiable": true,
+    "nullable": true,
+    "valueType": "string"
+  },
+  {
+    "key": "dev-app-management.test-app.memory-datasource.driver-class-name",
+    "label": "测试应用内存数据源驱动类",
+    "description": "默认：org.h2.Driver",
+    "modifiable": true,
+    "defaultValue": "org.h2.Driver",
+    "nullable": false,
+    "valueType": "string"
+  },
+  {
+    "key": "dev-app-management.test-app.memory-datasource.url",
+    "label": "测试应用内存数据源连接字符串",
+    "description": "示例：jdbc:h2:mem:sandbox;",
+    "modifiable": true,
+    "defaultValue": "jdbc:h2:mem:sandbox;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;CASE_INSENSITIVE_IDENTIFIERS=TRUE;IGNORECASE=TRUE;",
+    "nullable": false,
+    "valueType": "string"
+  }
+]

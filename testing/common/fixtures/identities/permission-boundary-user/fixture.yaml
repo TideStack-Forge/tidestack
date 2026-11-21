@@ -1,0 +1,44 @@
+{
+  "id": "identities/permission-boundary-user",
+  "title": "Permission Boundary User",
+  "class": "identities",
+  "capabilities": [
+    "authenticated-user",
+    "restricted-authority",
+    "permission-boundary-classification"
+  ],
+  "lifecycle": {
+    "up": "",
+    "check": "login should succeed but selected protected endpoints should remain unauthorized or forbidden",
+    "reset": "",
+    "down": ""
+  },
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "identityKind",
+      "value": "permission-boundary"
+    },
+    {
+      "name": "accountEnv",
+      "value": "OB_TEST_RESTRICTED_ACCOUNT"
+    },
+    {
+      "name": "passwordEnv",
+      "value": "OB_TEST_RESTRICTED_PASSWORD"
+    }
+  ],
+  "healthChecks": [
+    {
+      "name": "restricted-authority-surface",
+      "expect": "protected endpoints remain classified as permission-boundary instead of regression"
+    }
+  ],
+  "prerequisites": [
+    "Restricted actor credentials are environment-specific and should be injected via OB_TEST_RESTRICTED_ACCOUNT and OB_TEST_RESTRICTED_PASSWORD"
+  ],
+  "notes": [
+    "This fixture exists to force permission-boundary and regression classification to stay separate.",
+    "No loginPayload is embedded on purpose; credential material must stay external."
+  ]
+}

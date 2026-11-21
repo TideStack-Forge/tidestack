@@ -1,0 +1,13 @@
+[
+  {
+    "fullName": "systemSetting.i18nManagement",
+    "title": "国际化",
+    "icon": "fa fa-language",
+    "menu": "systemSetting.i18nManagement",
+    "authorities": [
+      "systemSetting.i18nManagement"
+    ],
+    "order": 30,
+    "parent": "systemSetting.basicConfiguration"
+  }
+]

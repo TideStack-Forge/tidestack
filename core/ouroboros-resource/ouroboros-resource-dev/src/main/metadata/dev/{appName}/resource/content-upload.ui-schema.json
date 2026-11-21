@@ -1,0 +1,32 @@
+{
+  "name": "/dev/{appName}/resource/content-upload",
+  "schema": {
+    "type": "dialog",
+    "title": "上传资源内容",
+    "body": {
+      "type": "form",
+      "api": {
+        "method": "post",
+        "url": "/api/dev/${appName}/resource/content"
+      },
+      "body": [
+        {
+          "type": "hidden",
+          "name": "scope",
+          "value": "${scope}"
+        },
+        {
+          "type": "hidden",
+          "name": "key",
+          "value": "${key}"
+        },
+        {
+          "type": "input-file",
+          "name": "file",
+          "label": "文件",
+          "required": true
+        }
+      ]
+    }
+  }
+}

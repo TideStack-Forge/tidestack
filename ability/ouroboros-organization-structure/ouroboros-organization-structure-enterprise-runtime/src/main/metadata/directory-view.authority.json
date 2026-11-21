@@ -1,0 +1,20 @@
+{
+  "fullName": "systemSetting.integrationManagement.connections.directory.view",
+  "title": "查看企业组织关联",
+  "delegable": false,
+  "apis": [
+    "GET /api/sys/enterprise-directory/connections",
+    "GET /api/sys/enterprise-directory/local-options",
+    "GET /api/sys/enterprise-directory/snapshot",
+    "GET /api/sys/enterprise-directory/bindings",
+    "GET /api/sys/enterprise-directory/scopes",
+    "GET /api/sys/integration-management/sections/{section}",
+    "GET /api/sys/enterprise-directory/management-state"
+  ],
+  "uiViews": [
+    "/system-setting/integration-management"
+  ],
+  "menuItems": [
+    "systemSetting.integrationManagement"
+  ]
+}

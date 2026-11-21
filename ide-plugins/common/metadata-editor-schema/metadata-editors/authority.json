@@ -1,0 +1,14 @@
+{
+  "editorId": "authority",
+  "editorName": "TideStack Authority Metadata Editor",
+  "editorNameKey": "customEditor.authority",
+  "metadataType": "authority",
+  "schemaName": "authority",
+  "viewType": "tidestack.metadataEditor.authority",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.authority",
+  "fileMatchPatterns": [
+    "*.authority.json",
+    "**/resources/META-INF/ouroboros/authority/**/*.json"
+  ],
+  "priority": "default"
+}

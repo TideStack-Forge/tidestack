@@ -1,0 +1,19 @@
+{
+  "fullName": "systemSetting.dataDictManagement",
+  "title": "数据字典",
+  "apis": [
+    "POST /api/sys/data-dict-manage",
+    "POST /api/sys/data-dict-manage/{name}/items",
+    "DELETE /api/sys/data-dict-manage/{name}/item/{code}",
+    "PUT /api/sys/data-dict-manage/{name}/items",
+    "GET /api/sys/data-dict-manage",
+    "GET /api/sys/data-dict-manage/{name}/items",
+    "GET /api/sys/data-dict-manage/{name}"
+  ],
+  "uiViews": [
+    "/system-setting/data-dict"
+  ],
+  "menuItems": [
+    "systemSetting.dataDictManagement"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "id": "frontends/runtime-shell",
+  "title": "Runtime Shell Frontend",
+  "class": "frontends",
+  "capabilities": [
+    "web-shell",
+    "runtime-app-ui",
+    "browser-entry"
+  ],
+  "lifecycle": {
+    "up": "",
+    "check": "runtime shell should open the app login or home page without route conflicts",
+    "reset": "",
+    "down": ""
+  },
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "frontendKind",
+      "value": "runtime-shell"
+    },
+    {
+      "name": "baseUrlEnv",
+      "value": "OB_TEST_RUNTIME_FRONTEND_BASE_URL"
+    },
+    {
+      "name": "entryRoute",
+      "value": "/"
+    },
+    {
+      "name": "loginRoute",
+      "value": "/login"
+    }
+  ],
+  "healthChecks": [
+    {
+      "name": "runtime-shell-route",
+      "expect": "generated app shell opens without develop-side route conflicts"
+    }
+  ],
+  "prerequisites": [],
+  "notes": [
+    "Prefer this fixture when validating app.* routes or generated application behavior on mothership."
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "fullName": "BusinessLogic.LogicflowDebugSessions",
+  "url": "/dev/{appName}/logicflow/debug/sessions",
+  "icon": "fa fa-bug",
+  "title": "逻辑流调试会话",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 90
+}

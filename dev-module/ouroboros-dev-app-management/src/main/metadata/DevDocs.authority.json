@@ -1,0 +1,11 @@
+{
+  "fullName": "DevDocs",
+  "title": "开发文档",
+  "apis": [],
+  "uiViews": [
+    "/dev-docs"
+  ],
+  "menuItems": [
+    "DevDocs"
+  ]
+}

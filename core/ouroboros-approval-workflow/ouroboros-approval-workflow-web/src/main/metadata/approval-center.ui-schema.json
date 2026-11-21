@@ -1,0 +1,299 @@
+{
+  "name": "/approval-center",
+  "schema": {
+    "type": "page",
+    "definitions": {
+      "rejectButton": {
+        "type": "button",
+        "label": "驳回",
+        "level": "danger",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "validate",
+                "componentId": "form",
+                "outputVar": "formValidateResult"
+              },
+              {
+                "expression": "!formValidateResult.error",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "",
+                  "url": "/approval-center/reject-form"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "rollbackButton": {
+        "type": "button",
+        "label": "回退",
+        "level": "danger",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "validate",
+                "componentId": "form",
+                "outputVar": "formValidateResult"
+              },
+              {
+                "actionType": "dialog",
+                "expression": "!formValidateResult.error",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "",
+                  "url": "/approval-center/rollback-form"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "approveButton": {
+        "type": "button",
+        "label": "通过",
+        "level": "primary",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "validate",
+                "componentId": "form"
+              },
+              {
+                "actionType": "ajax",
+                "expression": "!validateResult.error",
+                "outputVar": "submitResponse",
+                "args": {
+                  "api": {
+                    "method": "POST",
+                    "url": "/api/approval-workflow/task/${id}",
+                    "data": {
+                      "formData": "$formData",
+                      "action": "approve"
+                    }
+                  }
+                }
+              },
+              {
+                "actionType": "closeDrawer",
+                "componentId": "drawer-detail",
+                "expression": "!submitResponse.error"
+              },
+              {
+                "actionType": "reload",
+                "componentId": "approval-center",
+                "expression": "!submitResponse.error"
+              }
+            ]
+          }
+        }
+      },
+      "transferButton": {
+        "type": "button",
+        "label": "转办",
+        "level": "warning",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "validate",
+                "componentId": "form",
+                "outputVar": "formValidateResult"
+              },
+              {
+                "expression": "!formValidateResult.error",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "",
+                  "url": "/approval-center/transfer-form"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "addSignButton": {
+        "type": "button",
+        "label": "加签",
+        "level": "warning",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "validate",
+                "componentId": "form",
+                "outputVar": "formValidateResult"
+              },
+              {
+                "expression": "!formValidateResult.error",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "",
+                  "url": "/approval-center/add-sign-form"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "freeRejectButton": {
+        "type": "button",
+        "label": "自由驳回",
+        "level": "danger",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "validate",
+                "componentId": "form",
+                "outputVar": "formValidateResult"
+              },
+              {
+                "expression": "!formValidateResult.error",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "",
+                  "url": "/approval-center/free-reject-form"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "freeApproveButton": {
+        "type": "button",
+        "label": "自由审批",
+        "level": "primary",
+        "onEvent": {
+          "click": {
+            "actions": [
+              {
+                "actionType": "validate",
+                "componentId": "form",
+                "outputVar": "formValidateResult"
+              },
+              {
+                "expression": "!formValidateResult.error",
+                "actionType": "dialog",
+                "dialog": {
+                  "type": "dialog",
+                  "title": "",
+                  "url": "/approval-center/free-approval-form"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "body": [
+      {
+        "type": "crud",
+        "id": "approval-center",
+        "name": "approval-center",
+        "syncLocation": false,
+        "api": {
+          "url": "/api/approval-workflow/task/todo",
+          "method": "get"
+        },
+        "perPageAvailable": [
+          10
+        ],
+        "itemActions": [
+          {
+            "label": "详情",
+            "type": "button",
+            "actionType": "drawer",
+            "drawer": {
+              "id": "drawer-detail",
+              "title": "详情",
+              "width": "720px",
+              "closeOnOutside": true,
+              "url": "/approval-center/detail",
+              "actions": [
+                {
+                  "type": "action",
+                  "actionType": "cancel",
+                  "label": "关闭"
+                }
+              ]
+            }
+          }
+        ],
+        "filterTogglable": true,
+        "headerToolbar": [
+          "load-more",
+          {
+            "type": "reload",
+            "align": "left",
+            "icon": "fa fa-refresh",
+            "label": "刷新"
+          },
+          {
+            "type": "export-excel",
+            "label": "导出当前页",
+            "filename": "审批中心-P${page}"
+          },
+          {
+            "type": "export-excel",
+            "label": "导出全部",
+            "filename": "审批中心-全部",
+            "api": {
+              "url": "/api/approval-workflow/task/todo",
+              "data": {
+                "&": "$$",
+                "perPage": "${total}",
+                "page": 1
+              }
+            }
+          },
+          {
+            "type": "action",
+            "actionType": "link",
+            "label": "发起流程",
+            "icon": "fa fa-plus",
+            "level": "primary",
+            "align": "right",
+            "link": "/approval-center/start"
+          }
+        ],
+        "alwaysShowPagination": true,
+        "hideQuickSaveBtn": true,
+        "columns": [
+          {
+            "name": "flowName",
+            "label": "流程名称"
+          },
+          {
+            "name": "name",
+            "label": "任务名称"
+          },
+          {
+            "name": "starterName",
+            "label": "任务发起人"
+          },
+          {
+            "type": "date",
+            "format": "YYYY-MM-DD HH:mm:ss",
+            "name": "startTime",
+            "label": "发起时间"
+          },
+          {
+            "type": "tpl",
+            "name": "endTime",
+            "tpl": "${endTime ? ${endTime | date:YYYY-MM-DD HH\\:mm\\:ss :YYYY-MM-DDTHH\\:mm\\:ssZ} : '正在进行'}",
+            "label": "完成时间"
+          }
+        ]
+      }
+    ]
+  }
+}

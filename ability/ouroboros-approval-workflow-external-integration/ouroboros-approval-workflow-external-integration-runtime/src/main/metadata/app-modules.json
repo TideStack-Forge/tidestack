@@ -1,0 +1,23 @@
+[
+  {
+    "fullName": "systemSetting.engineAdapterCatalog",
+    "parent": "systemSetting.workflowManagement",
+    "title": "引擎适配器目录",
+    "menu": "systemSetting.engineAdapterCatalog",
+    "order": 20
+  },
+  {
+    "fullName": "systemSetting.engineMappingManage",
+    "parent": "systemSetting.workflowManagement",
+    "title": "流程映射",
+    "menu": "systemSetting.engineMappingManage",
+    "order": 30
+  },
+  {
+    "fullName": "systemSetting.externalResultTracking",
+    "parent": "systemSetting.workflowManagement",
+    "title": "外部结果跟踪",
+    "menu": "systemSetting.externalResultTracking",
+    "order": 40
+  }
+]

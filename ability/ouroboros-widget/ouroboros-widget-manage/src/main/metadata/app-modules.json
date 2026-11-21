@@ -1,0 +1,12 @@
+[
+  {
+    "fullName": "systemSetting.WidgetManage",
+    "title": "门户栏目",
+    "menu": "systemSetting.WidgetManage",
+    "authorities": [
+      "systemSetting.WidgetManage"
+    ],
+    "order": 10,
+    "parent": "systemSetting.portalAndInterface"
+  }
+]

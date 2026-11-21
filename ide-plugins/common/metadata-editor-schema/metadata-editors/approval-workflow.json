@@ -1,0 +1,13 @@
+{
+  "editorId": "approval-workflow",
+  "editorName": "TideStack Approval Workflow Metadata Editor",
+  "editorNameKey": "customEditor.approvalWorkflow",
+  "metadataType": "approval-workflow",
+  "schemaName": "approval-workflow",
+  "viewType": "tidestack.metadataEditor.approvalWorkflow",
+  "intellijEditorTypeId": "ouroboros.metadata.editor.approvalWorkflow",
+  "fileMatchPatterns": [
+    "*.workflow.json"
+  ],
+  "priority": "default"
+}

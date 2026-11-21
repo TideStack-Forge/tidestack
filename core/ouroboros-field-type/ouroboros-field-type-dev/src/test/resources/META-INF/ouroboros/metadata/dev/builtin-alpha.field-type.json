@@ -1,0 +1,12 @@
+{
+  "name": "builtinAlpha",
+  "label": "Builtin Alpha",
+  "paramsUiSchema": [
+    {
+      "name": "size",
+      "label": "Size",
+      "type": "input-number",
+      "value": 16
+    }
+  ]
+}

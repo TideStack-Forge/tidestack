@@ -1,0 +1,66 @@
+{
+  "name": "/approval-workflow/external-result-tracking",
+  "schema": {
+    "type": "page",
+    "title": "外部结果跟踪",
+    "body": [
+      {
+        "type": "card",
+        "title": "发起结果型审批",
+        "body": {
+          "type": "form",
+          "api": "post:/api/approval-workflow/external/result-bindings/start",
+          "controls": [
+            {"type": "input-text", "name": "flowKey", "label": "流程标识", "required": true},
+            {"type": "input-text", "name": "businessRecordType", "label": "业务记录类型", "required": true},
+            {"type": "input-text", "name": "businessRecordId", "label": "业务记录主键", "required": true},
+            {"type": "input-text", "name": "idempotencyKey", "label": "幂等键（可空）"},
+            {"type": "textarea", "name": "formData", "label": "表单数据 JSON（可空）"}
+          ]
+        }
+      },
+      {
+        "type": "card",
+        "title": "跟踪查询",
+        "body": {
+          "type": "form",
+          "controls": [
+            {"type": "input-text", "name": "trackingId", "label": "跟踪 ID", "required": true}
+          ],
+          "actions": [
+            {
+              "label": "查询",
+              "type": "button",
+              "actionType": "dialog",
+              "dialog": {
+                "title": "跟踪结果",
+                "body": {
+                  "type": "service",
+                  "api": "get:/api/approval-workflow/external/result-bindings/${trackingId}",
+                  "body": [
+                    {
+                      "type": "property",
+                      "items": [
+                        {"label": "跟踪 ID", "content": "${trackingId}"},
+                        {"label": "状态", "content": "${status}"},
+                        {"label": "结果", "content": "${outcome || '-'}"}
+                      ]
+                    },
+                    {
+                      "type": "button",
+                      "label": "打开外部审批",
+                      "actionType": "url",
+                      "url": "${externalUrl}",
+                      "blank": true,
+                      "visibleOn": "${!!externalUrl}"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "fullName": "DataAndModels.DataDictManagement",
+  "url": "/dev/{appName}/data-dict",
+  "icon": "fas fas fa-th-list",
+  "title": "数据字典",
+  "showMode": "tab",
+  "placement": "main",
+  "stage": "dev",
+  "order": 20
+}
